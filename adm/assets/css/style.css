@@ -1,0 +1,272 @@
+/* @import url("https://fonts.googleapis.com/css2?family=Open+Sans&display=swap"); */
+@font-face {
+  font-family: poppins;
+  src: url(../font/Poppins-Regular.ttf);
+}
+html {
+  scroll-behavior: smooth;
+}
+body {
+  font-family: "poppins", sans-serif;
+  background-color: #d9d9d9;
+}
+ul {
+  padding: 0;
+  padding-top: 5px;
+}
+ul li {
+  list-style-type: none;
+}
+ul li a {
+  text-decoration: none;
+  display: block;
+  padding: 10px;
+  color: black;
+  font-size: 14px;
+}
+ul li a:hover {
+  text-decoration: none;
+  color: white;
+}
+
+/* Utillity */
+/* Disable Spiner Input Number */
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.navbar {
+  height: 50px;
+}
+.navbar-color {
+  background-color: #437fc7 !important;
+}
+
+/* Tabel */
+thead tr {
+  background-color: #6daffe;
+  color: #000000;
+}
+/* .table-striped tbody tr:nth-of-type(even) {
+  background-color: rgba(255, 191, 0, 0.2);
+}
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(255, 191, 0, 0.4);
+} */
+
+/* Navigation */
+.page-link {
+  border: none;
+  color: black;
+}
+.page-link:hover {
+  z-index: 2;
+  color: var(--amber);
+  text-decoration: none;
+  background-color: transparent;
+  border-bottom: 3px solid var(--amber);
+}
+.page-link:focus {
+  box-shadow: none;
+}
+.page-item.active .page-link {
+  z-index: 3;
+  color: var(--amber);
+  background-color: transparent; /*#e9ecef*/
+  border-bottom: 3px solid var(--amber);
+}
+
+/* Sidebar Menu */
+/* .nav-link[data-toggle].collapsed:after {
+  content: " ▾";
+}
+.nav-link[data-toggle]:not(.collapsed):after {
+  content: " ▴";
+} */
+.sidebar {
+  position: fixed;
+  left: -250px;
+  width: 250px;
+  height: 100%;
+  background: #437fc7;
+  transition: all 0.5s ease;
+}
+.sidebar header {
+  font-size: 22px;
+  font-weight: bold;
+  color: white;
+  line-height: 50px;
+  text-align: center;
+  background: #6daffe;
+  user-select: none;
+}
+.sidebar ul a {
+  display: block;
+  height: 100%;
+  width: 100%;
+  line-height: 35px;
+  font-size: 16px;
+  font-weight: bolder;
+  color: white;
+  padding-left: 40px;
+  box-sizing: border-box;
+  transition: 0.4s;
+}
+.sidebar ul li a:hover {
+  /* padding-left: 50px; */
+  color: #6daffe;
+  background-color: #000000;
+}
+#check {
+  display: none;
+}
+#check:checked ~ .sidebar {
+  left: 0;
+}
+#check:checked ~ section {
+  margin-left: 250px;
+}
+/* .sidebar-submenu {
+  padding-left: 20px;
+} */
+.list-group-item {
+  border: 1px solid rgba(0, 0, 0, 0) !important;
+}
+/* Navbar */
+/* .dropdown-toggle {
+  color: white !important;
+}
+.dropdown-item {
+  font-weight: bolder;
+} */
+/* Hamburger Menu */
+.menu-toggle {
+  color: white;
+  font-size: 20px;
+  margin-left: 20px;
+  margin-top: 10px;
+}
+
+/* Isi Konten */
+section {
+  margin-top: 50px;
+  transition: all 0.5s;
+}
+.content {
+  padding: 15px;
+}
+.wrapper {
+  margin-top: 5px;
+  background-color: #ffffff;
+  padding: 20px;
+}
+/* Dashboard */
+.kotak-icon {
+  height: 100%;
+  font-size: 50px;
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.card-body {
+  padding: 10px;
+}
+.card-footer a {
+  text-decoration: none;
+}
+.card-footer a:hover {
+  color: #6daffe !important;
+}
+.pem-day .icon {
+  background: #ffffff;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  font-size: 50px;
+  text-align: center;
+  line-height: 100px;
+}
+
+.copyright {
+  bottom: 0;
+  width: 100%;
+  position: absolute;
+  height: 50px;
+  line-height: 50px;
+  background: #ffffff;
+  color: #6daffe;
+  padding-left: 10px;
+  z-index: -1;
+}
+
+/* Handphone Potrait Version */
+@media (max-width: 600px) {
+  /* Navbar Header */
+  .navbar-brand {
+    width: 100%;
+    text-align: center;
+  }
+  .navbar {
+    height: 110px;
+  }
+  /* Sidebar */
+  .sidebar {
+    left: 0;
+    overflow-y: scroll;
+		z-index:10;
+  }
+  .sidebar ul a {
+    line-height: 35px;
+    font-size: 16px;
+  }
+  #check:checked ~ .sidebar {
+    left: -250px;
+  }
+  #check:checked ~ section {
+    margin-left: 0px;
+  }
+  section {
+    margin-top: 110px;
+    /* margin-left: 250px; */
+  }
+  .menu-toggle {
+    margin-left: 0px;
+  }
+
+  /* Isi Konten */
+  /* Dashboard */
+  .kotak-icon {
+    font-size: 50px;
+    padding: 20px;
+  }
+}
+/* Handphone Landscape Version */
+@media (max-height: 400px) {
+  .navbar-brand {
+    width: 100%;
+    text-align: center;
+  }
+  .navbar {
+    height: 110px;
+  }
+  .sidebar {
+    overflow-y: scroll;
+		z-index:10;
+  }
+  .sidebar ul a {
+    line-height: 20px;
+    font-size: 14px;
+  }
+  section {
+    margin-top: 110px;
+  }
+}
+
