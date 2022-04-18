@@ -1,11 +1,5 @@
 <?php
-
-define('N',$_SERVER['SERVER_NAME']);
-define('A',$_SERVER['SERVER_ADDR']);
-define('ROOT',dirname(__FILE__));
-define('PHOTO',ROOT.'/p');
-define('SITEURL','https://'.N);
-define('TEMA',SITEURL.'/tema');
+require 'adm/config/connect.php';
 
 $_fb = '';
 $_yt = '';
@@ -14,18 +8,6 @@ $_in = '';
 $_pi = '';
 
 date_default_timezone_set('Asia/Jakarta');
-$dbhost = 'localhost';
-$dbuser = 'u1039423_andre';
-$dbpass = 'Papahracing2000';
-$dbname = 'u1039423_papahracing';
-$db_fc = "mysql:dbname=$dbname;host=$dbhost";
-try {
-    $db = new PDO($db_fc, $dbuser, $dbpass);
-} catch (PDOException $e) {
-    echo $e->getMessage(), ' in your website. <strong>Connection Failed</strong>';
-    die();
-}
-$con = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
 
 $tokos = mysqli_query($con, "SELECT * FROM toko WHERE id_toko = '1' LIMIT 1");
 foreach ($tokos as $to){
