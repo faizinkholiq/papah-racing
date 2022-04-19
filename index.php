@@ -1,5 +1,6 @@
 <?php
 require 'adm/config/connect.php';
+require 'adm/config/function.php';
 
 $_fb = '';
 $_yt = '';
@@ -54,16 +55,24 @@ if (isset($_GET['sort'])){
 } else {}
 
 $pp = 24;
-$requri = $_SERVER['REQUEST_URI'];
+$requri = REQURI;
 $xp = explode('/',$requri);
 
 $count = mysqli_query($con, "SELECT * FROM barang WHERE stok > 0 AND het > 0");
+
 $total = mysqli_num_rows($count);
 $per = ceil($total/$pp);
 $bc = '';
 $ttl = $toko.' - '.$ket;
 $px = '';
-if (substr_count($requri,'/')==1){
+
+$count_uri = substr_count($requri,'/');
+if (ENV === "Development") {
+	$count_uri -= 1;
+	$xp = arr_remove_empty($xp);
+}
+
+if ($count_uri == 1){
 	if (empty($xp[1])){
 		$posts = mysqli_query($con, "SELECT * FROM barang ORDER BY created DESC LIMIT ".$pp);
 		$title = $toko.' - '.$ket;
@@ -76,7 +85,7 @@ if (substr_count($requri,'/')==1){
 	} else {
 		include('tema/404.php');		
 	}
-} elseif (substr_count($requri,'/')==3||substr_count($requri,'/')==5){
+} elseif ($count_uri == 3||$count_uri == 5){
 	$px = $xp[1];
 	$p = $xp[2];
 	if ($px!=='sort'){
@@ -185,22 +194,6 @@ if (substr_count($requri,'/')==1){
 	}
 } else {
 	include('tema/404.php');
-}
-
-function rp($str){
-	$jum = strlen($str);
-	$jumtitik = ceil($jum / 3);
-	$balik = strrev($str);
-	$awal = 0;
-	$akhir = 3;
-	for ($x = 0; $x < $jumtitik; $x++) {
-		$a[$x] = substr($balik, $awal, $akhir) . ".";
-		$awal += 3;
-	}
-	$hasil = implode($a);
-	$hasilakhir = strrev($hasil);
-	$hasilakhir = substr($hasilakhir, 1, $jum + $jumtitik);
-	return "Rp. " . $hasilakhir . "";
 }
 
 function head(){
