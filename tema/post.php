@@ -2,6 +2,7 @@
 head();
 $i6 = '';
 $i9 = '';
+$im = '';
 foreach ($posts as $r){
 	$id = $r['id_barang'];
 	$ptitle = $r['nama'];
@@ -70,7 +71,7 @@ $kua2.
 '<div class="prt_06"><p class="mb-0 d-flex align-items-center">'.
 '<span class="mr-4">Share:</span>'.
 '<a class="d-inline-flex align-items-center justify-content-center p-3 gray circle fs-sm text-muted mr-2" href="https://www.facebook.com/share.php?u='.$plink.'&p='.urlencode($ptitle).'" target="_blank"><i class="fab fa-facebook-f position-absolute"></i></a>'.
-'<a class="d-inline-flex align-items-center justify-content-center p-3 gray circle fs-sm text-muted mr-2" href="http://instagram.com/sharer.php?u='.$plink.'&media='.$im.'&description='.urlencode($ptitle).'" target="_blank"><i class="fab fa-instagram position-absolute"></i></a>'.
+'<a class="d-inline-flex align-items-center justify-content-center p-3 gray circle fs-sm text-muted mr-2" href="http://instagram.com/sharer.php?u='.$plink.'&media='. $im .'&description='.urlencode($ptitle).'" target="_blank"><i class="fab fa-instagram position-absolute"></i></a>'.
 // '<a class="d-inline-flex align-items-center justify-content-center p-3 gray circle fs-sm text-muted mr-2" href="https://twitter.com/intent/tweet?url='.$plink.'&text='.urlencode($ptitle).'"><i class="fab fa-twitter position-absolute"></i></a>'.
 '</p></div>'.
 '</div></div></div></div></section>';
@@ -100,6 +101,7 @@ foreach ($random as $pos){
 	$gi = glob(PHOTO.'/'.$id.'/*.jp*');
 	$i6 = '';
 	$i9 = '';
+	$all = '';
 	if (empty($gi)){} else {
 		$i = 0;
 		foreach ($gi as $im){

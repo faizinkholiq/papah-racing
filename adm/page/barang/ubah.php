@@ -79,9 +79,9 @@ if ($_SESSION['id_jabatan'] == '1'||$_SESSION['id_jabatan'] == '2'||$_SESSION['i
 				<div class="form-group row">
             <label for="kategori" class="col-sm-2 col-form-label">Kategori</label>
             <div class="col-sm-10">
-                <select class="form-control" id="kategori" name="kategori" required>
+                <select class="form-control selectpicker" id="kategori" name="kategori[]" multiple data-live-search="true" required>
                   <?php
-									$quals = array('','MESIN','OLI','SASIS','PENGAPIAN','ALAT PORTING','APPAREL','KARBURATOR','KNALPOT','PISTON','KOPLING');
+									$quals = array('MESIN','OLI','SASIS','PENGAPIAN','ALAT PORTING','APPAREL','KARBURATOR','KNALPOT','PISTON','KOPLING');
 									foreach ($quals as $q){
 										if ($q==$data['kategori']){
 											echo '<option value="'.$q.'" selected>'.ucwords($q).'</option>';
@@ -173,7 +173,14 @@ if ($_SESSION['id_jabatan'] == '1'||$_SESSION['id_jabatan'] == '2'||$_SESSION['i
     </form>
 
 </div>
-
+<script>
+    $(document).ready(function() {
+        kategori = "<?php echo $data['kategori']; ?>"
+        arrKategori = kategori.split(',');
+        $('#kategori').val(arrKategori);
+        $('select').selectpicker("refresh");
+    });
+</script>
 <?php
 } else {}
 

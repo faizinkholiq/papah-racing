@@ -67,9 +67,9 @@
 				<div class="form-group row">
             <label for="type" class="col-sm-2 col-form-label">Kategori</label>
             <div class="col-sm-10">
-                <select class="form-control" id="type" name="kategori" required>
+                <select class="form-control" id="type" name="kategori[]" multiple data-live-search="true" required>
                   <?php
-									$quals = array('','MESIN','OLI','SASIS','PENGAPIAN','ALAT PORTING','APPAREL','KARBURATOR','KNALPOT','PISTON','KOPLING');
+									$quals = array('MESIN','OLI','SASIS','PENGAPIAN','ALAT PORTING','APPAREL','KARBURATOR','KNALPOT','PISTON','KOPLING');
 									foreach ($quals as $q){
 										if ($q==$data['kategori']){
 											echo '<option value="'.$q.'" selected>'.ucwords($q).'</option>';
@@ -84,7 +84,7 @@
 				<div class="form-group row">
             <label for="tambahan" class="col-sm-2 col-form-label">Keterangan Tambahan</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="tambahan" name="tambahan" value="<?= $data['tambahan']; ?>" placeholder="Semisal ukuran / warna dengan pemisah coma">
+                <input type="text" class="form-control" id="tambahan" name="tambahan" placeholder="Semisal ukuran / warna dengan pemisah coma">
             </div>
         </div>
         <div class="form-group row">

@@ -2,7 +2,7 @@
 class con
 {
 	function login($con, $username, $password)
-	{
+	{	
 		$query = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM user WHERE username='$username' "));
 		// Cek Username
 		if ($query != NULL) {
@@ -23,6 +23,7 @@ class con
 			echo "<script type='text/javascript'>alert('Username Tidak Terdaftar');window.location='../login.php';</script>";
 		}
 	}
+
 	function logout()
 	{
 		session_start();
@@ -33,6 +34,7 @@ class con
 		session_destroy();
 		header('location:../login');
 	}
+
 	function tambahuser($con, $username, $password, $nama, $alamat, $kontak, $id_jabatan)
 	{
 		$username = $username = htmlspecialchars(str_replace(' ', '', strtolower($username)));
@@ -42,6 +44,7 @@ class con
 		$query = mysqli_query($con, "INSERT INTO user SET username='$username',password='$password',nama='$nama',alamat='$alamat',kontak='$kontak',id_jabatan='$id_jabatan' ");
 		header('location:../main?url=user');
 	}
+
 	function ubahuser($con, $id_user, $username, $nama, $alamat, $kontak, $id_jabatan)
 	{
 		$username = $username = htmlspecialchars(str_replace(' ', '', strtolower($username)));
@@ -50,23 +53,27 @@ class con
 		$query = mysqli_query($con, "UPDATE user SET  username='$username',nama='$nama',alamat='$alamat',kontak='$kontak',id_jabatan='$id_jabatan' WHERE id_user='$id_user' ");
 		header('location:../main?url=user');
 	}
+
 	function resetpassworduser($con, $id_user, $password, $password2)
 	{
 		$password = password_hash($password, PASSWORD_DEFAULT);
 		$query = mysqli_query($con, "UPDATE user SET  password='$password' WHERE id_user='$id_user' ");
 		header('location:../main?url=user');
 	}
+
 	function gantipassworduser($con, $id_user, $password, $password2)
 	{
 		$password = password_hash($password, PASSWORD_DEFAULT);
 		$query = mysqli_query($con, "UPDATE user SET  password='$password' WHERE id_user='$id_user' ");
 		header('location:../main');
 	}
+
 	function hapususer($con, $id_user)
 	{
 		$query = mysqli_query($con, "DELETE FROM user WHERE id_user='$id_user' ");
 		header('location:../main?url=user');
 	}
+
 	function tambahsupplier($con, $nama, $alamat, $kontak)
 	{
 		$nama = htmlspecialchars(ucwords($nama));
@@ -74,6 +81,7 @@ class con
 		$query = mysqli_query($con, "INSERT INTO supplier SET nama='$nama',alamat='$alamat',kontak='$kontak' ");
 		header('location:../main?url=supplier');
 	}
+
 	function ubahsupplier($con, $id_supplier, $nama, $alamat, $kontak)
 	{
 		$nama = htmlspecialchars(ucwords($nama));
@@ -82,11 +90,13 @@ class con
 		$query = mysqli_query($con, "UPDATE supplier SET nama='$nama',alamat='$alamat',kontak='$kontak',updated='$updated' WHERE id_supplier='$id_supplier' ");
 		header('location:../main?url=supplier');
 	}
+
 	function hapussupplier($con, $id_supplier)
 	{
 		$query = mysqli_query($con, "DELETE FROM supplier WHERE id_supplier='$id_supplier' ");
 		header('location:../main?url=supplier');
 	}
+
 	function tambahpelanggan($con, $nama, $type, $alamat, $kontak)
 	{
 		$nama = htmlspecialchars(ucwords($nama));
@@ -94,6 +104,7 @@ class con
 		$query = mysqli_query($con, "INSERT INTO pelanggan SET nama='$nama',type='$type',alamat='$alamat',kontak='$kontak' ");
 		header('location:../main?url=pelanggan');
 	}
+
 	function ubahpelanggan($con, $id_pelanggan, $nama, $type, $alamat, $kontak)
 	{
 		$nama = htmlspecialchars(ucwords($nama));
@@ -102,11 +113,13 @@ class con
 		$query = mysqli_query($con, "UPDATE pelanggan SET nama='$nama',type='$type',alamat='$alamat',kontak='$kontak',updated='$updated' WHERE id_pelanggan='$id_pelanggan' ");
 		header('location:../main?url=pelanggan');
 	}
+
 	function hapuspelanggan($con, $id_pelanggan)
 	{
 		$query = mysqli_query($con, "DELETE FROM pelanggan WHERE id_pelanggan='$id_pelanggan' ");
 		header('location:../main?url=pelanggan');
 	}
+
 	function tambahbarang($con, $barcode, $nama, $merk, $stok, $modal, $distributor, $reseller, $bengkel, $admin, $het,$kondisi,$kualitas,$kategori,$tambahan)
 	{
 		// Kode Barcode Otomatis
@@ -123,7 +136,7 @@ class con
 		$merk = htmlspecialchars(strtoupper($merk));
 		$kondisi = htmlspecialchars(strtoupper($kondisi));
 		$kualitas = htmlspecialchars(strtoupper($kualitas));
-		$kategori = htmlspecialchars(strtoupper($kategori));
+		$kategori = join(',', $kategori);
 		$tambahan = htmlspecialchars(strtoupper($tambahan));
 		$modal = str_replace('.', '', $modal);
 		$distributor = str_replace('.', '', $distributor);
@@ -134,6 +147,7 @@ class con
 		$query = mysqli_query($con, "INSERT INTO barang SET barcode='$barcode',nama='$nama',merk='$merk',stok='$stok',modal='$modal',distributor='$distributor',reseller='$reseller',bengkel='$bengkel',admin='$admin',het='$het',kondisi='$kondisi',kualitas='$kualitas',kategori='$kategori',tambahan='$tambahan' ");
 		header('location:../main?url=barang');
 	}
+
 	function ubahbarang($con, $id_barang, $barcode, $nama, $merk, $stok, $modal, $distributor, $reseller, $bengkel, $admin, $het,$kondisi,$kualitas,$kategori,$tambahan)
 	{
 		$barcode = htmlspecialchars(str_replace(' ', '', strtoupper($barcode)));
@@ -141,7 +155,7 @@ class con
 		$merk = htmlspecialchars(strtoupper($merk));
 		$kondisi = htmlspecialchars(strtoupper($kondisi));
 		$kualitas = htmlspecialchars(strtoupper($kualitas));
-		$kategori = htmlspecialchars(strtoupper($kategori));
+		$kategori = join(',', $kategori);
 		$tambahan = htmlspecialchars(strtoupper($tambahan));
 		$modal = str_replace('.', '', $modal);
 		$distributor = str_replace('.', '', $distributor);
@@ -150,14 +164,17 @@ class con
 		$admin = str_replace('.', '', $admin);
 		$het = str_replace('.', '', $het);
 		$updated = date("Y-m-d h:i:s");
+
 		$query = mysqli_query($con, "UPDATE barang SET barcode='$barcode',nama='$nama',merk='$merk',stok='$stok',modal='$modal',distributor='$distributor',reseller='$reseller',bengkel='$bengkel',admin='$admin',het='$het',kondisi='$kondisi',kualitas='$kualitas',kategori='$kategori',tambahan='$tambahan',updated='$updated' WHERE id_barang='$id_barang' ");
 		header('location:../main?url=barang');
 	}
+
 	function hapusbarang($con, $id_barang)
 	{
 		$query = mysqli_query($con, "DELETE FROM barang WHERE id_barang='$id_barang' ");
 		header('location:../main?url=barang');
 	}
+
 	function tambahbarangpembelian($con, $id_user, $barcode, $qty)
 	{
 		$query = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM barang WHERE barcode='$barcode'"));
@@ -171,6 +188,7 @@ class con
 			header('location:../main?url=tambah-pembelian');
 		}
 	}
+
 	function ubahbarangpembelian($con, $id_user, $id_barang, $harga, $qty)
 	{
 		$harga = str_replace('.', '', $harga);
@@ -178,11 +196,13 @@ class con
 		$query = mysqli_query($con, "UPDATE pembelian_temp SET qty='$qty',total_harga='$total_harga' WHERE id_barang='$id_barang' AND id_user='$id_user' ");
 		header('location:../main?url=tambah-pembelian');
 	}
+
 	function hapusbarangpembelian($con, $id_barang, $id_user)
 	{
 		$query = mysqli_query($con, "DELETE FROM pembelian_temp WHERE id_barang='$id_barang' AND id_user='$id_user' ");
 		header('location:../main?url=tambah-pembelian');
 	}
+
 	function tambahpembelian($con, $id_supplier, $id_user, $total_transaksi, $total_bayar)
 	{
 		// Kode Otomatis Barcode
@@ -223,6 +243,7 @@ class con
 		$del_pembelian_temp = mysqli_query($con, "DELETE FROM pembelian_temp WHERE id_user='$id_user' ");
 		header('location:../main?url=lihat-pembelian&this=' . $no_po . '');
 	}
+
 	function cicilanpembelian($con, $id_user, $no_po, $bayar)
 	{
 		$query = mysqli_query($con, "INSERT INTO pembelian_debt SET no_po='$no_po',bayar='$bayar',keterangan='Cicilan',id_user='$id_user' ");
@@ -233,6 +254,7 @@ class con
 		}
 		header('location:../main?url=lihat-pembelian&this=' . $no_po . '');
 	}
+
 	function hapuscicilanpembelian($con, $no_po, $id_pembelian_debt)
 	{
 		$pembelian_det = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM pembelian_debt WHERE id_pembelian_debt='$id_pembelian_debt'"));
@@ -245,6 +267,7 @@ class con
 		$query = mysqli_query($con, "DELETE FROM pembelian_debt WHERE id_pembelian_debt='$id_pembelian_debt' ");
 		header('location:../main?url=lihat-pembelian&this=' . $no_po . '');
 	}
+
 	function hapuspembelian($con, $no_po)
 	{
 		$pembelian_det = mysqli_query($con, "SELECT * FROM pembelian_det WHERE no_po='$no_po'");
@@ -256,6 +279,7 @@ class con
 		$query = mysqli_query($con, "DELETE FROM pembelian WHERE no_po='$no_po' ");
 		header('location:../main?url=pembelian');
 	}
+
 	function tambahbarangpenjualan($con, $type, $id_user, $barcode, $qty, $diskon)
 	{
 		$query = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM barang WHERE barcode='$barcode'"));
@@ -283,6 +307,7 @@ class con
 			header('location:../main?url=tambah-penjualan&type=' . $type . '');
 		}
 	}
+
 	function ubahbarangpenjualan($con, $id_user, $id_barang, $harga, $diskon, $qty, $type)
 	{
 		$harga = str_replace('.', '', $harga);
@@ -291,6 +316,7 @@ class con
 		$query = mysqli_query($con, "UPDATE penjualan_temp SET qty='$qty',diskon='$diskon',total_harga='$total_harga' WHERE id_barang='$id_barang' AND id_user='$id_user' ");
 		header('location:../main?url=tambah-penjualan&type=' . $type . '');
 	}
+
 	function hapusbarangpenjualan($con, $id_barang, $id_user)
 	{
 		$query = mysqli_query($con, "DELETE FROM penjualan_temp WHERE id_barang='$id_barang' AND id_user='$id_user' ");
@@ -301,6 +327,7 @@ class con
 			header('location:../main?url=penjualan');
 		}
 	}
+
 	function tambahpenjualan($con, $id_pelanggan, $id_user, $total_transaksi, $total_bayar)
 	{
 		// Kode Otomatis Barcode
@@ -344,6 +371,7 @@ class con
 		$del_penjualan_temp = mysqli_query($con, "DELETE FROM penjualan_temp WHERE id_user='$id_user' ");
 		header('location:../main?url=lihat-penjualan&this=' . $no_faktur . '');
 	}
+
 	function cicilanpenjualan($con, $id_user, $no_faktur, $bayar)
 	{
 		$query = mysqli_query($con, "INSERT INTO penjualan_debt SET no_faktur='$no_faktur',bayar='$bayar',keterangan='Cicilan',id_user='$id_user' ");
@@ -354,6 +382,7 @@ class con
 		}
 		header('location:../main?url=lihat-penjualan&this=' . $no_faktur . '');
 	}
+
 	function hapuscicilanpenjualan($con, $no_faktur, $id_penjualan_debt)
 	{
 		$penjualan_det = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM penjualan_debt WHERE id_penjualan_debt='$id_penjualan_debt'"));
@@ -366,6 +395,7 @@ class con
 		$query = mysqli_query($con, "DELETE FROM penjualan_debt WHERE id_penjualan_debt='$id_penjualan_debt' ");
 		header('location:../main?url=lihat-penjualan&this=' . $no_faktur . '');
 	}
+
 	function hapuspenjualan($con, $no_faktur)
 	{
 		$penjualan_det = mysqli_query($con, "SELECT * FROM penjualan_det WHERE no_faktur='$no_faktur'");
@@ -377,29 +407,34 @@ class con
 		$query = mysqli_query($con, "DELETE FROM penjualan WHERE no_faktur='$no_faktur' ");
 		header('location:../main?url=penjualan');
 	}
+
 	function tambahjenispengeluaran($con, $jenis)
 	{
 		$jenis = htmlspecialchars(strtoupper($jenis));
 		$query = mysqli_query($con, "INSERT INTO pengeluaran_type SET jenis='$jenis' ");
 		header('location:../main?url=jenis-pengeluaran');
 	}
+
 	function ubahjenispengeluaran($con, $id_pengeluaran_type, $jenis)
 	{
 		$jenis = htmlspecialchars(strtoupper($jenis));
 		$query = mysqli_query($con, "UPDATE pengeluaran_type SET jenis='$jenis' WHERE id_pengeluaran_type='$id_pengeluaran_type' ");
 		header('location:../main?url=jenis-pengeluaran');
 	}
+
 	function hapusjenispengeluaran($con, $id_pengeluaran_type)
 	{
 		$query = mysqli_query($con, "DELETE FROM pengeluaran_type WHERE id_pengeluaran_type='$id_pengeluaran_type' ");
 		header('location:../main?url=pengeluaran');
 	}
+
 	function tambahpengeluaran($con, $id_pengeluaran_type, $jumlah, $keterangan, $id_user)
 	{
 		$keterangan = htmlspecialchars(ucwords($keterangan));
 		$query = mysqli_query($con, "INSERT INTO pengeluaran SET id_pengeluaran_type='$id_pengeluaran_type',jumlah='$jumlah',keterangan='$keterangan',id_user='$id_user' ");
 		header('location:../main?url=pengeluaran');
 	}
+
 	function ubahpengeluaran($con, $id_pengeluaran,  $id_pengeluaran_type, $jumlah, $keterangan, $id_user)
 	{
 		$keterangan = htmlspecialchars(ucwords($keterangan));
@@ -408,11 +443,13 @@ class con
 		$query = mysqli_query($con, "UPDATE pengeluaran SET id_pengeluaran_type='$id_pengeluaran_type',jumlah='$jumlah',keterangan='$keterangan',id_user='$id_user',updated='$updated' WHERE id_pengeluaran='$id_pengeluaran' ");
 		header('location:../main?url=pengeluaran');
 	}
+
 	function hapuspengeluaran($con, $id_pengeluaran)
 	{
 		$query = mysqli_query($con, "DELETE FROM pengeluaran WHERE id_pengeluaran='$id_pengeluaran' ");
 		header('location:../main?url=pengeluaran');
 	}
+
 	function ubahdatatoko($con, $id_toko, $nama_toko, $ket_toko, $alamat_toko, $kontak_toko)
 	{
 		$nama_toko = htmlspecialchars(ucwords($nama_toko));
@@ -421,6 +458,7 @@ class con
 		$query = mysqli_query($con, "UPDATE toko SET nama_toko='$nama_toko',ket_toko='$ket_toko',alamat_toko='$alamat_toko',kontak_toko='$kontak_toko' WHERE id_toko='$id_toko' ");
 		header('location:../main');
 	}
+
 	function approved($con, $no_faktur)
 	{
 		$query = mysqli_query($con, "UPDATE penjualan SET persetujuan='Approved' WHERE no_faktur='$no_faktur' ");

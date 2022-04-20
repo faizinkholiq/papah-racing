@@ -1,9 +1,9 @@
 <?php
 $query = mysqli_query($con, "SELECT * FROM barang ORDER BY created DESC");
-$aset = '';
+$aset = 0;
 if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2") {
 	foreach ($query as $data){
-		$aset += $data['stok']*$data['modal'];
+		$aset += floatval($data['stok'])*floatval($data['modal']);
 	}
 } else {}
 ?>

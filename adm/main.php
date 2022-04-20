@@ -25,6 +25,8 @@ $id_user = $_SESSION['id_user'];
     <link rel="stylesheet" href="assets/fontawesome/css/all.css" />
     <link rel="stylesheet" href="assets/datatables/jquery.dataTables.min.css" />
     <link rel="stylesheet" href="assets/css/style.css?v=<?php echo strtotime(date('Y-m-d H:i:s')); ?>">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+    <script src="assets/js/jquery.min.js"></script>
 
     <link rel="icon" href="assets/img/<?= $data_toko['logo_title']; ?>">
     <title><?= $data_toko['nama_toko']; ?></title>
@@ -262,11 +264,16 @@ echo '</div></section>';
         </footer> -->
     
 <?php ?>
-    <script src="assets/js/jquery.min.js"></script>
     <script src="assets/js/jquery.mask.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="assets/datatables/jquery.dataTables.min.js"></script>
     <!-- <script src="assets/js/chart.min.js"></script> -->
     <script src="assets/js/script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('select').selectpicker();
+        });
+    </script>
 </body>
 </html>

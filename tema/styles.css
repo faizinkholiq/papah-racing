@@ -5010,3 +5010,7 @@ footer.skin-dark-footer ul.footer-bottom-social li a:hover, footer.skin-dark-foo
     background-color:#ffffff;
     color:#46df1b;
 }
+
+.select-border {
+    border: 5px solid #ff8100;
+}

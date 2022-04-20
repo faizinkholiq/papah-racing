@@ -65,6 +65,7 @@ $per = ceil($total/$pp);
 $bc = '';
 $ttl = $toko.' - '.$ket;
 $px = '';
+$px2 = '';
 
 $count_uri = substr_count($requri,'/');
 if (ENV === "Development") {
@@ -126,8 +127,11 @@ if ($count_uri == 1){
 				include('tema/404.php');
 			}
 		} elseif ($px=='merk'){
-			$total = mysqli_num_rows(mysqli_query($con, "SELECT * FROM barang WHERE merk = '".$p."'"));
-			$posts = mysqli_query($con, "SELECT * FROM barang WHERE merk = '".$p."' LIMIT ".$l.",".$pp );
+			$page = $l;
+			$src = str_replace('-', ' ', urldecode($p));
+
+			$total = mysqli_num_rows(mysqli_query($con, "SELECT * FROM barang WHERE merk = '$src'"));
+			$posts = mysqli_query($con, "SELECT * FROM barang WHERE merk = '$src' LIMIT ".$l.",".$pp );
 			$per = ceil($total/$pp);	
 			$ttl = 'Page '.$l;
 			$bc = '<li class="breadcrumb-item"><a href="'.SITEURL.'/merk/'.$b.'/">'.ucwords($p).'</a></li>';
@@ -138,8 +142,12 @@ if ($count_uri == 1){
 				include('tema/404.php');
 			}
 		} elseif ($px=='kategori'){
-			$total = mysqli_num_rows(mysqli_query($con, "SELECT * FROM barang WHERE kategori = '".$p."'"));
-			$posts = mysqli_query($con, "SELECT * FROM barang WHERE kategori = '".$p."' LIMIT ".$l.",".$pp );
+			$page = $l;
+			$px2 = $p;
+			$src = str_replace('-', ' ', urldecode($p));
+			$total = mysqli_num_rows(mysqli_query($con, "SELECT * FROM barang WHERE kategori = '$src'"));
+			$posts = mysqli_query($con, "SELECT * FROM barang WHERE kategori = '$src' LIMIT ". $l .",".$pp );
+
 			$per = ceil($total/$pp);	
 			if ($total>0){
 				$bc = '<li class="breadcrumb-item"><a href="'.SITEURL.'/kategori/'.$p.'/">'.ucwords($p).'</a></li>';
@@ -151,7 +159,9 @@ if ($count_uri == 1){
 			}
 		} elseif ($px=='cari'){
 			// $posts = mysqli_query($con, "SELECT * FROM barang WHERE nama LIKE '%".$p."%'");
-			$posts = mysqli_query($con, "SELECT * FROM barang WHERE nama IN (".str_replace(' ',',',trim($p)).")");
+			$src = str_replace('-', ' ', urldecode($p));
+
+			$posts = mysqli_query($con, "SELECT * FROM barang WHERE nama LIKE '%$src%'");
 			$total = mysqli_num_rows($posts);
 			$per = ceil($total/$pp);
 			$bc = '';
@@ -197,7 +207,8 @@ if ($count_uri == 1){
 }
 
 function head(){
-	global $title,$merks,$px;
+	global $title,$merks,$px,$px2;
+
 	echo '<!DOCTYPE html><html lang="id"><head><meta charset="utf-8" /><meta name="author" content="Themezhub" /><meta name="viewport" content="width=device-width, initial-scale=1"><title>'.$title.'</title><link href="'.TEMA.'/styles.css?v='.date('Ymdhis').'" rel="stylesheet">'.
 	'<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>'.
 	'<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>'.
@@ -210,7 +221,7 @@ function head(){
 	'<div class="header header-transparent dark-text"><div class="container"><nav id="navigation" class="navigation navigation-landscape">'.
 	'<div class="nav-header"><a class="nav-brand" href="'.SITEURL.'/"><img src="'.SITEURL.'/images/icons/logo.png" class="logo" alt="" /></a>'.
 	// '<div class="nav-toggle"></div>'.
-	'<form method="GET" action="https://papahracing.com/" class="scl form m-0 p-0"><div class="form-group"><input type="text" class="form-control" name="q" placeholder="Product Keyword.."></div></form>'.
+	'<form method="GET" action="'.SITEURL.'/" class="scl form m-0 p-0"><div class="form-group"><input type="text" class="form-control" name="q" placeholder="Product Keyword.."></div></form>'.
 	'<div class="mobile_nav"><ul>'.
 	// '<li><a href="#" onclick="openSearch()"><i class="lni lni-search-alt"></i></a></li>'.
 	'<li><div class="join"><a href="#" data-toggle="modal" data-target="#joinus">JOIN US</a></div></li>'.
@@ -250,20 +261,21 @@ function head(){
 	echo '</div></div></div></div>';
 	// echo '<section class="py-2 br-bottom br-top"><div class="container"><div class="row align-items-center justify-content-between"><div class="col-xl-3 col-lg-4 col-md-5 col-sm-12"><nav aria-label="breadcrumb"><h2 class="off_title">KATEGORI</h2></nav></div></div></div>';
 	
-	if (empty($px)){
+	// if (empty($px)){
 		echo '<div class="middle"><div class="container"><div class="row align-items-center">';
 		$cats = array('MESIN','OLI','SASIS','PENGAPIAN','ALAT PORTING','APPAREL','KARBURATOR','KNALPOT','KOPLING','PISTON');
 		$war = array('purple','red','blue','green','orange','yellow','dark-blue','danger','sky','dark-blue');
 		$i = 0;
 		foreach ($cats as $c){
-			echo '<div class="col-lg-3 col-md-4 cat"><div class="product_grid card">'.
+			$select_cat = ($px === "kategori" && strtoupper($px2) === $c)? 'select-border' : '';
+			echo '<div class="col-lg-3 col-md-4 cat"><div class="product_grid card '. $select_cat .'">'.
 			'<div class="card-body p-0"><div class="shop_thumb position-relative"><a class="card-img-top d-block overflow-hidden" href="'.SITEURL.'/kategori/'.strtolower(str_replace(' ','-',$c)).'/"><img class="card-img-top" src="'.TEMA.'/i/'.strtolower(str_replace(' ','-',$c)).'.jpeg"></a></div></div>'.
 			'<div class="badge bg-'.$war[$i].' py-2"><div class="text-white">'.$c.'</div></div>'.
 			'</div></div>';
 			$i++;
 		}
 		echo '</div></div></div>';
-	} else {}
+	// } else {}
 }
 
 function foot(){
@@ -308,7 +320,7 @@ function foot(){
 			
 	/* ------------------------------- */
 			
-	echo '<div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="loginmodal" aria-hidden="true"><div class="modal-dialog modal-xl login-pop-form" role="document"><div class="modal-content" id="loginmodal"><div class="modal-headers"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="ti-close"></span></button></div><div class="modal-body p-5"><div class="text-center mb-4"><h2 class="m-0 ft-regular">Login</h2></div><form action="https://admin.papahracing.com/process/action?url=login" method="post">			 <div class="form-group"><label>User Name</label><input type="text" class="form-control" placeholder="Username*" name="username"></div><div class="form-group"><label>Password</label><input type="password" class="form-control" placeholder="Password*" name="password"></div><div class="form-group"><div class="d-flex align-items-center justify-content-between"><div class="flex-1"><input id="dd" class="checkbox-custom" name="dd" type="checkbox"><label for="dd" class="checkbox-custom-label">Remember Me</label></div><div class="eltio_k2"><a href="#">Lost Your Password?</a></div>	 </div></div><div class="form-group"><button type="submit" class="btn btn-md full-width bg-dark text-light fs-md ft-medium">Login</button></div><div class="form-group text-center mb-0"><p class="extra">Not a member?<a href="#et-register-wrap" class="text-dark"> Register</a></p></div></form></div></div></div></div>';
+	echo '<div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="loginmodal" aria-hidden="true"><div class="modal-dialog modal-xl login-pop-form" role="document"><div class="modal-content" id="loginmodal"><div class="modal-headers"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="ti-close"></span></button></div><div class="modal-body p-5"><div class="text-center mb-4"><h2 class="m-0 ft-regular">Login</h2></div><form action="'.SITEURL.'/adm/process/action?url=login" method="post">			 <div class="form-group"><label>User Name</label><input type="text" class="form-control" placeholder="Username*" name="username"></div><div class="form-group"><label>Password</label><input type="password" class="form-control" placeholder="Password*" name="password"></div><div class="form-group"><div class="d-flex align-items-center justify-content-between"><div class="flex-1"><input id="dd" class="checkbox-custom" name="dd" type="checkbox"><label for="dd" class="checkbox-custom-label">Remember Me</label></div><div class="eltio_k2"><a href="#">Lost Your Password?</a></div>	 </div></div><div class="form-group"><button type="submit" class="btn btn-md full-width bg-dark text-light fs-md ft-medium">Login</button></div><div class="form-group text-center mb-0"><p class="extra">Not a member?<a href="#et-register-wrap" class="text-dark"> Register</a></p></div></form></div></div></div></div>';
 	
 	echo '<div class="modal fade" id="joinus" tabindex="-1" role="dialog" aria-labelledby="loginmodal" aria-hidden="true"><div class="modal-dialog modal-xl login-pop-form" role="document"><div class="modal-content" id="loginmodal"><div class="modal-headers"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="ti-close"></span></button></div><div class="modal-body p-5"><div class="text-center mb-4"><h2 class="m-0 ft-regular">JOIN US</h2></div>'.
 	'<div class="form-group">'.
