@@ -4,8 +4,9 @@ define('A',$_SERVER['SERVER_ADDR']);
 define('REQURI', $_SERVER['REQUEST_URI']);
 define('ENV', 'Development');
 define('ROOT',dirname(__FILE__));
-define('PHOTO',ROOT.'/p');
-define('SITEURL','http://'.N.'/papah-racing');
+define('PROJECT', 'papah-racing');
+define('SITEURL','http://'.N.'/'.PROJECT);
+define('PHOTO',$_SERVER['DOCUMENT_ROOT'].'/'.PROJECT.'/p');
 define('TEMA',SITEURL.'/tema');
 
 $dbhost = 'localhost';
