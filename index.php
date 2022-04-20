@@ -72,7 +72,6 @@ if (ENV === "Development") {
 	$count_uri -= 1;
 	$xp = arr_remove_empty($xp);
 }
-
 if ($count_uri == 1){
 	if (empty($xp[1])){
 		$posts = mysqli_query($con, "SELECT * FROM barang ORDER BY created DESC LIMIT ".$pp);
@@ -86,7 +85,7 @@ if ($count_uri == 1){
 	} else {
 		include('tema/404.php');		
 	}
-} elseif ($count_uri == 3||$count_uri == 5){
+} elseif ($count_uri == 3||$count_uri == 5 || $xp[1] === "kategori"){
 	$px = $xp[1];
 	$p = $xp[2];
 	if ($px!=='sort'){
@@ -106,6 +105,7 @@ if ($count_uri == 1){
 	} else {
 		$l = 1;
 	}
+
 	if (empty($p3)||$p3=='page'){
 		if ($px=='produk'){
 			$posts = mysqli_query($con, "SELECT * FROM barang WHERE id_barang = '".$p."' LIMIT 1");
@@ -144,17 +144,23 @@ if ($count_uri == 1){
 		} elseif ($px=='kategori'){
 			$page = $l;
 			$px2 = $p;
-			$src = str_replace('-', ' ', urldecode($p));
-			$total = mysqli_num_rows(mysqli_query($con, "SELECT * FROM barang WHERE kategori = '$src'"));
-			$posts = mysqli_query($con, "SELECT * FROM barang WHERE kategori = '$src' LIMIT ". $l .",".$pp );
+			if (!empty($_GET["search_kategori"])) {
+				$arr_kat = explode(",", $_GET["search_kategori"]);
+				$src = sprintf("'%s'", join("','",$arr_kat));
 
-			$per = ceil($total/$pp);	
-			if ($total>0){
-				$bc = '<li class="breadcrumb-item"><a href="'.SITEURL.'/kategori/'.$p.'/">'.ucwords($p).'</a></li>';
-				$ttl = 'Page '.$l;
-				$title = 'Kategori : '.ucwords($p).' ['.$total.']';
-				include('tema/home.php');
-			} else {
+				$total = mysqli_num_rows(mysqli_query($con, "SELECT * FROM barang WHERE kategori IN ($src)"));
+				$posts = mysqli_query($con, "SELECT * FROM barang WHERE kategori IN ($src) LIMIT ". $l .",".$pp );
+	
+				$per = ceil($total/$pp);	
+				if ($total>0){
+					$bc = '<li class="breadcrumb-item"><a href="'.SITEURL.'/kategori/'.$p.'/">'.join(', ', $arr_kat).'</a></li>';
+					$ttl = 'Page '.$l;
+					$title = 'Kategori : '.ucwords($p).' ['.$total.']';
+					include('tema/home.php');
+				} else {
+					include('tema/404.php');
+				}
+			}else{
 				include('tema/404.php');
 			}
 		} elseif ($px=='cari'){
@@ -267,9 +273,20 @@ function head(){
 		$war = array('purple','red','blue','green','orange','yellow','dark-blue','danger','sky','dark-blue');
 		$i = 0;
 		foreach ($cats as $c){
+			if (!empty($_GET['search_kategori'])) {
+				$search = explode(",", $_GET['search_kategori']);
+
+				if(!in_array(strtolower($c), $search)){
+					$search[] = strtolower($c);
+				}
+
+			}else{
+				$search = [strtolower($c)];
+			}
+
 			$select_cat = ($px === "kategori" && strtoupper($px2) === $c)? 'select-border' : '';
 			echo '<div class="col-lg-3 col-md-4 cat"><div class="product_grid card '. $select_cat .'">'.
-			'<div class="card-body p-0"><div class="shop_thumb position-relative"><a class="card-img-top d-block overflow-hidden" href="'.SITEURL.'/kategori/'.strtolower(str_replace(' ','-',$c)).'/"><img class="card-img-top" src="'.TEMA.'/i/'.strtolower(str_replace(' ','-',$c)).'.jpeg"></a></div></div>'.
+			'<div class="card-body p-0"><div class="shop_thumb position-relative"><a class="card-img-top d-block overflow-hidden" href="'.SITEURL.'/kategori/?search_kategori='.implode(",", $search).'"><img class="card-img-top" src="'.TEMA.'/i/'.strtolower(str_replace(' ','-',$c)).'.jpeg"></a></div></div>'.
 			'<div class="badge bg-'.$war[$i].' py-2"><div class="text-white">'.$c.'</div></div>'.
 			'</div></div>';
 			$i++;
