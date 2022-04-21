@@ -134,7 +134,7 @@ if ($count_uri == 1){
 			$posts = mysqli_query($con, "SELECT * FROM barang WHERE merk = '$src' LIMIT ".$l.",".$pp );
 			$per = ceil($total/$pp);	
 			$ttl = 'Page '.$l;
-			$bc = '<li class="breadcrumb-item"><a href="'.SITEURL.'/merk/'.$b.'/">'.ucwords($p).'</a></li>';
+			$bc = '<li class="breadcrumb-item"><a href="'.SITEURL.'/merk/'.$src.'/">'.ucwords($p).'</a></li>';
 			if ($total>0){
 				$title = 'Brand : '.ucwords($p).' ['.$total.']';
 				include('tema/home.php');
@@ -166,6 +166,7 @@ if ($count_uri == 1){
 		} elseif ($px=='cari'){
 			// $posts = mysqli_query($con, "SELECT * FROM barang WHERE nama LIKE '%".$p."%'");
 			$src = str_replace('-', ' ', urldecode($p));
+			$page = $l;
 
 			$posts = mysqli_query($con, "SELECT * FROM barang WHERE nama LIKE '%$src%'");
 			$total = mysqli_num_rows($posts);
@@ -250,12 +251,15 @@ function head(){
 	echo '<div class="clearfix"></div>';
 	// style="background:url('.SITEURL.'/images/ls.jpg) no-repeat;"	
 	echo '<div class="bg-cover"><div class="container">'.'<div class="row align-items-center justify-content-center"><div class="col-xl-12 col-lg-12 col-md-12 col-sm-12"><div class="text-center sld">';
-	echo '<div class="slider">';
-	$ims = range(1,5);
-	foreach ($ims as $s){
-		echo '<div><a href="#"><img src="'.SITEURL.'/tema/i/s'.$s.'.jpeg" alt="Image 1"></a></div>';
+	
+	if ($px != "cari"){
+		echo '<div class="slider">';
+		$ims = range(1,5);
+		foreach ($ims as $s){
+			echo '<div><a href="#"><img src="'.SITEURL.'/tema/i/s'.$s.'.jpeg" alt="Image 1"></a></div>';
+		}
+		echo '</div>';
 	}
-	echo '</div>';
 	/* '<h1 class="ft-medium mb-3">'.$title.'</h1><ul class="shop_categories_list m-0 p-0">';
 	$i = 1;
 	foreach ($merks as $m){
@@ -266,8 +270,7 @@ function head(){
 	echo '</ul></div>'; */
 	echo '</div></div></div></div>';
 	// echo '<section class="py-2 br-bottom br-top"><div class="container"><div class="row align-items-center justify-content-between"><div class="col-xl-3 col-lg-4 col-md-5 col-sm-12"><nav aria-label="breadcrumb"><h2 class="off_title">KATEGORI</h2></nav></div></div></div>';
-	
-	// if (empty($px)){
+	if ($px != "cari"){
 		echo '<div class="middle"><div class="container"><div class="row align-items-center">';
 		$cats = array('MESIN','OLI','SASIS','PENGAPIAN','ALAT PORTING','APPAREL','KARBURATOR','KNALPOT','KOPLING','PISTON');
 		$war = array('purple','red','blue','green','orange','yellow','dark-blue','danger','sky','dark-blue');
@@ -292,7 +295,7 @@ function head(){
 			$i++;
 		}
 		echo '</div></div></div>';
-	// } else {}
+	} else {}
 }
 
 function foot(){

@@ -28,7 +28,17 @@ echo '</select></form>'.
 
 '</div></div></div></div>'.
 '</div></section>';
-echo '<section class="middle"><div class="container"><div class="row align-items-center">';
+echo '';
+
+if(isset($px) && $px == "cari") {
+	echo '
+		<section class="middle" style="padding-top:10px!important;"><div class="container">
+		<a href="'.SITEURL.'" class="btn btn-sm bg-light text-dark fs-md ft-medium mb-4"><i class="lni lni-chevron-left mr-2"></i> Back</a>
+		<div class="row align-items-center">';
+}else{
+	echo '<section class="middle"><div class="container"><div class="row align-items-center">';
+}
+
 $all = '';$j = 1;
 foreach ($posts as $pos){
 	$id = $pos['id_barang'];
