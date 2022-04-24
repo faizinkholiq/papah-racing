@@ -33,7 +33,7 @@
 				<div class="form-group row">
             <label for="type" class="col-sm-2 col-form-label">Kondisi</label>
             <div class="col-sm-10">
-                <select class="form-control" id="type" name="kondisi" required>
+                <select class="form-control" id="kondisi" name="kondisi" required>
 									<?php
 									$konds = array('','BARU','BEKAS');
 									foreach ($konds as $k){
@@ -50,7 +50,7 @@
 				<div class="form-group row">
             <label for="type" class="col-sm-2 col-form-label">Kualitas</label>
             <div class="col-sm-10">
-                <select class="form-control" id="type" name="kualitas" required>
+                <select class="form-control" id="kualitas" name="kualitas" required>
                   <?php
 									$quals = array('','ORIGINAL');
 									foreach ($quals as $q){
@@ -67,9 +67,9 @@
 				<div class="form-group row">
             <label for="type" class="col-sm-2 col-form-label">Kategori</label>
             <div class="col-sm-10">
-                <select class="form-control" id="type" name="kategori[]" multiple data-live-search="true" required>
+                <select class="form-control" id="kategori" name="kategori[]" multiple data-live-search="true" required>
                   <?php
-									$quals = array('MESIN','OLI','SASIS','PENGAPIAN','ALAT PORTING','APPAREL','KARBURATOR','KNALPOT','PISTON','KOPLING');
+									$quals = array('', 'MESIN','OLI','SASIS','PENGAPIAN','ALAT PORTING','APPAREL','KARBURATOR','KNALPOT','PISTON','KOPLING');
 									foreach ($quals as $q){
 										if ($q==$data['kategori']){
 											echo '<option value="'.$q.'" selected>'.ucwords($q).'</option>';
@@ -161,3 +161,14 @@
 
     </form>
 </div>
+
+<script>
+    // $(document).ready(function() {
+    //     $('#kategori').on('change', function(e){
+    //         console.log($(e)).val()
+    //     console.log(this.value,
+    //                 this.options[this.selectedIndex].value,
+    //                 $(this).find("option:selected").val(),);
+    //     });
+    // });
+</script>

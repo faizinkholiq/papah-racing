@@ -224,7 +224,7 @@ function head(){
 
 
 
-	echo '<body><div class="preloader"></div><div id="main-wrapper">'.
+	echo '<body><div class="preloader"></div><div id="main-wrapper" style="width: 100%; position: absolute; overflow-x: hidden;">'.
 	'<div class="header header-transparent dark-text"><div class="container"><nav id="navigation" class="navigation navigation-landscape">'.
 	'<div class="nav-header"><a class="nav-brand" href="'.SITEURL.'/"><img src="'.SITEURL.'/images/icons/logo.png" class="logo" alt="" /></a>'.
 	// '<div class="nav-toggle"></div>'.

@@ -8,7 +8,7 @@ $bc.
 '<li class="breadcrumb-item active" aria-current="page">'.$ttl.'</li></ol>'.
 '</nav></div>'.
 
-'<div class="col-xl-3 col-lg-4 col-md-5 col-sm-12"><div class="filter_wraps elspo_wrap d-flex align-items-center justify-content-end"><div class="single_fitres elspo_filter mr-2 br-right"><i class="lni lni-text-align-right mr-2"></i></div><div class="single_fitres mr-2 br-right">'.
+'<div class="col-xl-3 col-lg-4 col-md-5 col-sm-12"><div class="filter_wraps elspo_wrap d-flex align-items-center justify-content-end"><div class="single_fitres elspo_filter mr-2 br-right"><i class="lni lni-search-alt mr-2"></i></div><div class="single_fitres mr-2 br-right">'.
 
 /* '<form><select class="custom-select simple" name="sort" id="sort" onchange="this.form.submit()">'.
 '<option value="1">Default Sorting</option>'.
@@ -73,7 +73,7 @@ foreach ($posts as $pos){
 	// if ($stok==0){$stok='Habis';}
 	
 	// bg-info NEW,bg-warning HOT, bg-danger HOT
-	echo '<div class="col-xl-2 col-lg-3 col-md-4 col-sm-12"><div class="product_grid card">'.
+	echo '<div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-6"><div class="product_grid card">'.
 	'<div class="badge bg-danger text-white position-absolute ft-regular ab-left text-upper">STOK : '.$stok.'</div>'.
 	'<div class="badge bg-warning text-white position-absolute ft-regular ab-right text-upper">'.$kondisi.$kua1.'</div>'.
 	'<div class="card-body p-0"> <div class="shop_thumb position-relative"> <a class="card-img-top d-block overflow-hidden" href="'.$purl.'"><img class="card-img-top" onerror="this.onerror=null; this.src=\''.TEMA.'/load.gif\'" src="'.$i6.'" alt="'.$ptitle.'"></a> <div class="product-hover-overlay bg-light d-flex align-items-center justify-content-center"> <div class="edlio"><a href="#" data-toggle="modal" data-target="#quickview'.$id.'" class="fs-sm ft-medium"><i class="fas fa-eye mr-1"></i>Quick View</a></div> </div> </div> </div>'.
