@@ -2438,6 +2438,24 @@ span.expiration {
     -webkit-animation-name: slideInDown;
     animation-name: slideInDown;
 }
+
+.header.header-on-top{
+    box-shadow: 0 5px 30px rgba(0, 22, 84, 0.1);
+    -webkit-box-shadow: 0 5px 30px rgba(0, 22, 84, 0.1);
+    background: #ffffff;
+    position: absolute;
+    z-index: 999;
+    width: 100%;
+    top: 0;
+    -webkit-transition: 0.2s ease-in;
+    -o-transition: 0.2s ease-in;
+    transition: 0.2s ease-in;
+    -webkit-animation-duration: 0.5s;
+    animation-duration: 0.5s;
+    -webkit-animation-name: slideInDown;
+    animation-name: slideInDown;
+}
+
 .header.head-shadow{
     box-shadow: 0 5px 30px rgba(0, 22, 84, 0.1);
     -webkit-box-shadow: 0 5px 30px rgba(0, 22, 84, 0.1);
@@ -2495,6 +2513,23 @@ span.expiration {
     -webkit-animation-name: slideInDown;
     animation-name: slideInDown;
 }
+.header.header-transparent.header-on-top{
+    box-shadow: 0 5px 30px rgba(0, 22, 84, 0.1);
+    -webkit-box-shadow: 0 5px 30px rgba(0, 22, 84, 0.1);
+    background:#ffffff;
+    color:#333d46;
+    position: absolute;
+    z-index: 999;
+    width: 100%;
+    top: 0;
+    -webkit-transition: 0.2s ease-in;
+    -o-transition: 0.2s ease-in;
+    transition: 0.2s ease-in;
+    -webkit-animation-duration: 0.5s;
+    animation-duration: 0.5s;
+    -webkit-animation-name: slideInDown;
+    animation-name: slideInDown;
+}
 .header.header-transparent .nav-brand, .header.header-transparent .nav-brand:focus, .header.header-transparent .nav-brand:hover, .header.header-transparent .nav-menu>li>a {
     color: #ffffff;
 }
@@ -2505,6 +2540,9 @@ span.expiration {
     display: none;
 }
 .change-logo.header-fixed .nav-brand.fixed-logo {
+    display: block;
+}
+.change-logo.header-on-top .nav-brand {
     display: block;
 }
 .change-logo.header-fixed .nav-brand.static-logo {
@@ -5036,6 +5074,12 @@ footer.skin-dark-footer ul.footer-bottom-social li a:hover, footer.skin-dark-foo
         -ms-flex: 0 0 25%;
         flex: 0 0 25%;
         max-width: 25%;
+    }
+
+    .col-lg-2 {
+        -ms-flex: 0 0 16.666667%;
+        flex: 0 0 16.666667%;
+        max-width: 16.666667%;
     }
 }
 

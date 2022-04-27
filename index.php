@@ -223,9 +223,9 @@ function head(){
 	'</head>';
 
 
-
+	$header_type = ($px == "cari" || $px == "kategori" || $px == "merk")? 'header-on-top' : '';
 	echo '<body><div class="preloader"></div><div id="main-wrapper" style="width: 100%; position: absolute; overflow-x: hidden;">'.
-	'<div class="header header-transparent dark-text"><div class="container"><nav id="navigation" class="navigation navigation-landscape">'.
+	'<div class="header header-transparent dark-text ' . $header_type . '"><div class="container"><nav id="navigation" class="navigation navigation-landscape">'.
 	'<div class="nav-header"><a class="nav-brand" href="'.SITEURL.'/"><img src="'.SITEURL.'/images/icons/logo.png" class="logo" alt="" /></a>'.
 	// '<div class="nav-toggle"></div>'.
 	'<form method="GET" action="'.SITEURL.'/" class="scl form m-0 p-0"><div class="form-group"><input type="text" class="form-control" name="q" placeholder="Product Keyword.."></div></form>'.
@@ -247,12 +247,16 @@ function head(){
 	'<li><div class="badge bg-success login"> <a href="#" data-toggle="modal" data-target="#joinus">JOIN US <i class="lni lni-users"></i></a></div></li>'.
 	'<li><div class="badge bg-danger login"> <a href="#" data-toggle="modal" data-target="#login">LOGIN <i class="lni lni-user"></i></a></div></li> '.
 	'</ul></div></nav></div></div>';
-		
-	echo '<div class="clearfix"></div>';
+	
+	if ($px == "cari" || $px == "kategori" || $px == "merk") {
+		echo '<div class="clearfix" style="margin-top:6vh;"></div>';
+	}else{
+		echo '<div class="clearfix"></div>';
+	}
 	// style="background:url('.SITEURL.'/images/ls.jpg) no-repeat;"	
 	echo '<div class="bg-cover"><div class="container">'.'<div class="row align-items-center justify-content-center"><div class="col-xl-12 col-lg-12 col-md-12 col-sm-12"><div class="text-center sld">';
 	
-	if ($px != "cari"){
+	if ($px != "cari" && $px != "kategori" && $px != "merk"){
 		echo '<div class="slider">';
 		$ims = range(1,5);
 		foreach ($ims as $s){
@@ -270,7 +274,7 @@ function head(){
 	echo '</ul></div>'; */
 	echo '</div></div></div></div>';
 	// echo '<section class="py-2 br-bottom br-top"><div class="container"><div class="row align-items-center justify-content-between"><div class="col-xl-3 col-lg-4 col-md-5 col-sm-12"><nav aria-label="breadcrumb"><h2 class="off_title">KATEGORI</h2></nav></div></div></div>';
-	if ($px != "cari"){
+	if ($px != "cari" && $px != "kategori" && $px != "merk"){
 		echo '<div class="middle"><div class="container"><div class="row align-items-center">';
 		$cats = array('MESIN','OLI','SASIS','PENGAPIAN','ALAT PORTING','APPAREL','KARBURATOR','KNALPOT','KOPLING','PISTON');
 		$war = array('purple','red','blue','green','orange','yellow','dark-blue','danger','sky','dark-blue');
@@ -288,7 +292,7 @@ function head(){
 			}
 
 			$select_cat = ($px === "kategori" && strtoupper($px2) === $c)? 'select-border' : '';
-			echo '<div class="col-lg-3 col-md-4 cat"><div class="product_grid card '. $select_cat .'">'.
+			echo '<div class="col-lg-2 col-md-4 cat"><div class="product_grid card '. $select_cat .'">'.
 			'<div class="card-body p-0"><div class="shop_thumb position-relative"><a class="card-img-top d-block overflow-hidden" href="'.SITEURL.'/kategori/?search_kategori='.implode(",", $search).'"><img class="card-img-top" src="'.TEMA.'/i/'.strtolower(str_replace(' ','-',$c)).'.jpeg"></a></div></div>'.
 			'<div class="badge bg-'.$war[$i].' py-2"><div class="text-white">'.$c.'</div></div>'.
 			'</div></div>';
