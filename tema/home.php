@@ -1,14 +1,14 @@
 <?php
 head();
-echo '<section class="py-2 br-bottom br-top"><div class="container"><div class="row align-items-center justify-content-between">';
+echo '<section class="py-2 br-bottom br-top"><div class="container"><div class="row align-items-center justify-content-end">';
 
-echo '<div class="col-xl-9 col-lg-8 col-md-7 col-sm-12"><nav aria-label="breadcrumb">'.
-'<ol class="breadcrumb"> <li class="breadcrumb-item"><a href="'.SITEURL.'">Home</a></li>'.
-$bc.
-'<li class="breadcrumb-item active" aria-current="page">'.$ttl.'</li></ol>'.
-'</nav></div>'.
+// echo '<div class="col-xl-9 col-lg-8 col-md-7 col-sm-12"><nav aria-label="breadcrumb">'.
+// '<ol class="breadcrumb"> <li class="breadcrumb-item"><a href="'.SITEURL.'">Home</a></li>'.
+// $bc.
+// '<li class="breadcrumb-item active" aria-current="page">'.$ttl.'</li></ol>'.
+// '</nav></div>';
 
-'<div class="col-xl-3 col-lg-4 col-md-5 col-sm-12"><div class="filter_wraps elspo_wrap d-flex align-items-center justify-content-end">';
+echo '<div class="col-xl-3 col-lg-4 col-md-5 col-sm-12"><div class="filter_wraps elspo_wrap d-flex align-items-center justify-content-end">';
 
 /* '<form><select class="custom-select simple" name="sort" id="sort" onchange="this.form.submit()">'.
 '<option value="1">Default Sorting</option>'.
