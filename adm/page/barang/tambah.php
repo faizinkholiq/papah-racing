@@ -69,7 +69,7 @@
             <div class="col-sm-10">
                 <select class="form-control" id="kategori" name="kategori[]" multiple data-live-search="true" required>
                   <?php
-									$quals = array('', 'MESIN','OLI','SASIS','PENGAPIAN','ALAT PORTING','APPAREL','KARBURATOR','KNALPOT','PISTON','KOPLING');
+									$quals = array(null, 'MESIN','OLI','SASIS','PENGAPIAN','ALAT PORTING','APPAREL','KARBURATOR','KNALPOT','PISTON','KOPLING');
 									foreach ($quals as $q){
 										if ($q==$data['kategori']){
 											echo '<option value="'.$q.'" selected>'.ucwords($q).'</option>';
