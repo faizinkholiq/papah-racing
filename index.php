@@ -274,7 +274,7 @@ function head(){
 	echo '</ul></div>'; */
 	echo '</div></div></div></div>';
 	// echo '<section class="py-2 br-bottom br-top"><div class="container"><div class="row align-items-center justify-content-between"><div class="col-xl-3 col-lg-4 col-md-5 col-sm-12"><nav aria-label="breadcrumb"><h2 class="off_title">KATEGORI</h2></nav></div></div></div>';
-	if ($px != "cari" && $px != "kategori" && $px != "merk"){
+	if ($px != "cari" && $px != "kategori" && $px != "merk" && $px != "produk"){
 		echo '<div class="middle"><div class="container"><div class="row align-items-center">';
 		$cats = array('MESIN','OLI','SASIS','PENGAPIAN','ALAT PORTING','APPAREL','KARBURATOR','KNALPOT','KOPLING','PISTON');
 		$war = array('purple','red','blue','green','orange','yellow','dark-blue','danger','sky','dark-blue');
@@ -303,19 +303,21 @@ function head(){
 }
 
 function foot(){
-	global $alamat,$kontak,$merks,$toko,$ket;
+	global $alamat,$kontak,$merks,$toko,$ket,$con;
 	// echo '<section class="px-0 py-3 br-top"><div class="container"><div class="row"><div class="col-xl-3 col-lg-3 col-md-6 col-sm-6"><div class="d-flex align-items-center justify-content-start py-2"><div class="d_ico"><i class="fas fa-shopping-basket"></i></div><div class="d_capt"><h5 class="mb-0">Free Shipping</h5><span class="text-muted">Capped at $10 per order</span></div></div></div><div class="col-xl-3 col-lg-3 col-md-6 col-sm-6"><div class="d-flex align-items-center justify-content-start py-2"><div class="d_ico"><i class="far fa-credit-card"></i></div><div class="d_capt"><h5 class="mb-0">Secure Payments</h5><span class="text-muted">Up to 6 months installments</span></div></div></div><div class="col-xl-3 col-lg-3 col-md-6 col-sm-6"><div class="d-flex align-items-center justify-content-start py-2"><div class="d_ico"><i class="fas fa-shield-alt"></i></div><div class="d_capt"><h5 class="mb-0">15-Days Returns</h5><span class="text-muted">Shop with fully confidence</span></div></div></div><div class="col-xl-3 col-lg-3 col-md-6 col-sm-6"><div class="d-flex align-items-center justify-content-start py-2"><div class="d_ico"><i class="fas fa-headphones-alt"></i></div><div class="d_capt"><h5 class="mb-0">24x7 Fully Support</h5><span class="text-muted">Get friendly support</span></div></div></div></div></div></section>';
 			
 	echo '<footer class="dark-footer skin-dark-footer style-2"><div class="footer-middle"><div class="container"><div class="row">'.
 	'<div class="col-xl-3 col-lg-3 col-md-3 col-sm-12"><div class="footer_widget"><img src="'.SITEURL.'/images/icons/logo.png" class="img-footer small mb-2" alt="" />'.
 	// '<div class="address mt-3">'.str_replace("\n",'<br/>',$alamat).'</div>'.
 	// '<div class="address mt-3"><i class="lni lni-whatsapp"></i> '.$kontak.'</div>'.
-	'<div class="address mt-3">'.
-	'<div class="address mt-3"><i class="lni lni-instagram"></i> <a href="https://www.instagram.com/papahracingspeedshop/">Papah Racing Speedshop</a></div>'.
-	'<div class="address mt-3"><i class="lni lni-instagram-filled"></i> <a href="https://www.instagram.com/knalpot_racing.com_speedshop/">Knalpot Racing Speedshop</a></div>'.
-	'<div class="address mt-3"><i class="lni lni-youtube"></i> <a href="https://www.youtube.com/channel/UCOKpjvUiNM-em4j7-_4XxlA/">Knalpot Racing Speedshop</a></div>'.
+	'<div class="address mt-3">';
+
+	$socmed = mysqli_query($con, "SELECT * FROM socmed ORDER BY id ASC");
+	foreach ($socmed as $row){
+		echo '<div class="address mt-3"><i class="lni lni-'.strtolower($row['tipe']).'"></i> <a href="'.$row['link'].'">'.$row['keterangan'].'</a></div>';
+	}
 	// '<ul class="list-inline"><li class="list-inline-item"><a href="'.$_fb.'" rel="nofollow"><i class="lni lni-facebook-filled"></i></a></li><li class="list-inline-item"><a href="'.$_tw.'" rel="nofollow"><i class="lni lni-twitter-filled"></i></a></li><li class="list-inline-item"><a href="'.$_yt.'" rel="nofollow"><i class="lni lni-youtube"></i></a></li><li class="list-inline-item"><a href="'.$_in.'" rel="nofollow"><i class="lni lni-instagram-filled"></i></a></li><li class="list-inline-item"><a href="'.$_pi.'" rel="nofollow"><i class="lni lni-pinterest-filled"></i></a></li></ul>'.
-	'</div>'.
+	echo '</div>'.
 	'</div></div>'.
 	'<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">';
 	/* echo '<div class="footer_widget brand"><h4 class="widget_title">Brand</h4>';
@@ -327,12 +329,12 @@ function foot(){
 	}
 	echo '</div></div>'; */
 	echo '<div id="kontak" class="footer_widget"><h4 class="widget_title">KONTAK KAMI</h4><ul>';
-	echo '<li>Order via website : 081329763463</li>'.
-	'<li>Order via instagram : 082124118766</li>'.
-	'<li>Info expedisi partai : 081385595070</li>'.
-	'<li>Info resi dan pengiriman : 081385595013 / 081385595085</li>'.
-	'<li>Manager : 081385595027</li>'.
-	'<li>Founder : 087877481465</li>';
+	
+	$kontak = mysqli_query($con, "SELECT * FROM kontak ORDER BY id ASC");
+	foreach ($kontak as $row){
+		echo "<li>".$row['keterangan']." : ".$row['kontak']."</li>";
+	}
+
 	echo '</ul></div></div>';
 	
 	echo '<div class="col-xl-3 col-lg-3 col-md-3 col-sm-12"><div id="alamat" class="footer_widget"><h4 class="widget_title">ALAMAT</h4>'.

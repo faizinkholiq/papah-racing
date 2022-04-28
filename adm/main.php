@@ -74,9 +74,19 @@ $id_user = $_SESSION['id_user'];
                         </ul>
                     </div>
                 </li>
-                <?php if ($_SESSION['id_jabatan'] == '1') { ?>
-                    <li><a href="main?url=data-toko"><i class='fas fa-cog mr-2'></i>Pengaturan</a></li>
-                <?php } ?>
+                <?php // if ($_SESSION['id_jabatan'] == '1') { ?>
+                <li class="nav-item">
+                    <a class="nav-link collapsed text-truncate" href="#submenu3" data-toggle="collapse" data-target="#submenu3"><i class="fas fa-cog mr-2"></i>Pengaturan</a>
+                    <div class="collapse" id="submenu3" aria-expanded="false">
+                        <ul class="flex-column nav bg-secondary">
+                            <li class="nav-item"><a class="nav-link" href="main?url=data-toko"><span class="ml-2"><i class='fas fa-store mr-2'></i>Data Toko</span></a></li>
+                            <li class="nav-item"><a class="nav-link" href="main?url=socmed"><span class="ml-2"><i class='fas fa-share-alt mr-2'></i>Social Media</span></a></li>
+                            <li class="nav-item"><a class="nav-link" href="main?url=kontak"><span class="ml-2"><i class='fas fa-phone mr-2'></i>Kontak</span></a></li>
+                        </ul>
+                    </div>
+                </li>
+                <!-- <li><a href="main?url=data-toko"><i class='fas fa-cog mr-2'></i>Pengaturan</a></li> -->
+                <?php // } ?>
             </ul>
      
     </div>
@@ -171,6 +181,7 @@ if ($_SESSION['id_jabatan'] == '8'||$_SESSION['id_jabatan'] == '7'||$_SESSION['i
 		require 'page/dashboard.php';
 	} else {
 		$act = $_GET['url'];
+        // print_r($act);exit;
 		if ($act == 'supplier') {
 			require 'page/supplier/index.php';
 		} else if ($act == 'tambah-supplier') {
@@ -243,6 +254,18 @@ if ($_SESSION['id_jabatan'] == '8'||$_SESSION['id_jabatan'] == '7'||$_SESSION['i
 			require 'page/pengeluaran/ubah.php';
 		} else if ($act == 'data-toko') {
 			require 'page/data_toko.php';
+		} else if ($act == 'socmed') {
+			require 'page/socmed/index.php';
+		} else if ($act == 'ubah-socmed') {
+			require 'page/socmed/ubah.php';
+		} else if ($act == 'tambah-socmed') {
+			require 'page/socmed/tambah.php';
+		} else if ($act == 'kontak') {
+			require 'page/kontak/index.php';
+		} else if ($act == 'ubah-kontak') {
+			require 'page/kontak/ubah.php';
+		} else if ($act == 'tambah-kontak') {
+			require 'page/kontak/tambah.php';
 		} else {
 			header("location: main");
 		}

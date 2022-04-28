@@ -153,6 +153,12 @@
                 </div>
             </div>
         </div>
+        <div class="form-group row">
+            <label for="het" class="col-sm-2 col-form-label">Deskripsi</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3"></textarea>
+            </div>
+        </div>
         <div class="form-row text-center">
             <div class="col-12">
                 <button type="submit" class="btn btn-primary"><i class='fas fa-save mr-2'></i>Simpan</button>

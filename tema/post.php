@@ -13,6 +13,7 @@ foreach ($posts as $r){
 	$kualitas = $r['kualitas'];
 	$kategori = $r['kategori'];
 	$tambahan = $r['tambahan'];
+	$deskripsi = !empty($r['deskripsi'])? $r['deskripsi'] : '-';
 	$stok = $r['stok'];
 	$harga = $r['het'];
 	$time = $r['updated'];
@@ -31,10 +32,13 @@ foreach ($posts as $r){
 	}
 }
 	
-echo '<section class="py-2 br-bottom br-top"><div class="container"><div class="row align-items-center justify-content-between"><div class="col-xl-12 col-lg-12 col-md-12 col-sm-12"><nav aria-label="breadcrumb">'.
+echo '<section class="py-2 br-bottom br-top"><div class="container"><div class="row align-items-center justify-content-between">';
+
+echo '<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12"><nav aria-label="breadcrumb">'.
 '<ol class="breadcrumb"> <li class="breadcrumb-item"><a href="'.SITEURL.'/">Home</a></li><li class="breadcrumb-item"><a href="'.SITEURL.'/kategori/'.strtolower(str_replace(' ','-',$kategori)).'/">'.$kategori.'</a></li><li class="breadcrumb-item"><a href="'.SITEURL.'/merk/'.strtolower(str_replace(' ','-',$merk)).'/">'.$merk.'</a></li><li class="breadcrumb-item active" aria-current="page">'.$barcode.'</li></ol>'.
-'</nav></div>'.
-'</div>'.
+'</nav></div>';
+
+echo '</div>'.
 '</div></section>';
 
 if (empty($kondisi)){$kondisi='BARU';}
@@ -64,6 +68,7 @@ echo
 '<p><span class="label">Kondisi</span> : '.$kondisi.'</p>'.
 $kua2.
 '<p><span class="label">Keterangan</span> : '.$tambahan.'</p>'.
+'<p><span class="label">Deskripsi</span> : '.$deskripsi.'</p>'.
 '</div>'.
 '<div class="prt_05 mb-4"><div class="form-row mb-7">'.
 '<div class="col-12 col-lg"><a href="'.$order.urlencode('Saya order '.$ptitle).'%0a'.urlencode($plink).'" class="text-white btn btn-block custom-height bg-success mb-2"><i class="lni lni-shopping-basket mr-2"></i>Pesan Sekarang</a></div>'.

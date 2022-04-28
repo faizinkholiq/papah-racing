@@ -56,6 +56,7 @@ foreach ($posts as $pos){
 	$kualitas = $pos['kualitas'];
 	$kategori = $pos['kategori'];
 	$tambahan = $pos['tambahan'];
+	$deskripsi = !empty($r['deskripsi'])? $r['deskripsi'] : '-';
 	$harga = $pos['het'];
 	$gi = glob(PHOTO.'/'.$id.'/*.jp*');
 	$i6 = '';
@@ -91,7 +92,7 @@ foreach ($posts as $pos){
 	if (!empty($kategori)){
 		$all .= '<div class="prt_01 mb-1"><span class="text-light bg-info rounded px-2 py-1"><a href="'.SITEURL.'/kategori/'.strtolower($kategori).'/">'.$kategori.'</a></span></div>';
 	} else {}
-	$all .= '<div class="prt_02 mb-2"><h2 class="ft-bold mb-1">'.$ptitle.'</h2><div class="text-left"><div class="elis_rty">'.
+	$all .= '<div class="prt_02 mb-2 mt-4"><h2 class="ft-bold mb-1">'.$ptitle.'</h2><div class="text-left"><div class="elis_rty">'.
 	// '<span class="ft-medium text-muted line-through fs-md mr-2">'.rp($harga*1.5).',00</span>'.
 	'<span class="ft-bold theme-cl fs-lg mr-2">'.rp($harga).',00</span>'.
 	// '<span class="ft-regular text-danger bg-light-danger py-1 px-2 fs-sm">Out of Stock</span>'.
@@ -103,6 +104,7 @@ foreach ($posts as $pos){
 	'<p><span class="label">Kondisi</span> : '.$kondisi.'</p>'.
 	$kua2.
 	'<p><span class="label">Keterangan</span> : '.$tambahan.'</p>'.
+	'<p><span class="label">Deskripsi</span> : '.$deskripsi.'</p>'.
 	'</div>'.
 	'<div class="prt_05 mb-4"><div class="form-row mb-7">'.
 	'<div class="col-12 col-lg"><a href="'.$order.urlencode('Saya order '.$ptitle).'%0a'.urlencode($purl).'" class="text-white btn btn-block custom-height bg-success mb-2"><i class="lni lni-shopping-basket mr-2"></i>Pesan Sekarang</a></div>'.

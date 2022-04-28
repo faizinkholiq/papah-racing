@@ -6,6 +6,7 @@ if (empty($_GET['url'])) {
 	require 'model.php';
 	$nc = new con();
 	$to = $_GET['url'];
+
 	if ($to == 'login') {
 		$nc->login($con, $_POST['username'], $_POST['password']);
 	} else if ($to == 'logout') {
@@ -48,9 +49,9 @@ if (empty($_GET['url'])) {
 		$id_pelanggan = $_GET['this'];
 		$nc->hapuspelanggan($con, $id_pelanggan);
 	} else if ($to == 'tambahbarang') {
-		$nc->tambahbarang($con, $_POST['barcode'], $_POST['nama'], $_POST['merk'], $_POST['stok'], $_POST['modal'], $_POST['distributor'], $_POST['reseller'], $_POST['bengkel'], $_POST['admin'], $_POST['het'], $_POST['kondisi'], $_POST['kualitas'], $_POST['kategori'], $_POST['tambahan']);
+		$nc->tambahbarang($con, $_POST['barcode'], $_POST['nama'], $_POST['merk'], $_POST['stok'], $_POST['modal'], $_POST['distributor'], $_POST['reseller'], $_POST['bengkel'], $_POST['admin'], $_POST['het'], $_POST['kondisi'], $_POST['kualitas'], $_POST['kategori'], $_POST['tambahan'], $_POST['deskripsi']);
 	} else if ($to == 'ubahbarang') {
-		$nc->ubahbarang($con, $_POST['id_barang'], $_POST['barcode'], $_POST['nama'], $_POST['merk'], $_POST['stok'], $_POST['modal'], $_POST['distributor'], $_POST['reseller'], $_POST['bengkel'], $_POST['admin'], $_POST['het'], $_POST['kondisi'], $_POST['kualitas'], $_POST['kategori'], $_POST['tambahan']);
+		$nc->ubahbarang($con, $_POST['id_barang'], $_POST['barcode'], $_POST['nama'], $_POST['merk'], $_POST['stok'], $_POST['modal'], $_POST['distributor'], $_POST['reseller'], $_POST['bengkel'], $_POST['admin'], $_POST['het'], $_POST['kondisi'], $_POST['kualitas'], $_POST['kategori'], $_POST['tambahan'], $_POST['deskripsi']);
 	} else if ($to == 'hapusbarang') {
 		$id_barang = $_GET['this'];
 		$nc->hapusbarang($con, $id_barang);
@@ -173,5 +174,19 @@ if (empty($_GET['url'])) {
 	} else if ($to == 'approved') {
 		$no_faktur = $_GET['this'];
 		$nc->approved($con, $no_faktur);
+	} else if ($to == 'tambah-socmed') {
+		$nc->tambahsocmed($con, $_POST['tipe'], $_POST['keterangan'], $_POST['link']);
+	} else if ($to == 'ubah-socmed') {
+		$nc->ubahsocmed($con, $_POST['id'], $_POST['tipe'], $_POST['keterangan'], $_POST['link']);
+	} else if ($to == 'hapus-socmed') {
+		$id = $_GET['this'];
+		$nc->hapussocmed($con, $id);
+	} else if ($to == 'tambah-kontak') {
+		$nc->tambahkontak($con, $_POST['keterangan'], $_POST['kontak']);
+	} else if ($to == 'ubah-kontak') {
+		$nc->ubahkontak($con, $_POST['id'], $_POST['keterangan'], $_POST['kontak']);
+	} else if ($to == 'hapus-kontak') {
+		$id = $_GET['this'];
+		$nc->hapuskontak($con, $id);
 	}
 }

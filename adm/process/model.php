@@ -120,7 +120,7 @@ class con
 		header('location:../main?url=pelanggan');
 	}
 
-	function tambahbarang($con, $barcode, $nama, $merk, $stok, $modal, $distributor, $reseller, $bengkel, $admin, $het,$kondisi,$kualitas,$kategori,$tambahan)
+	function tambahbarang($con, $barcode, $nama, $merk, $stok, $modal, $distributor, $reseller, $bengkel, $admin, $het,$kondisi,$kualitas,$kategori,$tambahan,$deskripsi)
 	{
 		// Kode Barcode Otomatis
 		// $query = mysqli_query($con, "SELECT max(barcode) as kodeTerbesar FROM barang");
@@ -144,11 +144,11 @@ class con
 		$bengkel = str_replace('.', '', $bengkel);
 		$admin = str_replace('.', '', $admin);
 		$het = str_replace('.', '', $het);
-		$query = mysqli_query($con, "INSERT INTO barang SET barcode='$barcode',nama='$nama',merk='$merk',stok='$stok',modal='$modal',distributor='$distributor',reseller='$reseller',bengkel='$bengkel',admin='$admin',het='$het',kondisi='$kondisi',kualitas='$kualitas',kategori='$kategori',tambahan='$tambahan' ");
+		$query = mysqli_query($con, "INSERT INTO barang SET barcode='$barcode',nama='$nama',merk='$merk',stok='$stok',modal='$modal',distributor='$distributor',reseller='$reseller',bengkel='$bengkel',admin='$admin',het='$het',kondisi='$kondisi',kualitas='$kualitas',kategori='$kategori',tambahan='$tambahan', deskripsi='$deskripsi' ");
 		header('location:../main?url=barang');
 	}
 
-	function ubahbarang($con, $id_barang, $barcode, $nama, $merk, $stok, $modal, $distributor, $reseller, $bengkel, $admin, $het,$kondisi,$kualitas,$kategori,$tambahan)
+	function ubahbarang($con, $id_barang, $barcode, $nama, $merk, $stok, $modal, $distributor, $reseller, $bengkel, $admin, $het,$kondisi,$kualitas,$kategori,$tambahan,$deskripsi)
 	{
 		$barcode = htmlspecialchars(str_replace(' ', '', strtoupper($barcode)));
 		$nama = htmlspecialchars(ucwords($nama));
@@ -165,7 +165,7 @@ class con
 		$het = str_replace('.', '', $het);
 		$updated = date("Y-m-d h:i:s");
 
-		$query = mysqli_query($con, "UPDATE barang SET barcode='$barcode',nama='$nama',merk='$merk',stok='$stok',modal='$modal',distributor='$distributor',reseller='$reseller',bengkel='$bengkel',admin='$admin',het='$het',kondisi='$kondisi',kualitas='$kualitas',kategori='$kategori',tambahan='$tambahan',updated='$updated' WHERE id_barang='$id_barang' ");
+		$query = mysqli_query($con, "UPDATE barang SET barcode='$barcode',nama='$nama',merk='$merk',stok='$stok',modal='$modal',distributor='$distributor',reseller='$reseller',bengkel='$bengkel',admin='$admin',het='$het',kondisi='$kondisi',kualitas='$kualitas',kategori='$kategori',tambahan='$tambahan',deskripsi='$deskripsi',updated='$updated' WHERE id_barang='$id_barang' ");
 		header('location:../main?url=barang');
 	}
 
@@ -463,5 +463,42 @@ class con
 	{
 		$query = mysqli_query($con, "UPDATE penjualan SET persetujuan='Approved' WHERE no_faktur='$no_faktur' ");
 		header('location:../main?url=penjualan');
+	}
+
+	function tambahsocmed($con, $tipe, $keterangan, $link)
+	{
+		$query = mysqli_query($con, "INSERT INTO socmed SET keterangan='$keterangan',tipe='$tipe',link='$link' ");
+		header('location:../main?url=socmed');
+	}
+
+	function ubahsocmed($con, $id, $tipe, $keterangan, $link)
+	{
+		$query = mysqli_query($con, "UPDATE socmed SET keterangan='$keterangan',tipe='$tipe',link='$link' WHERE id='$id' ");
+
+		header('location:../main?url=socmed');
+	}
+
+	function hapussocmed($con, $id)
+	{
+		$query = mysqli_query($con, "DELETE FROM socmed WHERE id='$id' ");
+		header('location:../main?url=socmed');
+	}
+
+	function tambahkontak($con, $keterangan, $kontak)
+	{
+		$query = mysqli_query($con, "INSERT INTO kontak SET keterangan='$keterangan',kontak='$kontak' ");
+		header('location:../main?url=kontak');
+	}
+
+	function ubahkontak($con, $id, $keterangan, $kontak)
+	{
+		$query = mysqli_query($con, "UPDATE kontak SET keterangan='$keterangan',kontak='$kontak' WHERE id='$id' ");
+		header('location:../main?url=kontak');
+	}
+
+	function hapuskontak($con, $id)
+	{
+		$query = mysqli_query($con, "DELETE FROM kontak WHERE id='$id' ");
+		header('location:../main?url=kontak');
 	}
 }
