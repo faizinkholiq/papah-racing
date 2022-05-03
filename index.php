@@ -276,8 +276,8 @@ function head(){
 	// echo '<section class="py-2 br-bottom br-top"><div class="container"><div class="row align-items-center justify-content-between"><div class="col-xl-3 col-lg-4 col-md-5 col-sm-12"><nav aria-label="breadcrumb"><h2 class="off_title">KATEGORI</h2></nav></div></div></div>';
 	if ($px != "cari" && $px != "kategori" && $px != "merk" && $px != "produk"){
 		echo '<div class="middle"><div class="container"><div class="row align-items-center">';
-		$cats = array('MESIN','OLI','SASIS','PENGAPIAN','ALAT PORTING','APPAREL','KARBURATOR','KNALPOT','KOPLING','PISTON');
-		$war = array('purple','red','blue','green','orange','yellow','dark-blue','danger','sky','dark-blue');
+		$cats = array('MESIN','OLI','SASIS','PENGAPIAN','ALAT PORTING','APPAREL','KARBURATOR','KNALPOT','KOPLING','PISTON', 'GEARBOX', 'MEMBRAN', 'INSTAKE MANIPOL', 'BUSI', 'VARIASI');
+		$war = array('purple','red','blue','green','orange','yellow','dark-blue','danger','sky','dark-blue', 'purple','red','blue','green','orange');
 		$i = 0;
 		foreach ($cats as $c){
 			if (!empty($_GET['search_kategori'])) {

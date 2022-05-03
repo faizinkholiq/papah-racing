@@ -81,7 +81,7 @@ if ($_SESSION['id_jabatan'] == '1'||$_SESSION['id_jabatan'] == '2'||$_SESSION['i
             <div class="col-sm-10">
                 <select class="form-control selectpicker" id="kategori" name="kategori[]" multiple data-live-search="true" required>
                   <?php
-									$quals = array(null, 'MESIN','OLI','SASIS','PENGAPIAN','ALAT PORTING','APPAREL','KARBURATOR','KNALPOT','PISTON','KOPLING');
+									$quals = array(null, 'MESIN','OLI','SASIS','PENGAPIAN','ALAT PORTING','APPAREL','KARBURATOR','KNALPOT','KOPLING','PISTON', 'GEARBOX', 'MEMBRAN', 'INSTAKE MANIPOL', 'BUSI', 'VARIASI');
 									foreach ($quals as $q){
 										if ($q==$data['kategori']){
 											echo '<option value="'.$q.'" selected>'.ucwords($q).'</option>';
