@@ -220,7 +220,7 @@ if ($_SESSION['id_jabatan'] == '8'||$_SESSION['id_jabatan'] == '7'||$_SESSION['i
 			echo $uform;
 		}
 		foreach ($gl as $l){
-			echo '<div class="i6"><img src="https://'.str_replace('admin.','',$_SERVER['SERVER_NAME']).'/p/'.trim($id_barang).'/'.basename($l).'"><a href="main?url=hapus-barang&this='.$id_barang.'&img='.basename($l).'" class="btn btn-danger btn-sm" data-toggle="tooltip" data-original-title="Hapus" onclick="return confirm(\'Anda yakin ingin hapus data ini?\')"><i class="fas fa-trash-alt"></i></a></div>';
+			echo '<div class="i6"><img src="'.SITEURL.'/p/'.trim($id_barang).'/'.basename($l).'"><a href="main?url=hapus-barang&this='.$id_barang.'&img='.basename($l).'" class="btn btn-danger btn-sm" data-toggle="tooltip" data-original-title="Hapus" onclick="return confirm(\'Anda yakin ingin hapus data ini?\')"><i class="fas fa-trash-alt"></i></a></div>';
 		}
 	} else {
 		echo $uform;

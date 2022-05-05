@@ -166,6 +166,7 @@ class con
 		$updated = date("Y-m-d h:i:s");
 
 		$query = mysqli_query($con, "UPDATE barang SET barcode='$barcode',nama='$nama',merk='$merk',stok='$stok',modal='$modal',distributor='$distributor',reseller='$reseller',bengkel='$bengkel',admin='$admin',het='$het',kondisi='$kondisi',kualitas='$kualitas',kategori='$kategori',tambahan='$tambahan',deskripsi='$deskripsi',updated='$updated' WHERE id_barang='$id_barang' ");
+
 		header('location:../main?url=barang');
 	}
 

@@ -5,30 +5,32 @@ if (empty($_GET['url'])) {
 $id_barang = $_GET['this'];
 $nama = $_POST['nama'];
 $path = str_replace('/adm/page/barang','/p/'.trim($id_barang),dirname(__FILE__));
-echo 'test : '.$path;
-print_r($_FILES['gambar']);
 if(!file_exists($path)){
 	mkdir($path);
 } else {}
 $f = $_FILES;
 $jum = count($f['gambar']['name']);
 for ($i = 0; $i < $jum; $i++) {
-  $nama_file = $f['gambar']['name'][$i];
+	$nama_file = $f['gambar']['name'][$i];
 	$ukuran_file = $f['gambar']['size'][$i];
 	$tipe_file = $f['gambar']['type'][$i];
 	$tmp_file = $f['gambar']['tmp_name'][$i];
-	echo $nama_file.'<br>';
-	echo $ukuran_file.'<br>';
-	echo $tipe_file.'<br>';
-	echo $tmp_file.'<br>';
 	if($ukuran_file <= 4000000){  
 		if(move_uploaded_file($tmp_file, $path.'/'.$nama_file)){
-			header("location: main?url=ubah-barang&this=".$id_barang);     
+			header("location: main?url=ubah-barang&this=".$id_barang);    
+			// exit(header("Location: /user.php"));
 		} else {       
+			// echo $nama_file.'<br>';
+			// echo $ukuran_file.'<br>';
+			// echo $tipe_file.'<br>';
+			// echo $tmp_file.'<br>';
 			echo "Maaf, Terjadi kesalahan.";
 			echo "<br><a href='main?url=ubah-barang&this=".$id_barang."'>Kembali Ke Form</a><br>";      
 		}
-	} else {   
+	} else {
+		// echo $nama_file.'<br>';
+		// echo $ukuran_file.'<br>';
+		// echo $tipe_file.'<br>';  
 		echo "Maaf, Ukuran gambar yang diupload tidak boleh lebih dari 4MB";    
 		echo "<br><a href='main?url=ubah-barang&this=".$id_barang."'>Kembali Ke Form</a><br>";  
 	}

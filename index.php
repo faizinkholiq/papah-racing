@@ -146,10 +146,11 @@ if ($count_uri == 1){
 			$px2 = $p;
 			if (!empty($_GET["search_kategori"])) {
 				$arr_kat = explode(",", $_GET["search_kategori"]);
-				$src = sprintf("'%s'", join("','",$arr_kat));
+				$src = sprintf("^%s", join("'|'",$arr_kat));
+				
+				$total = mysqli_num_rows(mysqli_query($con, "SELECT * FROM barang WHERE kategori  REGEXP '$src'"));
 
-				$total = mysqli_num_rows(mysqli_query($con, "SELECT * FROM barang WHERE kategori IN ($src)"));
-				$posts = mysqli_query($con, "SELECT * FROM barang WHERE kategori IN ($src) LIMIT ". $l .",".$pp );
+				$posts = mysqli_query($con, "SELECT * FROM barang WHERE kategori REGEXP '$src'");
 	
 				$per = ceil($total/$pp);	
 				if ($total>0){

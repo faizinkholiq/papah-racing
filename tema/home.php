@@ -56,9 +56,9 @@ foreach ($posts as $pos){
 	$kualitas = $pos['kualitas'];
 	$kategori = $pos['kategori'];
 	$tambahan = $pos['tambahan'];
-	$deskripsi = !empty($r['deskripsi'])? $r['deskripsi'] : '-';
+	$deskripsi = !empty($pos['deskripsi'])? $pos['deskripsi'] : '-';
 	$harga = $pos['het'];
-	$gi = glob(PHOTO.'/'.$id.'/*.jp*');
+	$gi = glob(PHOTO.'/'.$id.'/*');
 	$i6 = '';
 	$i9 = '';
 	if (empty($gi)){} else {
@@ -77,7 +77,6 @@ foreach ($posts as $pos){
 	}
 	if (empty($tambahan)){$tambahan='-';}
 	// if ($stok==0){$stok='Habis';}
-	
 	// bg-info NEW,bg-warning HOT, bg-danger HOT
 	echo '<div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-6"><div class="product_grid card">'.
 	'<div class="badge bg-danger text-white position-absolute ft-regular ab-left text-upper">STOK : '.$stok.'</div>'.
