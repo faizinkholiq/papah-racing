@@ -277,7 +277,7 @@ function head(){
 	// echo '<section class="py-2 br-bottom br-top"><div class="container"><div class="row align-items-center justify-content-between"><div class="col-xl-3 col-lg-4 col-md-5 col-sm-12"><nav aria-label="breadcrumb"><h2 class="off_title">KATEGORI</h2></nav></div></div></div>';
 	if ($px != "cari" && $px != "kategori" && $px != "merk" && $px != "produk"){
 		echo '<div class="middle"><div class="container"><div class="row align-items-center">';
-		$cats = array('MESIN','OLI','SASIS','PENGAPIAN','ALAT PORTING','APPAREL','KARBURATOR','KNALPOT','KOPLING','PISTON', 'GEARBOX', 'MEMBRAN', 'INSTAKE MANIPOL', 'BUSI', 'VARIASI', 'SPECIAL DISKON');
+		$cats = array('MESIN','OLI','SASIS','PENGAPIAN','ALAT PORTING','APPAREL','KARBURATOR','KNALPOT','KOPLING','PISTON', 'GEARBOX', 'MEMBRAN', 'INTAKE MANIPOL', 'BUSI', 'VARIASI', 'PAKING (GASKET)', 'SPECIAL DISKON');
 		$war = array('purple','red','blue','green','orange','yellow','dark-blue','danger','sky','dark-blue', 'purple','red','blue','green','orange', 'yellow');
 		$i = 0;
 		foreach ($cats as $c){
