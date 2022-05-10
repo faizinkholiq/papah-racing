@@ -278,7 +278,7 @@ function head(){
 	if ($px != "cari" && $px != "kategori" && $px != "merk" && $px != "produk"){
 		echo '<div class="middle"><div class="container"><div class="row align-items-center">';
 		$cats = array('MESIN','OLI','SASIS','PENGAPIAN','ALAT PORTING','APPAREL','KARBURATOR','KNALPOT','KOPLING','PISTON', 'GEARBOX', 'MEMBRAN', 'INTAKE MANIPOL', 'BUSI', 'VARIASI', 'PAKING (GASKET)', 'SPECIAL DISKON');
-		$war = array('purple','red','blue','green','orange','yellow','dark-blue','danger','sky','dark-blue', 'purple','red','blue','green','orange', 'yellow');
+		$war = array('purple','red','blue','green','orange','yellow','dark-blue','danger','sky','dark-blue', 'purple','red','blue','green','orange', 'yellow', 'dark-blue');
 		$i = 0;
 		foreach ($cats as $c){
 			if (!empty($_GET['search_kategori'])) {
