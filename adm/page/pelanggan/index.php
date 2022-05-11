@@ -41,9 +41,13 @@ $query = mysqli_query($con, "SELECT * FROM pelanggan WHERE id_pelanggan!='1' AND
                     }
                     $bln3 = date('Y-m-d h:i:s',strtotime('-1 month', strtotime($start)));
                     $qk = mysqli_query($con, "SELECT * FROM penjualan WHERE tanggal > '".$bln3."' AND tanggal < '".$start."' ORDER BY id_pelanggan DESC");
-                    $arz = array();
+                    $arz = [];
                     foreach ($qk as $k){
-                     $arz[$k['id_pelanggan']] += $k['total_bayar'];
+                        if (!isset($arz[$k['id_pelanggan']])) {
+                            $arz[$k['id_pelanggan']] = 0;
+                        }
+                        
+                        $arz[$k['id_pelanggan']] += $k['total_bayar'];
                     }
                 } else {}
                 ?>

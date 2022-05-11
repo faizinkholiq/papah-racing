@@ -45,7 +45,11 @@ $query = mysqli_query($con, "SELECT * FROM user WHERE id_jabatan!='1' ORDER BY i
 									$qk = mysqli_query($con, "SELECT * FROM penjualan WHERE tanggal > '".$bln3."' AND tanggal < '".$start."' ORDER BY id_user DESC");
 									$arz = array();
 									foreach ($qk as $k){
-									 $arz[$k['id_user']] += $k['total_bayar'];
+                                        if (!isset($arz[$k['id_user']])) {
+                                            $arz[$k['id_user']] = 0;
+                                        }
+
+									    $arz[$k['id_user']] += $k['total_bayar'];
 									}
                 } else {}
 								$no = 1;
