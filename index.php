@@ -146,7 +146,7 @@ if ($count_uri == 1){
 			$px2 = $p;
 			if (!empty($_GET["search_kategori"])) {
 				$arr_kat = explode(",", $_GET["search_kategori"]);
-				$src = sprintf("^%s", join("'|'",$arr_kat));
+				$src = sprintf("%s", join("'|'",$arr_kat));
 				
 				$total = mysqli_num_rows(mysqli_query($con, "SELECT * FROM barang WHERE kategori  REGEXP '$src'"));
 
@@ -277,8 +277,8 @@ function head(){
 	// echo '<section class="py-2 br-bottom br-top"><div class="container"><div class="row align-items-center justify-content-between"><div class="col-xl-3 col-lg-4 col-md-5 col-sm-12"><nav aria-label="breadcrumb"><h2 class="off_title">KATEGORI</h2></nav></div></div></div>';
 	if ($px != "cari" && $px != "kategori" && $px != "merk" && $px != "produk"){
 		echo '<div class="middle"><div class="container"><div class="row align-items-center">';
-		$cats = array('MESIN','OLI','SASIS','PENGAPIAN','ALAT PORTING','APPAREL','KARBURATOR','KNALPOT','KOPLING','PISTON', 'GEARBOX', 'MEMBRAN', 'INTAKE MANIPOL', 'BUSI', 'VARIASI', 'PAKING (GASKET)', 'SPECIAL DISKON');
-		$war = array('purple','red','blue','green','orange','yellow','dark-blue','danger','sky','dark-blue', 'purple','red','blue','green','orange', 'yellow', 'dark-blue');
+		$cats = array('MESIN','OLI','SASIS','PENGAPIAN','ALAT PORTING','APPAREL','KARBURATOR','KNALPOT','KOPLING','PISTON', 'GEARBOX', 'MEMBRAN', 'INTAKE MANIPOL', 'BUSI', 'VARIASI', 'PAKING (GASKET)', 'BEARING', 'SPECIAL DISKON');
+		$war = array('purple','red','blue','green','orange','yellow','dark-blue', 'danger','sky','dark-blue', 'purple','red','blue','green','orange', 'yellow', 'dark-blue', 'danger');
 		$i = 0;
 		foreach ($cats as $c){
 			if (!empty($_GET['search_kategori'])) {
