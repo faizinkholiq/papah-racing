@@ -42,7 +42,7 @@ if ($_SESSION['id_jabatan'] == '1'||$_SESSION['id_jabatan'] == '2'||$_SESSION['i
                 <input type="number" min="0" class="form-control" id="stok" name="stok" value="<?= $data['stok']; ?>" required>
             </div>
         </div>
-				<div class="form-group row">
+        <div class="form-group row">
             <label for="kondisi" class="col-sm-2 col-form-label">Kondisi</label>
             <div class="col-sm-10">
                 <select class="form-control" id="kondisi" name="kondisi" required>
@@ -59,7 +59,7 @@ if ($_SESSION['id_jabatan'] == '1'||$_SESSION['id_jabatan'] == '2'||$_SESSION['i
                 </select>
             </div>
         </div>
-				<div class="form-group row">
+        <div class="form-group row">
             <label for="kualitas" class="col-sm-2 col-form-label">Kualitas</label>
             <div class="col-sm-10">
                 <select class="form-control" id="kualitas" name="kualitas" required>
@@ -76,7 +76,7 @@ if ($_SESSION['id_jabatan'] == '1'||$_SESSION['id_jabatan'] == '2'||$_SESSION['i
                 </select>
             </div>
         </div>
-				<div class="form-group row">
+        <div class="form-group row">
             <label for="kategori" class="col-sm-2 col-form-label">Kategori</label>
             <div class="col-sm-10">
                 <select class="form-control selectpicker" id="kategori" name="kategori[]" multiple data-live-search="true" required>
@@ -93,7 +93,24 @@ if ($_SESSION['id_jabatan'] == '1'||$_SESSION['id_jabatan'] == '2'||$_SESSION['i
                 </select>
             </div>
         </div>
-				<div class="form-group row">
+        <div class="form-group row">
+            <label for="type" class="col-sm-2 col-form-label">Tipe Pelanggan</label>
+            <div class="col-sm-10">
+                <select class="form-control" id="tipe_pelanggan" name="tipe_pelanggan" required>
+                  <?php
+									$quals = array('','DISTRIBUTOR');
+									foreach ($quals as $q){
+										if ($q==$data['tipe_pelanggan']){
+											echo '<option value="'.$q.'" selected>'.ucwords($q).'</option>';
+										} else {
+											echo '<option value="'.$q.'">'.ucwords($q).'</option>';
+										}
+									}
+									?>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
             <label for="tambahan" class="col-sm-2 col-form-label">Keterangan Tambahan</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="tambahan" name="tambahan" value="<?= $data['tambahan']; ?>" placeholder="Semisal ukuran / warna dengan pemisah coma">

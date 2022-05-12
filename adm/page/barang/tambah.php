@@ -30,7 +30,7 @@
                 <input type="number" min="0" class="form-control" id="stok" name="stok" required>
             </div>
         </div>
-				<div class="form-group row">
+        <div class="form-group row">
             <label for="type" class="col-sm-2 col-form-label">Kondisi</label>
             <div class="col-sm-10">
                 <select class="form-control" id="kondisi" name="kondisi" required>
@@ -47,7 +47,7 @@
                 </select>
             </div>
         </div>
-				<div class="form-group row">
+        <div class="form-group row">
             <label for="type" class="col-sm-2 col-form-label">Kualitas</label>
             <div class="col-sm-10">
                 <select class="form-control" id="kualitas" name="kualitas" required>
@@ -64,7 +64,7 @@
                 </select>
             </div>
         </div>
-				<div class="form-group row">
+        <div class="form-group row">
             <label for="type" class="col-sm-2 col-form-label">Kategori</label>
             <div class="col-sm-10">
                 <select class="form-control" id="kategori" name="kategori[]" multiple data-live-search="true" required>
@@ -81,7 +81,24 @@
                 </select>
             </div>
         </div>
-				<div class="form-group row">
+        <div class="form-group row">
+            <label for="type" class="col-sm-2 col-form-label">Tipe Pelanggan</label>
+            <div class="col-sm-10">
+                <select class="form-control" id="tipe_pelanggan" name="tipe_pelanggan" required>
+                  <?php
+									$quals = array('','DISTRIBUTOR');
+									foreach ($quals as $q){
+										if ($q==$data['tipe_pelanggan']){
+											echo '<option value="'.$q.'" selected>'.ucwords($q).'</option>';
+										} else {
+											echo '<option value="'.$q.'">'.ucwords($q).'</option>';
+										}
+									}
+									?>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
             <label for="tambahan" class="col-sm-2 col-form-label">Keterangan Tambahan</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control" id="tambahan" name="tambahan" placeholder="Semisal ukuran / warna dengan pemisah coma">

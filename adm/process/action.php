@@ -49,9 +49,9 @@ if (empty($_GET['url'])) {
 		$id_pelanggan = $_GET['this'];
 		$nc->hapuspelanggan($con, $id_pelanggan);
 	} else if ($to == 'tambahbarang') {
-		$nc->tambahbarang($con, $_POST['barcode'], $_POST['nama'], $_POST['merk'], $_POST['stok'], $_POST['modal'], $_POST['distributor'], $_POST['reseller'], $_POST['bengkel'], $_POST['admin'], $_POST['het'], $_POST['kondisi'], $_POST['kualitas'], $_POST['kategori'], $_POST['tambahan'], $_POST['deskripsi']);
+		$nc->tambahbarang($con, $_POST['barcode'], $_POST['nama'], $_POST['merk'], $_POST['stok'], $_POST['modal'], $_POST['distributor'], $_POST['reseller'], $_POST['bengkel'], $_POST['admin'], $_POST['het'], $_POST['kondisi'], $_POST['kualitas'], $_POST['kategori'], $_POST['tipe_pelanggan'], $_POST['tambahan'], $_POST['deskripsi']);
 	} else if ($to == 'ubahbarang') {
-		$nc->ubahbarang($con, $_POST['id_barang'], $_POST['barcode'], $_POST['nama'], $_POST['merk'], $_POST['stok'], $_POST['modal'], $_POST['distributor'], $_POST['reseller'], $_POST['bengkel'], $_POST['admin'], $_POST['het'], $_POST['kondisi'], $_POST['kualitas'], $_POST['kategori'], $_POST['tambahan'], $_POST['deskripsi']);
+		$nc->ubahbarang($con, $_POST['id_barang'], $_POST['barcode'], $_POST['nama'], $_POST['merk'], $_POST['stok'], $_POST['modal'], $_POST['distributor'], $_POST['reseller'], $_POST['bengkel'], $_POST['admin'], $_POST['het'], $_POST['kondisi'], $_POST['kualitas'], $_POST['kategori'], $_POST['tipe_pelanggan'], $_POST['tambahan'], $_POST['deskripsi']);
 	} else if ($to == 'hapusbarang') {
 		$id_barang = $_GET['this'];
 		$nc->hapusbarang($con, $id_barang);

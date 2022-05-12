@@ -120,7 +120,7 @@ class con
 		header('location:../main?url=pelanggan');
 	}
 
-	function tambahbarang($con, $barcode, $nama, $merk, $stok, $modal, $distributor, $reseller, $bengkel, $admin, $het,$kondisi,$kualitas,$kategori,$tambahan,$deskripsi)
+	function tambahbarang($con, $barcode, $nama, $merk, $stok, $modal, $distributor, $reseller, $bengkel, $admin, $het,$kondisi,$kualitas,$kategori,$tipe_pelanggan,$tambahan,$deskripsi)
 	{
 		// Kode Barcode Otomatis
 		// $query = mysqli_query($con, "SELECT max(barcode) as kodeTerbesar FROM barang");
@@ -144,11 +144,11 @@ class con
 		$bengkel = str_replace('.', '', $bengkel);
 		$admin = str_replace('.', '', $admin);
 		$het = str_replace('.', '', $het);
-		$query = mysqli_query($con, "INSERT INTO barang SET barcode='$barcode',nama='$nama',merk='$merk',stok='$stok',modal='$modal',distributor='$distributor',reseller='$reseller',bengkel='$bengkel',admin='$admin',het='$het',kondisi='$kondisi',kualitas='$kualitas',kategori='$kategori',tambahan='$tambahan', deskripsi='$deskripsi' ");
+		$query = mysqli_query($con, "INSERT INTO barang SET barcode='$barcode',nama='$nama',merk='$merk',stok='$stok',modal='$modal',distributor='$distributor',reseller='$reseller',bengkel='$bengkel',admin='$admin',het='$het',kondisi='$kondisi',kualitas='$kualitas',kategori='$kategori',tipe_pelanggan='$tipe_pelanggan',tambahan='$tambahan', deskripsi='$deskripsi' ");
 		header('location:../main?url=barang');
 	}
 
-	function ubahbarang($con, $id_barang, $barcode, $nama, $merk, $stok, $modal, $distributor, $reseller, $bengkel, $admin, $het,$kondisi,$kualitas,$kategori,$tambahan,$deskripsi)
+	function ubahbarang($con, $id_barang, $barcode, $nama, $merk, $stok, $modal, $distributor, $reseller, $bengkel, $admin, $het,$kondisi,$kualitas,$kategori,$tipe_pelanggan,$tambahan,$deskripsi)
 	{
 		$barcode = htmlspecialchars(str_replace(' ', '', strtoupper($barcode)));
 		$nama = htmlspecialchars(ucwords($nama));
@@ -165,7 +165,7 @@ class con
 		$het = str_replace('.', '', $het);
 		$updated = date("Y-m-d h:i:s");
 
-		$query = mysqli_query($con, "UPDATE barang SET barcode='$barcode',nama='$nama',merk='$merk',stok='$stok',modal='$modal',distributor='$distributor',reseller='$reseller',bengkel='$bengkel',admin='$admin',het='$het',kondisi='$kondisi',kualitas='$kualitas',kategori='$kategori',tambahan='$tambahan',deskripsi='$deskripsi',updated='$updated' WHERE id_barang='$id_barang' ");
+		$query = mysqli_query($con, "UPDATE barang SET barcode='$barcode',nama='$nama',merk='$merk',stok='$stok',modal='$modal',distributor='$distributor',reseller='$reseller',bengkel='$bengkel',admin='$admin',het='$het',kondisi='$kondisi',kualitas='$kualitas',kategori='$kategori',tipe_pelanggan='$tipe_pelanggan',tambahan='$tambahan',deskripsi='$deskripsi',updated='$updated' WHERE id_barang='$id_barang' ");
 
 		header('location:../main?url=barang');
 	}
