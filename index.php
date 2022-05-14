@@ -147,6 +147,8 @@ if ($count_uri == 1){
 			if (!empty($_GET["search_kategori"])) {
 				$arr_kat = explode(",", $_GET["search_kategori"]);
 				$src = sprintf("%s", join("'|'",$arr_kat));
+				$src = str_replace(["(",")"], "", $src);
+				$src = str_replace(" ", "|", $src);
 				
 				$total = mysqli_num_rows(mysqli_query($con, "SELECT * FROM barang WHERE kategori  REGEXP '$src'"));
 
