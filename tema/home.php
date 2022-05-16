@@ -61,10 +61,17 @@ foreach ($posts as $pos){
 	$gi = glob(PHOTO.'/'.$id.'/*');
 	$i6 = '';
 	$i9 = '';
+	$selected_brg = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM foto_barang WHERE id_barang='$id'"));
+
 	if (empty($gi)){} else {
 		$i = 0;
 		foreach ($gi as $im){
-			$im = SITEURL.'/p/'.$id.'/'.basename($im);
+			if(!empty($selected_brg)) {
+				$im = SITEURL.'/p/'.$id.'/'.$selected_brg["name"];
+			}else{
+				$im = SITEURL.'/p/'.$id.'/'.basename($im);
+			}
+
 			if ($i>1){} else {$i6 = $im;}
 			$i9 .= '<div class="single_view_slide"><img onerror="this.onerror=null; this.src=\''.TEMA.'/load.gif\'" src="'.$im.'" class="img-fluid" alt="" /></div>';
 			$i++;

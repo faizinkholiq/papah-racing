@@ -176,7 +176,7 @@
                 <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3"></textarea>
             </div>
         </div>
-         <div class="card bg-light mb-3">
+        <div class="card bg-light mb-3">
             <div class="card-header font-weight-bolder">Upload Gambar Maximum 3, Ukuran file Maximum 4 Mb</div><br>
             <div class="card-body" style="text-align: center">
                 <input id="imgInp" type="file" name="gambar[]" accept="image/*" multiple>
@@ -233,10 +233,10 @@
     
     function updateValue() {
     	const dt = new _DataTransfer();
-      for (let file of photos) {
-        dt.items.add(file)  
-      }
-      $("#imgInp")[0].files = dt.files 
+        for (let file of photos) {
+            dt.items.add(file)  
+        }
+        $("#imgInp")[0].files = dt.files 
     }
     
     $("#imgInp").change(function(){
@@ -252,9 +252,5 @@
         updateValue()
         doPreview($("#imgInp")[0].files)
         
-    });
-    
-    $('#btn-submit').click(() => {      
-           
     });
 </script>

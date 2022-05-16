@@ -25,3 +25,5 @@ ALTER TABLE `barang` CHANGE `kategori` `kategori` SET('MESIN','OLI','SASIS','PEN
 
 -- 16 Mei 2022
 CREATE TABLE `papah_racing`.`foto_barang` ( `id_barang` INT NOT NULL , `name` VARCHAR(255) NOT NULL ) ENGINE = InnoDB;
+
+ALTER TABLE `foto_barang` ADD UNIQUE( `id_barang`);

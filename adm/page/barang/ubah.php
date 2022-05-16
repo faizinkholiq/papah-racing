@@ -3,7 +3,10 @@ if (empty($_GET['url'])) {
     header('location:../main');
 }
 $id_barang = $_GET['this'];
+$path = str_replace('/adm/page/barang','/p/'.trim($id_barang),dirname(__FILE__));
+
 $data = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM barang WHERE id_barang='$id_barang' "));
+$selected_brg = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM foto_barang WHERE id_barang='$id_barang' "));
 if ($_SESSION['id_jabatan'] == '1'||$_SESSION['id_jabatan'] == '2'||$_SESSION['id_jabatan'] == '3') {
 	echo '<!--';
 	print_r($data);
@@ -16,7 +19,7 @@ if ($_SESSION['id_jabatan'] == '1'||$_SESSION['id_jabatan'] == '2'||$_SESSION['i
     <div class="col-4"><a href="main?url=barang" class="btn btn-danger float-right"><i class='fas fa-times-circle mr-2'></i>Back</a></div>
 </div>
 <div class="wrapper">
-    <form action="process/action?url=ubahbarang" method="post">
+    <form action="process/action?url=ubahbarang" enctype="multipart/form-data" method="post">
         <input type="hidden" name="id_barang" value="<?= $id_barang; ?>">
         <div class="form-group row">
             <label for="barcode" class="col-sm-2 col-form-label">Barcode</label>
@@ -188,6 +191,32 @@ if ($_SESSION['id_jabatan'] == '1'||$_SESSION['id_jabatan'] == '2'||$_SESSION['i
                 <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3"><?= $data['deskripsi']; ?></textarea>
             </div>
         </div>
+        <div class="card bg-light mb-3">
+            <div class="card-header font-weight-bolder">Upload Gambar Maximum 3, Ukuran file Maximum 4 Mb</div><br>
+            <input type="hidden" id="hapus_barang" name="hapus_barang" />
+            <?php $val_selected_brg = !empty($selected_brg['name'])? str_replace('/adm/page/barang','/p/'.trim($id_barang),dirname(__FILE__)).'/'.$selected_brg['name'] : '' ; ?>
+            <input type="hidden" id="selected_barang" name="selected_barang" value="<?=$val_selected_brg?>"/>
+            <div class="card-body" style="text-align: center">
+                <?php
+                    if (file_exists($path)):
+                    $gl = glob($path.'/*');        
+                ?>
+                <input id="imgInp" type="file" name="gambar[]" accept="image/*" multiple>
+                <div class="col-lg-12 mt-4 img-container">
+                <?php foreach ($gl as $l): ?>
+                        <div onclick="selectImage('<?= $l ?>')" class="i6" data-id="<?= $l ?>">
+                            <div class="overlay" style="display:<?=($selected_brg['name'] == basename($l))? '' : 'none' ?>"><i class="fa fa-check"></i></div>
+                            <img src="<?= SITEURL.'/p/'.trim($id_barang).'/'.basename($l) ?>">
+                            <button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" data-original-title="Hapus" 
+                                onclick="removeImage('<?= $l ?>', false, event)">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                <?php endforeach; ?>
+                </div><br>
+                <?php endif; ?>
+            </div>
+        </div><br>
         <div class="form-row text-center">
             <div class="col-12">
                 <button type="submit" class="btn btn-primary"><i class='fas fa-save mr-2'></i>Simpan</button>
@@ -197,17 +226,118 @@ if ($_SESSION['id_jabatan'] == '1'||$_SESSION['id_jabatan'] == '2'||$_SESSION['i
 
 </div>
 <script>
+    var photos = [];
+    var deleted_photos = [];
+    
+    class _DataTransfer {
+      constructor() {
+        return new ClipboardEvent("").clipboardData || new DataTransfer();
+      }
+    }
+    
+    function doPreview(fileList) {
+        // $('.img-container').html('')
+        if (fileList) {
+            for (let file of fileList) {
+             	var reader = new FileReader();
+            
+              reader.onload = function (e) {
+                  $('.img-container').append(`
+                    <div class="i6" onclick="selectImage('${file.name}')" data-id="${file.name}">
+                        <div class="overlay" style="display:none"><i class="fa fa-check"></i></div>
+                        <img src="${e.target.result}">
+                        <button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" data-original-title="Hapus" 
+                            onclick="removeImage('${file.name}', true, event)">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                  `)
+              }
+
+              reader.readAsDataURL(file);
+            }
+        }
+    }
+    
+    function removeImage(name, file = true, event) {
+    	event.stopPropagation();
+
+        if($('#selected_barang').val() != name) {
+            photos = photos.filter((item) => item.name !== name)
+            
+            if (photos.length < 3) {
+                $('#imgInp').show()
+            }else{
+                $('#imgInp').hide()
+            }
+
+            if (file) {
+                updateValue()
+                $(`div[data-id='${name}']`).remove()
+            }else{
+                deleted_photos.push(name)
+                $('#hapus_barang').val(deleted_photos)
+                $(`div[data-id='${name}']`).remove()
+            }
+        }else{
+            alert("Tidak bisa menghapus barang yang sedang ditampilkan");
+        }
+    }
+
+    function selectImage(name) {
+        $('#selected_barang').val(name)
+        $('.i6 .overlay').hide()
+        $(`div[data-id='${name}'] .overlay`).fadeIn()
+    }
+    
+    function updateValue() {
+    	const dt = new _DataTransfer();
+        for (let file of photos) {
+            if (!file.saved){
+                dt.items.add(file)  
+            }
+        }
+        $("#imgInp")[0].files = dt.files 
+    }
+    
+    $("#imgInp").change(function(){
+        let arrImage = Object.values($(this)[0].files)
+        
+        if (photos.length > 0) {
+              var ids = new Set(photos.map(d => d.name));
+            photos = [...photos, ...arrImage.filter(d => !ids.has(d.name))];
+        }else{
+            photos = arrImage;
+        } 
+
+        if(photos.length > 3) {
+            photos = photos.slice(0,3)
+        }
+
+        updateValue()
+        doPreview($("#imgInp")[0].files)
+        
+    });
+
     $(document).ready(function() {
         kategori = "<?php echo $data['kategori']; ?>"
         arrKategori = kategori.split(',');
         $('#kategori').val(arrKategori);
         $('select').selectpicker("refresh");
+        
+        let gl = <?= json_encode(glob($path.'/*')) ?>;
+        photos = gl.map((item) => { return {'name': item, 'saved': true} } )
+
+        if (photos.length < 3) {
+            $('#imgInp').show()
+        }else{
+            $('#imgInp').hide()
+        }
     });
 </script>
 <?php
 } else {}
 
-$path = str_replace('/adm/page/barang','/p/'.trim($id_barang),dirname(__FILE__));
 if ($_SESSION['id_jabatan'] == '8'||$_SESSION['id_jabatan'] == '7'||$_SESSION['id_jabatan'] == '6'||$_SESSION['id_jabatan'] == '5'){
 	echo '<div class="row"><div class="col-md-12 mb-2"><div class="card bg-light mb-3"><div class="card-header font-weight-bolder">Gambar '.$data['nama'].'</div><div class="card-body">';
 	if (file_exists($path)){
@@ -222,27 +352,5 @@ if ($_SESSION['id_jabatan'] == '8'||$_SESSION['id_jabatan'] == '7'||$_SESSION['i
 		}
 	}
 	echo '</div></div><a href="main?url=barang" class="btn btn-danger float-right"><i class="fas fa-times-circle mr-2"></i>Back</a></div></div>';
-} else {
-	echo '<br/><div class="row"><div class="col-4"></div><div class="col-md-12 mb-2"><div class="card bg-light mb-3"><div class="card-header font-weight-bolder">Upload Gambar Maximum 3, Ukuran file Maximum 4 Mb</div><div class="card-body">';
-	$uform = '<br/><center><form method="post" enctype="multipart/form-data" action="main?url=upload-barang&this='.$id_barang.'">
-	<input type="file" name="gambar[]" accept="image/*" multiple>
-	<input type="hidden" value="'.$data['nama'].'" name="nama">
-	<input type="submit" class="btn btn-success mb-2" value="Upload">
-	</form></center><br/>';
-	if (file_exists($path)){
-		$gl = glob($path.'/*');
-		// print_r($gl);
-		if (count($gl)>2){
-		} else {
-			echo $uform;
-		}
-		foreach ($gl as $l){
-			echo '<div class="i6"><img src="'.SITEURL.'/p/'.trim($id_barang).'/'.basename($l).'"><a href="main?url=hapus-barang&this='.$id_barang.'&img='.basename($l).'" class="btn btn-danger btn-sm" data-toggle="tooltip" data-original-title="Hapus" onclick="return confirm(\'Anda yakin ingin hapus data ini?\')"><i class="fas fa-trash-alt"></i></a></div>';
-		}
-	} else {
-		echo $uform;
-	}
-	echo '</div></div><a href="main?url=barang" class="btn btn-danger float-right"><i class="fas fa-times-circle mr-2"></i>Back</a></div></div>';
 }
-echo '<style>.i6{position:relative;float:left;border:1px solid #eee;margin:0 10px 10px 0;width:300px;height:300px;overflow:hidden;}.i6 img{width:100%;height:auto;}.i6 a{position:absolute;top:10px;right:10px;}</style>';
 ?>
