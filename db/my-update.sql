@@ -27,3 +27,9 @@ ALTER TABLE `barang` CHANGE `kategori` `kategori` SET('MESIN','OLI','SASIS','PEN
 CREATE TABLE `papah_racing`.`foto_barang` ( `id_barang` INT NOT NULL , `name` VARCHAR(255) NOT NULL ) ENGINE = InnoDB;
 
 ALTER TABLE `foto_barang` ADD UNIQUE( `id_barang`);
+
+ALTER TABLE `barang` CHANGE `kualitas` `kualitas` VARCHAR(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+
+ALTER TABLE `barang` CHANGE `tipe_pelanggan` `tipe_pelanggan` ENUM('DISTRIBUTOR','') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL;
+
+ALTER TABLE `barang` ADD `berat` VARCHAR(50) NULL AFTER `tipe_pelanggan`;

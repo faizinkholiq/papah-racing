@@ -50,7 +50,7 @@
         <div class="form-group row">
             <label for="type" class="col-sm-2 col-form-label">Kualitas</label>
             <div class="col-sm-10">
-                <select class="form-control" id="kualitas" name="kualitas" required>
+                <select class="form-control" id="kualitas" name="kualitas">
                   <?php
 									$quals = array('','ORIGINAL');
 									foreach ($quals as $q){
@@ -82,9 +82,15 @@
             </div>
         </div>
         <div class="form-group row">
+            <label for="berat" class="col-sm-2 col-form-label">Berat (Kg)</label>
+            <div class="col-sm-10">
+                <input type="number" min="0" class="form-control" id="berat" name="berat">
+            </div>
+        </div>
+        <div class="form-group row">
             <label for="type" class="col-sm-2 col-form-label">Tipe Pelanggan</label>
             <div class="col-sm-10">
-                <select class="form-control" id="tipe_pelanggan" name="tipe_pelanggan" required>
+                <select class="form-control" id="tipe_pelanggan" name="tipe_pelanggan">
                   <?php
 									$quals = array('','DISTRIBUTOR');
 									foreach ($quals as $q){

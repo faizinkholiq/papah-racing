@@ -146,9 +146,10 @@ class con
 		$kategori = join(',', $post['kategori']);
 		$tipe_pelanggan = $post['tipe_pelanggan'];
 		$tambahan = htmlspecialchars(strtoupper($post['tambahan']));
+		$berat = $post['berat'];
 		$deskripsi = $post['deskripsi'];
 
-		$query = mysqli_query($con, "INSERT INTO barang SET barcode='$barcode',nama='$nama',merk='$merk',stok='$stok',modal='$modal',distributor='$distributor',reseller='$reseller',bengkel='$bengkel',admin='$admin',het='$het',kondisi='$kondisi',kualitas='$kualitas',kategori='$kategori',tipe_pelanggan='$tipe_pelanggan',tambahan='$tambahan', deskripsi='$deskripsi' ");
+		$query = mysqli_query($con, "INSERT INTO barang SET barcode='$barcode',nama='$nama',merk='$merk',stok='$stok',modal='$modal',distributor='$distributor',reseller='$reseller',bengkel='$bengkel',admin='$admin',het='$het',kondisi='$kondisi',kualitas='$kualitas',kategori='$kategori',tipe_pelanggan='$tipe_pelanggan',tambahan='$tambahan', deskripsi='$deskripsi', berat='$berat' ");
 		
 		// Upload
 		$id_barang = mysqli_insert_id($con);
@@ -201,14 +202,14 @@ class con
 		$admin = str_replace('.', '', $post['admin']);
 		$het = str_replace('.', '', $post['het']);
 		$kondisi = htmlspecialchars(strtoupper($post['kondisi']));
-		$kualitas = htmlspecialchars(strtoupper($post['kualitas']));
+		$kualitas = !empty($post['kualitas'])? htmlspecialchars(strtoupper($post['kualitas'])) : null;
 		$kategori = join(',', $post['kategori']);
-		$tipe_pelanggan = $post['tipe_pelanggan'];
+		$tipe_pelanggan = !empty($post['tipe_pelanggan'])? $post['tipe_pelanggan'] : null;
 		$tambahan = htmlspecialchars(strtoupper($post['tambahan']));
 		$deskripsi = $post['deskripsi'];
+		$berat = $post['berat'];
 		$updated = date("Y-m-d h:i:s");
-
-		$query = mysqli_query($con, "UPDATE barang SET barcode='$barcode',nama='$nama',merk='$merk',stok='$stok',modal='$modal',distributor='$distributor',reseller='$reseller',bengkel='$bengkel',admin='$admin',het='$het',kondisi='$kondisi',kualitas='$kualitas',kategori='$kategori',tipe_pelanggan='$tipe_pelanggan',tambahan='$tambahan',deskripsi='$deskripsi',updated='$updated' WHERE id_barang='$id_barang' ");
+		$query = mysqli_query($con, "UPDATE barang SET barcode='$barcode',nama='$nama',merk='$merk',stok='$stok',modal='$modal',distributor='$distributor',reseller='$reseller',bengkel='$bengkel',admin='$admin',het='$het',kondisi='$kondisi',kualitas='$kualitas',kategori='$kategori',tipe_pelanggan='$tipe_pelanggan',tambahan='$tambahan',deskripsi='$deskripsi',updated='$updated',berat='$berat' WHERE id_barang='$id_barang' ");
 
 		// Hapus barang
 		if(!empty($post['hapus_barang'])) {
