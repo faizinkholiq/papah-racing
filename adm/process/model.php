@@ -120,7 +120,7 @@ class con
 		header('location:../main?url=pelanggan');
 	}
 
-	function tambahbarang($con, $barcode, $nama, $merk, $stok, $modal, $distributor, $reseller, $bengkel, $admin, $het,$kondisi,$kualitas,$kategori,$tipe_pelanggan,$tambahan,$deskripsi)
+	function tambahbarang($con, $post)
 	{
 		// Kode Barcode Otomatis
 		// $query = mysqli_query($con, "SELECT max(barcode) as kodeTerbesar FROM barang");
@@ -131,21 +131,57 @@ class con
 		// $huruf = "BRG";
 		// $barcode = $huruf . sprintf("%06s", $urutan);
 
-		$barcode = htmlspecialchars(str_replace(' ', '', strtoupper($barcode)));
-		$nama = htmlspecialchars(ucwords($nama));
-		$merk = htmlspecialchars(strtoupper($merk));
-		$kondisi = htmlspecialchars(strtoupper($kondisi));
-		$kualitas = htmlspecialchars(strtoupper($kualitas));
-		$kategori = join(',', $kategori);
-		$tambahan = htmlspecialchars(strtoupper($tambahan));
-		$modal = str_replace('.', '', $modal);
-		$distributor = str_replace('.', '', $distributor);
-		$reseller = str_replace('.', '', $reseller);
-		$bengkel = str_replace('.', '', $bengkel);
-		$admin = str_replace('.', '', $admin);
-		$het = str_replace('.', '', $het);
+		$barcode = htmlspecialchars(str_replace(' ', '', strtoupper($post['barcode'])));
+		$nama = htmlspecialchars(ucwords($post['nama']));
+		$merk = htmlspecialchars(strtoupper($post['merk']));
+		$stok = $post['stok'];
+		$modal = str_replace('.', '', $post['modal']);
+		$distributor = str_replace('.', '', $post['distributor']);
+		$reseller = str_replace('.', '', $post['reseller']);
+		$bengkel = str_replace('.', '', $post['bengkel']);
+		$admin = str_replace('.', '', $post['admin']);
+		$het = str_replace('.', '', $post['het']);
+		$kondisi = htmlspecialchars(strtoupper($post['kondisi']));
+		$kualitas = htmlspecialchars(strtoupper($post['kualitas']));
+		$kategori = join(',', $post['kategori']);
+		$tipe_pelanggan = $post['tipe_pelanggan'];
+		$tambahan = htmlspecialchars(strtoupper($post['tambahan']));
+		$deskripsi = $post['deskripsi'];
+
 		$query = mysqli_query($con, "INSERT INTO barang SET barcode='$barcode',nama='$nama',merk='$merk',stok='$stok',modal='$modal',distributor='$distributor',reseller='$reseller',bengkel='$bengkel',admin='$admin',het='$het',kondisi='$kondisi',kualitas='$kualitas',kategori='$kategori',tipe_pelanggan='$tipe_pelanggan',tambahan='$tambahan', deskripsi='$deskripsi' ");
-		header('location:../main?url=barang');
+		
+		// Upload
+		$id_barang = mysqli_insert_id($con);
+		
+		$f = $_FILES;
+		if(!empty($f)){
+			$path = str_replace('/adm/process','/p/'.trim($id_barang),dirname(__FILE__));
+			if(!file_exists($path)){
+				mkdir($path);
+			}
+			
+			$jum = count($f['gambar']['name']);
+			for ($i = 0; $i < $jum; $i++) {
+				$nama_file = $f['gambar']['name'][$i];
+				$ukuran_file = $f['gambar']['size'][$i];
+				$tipe_file = $f['gambar']['type'][$i];
+				$tmp_file = $f['gambar']['tmp_name'][$i];
+				if($ukuran_file <= 4000000){  
+					if(move_uploaded_file($tmp_file, $path.'/'.$nama_file)){
+						header('location:../main?url=barang');
+					} else {       
+						echo "Maaf, Terjadi kesalahan.";
+						echo "<br><a href='main?url=ubah-barang&this=".$id_barang."'>Kembali Ke Form</a><br>";      
+					}
+				} else {  
+					echo "Maaf, Ukuran gambar yang diupload tidak boleh lebih dari 4MB";    
+					echo "<br><a href='main?url=ubah-barang&this=".$id_barang."'>Kembali Ke Form</a><br>";  
+				}
+			}
+
+		}else{
+			header('location:../main?url=barang');
+		}
 	}
 
 	function ubahbarang($con, $id_barang, $barcode, $nama, $merk, $stok, $modal, $distributor, $reseller, $bengkel, $admin, $het,$kondisi,$kualitas,$kategori,$tipe_pelanggan,$tambahan,$deskripsi)

@@ -5,7 +5,7 @@
     <div class="col-4"><a href="main?url=barang" class="btn btn-danger float-right"><i class='fas fa-times-circle mr-2'></i>Back</a></div>
 </div>
 <div class="wrapper">
-    <form action="process/action?url=tambahbarang" method="post">
+    <form action="process/action?url=tambahbarang" enctype="multipart/form-data"  method="post">
         <div class="form-group row">
             <label for="barcode" class="col-sm-2 col-form-label">Barcode</label>
             <div class="col-sm-10">
@@ -176,6 +176,14 @@
                 <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3"></textarea>
             </div>
         </div>
+         <div class="card bg-light mb-3">
+            <div class="card-header font-weight-bolder">Upload Gambar Maximum 3, Ukuran file Maximum 4 Mb</div><br>
+            <div class="card-body" style="text-align: center">
+                <input id="imgInp" type="file" name="gambar[]" accept="image/*" multiple>
+                <div class="col-lg-12 mt-4 img-container">
+                </div><br>        
+            </div>
+        </div><br>
         <div class="form-row text-center">
             <div class="col-12">
                 <button type="submit" class="btn btn-primary"><i class='fas fa-save mr-2'></i>Simpan</button>
@@ -186,12 +194,67 @@
 </div>
 
 <script>
-    // $(document).ready(function() {
-    //     $('#kategori').on('change', function(e){
-    //         console.log($(e)).val()
-    //     console.log(this.value,
-    //                 this.options[this.selectedIndex].value,
-    //                 $(this).find("option:selected").val(),);
-    //     });
-    // });
+    var photos = [];
+    
+    class _DataTransfer {
+      constructor() {
+        return new ClipboardEvent("").clipboardData || new DataTransfer();
+      }
+    }
+    
+    function doPreview(fileList) {
+        $('.img-container').html('')
+        if (fileList) {
+            for (let file of fileList) {
+             	var reader = new FileReader();
+            
+              reader.onload = function (e) {
+                  $('.img-container').append(`
+                    <div class="i6">
+                        <img src="${e.target.result}">
+                        <button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" data-original-title="Hapus" 
+                            onclick="removeImage('${file.name}')">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                  `)
+              }
+
+              reader.readAsDataURL(file);
+            }
+        }
+    }
+    
+    function removeImage(name) {
+    	photos = photos.filter((item) => item.name !== name)
+        updateValue()
+        doPreview($("#imgInp")[0].files)
+    }
+    
+    function updateValue() {
+    	const dt = new _DataTransfer();
+      for (let file of photos) {
+        dt.items.add(file)  
+      }
+      $("#imgInp")[0].files = dt.files 
+    }
+    
+    $("#imgInp").change(function(){
+        let arrImage = Object.values($(this)[0].files)
+        
+        if (photos.length > 0) {
+              var ids = new Set(photos.map(d => d.name));
+            photos = [...photos, ...arrImage.filter(d => !ids.has(d.name))];
+        }else{
+            photos = arrImage;
+        } 
+
+        updateValue()
+        doPreview($("#imgInp")[0].files)
+        
+    });
+    
+    $('#btn-submit').click(() => {      
+           
+    });
 </script>
