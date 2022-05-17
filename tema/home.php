@@ -56,6 +56,8 @@ foreach ($posts as $pos){
 	$kualitas = $pos['kualitas'];
 	$kategori = $pos['kategori'];
 	$tambahan = $pos['tambahan'];
+	$tipe_pelanggan = $pos['tipe_pelanggan'];
+	$berat = $pos['berat'];
 	$deskripsi = !empty($pos['deskripsi'])? $pos['deskripsi'] : '-';
 	$harga = $pos['het'];
 	$gi = glob(PHOTO.'/'.$id.'/*');
@@ -87,8 +89,11 @@ foreach ($posts as $pos){
 	// bg-info NEW,bg-warning HOT, bg-danger HOT
 	echo '<div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-6"><div class="product_grid card">'.
 	'<div class="badge bg-danger text-white position-absolute ft-regular ab-left text-upper">STOK : '.$stok.'</div>'.
-	'<div class="badge bg-warning text-white position-absolute ft-regular ab-right text-upper">'.$kondisi.$kua1.'</div>'.
-	'<div class="card-body p-0"> <div class="shop_thumb position-relative"> <a class="card-img-top d-block overflow-hidden" href="'.$purl.'"><img class="card-img-top" onerror="this.onerror=null; this.src=\''.TEMA.'/load.gif\'" src="'.$i6.'" alt="'.$ptitle.'"></a> <div class="product-hover-overlay bg-light d-flex align-items-center justify-content-center"> <div class="edlio"><a href="#" data-toggle="modal" data-target="#quickview'.$id.'" class="fs-sm ft-medium"><i class="fas fa-eye mr-1"></i>Quick View</a></div> </div> </div> </div>'.
+	'<div class="badge bg-warning text-white position-absolute ft-regular ab-right text-upper">'.$kondisi.$kua1.'</div>';
+	echo '<div class="card-body p-0"> <div class="shop_thumb position-relative"> <a class="card-img-top d-block overflow-hidden" href="'.$purl.'"><img style="object-fit: cover; height: 10rem;" class="card-img-top" onerror="this.onerror=null; this.src=\''.TEMA.'/load.gif\'" src="'.$i6.'" alt="'.$ptitle.'"></a>';
+	echo !empty($tipe_pelanggan)? '<div style="top: 9rem;" class="badge bg-dark-blue text-white position-absolute ft-regular ab-left text-upper">'.$tipe_pelanggan.'</div>' : '';
+	echo !empty($berat)? '<div style="top: 9rem;" class="badge bg-blue text-white position-absolute ft-regular ab-right text-upper">'.$berat.'kg</div>' : '';
+	echo'<div class="product-hover-overlay bg-light d-flex align-items-center justify-content-center"> <div class="edlio"><a href="#" data-toggle="modal" data-target="#quickview'.$id.'" class="fs-sm ft-medium"><i class="fas fa-eye mr-1"></i>Quick View</a></div> </div> </div> </div>'.
 	'<div class="card-footers b-0 p-3 px-2 bg-white d-flex align-items-start justify-content-center"> <div class="text-left"> <div class="text-center"> <h5 class="fw-bolder fs-sm mb-0 lh-1 mb-1"><a href="'.$purl.'">'.$ptitle.'</a></h5> <div class="elis_rty"><span class="ft-bold fs-sm text-dark">'.rp($harga).',00</span></div> </div> </div> </div>'.
 	'<div class="bg-success d-flex align-items-center justify-content-center"> <div class="edlio"><a href="'.$order.urlencode('Saya order '.$ptitle).'%0a'.urlencode($purl).'" class="btn text-white btn-block mb-1"><i class="lni lni-shopping-basket mr-2"></i>Pesan Sekarang</a></div> </div>'.
 	'</div></div>';
@@ -139,8 +144,10 @@ foreach ($posts as $pos){
 	
 	$j++;
 }	
-echo '</div><div class="row"><div class="col-xl-12 col-lg-12 col-md-12 text-center">';
+echo '</div>';
+echo '<div class="row"><div class="col-xl-12 col-lg-12 col-md-12 text-center">';
 
+if($px != "merk" && $px != "kategori" && $px != "cari"):
 $nav = $per;
 $clas = 'pnv bg-facebook';
 if($nav>1&&$nav<11){
@@ -174,7 +181,10 @@ if ($per>1){
 } else {}
  */
 
-echo '</div></div></div></section>';
+echo '</div></div>';
+endif;
+
+echo '</div></section>';
 echo $all;		
 foot();		
 ?>

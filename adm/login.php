@@ -24,7 +24,7 @@ $data = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM toko WHERE id_toko=
 
 <body>
     <div class="content text-center">
-        <a href="https://www.papahracing.com"><img class="mb-4" src="assets/img/<?= $data['logo_header']; ?>" width="80%" alt="Logo"></a>
+        <a href="<?=SITEURL?>"><img class="mb-4" src="assets/img/<?= $data['logo_header']; ?>" width="80%" alt="Logo"></a>
         <form action="process/action?url=login" method="post">
             <label class="sr-only" for="username">Username</label>
             <div class="input-group mb-2 mr-sm-2">

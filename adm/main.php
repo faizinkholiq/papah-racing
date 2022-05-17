@@ -291,7 +291,7 @@ echo '</div></section>';
     <script src="assets/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="assets/datatables/jquery.dataTables.min.js"></script>
     <!-- <script src="assets/js/chart.min.js"></script> -->
-    <script src="assets/js/script.js"></script>
+    <script src="assets/js/script.js?20220518"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {

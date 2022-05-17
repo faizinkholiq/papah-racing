@@ -1,5 +1,7 @@
 $(document).ready(function() {
-    $('table.display').DataTable();
+    $("table.display").DataTable({
+      order: [],
+    });
     
     $( '.uang' ).mask('000.000.000.000', {reverse: true});
 

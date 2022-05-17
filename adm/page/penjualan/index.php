@@ -1,8 +1,8 @@
 <?php
 if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2") {
-	$query = mysqli_query($con, "SELECT * FROM penjualan ORDER BY tanggal DESC");
+	$query = mysqli_query($con, "SELECT * FROM penjualan WHERE tanggal >= NOW() - INTERVAL 3 MONTH AND status != 'Lunas' ORDER BY tanggal DESC");
 } else {
-	$query = mysqli_query($con, "SELECT * FROM penjualan WHERE id_user='" . $_SESSION['id_user'] . "' ORDER BY tanggal DESC");
+	$query = mysqli_query($con, "SELECT * FROM penjualan WHERE id_user='" . $_SESSION['id_user'] . "' AND tanggal >= NOW() - INTERVAL 3 MONTH AND status != 'Lunas' ORDER BY tanggal DESC");
 }
 ?>
 <div class="row">

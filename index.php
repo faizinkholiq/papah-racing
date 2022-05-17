@@ -131,7 +131,7 @@ if ($count_uri == 1){
 			$src = str_replace('-', ' ', urldecode($p));
 
 			$total = mysqli_num_rows(mysqli_query($con, "SELECT * FROM barang WHERE merk = '$src'"));
-			$posts = mysqli_query($con, "SELECT * FROM barang WHERE merk = '$src' LIMIT ".$l.",".$pp );
+			$posts = mysqli_query($con, "SELECT * FROM barang WHERE merk = '$src'" );
 			$per = ceil($total/$pp);	
 			$ttl = 'Page '.$l;
 			$bc = '<li class="breadcrumb-item"><a href="'.SITEURL.'/merk/'.$src.'/">'.ucwords($p).'</a></li>';
