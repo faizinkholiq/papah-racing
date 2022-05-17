@@ -203,11 +203,11 @@ if ($_SESSION['id_jabatan'] == '1'||$_SESSION['id_jabatan'] == '2'||$_SESSION['i
             <?php $val_selected_brg = !empty($selected_brg['name'])? str_replace('/adm/page/barang','/p/'.trim($id_barang),dirname(__FILE__)).'/'.$selected_brg['name'] : '' ; ?>
             <input type="hidden" id="selected_barang" name="selected_barang" value="<?=$val_selected_brg?>"/>
             <div class="card-body" style="text-align: center">
+            <input id="imgInp" type="file" name="gambar[]" accept="image/*" multiple>
                 <?php
                     if (file_exists($path)):
                     $gl = glob($path.'/*');        
                 ?>
-                <input id="imgInp" type="file" name="gambar[]" accept="image/*" multiple>
                 <div class="col-lg-12 mt-4 img-container">
                 <?php foreach ($gl as $l): ?>
                         <div onclick="selectImage('<?= $l ?>')" class="i6" data-id="<?= $l ?>">
@@ -220,6 +220,9 @@ if ($_SESSION['id_jabatan'] == '1'||$_SESSION['id_jabatan'] == '2'||$_SESSION['i
                         </div>
                 <?php endforeach; ?>
                 </div><br>
+                <?php else: ?>
+                <div class="col-lg-12 mt-4 img-container">
+                </div><br/>
                 <?php endif; ?>
             </div>
         </div><br>

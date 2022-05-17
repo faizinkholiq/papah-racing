@@ -265,9 +265,26 @@ class con
 	}
 
 	function hapusbarang($con, $id_barang)
-	{
+	{	
+		$path = str_replace('/adm/process','/p/'.trim($id_barang),dirname(__FILE__));
+		$this->rrmdir($path);
 		$query = mysqli_query($con, "DELETE FROM barang WHERE id_barang='$id_barang' ");
 		header('location:../main?url=barang');
+	}
+
+	function rrmdir($dir) { 
+		if (is_dir($dir)) { 
+			$objects = scandir($dir);
+			foreach ($objects as $object) { 
+			if ($object != "." && $object != "..") { 
+				if (is_dir($dir. DIRECTORY_SEPARATOR .$object) && !is_link($dir."/".$object))
+				rrmdir($dir. DIRECTORY_SEPARATOR .$object);
+				else
+				unlink($dir. DIRECTORY_SEPARATOR .$object); 
+			} 
+			}
+			rmdir($dir); 
+		} 
 	}
 
 	function tambahbarangpembelian($con, $id_user, $barcode, $qty)
