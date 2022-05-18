@@ -82,7 +82,7 @@
             </div>
         </div>
         <div class="form-group row">
-            <label for="berat" class="col-sm-2 col-form-label">Berat (Kg)</label>
+            <label for="berat" class="col-sm-2 col-form-label">Berat (Gr)</label>
             <div class="col-sm-10">
                 <input type="number" min="0" class="form-control" id="berat" name="berat">
             </div>

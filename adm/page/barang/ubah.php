@@ -97,7 +97,7 @@ if ($_SESSION['id_jabatan'] == '1'||$_SESSION['id_jabatan'] == '2'||$_SESSION['i
             </div>
         </div>
         <div class="form-group row">
-            <label for="berat" class="col-sm-2 col-form-label">Berat (Kg)</label>
+            <label for="berat" class="col-sm-2 col-form-label">Berat (Gr)</label>
             <div class="col-sm-10">
                 <input type="number" min="0" class="form-control" id="berat" name="berat" value="<?= $data['berat']; ?>">
             </div>
@@ -347,7 +347,8 @@ if ($_SESSION['id_jabatan'] == '1'||$_SESSION['id_jabatan'] == '2'||$_SESSION['i
 <?php
 } else {}
 
-if ($_SESSION['id_jabatan'] == '8'||$_SESSION['id_jabatan'] == '7'||$_SESSION['id_jabatan'] == '6'||$_SESSION['id_jabatan'] == '5'){
+// print_r($_SESSION['id_jabatan']);exit;
+if ($_SESSION['id_jabatan'] == '8'||$_SESSION['id_jabatan'] == '7'||$_SESSION['id_jabatan'] == '6'||$_SESSION['id_jabatan'] == '5'||$_SESSION['id_jabatan'] == '4'){
 	echo '<div class="row"><div class="col-md-12 mb-2"><div class="card bg-light mb-3"><div class="card-header font-weight-bolder">Gambar '.$data['nama'].'</div><div class="card-body">';
 	if (file_exists($path)){
 		$gl = glob($path.'/*');
@@ -360,6 +361,10 @@ if ($_SESSION['id_jabatan'] == '8'||$_SESSION['id_jabatan'] == '7'||$_SESSION['i
 			echo 'Gambar Belum Ada';
 		}
 	}
-	echo '</div></div><a href="main?url=barang" class="btn btn-danger float-right"><i class="fas fa-times-circle mr-2"></i>Back</a></div></div>';
+    if($_SESSION['id_jabatan'] == '4'){
+        echo '</div></div><a href="main" class="btn btn-danger float-right"><i class="fas fa-times-circle mr-2"></i>Back</a></div></div>';
+    }else{
+        echo '</div></div><a href="main?url=barang" class="btn btn-danger float-right"><i class="fas fa-times-circle mr-2"></i>Back</a></div></div>';
+    }
 }
 ?>
