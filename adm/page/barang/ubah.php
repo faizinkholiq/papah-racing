@@ -198,7 +198,7 @@ if ($_SESSION['id_jabatan'] == '1'||$_SESSION['id_jabatan'] == '2'||$_SESSION['i
             </div>
         </div>
         <div class="card bg-light mb-3">
-            <div class="card-header font-weight-bolder">Upload Gambar Maximum 3, Ukuran file Maximum 4 Mb</div><br>
+            <div class="card-header font-weight-bolder">Upload Gambar Maximum 5, Ukuran file Maximum 4 Mb</div><br>
             <input type="hidden" id="hapus_barang" name="hapus_barang" />
             <?php $val_selected_brg = !empty($selected_brg['name'])? str_replace('/adm/page/barang','/p/'.trim($id_barang),dirname(__FILE__)).'/'.$selected_brg['name'] : '' ; ?>
             <input type="hidden" id="selected_barang" name="selected_barang" value="<?=$val_selected_brg?>"/>
@@ -274,7 +274,7 @@ if ($_SESSION['id_jabatan'] == '1'||$_SESSION['id_jabatan'] == '2'||$_SESSION['i
         if($('#selected_barang').val() != name) {
             photos = photos.filter((item) => item.name !== name)
             
-            if (photos.length < 3) {
+            if (photos.length < 5) {
                 $('#imgInp').show()
             }else{
                 $('#imgInp').hide()
@@ -319,8 +319,8 @@ if ($_SESSION['id_jabatan'] == '1'||$_SESSION['id_jabatan'] == '2'||$_SESSION['i
             photos = arrImage;
         } 
 
-        if(photos.length > 3) {
-            photos = photos.slice(0,3)
+        if(photos.length > 5) {
+            photos = photos.slice(0,5)
         }
 
         updateValue()
@@ -337,7 +337,7 @@ if ($_SESSION['id_jabatan'] == '1'||$_SESSION['id_jabatan'] == '2'||$_SESSION['i
         let gl = <?= json_encode(glob($path.'/*')) ?>;
         photos = gl.map((item) => { return {'name': item, 'saved': true} } )
 
-        if (photos.length < 3) {
+        if (photos.length < 5) {
             $('#imgInp').show()
         }else{
             $('#imgInp').hide()
