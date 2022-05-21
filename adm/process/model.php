@@ -266,9 +266,11 @@ class con
 
 	function hapusbarang($con, $id_barang)
 	{	
-		$path = str_replace('/adm/process','/p/'.trim($id_barang),dirname(__FILE__));
-		$this->rrmdir($path);
 		$query = mysqli_query($con, "DELETE FROM barang WHERE id_barang='$id_barang' ");
+		$path = str_replace('/adm/process','/p/'.trim($id_barang),dirname(__FILE__));
+		if(file_exists($path)){
+			$this->rrmdir($path);
+		}
 		header('location:../main?url=barang');
 	}
 
