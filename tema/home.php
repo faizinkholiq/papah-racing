@@ -134,8 +134,8 @@ foreach ($posts as $pos){
 			echo '<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12"><div class="text-center">';
 			echo '<div class="slider">';
 			$ims = range(1,5);
-			foreach ($ims as $s){
-				echo '<div><a href="#"><img src="'.SITEURL.'/tema/i/s'.$s.'.jpeg" alt="Image 1"></a></div>';
+			foreach ($banners as $ban){
+				echo '<div><a href="#"><img src="'.SITEURL.'/banner/'.$ban["photo"].'" alt="Image 1"></a></div>';
 			}
 			echo '</div>';
 			echo '</div></div>';
@@ -145,7 +145,7 @@ foreach ($posts as $pos){
 	$j++;
 }	
 echo '</div>';
-echo '<div class="row"><div class="col-xl-12 col-lg-12 col-md-12 text-center">';
+echo '<div class="row" style="margin-top:2rem"><div class="col-xl-12 col-lg-12 col-md-12 text-center">';
 
 if($px != "merk" && $px != "kategori" && $px != "cari"):
 $nav = $per;

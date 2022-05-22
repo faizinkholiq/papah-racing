@@ -616,4 +616,25 @@ class con
 		$query = mysqli_query($con, "DELETE FROM kontak WHERE id='$id' ");
 		header('location:../main?url=kontak');
 	}
+
+	function upload_banner()
+	{
+
+	}
+
+	function update_banner_order()
+	{
+		$idArray = explode(",", $_POST["ids"]);
+		$count = 1;
+
+		foreach($idArray as $id){
+			$query = mysqli_query($con, "UPDATE banner SET order_no = '$count' WHERE id = '$id'");
+			$count++; 
+		}
+
+		echo json_encode([
+			"success" => 1,
+			"message" => "Success update"
+		]);
+	}
 }

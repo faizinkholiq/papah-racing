@@ -32,6 +32,8 @@ if (substr($kontak,0,2)=='08'){
 } 
 $order = 'https://wa.me/'.$phone.'?text=';
 
+$banners = mysqli_query($con, "SELECT * FROM banner ORDER BY id ASC");
+
 /* 
 $now = date('Y-m-d h:i:s');
 $start = date('Y-m').'-01 00:00:00';
@@ -217,7 +219,7 @@ if ($count_uri == 1){
 }
 
 function head(){
-	global $title,$merks,$px,$px2;
+	global $title,$merks,$px,$px2,$banners;
 
 	echo '<!DOCTYPE html><html lang="id"><head><meta charset="utf-8" /><meta name="author" content="Themezhub" /><meta name="viewport" content="width=device-width, initial-scale=1"><title>'.$title.'</title><link href="'.TEMA.'/styles.css?v='.date('Ymdhis').'" rel="stylesheet">'.
 	'<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>'.
@@ -261,10 +263,9 @@ function head(){
 	
 	if ($px != "cari" && $px != "kategori" && $px != "merk"){
 		echo '<div class="slider">';
-		$ims = range(1,5);
-		foreach ($ims as $s){
-			echo '<div><a href="#"><img src="'.SITEURL.'/tema/i/s'.$s.'.jpeg" alt="Image 1"></a></div>';
-		}
+		foreach ($banners as $ban){
+			echo '<div><a href="#"><img src="'.SITEURL.'/banner/'.$ban["photo"].'" alt="Image 1"></a></div>';
+		 }
 		echo '</div>';
 	}
 	/* '<h1 class="ft-medium mb-3">'.$title.'</h1><ul class="shop_categories_list m-0 p-0">';

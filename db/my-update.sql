@@ -33,3 +33,8 @@ ALTER TABLE `barang` CHANGE `kualitas` `kualitas` VARCHAR(50) CHARACTER SET utf8
 ALTER TABLE `barang` CHANGE `tipe_pelanggan` `tipe_pelanggan` ENUM('DISTRIBUTOR','') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL;
 
 ALTER TABLE `barang` ADD `berat` VARCHAR(50) NULL AFTER `tipe_pelanggan`;
+
+-- 21 Mei 2022
+CREATE TABLE `papah_racing`.`banner` ( `id` INT NOT NULL AUTO_INCREMENT , `photo` VARCHAR(100) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+INSERT INTO `banner` (`id`, `photo`, `order_no`) VALUES (NULL, 's1.jpeg', 1), (NULL, 's2.jpeg', 2), (NULL, 's3.jpeg', 3), (NULL, 's4.jpeg', 4), (NULL, 's5.jpeg', 5);
+ALTER TABLE `banner` ADD `order_no` INT NOT NULL AFTER `photo`;

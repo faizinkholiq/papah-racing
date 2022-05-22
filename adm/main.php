@@ -51,6 +51,7 @@ $id_user = $_SESSION['id_user'];
                                     <li class="nav-item"><a class="nav-link" href="main?url=user"><span class="ml-2"><i class='fas fa-user mr-2'></i>Data User</span></a></li>
                                 <?php } ?>
                                 <li class="nav-item"><a class="nav-link" href="main?url=jenis-pengeluaran"><span class="ml-2"><i class='fas fa-shopping-basket mr-2'></i>Jenis Pengeluaran</span></a></li>
+                                <li class="nav-item"><a class="nav-link" href="main?url=banner"><span class="ml-2"><i class='fas fa-images mr-2'></i>Banner</span></a></li>
                             </ul>
                         </div>
                     </li>
@@ -266,6 +267,8 @@ if ($_SESSION['id_jabatan'] == '8'||$_SESSION['id_jabatan'] == '7'||$_SESSION['i
 			require 'page/kontak/ubah.php';
 		} else if ($act == 'tambah-kontak') {
 			require 'page/kontak/tambah.php';
+		} else if ($act == 'banner') {
+			require 'page/banner/index.php';
 		} else {
 			header("location: main");
 		}
