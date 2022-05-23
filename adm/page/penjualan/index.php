@@ -1,22 +1,24 @@
 <?php
 if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2") {
 	$query = mysqli_query($con, "
-        SELECT * FROM penjualan WHERE status != 'Lunas' AND persetujuan != 'Approved'
-        UNION ALL
         SELECT * 
         FROM penjualan 
         WHERE DATEDIFF(NOW(), tanggal) <= 90 
             AND status = 'Lunas' AND persetujuan = 'Approved' 
+        UNION ALL
+        SELECT * FROM penjualan
+        WHERE CONCAT(status,persetujuan) != CONCAT('Lunas','Approved')
         ORDER BY tanggal DESC");
 } else {
 	$query = mysqli_query($con, "
-        SELECT * FROM penjualan WHERE status != 'Lunas' AND AND persetujuan != 'Approved'
-        UNION ALL
         SELECT * 
         FROM penjualan 
         WHERE id_user='" . $_SESSION['id_user'] . "' 
-            AND DATEDIFF(NOW(), tanggal) < 90 
+            AND DATEDIFF(NOW(), tanggal) <= 90 
             AND status = 'Lunas' AND persetujuan = 'Approved'
+        UNION ALL
+        SELECT * FROM penjualan
+        WHERE CONCAT(status,persetujuan) != CONCAT('Lunas','Approved')
         ORDER BY tanggal DESC");
 }
 ?>

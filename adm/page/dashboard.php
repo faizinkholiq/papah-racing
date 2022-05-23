@@ -31,7 +31,7 @@ $qty_barang_penj = mysqli_fetch_assoc(mysqli_query($con, "SELECT sum(qty) AS tot
 $jumlah_pengeluaran = mysqli_fetch_assoc(mysqli_query($con, "SELECT sum(jumlah) AS total FROM pengeluaran WHERE DATE_FORMAT(tanggal, '%Y-%m-%d') BETWEEN '$date' AND '$date'"))["total"];
 
 if ($_SESSION['id_jabatan'] == '8'||$_SESSION['id_jabatan'] == '7'||$_SESSION['id_jabatan'] == '6'||$_SESSION['id_jabatan'] == '4'){ 
-	$query = mysqli_query($con, "SELECT * FROM barang ORDER BY barcode DESC");
+	$query = mysqli_query($con, "SELECT * FROM barang ORDER BY created DESC");
 	echo '<div class="wrapper">'.
 	'<div class="table-responsive mt-3">'.
 	'<table class="table table-striped table-bordered display" style="width:100%">'.

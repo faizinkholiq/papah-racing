@@ -68,7 +68,7 @@ foreach ($posts as $pos){
 	if (empty($gi)){} else {
 		$i = 0;
 		foreach ($gi as $im){
-			if(!empty($selected_brg)) {
+			if(!empty($selected_brg["name"])) {
 				$im = SITEURL.'/p/'.$id.'/'.$selected_brg["name"];
 			}else{
 				$im = SITEURL.'/p/'.$id.'/'.basename($im);
@@ -135,7 +135,7 @@ foreach ($posts as $pos){
 			echo '<div class="slider">';
 			$ims = range(1,5);
 			foreach ($banners as $ban){
-				echo '<div><a href="#"><img src="'.SITEURL.'/banner/'.$ban["photo"].'" alt="Image 1"></a></div>';
+				echo '<div><a href="#"><img src="'.SITEURL.'/banner/'.$ban["photo"].'" alt="Image 1" style="height:20rem; object-fit:cover; object-position::center;"></a></div>';
 			}
 			echo '</div>';
 			echo '</div></div>';

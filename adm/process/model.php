@@ -145,12 +145,12 @@ class con
 		$kualitas = htmlspecialchars(strtoupper($post['kualitas']));
 		$kategori = join(',', $post['kategori']);
 		$tipe_pelanggan = $post['tipe_pelanggan'];
-		$tambahan = htmlspecialchars(strtoupper($post['tambahan']));
+		$tambahan = str_replace("'", "''", htmlspecialchars(strtoupper($post['tambahan'])));
 		$berat = $post['berat'];
-		$deskripsi = $post['deskripsi'];
+		$deskripsi = str_replace("'", "''", $post['deskripsi']);
 
-		$query = mysqli_query($con, "INSERT INTO barang SET barcode='$barcode',nama='$nama',merk='$merk',stok='$stok',modal='$modal',distributor='$distributor',reseller='$reseller',bengkel='$bengkel',admin='$admin',het='$het',kondisi='$kondisi',kualitas='$kualitas',kategori='$kategori',tipe_pelanggan='$tipe_pelanggan',tambahan='$tambahan', deskripsi='$deskripsi', berat='$berat' ");
-		
+		$query = mysqli_query($con, "INSERT INTO barang SET barcode='$barcode',nama='$nama',merk='$merk',stok='$stok',modal='$modal',distributor='$distributor',reseller='$reseller',bengkel='$bengkel',admin='$admin',het='$het',kondisi='$kondisi',kualitas='$kualitas',kategori='$kategori',tipe_pelanggan='$tipe_pelanggan',tambahan='$tambahan', deskripsi='$deskripsi', berat=$berat ");
+
 		// Upload
 		$id_barang = mysqli_insert_id($con);
 		
@@ -180,7 +180,7 @@ class con
 			}
 
 			// Update selected
-			mysqli_query($con,"REPLACE INTO foto_barang (id_barang, name) VALUES ($id_barang, ".$f['gambar']['name'][0].")");
+			mysqli_query($con,"REPLACE INTO foto_barang (id_barang, name) VALUES ($id_barang, '".$f['gambar']['name'][0]."')");
 
 			header('location:../main?url=barang');
 		}else{
@@ -190,24 +190,25 @@ class con
 
 	function ubahbarang($con, $post)
 	{
+		session_start();
 		$id_barang = $post['id_barang'];
-		$barcode = htmlspecialchars(str_replace(' ', '', strtoupper($post['barcode'])));
-		$nama = htmlspecialchars(ucwords($post['nama']));
-		$merk = htmlspecialchars(strtoupper($post['merk']));
-		$stok = $post['stok'];
-		$modal = str_replace('.', '', $post['modal']);
-		$distributor = str_replace('.', '', $post['distributor']);
-		$reseller = str_replace('.', '', $post['reseller']);
-		$bengkel = str_replace('.', '', $post['bengkel']);
-		$admin = str_replace('.', '', $post['admin']);
-		$het = str_replace('.', '', $post['het']);
-		$kondisi = htmlspecialchars(strtoupper($post['kondisi']));
+		$barcode = !empty($post['barcode'])? htmlspecialchars(str_replace(' ', '', strtoupper($post['barcode']))) : null;
+		$nama = !empty($post['nama'])? htmlspecialchars(ucwords($post['nama'])) : null;
+		$merk = !empty($post['merk'])? htmlspecialchars(strtoupper($post['merk'])) : null;
+		$stok = !empty($post['stok'])? $post['stok'] : null;
+		$modal = !empty($post['modal'])? str_replace('.', '', $post['modal']) : null;
+		$distributor = !empty($post['distributor'])? str_replace('.', '', $post['distributor']) : null;
+		$reseller = !empty($post['reseller'])? str_replace('.', '', $post['reseller']) : null;
+		$bengkel = !empty($post['bengkel'])? str_replace('.', '', $post['bengkel']) : null;
+		$admin = !empty($post['admin'])? str_replace('.', '', $post['admin']) : null;
+		$het = !empty($post['het'])? str_replace('.', '', $post['het']) : null;
+		$kondisi = !empty($post['kondisi'])? htmlspecialchars(strtoupper($post['kondisi'])) : null;
 		$kualitas = !empty($post['kualitas'])? htmlspecialchars(strtoupper($post['kualitas'])) : null;
-		$kategori = join(',', $post['kategori']);
+		$kategori = !empty($post['kategori'])? join(',', $post['kategori']) : null;
 		$tipe_pelanggan = !empty($post['tipe_pelanggan'])? $post['tipe_pelanggan'] : null;
-		$tambahan = htmlspecialchars(strtoupper($post['tambahan']));
-		$deskripsi = $post['deskripsi'];
-		$berat = $post['berat'];
+		$tambahan = !empty($post['tambahan'])? htmlspecialchars(strtoupper($post['tambahan'])) : null;
+		$deskripsi = !empty($post['deskripsi'])? $post['deskripsi'] : null;
+		$berat = !empty($post['berat'])? $post['berat'] : null;
 		$updated = date("Y-m-d h:i:s");
 		$query = mysqli_query($con, "UPDATE barang SET barcode='$barcode',nama='$nama',merk='$merk',stok='$stok',modal='$modal',distributor='$distributor',reseller='$reseller',bengkel='$bengkel',admin='$admin',het='$het',kondisi='$kondisi',kualitas='$kualitas',kategori='$kategori',tipe_pelanggan='$tipe_pelanggan',tambahan='$tambahan',deskripsi='$deskripsi',updated='$updated',berat='$berat' WHERE id_barang='$id_barang' ");
 
@@ -242,11 +243,7 @@ class con
 				$tipe_file = $f['gambar']['type'][$i];
 				$tmp_file = $f['gambar']['tmp_name'][$i];
 				if($ukuran_file <= 4000000){  
-					if(move_uploaded_file($tmp_file, $path.'/'.$nama_file)){
-					} else {       
-						echo "Maaf, Terjadi kesalahan.";
-						echo "<br><a href='main?url=ubah-barang&this=".$id_barang."'>Kembali Ke Form</a><br>";      
-					}
+					move_uploaded_file($tmp_file, $path.'/'.$nama_file);
 				} else {  
 					echo "Maaf, Ukuran gambar yang diupload tidak boleh lebih dari 4MB";    
 					echo "<br><a href='main?url=ubah-barang&this=".$id_barang."'>Kembali Ke Form</a><br>";  
@@ -261,7 +258,11 @@ class con
 			mysqli_query($con,"REPLACE INTO foto_barang (id_barang, name) VALUES ($id_barang, '$selected_barang')");
 		}
 
-		header('location:../main?url=barang');
+		if($_SESSION['id_jabatan'] == "4"){
+			header('location:../main');
+		}else{
+			header('location:../main?url=barang');
+		}
 	}
 
 	function hapusbarang($con, $id_barang)
@@ -617,12 +618,71 @@ class con
 		header('location:../main?url=kontak');
 	}
 
-	function upload_banner()
+	function upload_banner($con)
 	{
+		$err = "";
+		if (!empty($_FILES['files'])){
+			$path = str_replace('/adm/process','/banner/',dirname(__FILE__));
+			if(!file_exists($path)){
+				mkdir($path);
+			}
 
+			$n = 0;
+
+			$prepareName = [];
+			foreach($_FILES["files"]["name"] as $val){
+				$fileName = $_FILES["files"]["name"][$n];
+				$fileSize = $_FILES["files"]["size"][$n];
+				$fileTemp = $_FILES['files']['tmp_name'][$n];
+				$fileType = $_FILES['files']['type'][$n];
+
+				if($fileSize <= 4000000) {
+					if(move_uploaded_file($fileTemp, $path.$fileName)){
+						$err = "";
+						$prepareName[] = $fileName;
+					}
+				}else{
+					$err = "Ukuran gambar terlalu besar"; 
+					break;
+				}
+
+				$n++;
+			}
+
+			if (empty($err)) {
+				if(!empty($prepareName)){
+					$count  = 1;
+					$cn_banner = mysqli_num_rows(mysqli_query($con, "SELECT * FROM banner"));
+					if($cn_banner > 0) {
+						$count = $cn_banner;
+					}
+					foreach($prepareName as $name){
+						mysqli_query($con, "INSERT INTO banner SET photo = '$name', order_no = $count");
+						$count++;
+					}
+				}
+			}
+		}else{
+			$err = "Gambar yang dilampirkan tidak tersedia";
+		}
+
+		ob_end_clean();
+		if (!empty($err)){
+			echo json_encode([
+				"success" => 0,
+				"message" => null,
+				"err" => $err,
+			]);
+		}else{
+			echo json_encode([
+				"success" => 1,
+				"message" => "Sukses upload",
+				"err" => null,
+			]);
+		}
 	}
 
-	function update_banner_order()
+	function update_banner_order($con)
 	{
 		$idArray = explode(",", $_POST["ids"]);
 		$count = 1;
@@ -632,6 +692,7 @@ class con
 			$count++; 
 		}
 
+		ob_end_clean();
 		echo json_encode([
 			"success" => 1,
 			"message" => "Success update"

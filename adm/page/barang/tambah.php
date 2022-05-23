@@ -183,7 +183,7 @@
             </div>
         </div>
         <div class="card bg-light mb-3">
-            <div class="card-header font-weight-bolder">Upload Gambar Maximum 3, Ukuran file Maximum 4 Mb</div><br>
+            <div class="card-header font-weight-bolder">Upload Gambar Maximum 5, Ukuran file Maximum 4 Mb</div><br>
             <div class="card-body" style="text-align: center">
                 <input id="imgInp" type="file" name="gambar[]" accept="image/*" multiple>
                 <div class="col-lg-12 mt-4 img-container">
@@ -233,6 +233,9 @@
     
     function removeImage(name) {
     	photos = photos.filter((item) => item.name !== name)
+        
+        if(photos.length < 5) $("#imgInp").slideDown()
+
         updateValue()
         doPreview($("#imgInp")[0].files)
     }
@@ -253,6 +256,11 @@
             photos = [...photos, ...arrImage.filter(d => !ids.has(d.name))];
         }else{
             photos = arrImage;
+        }
+
+        if(photos.length >= 5) {
+            $("#imgInp").slideUp()
+            if (photos.length > 5) photos = photos.slice(0,5) 
         } 
 
         updateValue()

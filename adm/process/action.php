@@ -188,5 +188,9 @@ if (empty($_GET['url'])) {
 	} else if ($to == 'hapus-kontak') {
 		$id = $_GET['this'];
 		$nc->hapuskontak($con, $id);
+	} else if ($to == 'upload-banner') {
+		$nc->upload_banner($con);
+	} else if ($to == 'update-order') {
+		$nc->update_banner_order($con);
 	}
 }

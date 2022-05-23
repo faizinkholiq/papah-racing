@@ -211,7 +211,9 @@ if ($_SESSION['id_jabatan'] == '1'||$_SESSION['id_jabatan'] == '2'||$_SESSION['i
                 <div class="col-lg-12 mt-4 img-container">
                 <?php foreach ($gl as $l): ?>
                         <div onclick="selectImage('<?= $l ?>')" class="i6" data-id="<?= $l ?>">
-                            <div class="overlay" style="display:<?=($selected_brg['name'] == basename($l))? '' : 'none' ?>"><i class="fa fa-check"></i></div>
+                            <div class="overlay" style="display:<?=($selected_brg['name'] == basename($l))? '' : 'none' ?>">
+                                <i class="fa fa-check"></i>
+                            </div>
                             <img src="<?= SITEURL.'/p/'.trim($id_barang).'/'.basename($l) ?>">
                             <button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" data-original-title="Hapus" 
                                 onclick="removeImage('<?= $l ?>', false, event)">
@@ -234,6 +236,61 @@ if ($_SESSION['id_jabatan'] == '1'||$_SESSION['id_jabatan'] == '2'||$_SESSION['i
     </form>
 
 </div>
+<?php
+} else {}
+
+// print_r($_SESSION['id_jabatan']);exit;
+if ($_SESSION['id_jabatan'] == '8'||$_SESSION['id_jabatan'] == '7'||$_SESSION['id_jabatan'] == '6'||$_SESSION['id_jabatan'] == '5'||$_SESSION['id_jabatan'] == '4'){
+	$val_selected_brg = !empty($selected_brg['name'])? str_replace('/adm/page/barang','/p/'.trim($id_barang),dirname(__FILE__)).'/'.$selected_brg['name'] : '';
+    echo '
+    <form action="process/action?url=ubahbarang" enctype="multipart/form-data" method="post">
+    <input type="hidden" name="id_barang" value="'.$id_barang.'">
+    <div class="row">
+        <div class="col-md-12 mb-2">
+            <div class="card bg-light mb-3">
+                <div class="card-header font-weight-bolder">Gambar '.$data['nama'].'</div>
+                <div class="card-body">
+                    <input type="hidden" id="hapus_barang" name="hapus_barang" />
+                    <input type="hidden" id="selected_barang" name="selected_barang" value="'.$val_selected_brg.'"/>
+                    <div style="text-align:center">
+                        <h6 style="font-weight:bold">Upload Gambar Maximum 5, Ukuran file Maximum 4 Mb</h6>
+                        <input id="imgInp" type="file" name="gambar[]" accept="image/*" multiple>
+                        <div class="col-lg-12 mt-4 img-container">';
+                        if (file_exists($path)){
+                            $gl = glob($path.'/*');
+                            // print_r($gl);
+                            if (count($gl)>0){
+                                foreach ($gl as $l): ?>
+                                    <div onclick="selectImage('<?= $l ?>')" class="i6" data-id="<?= $l ?>">
+                                        <div class="overlay" style="display:<?=($selected_brg['name'] == basename($l))? '' : 'none' ?>">
+                                            <i class="fa fa-check"></i>
+                                        </div>
+                                        <img src="<?= SITEURL.'/p/'.trim($id_barang).'/'.basename($l) ?>">
+                                        <button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" data-original-title="Hapus" 
+                                            onclick="removeImage('<?= $l ?>', false, event)">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </div>
+    <?php
+                                endforeach;
+                            } else {
+                                echo 'Gambar Belum Ada';
+                            }
+                        }
+                    echo '</div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                <a href="main" class="btn btn-danger float-right ml-2"><i class="fas fa-times-circle mr-2"></i>Back</a>
+                <button type="submit" class="btn btn-primary float-right"><i class="fas fa-save mr-2"></i>Simpan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </form>';
+}
+?>
+
 <script>
     var photos = [];
     var deleted_photos = [];
@@ -344,27 +401,3 @@ if ($_SESSION['id_jabatan'] == '1'||$_SESSION['id_jabatan'] == '2'||$_SESSION['i
         }
     });
 </script>
-<?php
-} else {}
-
-// print_r($_SESSION['id_jabatan']);exit;
-if ($_SESSION['id_jabatan'] == '8'||$_SESSION['id_jabatan'] == '7'||$_SESSION['id_jabatan'] == '6'||$_SESSION['id_jabatan'] == '5'||$_SESSION['id_jabatan'] == '4'){
-	echo '<div class="row"><div class="col-md-12 mb-2"><div class="card bg-light mb-3"><div class="card-header font-weight-bolder">Gambar '.$data['nama'].'</div><div class="card-body">';
-	if (file_exists($path)){
-		$gl = glob($path.'/*');
-		// print_r($gl);
-		if (count($gl)>0){
-			foreach ($gl as $l){
-				echo '<div class="i6"><img src="https://'.str_replace('admin.','',$_SERVER['SERVER_NAME']).'/p/'.trim($id_barang).'/'.basename($l).'"></div>';
-			}
-		} else {
-			echo 'Gambar Belum Ada';
-		}
-	}
-    if($_SESSION['id_jabatan'] == '4'){
-        echo '</div></div><a href="main" class="btn btn-danger float-right"><i class="fas fa-times-circle mr-2"></i>Back</a></div></div>';
-    }else{
-        echo '</div></div><a href="main?url=barang" class="btn btn-danger float-right"><i class="fas fa-times-circle mr-2"></i>Back</a></div></div>';
-    }
-}
-?>

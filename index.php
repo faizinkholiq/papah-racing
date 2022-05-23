@@ -32,7 +32,7 @@ if (substr($kontak,0,2)=='08'){
 } 
 $order = 'https://wa.me/'.$phone.'?text=';
 
-$banners = mysqli_query($con, "SELECT * FROM banner ORDER BY id ASC");
+$banners = mysqli_query($con, "SELECT * FROM banner ORDER BY order_no ASC LIMIT 5");
 
 /* 
 $now = date('Y-m-d h:i:s');
@@ -264,7 +264,7 @@ function head(){
 	if ($px != "cari" && $px != "kategori" && $px != "merk"){
 		echo '<div class="slider">';
 		foreach ($banners as $ban){
-			echo '<div><a href="#"><img src="'.SITEURL.'/banner/'.$ban["photo"].'" alt="Image 1"></a></div>';
+			echo '<div><a href="#"><img src="'.SITEURL.'/banner/'.$ban["photo"].'" alt="Image 1" style="height:20rem; object-fit:cover; object-position::center;"></a></div>';
 		 }
 		echo '</div>';
 	}

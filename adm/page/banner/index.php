@@ -6,7 +6,7 @@
 </div>
 <div class="wrapper">
     <div class="card bg-light mb-3">
-        <div class="card-header font-weight-bolder">Maximal foto yang diupload untuk banner adalah 5</div><br>
+        <div class="card-header font-weight-bolder">5 Teratas akan ditampilkan di home page</div><br>
         <div class="card-body" style="text-align: center">
             <div class="container">
                 <div class="dropzone dz-clickable" id="myDrop">
@@ -30,7 +30,7 @@
                         if(!empty($images)){
                             foreach($images as $row){
                         ?>
-                        <li id="image_li_<?php echo $row['id']; ?>" class="col-lg-2 col-md-3 col-sm-12 ui-sortable-handle"
+                        <li data-id="<?= $row['id']; ?>" id="image_li_<?php echo $row['id']; ?>" class="col-lg-2 col-md-3 col-sm-12 ui-sortable-handle"
                         style="
                             background: white;
                             padding: 0;
@@ -49,6 +49,7 @@
                                 width: 100%;
                                 height: 7rem;
                                 padding: 0;
+                                object-fit: cover;
                             ">
                              <button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" data-original-title="Hapus" 
                                 onclick="removeImage(<?= $row['id'] ?>)"
@@ -98,19 +99,24 @@ $(document).ready(function(){
     $("#updateReorder").click(function( e ){
         if(!$("#updateReorder i").length){
             $(this).html('').prepend('<i class="fa fa-spin fa-spinner"></i>');
-            $("ul.nav").sortable('destroy');
             $("#reorder-msg").html( "Reordering Photos - This could take a moment. Please don't navigate away from this page." ).removeClass('light_box').addClass('notice notice_error');
     
             var h = [];
-            $("ul.nav li").each(function() {  h.push($(this).attr('id').substr(9));  });
+            $("#myGalery li").each(function() {  h.push($(this).attr('data-id'));  });
                 
             $.ajax({
                 type: "POST",
-                url: "<?=SITEURL?>",
+                url: "<?=SITEURL?>/adm/process/action?url=update-order",
                 data: {ids: " " + h + ""},
                 success: function(data){
-                    if(data==1 || parseInt(data)==1){
-                        //window.location.reload();
+                    data = JSON.parse(data)
+                    if(data.success == 1){
+                        setTimeout(() => {
+                            $("#updateReorder").html('Simpan urutan');                        
+                        }, 500);
+                    }else{
+                        alert("Update order failed");
+                        $("#updateReorder").html('Simpan urutan');
                     }
                 }
             }); 
@@ -129,7 +135,7 @@ $(document).ready(function(){
          parallelUploads: 50,
          maxFilesize: 5, // MB
          acceptedFiles: ".png, .jpeg, .jpg, .gif",
-         url: "<?=SITEURL ?>",
+         url: "<?=SITEURL ?>/adm/process/action?url=upload-banner",
     });
      
     myDropzone.on("sending", function(file, xhr, formData) {
@@ -145,7 +151,7 @@ $(document).ready(function(){
     /* Add Files Script*/
     myDropzone.on("success", function(file, message){
         $("#msg").html(message);
-        setTimeout(function(){window.location.href="index.php"},200);
+        window.location.reload();
     });
       
     myDropzone.on("error", function (data) {
