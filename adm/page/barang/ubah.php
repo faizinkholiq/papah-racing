@@ -214,7 +214,7 @@ if ($_SESSION['id_jabatan'] == '1'||$_SESSION['id_jabatan'] == '2'||$_SESSION['i
                             <div class="overlay" style="display:<?=($selected_brg['name'] == basename($l))? '' : 'none' ?>">
                                 <i class="fa fa-check"></i>
                             </div>
-                            <img src="<?= SITEURL.'/p/'.trim($id_barang).'/'.basename($l) ?>">
+                            <img src="<?= PHOTO.'/'.trim($id_barang).'/'.basename($l) ?>">
                             <button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" data-original-title="Hapus" 
                                 onclick="removeImage('<?= $l ?>', false, event)">
                                 <i class="fas fa-trash-alt"></i>
@@ -240,7 +240,7 @@ if ($_SESSION['id_jabatan'] == '1'||$_SESSION['id_jabatan'] == '2'||$_SESSION['i
 } else {}
 
 // print_r($_SESSION['id_jabatan']);exit;
-if ($_SESSION['id_jabatan'] == '8'||$_SESSION['id_jabatan'] == '7'||$_SESSION['id_jabatan'] == '6'||$_SESSION['id_jabatan'] == '5'||$_SESSION['id_jabatan'] == '4'){
+if ($_SESSION['id_jabatan'] == '4'){
 	$val_selected_brg = !empty($selected_brg['name'])? str_replace('/adm/page/barang','/p/'.trim($id_barang),dirname(__FILE__)).'/'.$selected_brg['name'] : '';
     echo '
     <form action="process/action?url=ubahbarang" enctype="multipart/form-data" method="post">
@@ -265,7 +265,7 @@ if ($_SESSION['id_jabatan'] == '8'||$_SESSION['id_jabatan'] == '7'||$_SESSION['i
                                         <div class="overlay" style="display:<?=($selected_brg['name'] == basename($l))? '' : 'none' ?>">
                                             <i class="fa fa-check"></i>
                                         </div>
-                                        <img src="<?= SITEURL.'/p/'.trim($id_barang).'/'.basename($l) ?>">
+                                        <img src="<?= PHOTO.'/'.trim($id_barang).'/'.basename($l) ?>">
                                         <button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" data-original-title="Hapus" 
                                             onclick="removeImage('<?= $l ?>', false, event)">
                                             <i class="fas fa-trash-alt"></i>
@@ -291,6 +291,39 @@ if ($_SESSION['id_jabatan'] == '8'||$_SESSION['id_jabatan'] == '7'||$_SESSION['i
 }
 ?>
 
+<?php if($_SESSION['id_jabatan'] == '8'||$_SESSION['id_jabatan'] == '7'||$_SESSION['id_jabatan'] == '6'||$_SESSION['id_jabatan'] == '5') : ?>
+        <div class="row">
+        <div class="col-md-12 mb-2">
+            <div class="card bg-light mb-3">
+                <div class="card-header font-weight-bolder">Gambar <?=$data['nama']?></div>
+                <div class="card-body">
+                    <div style="text-align:center">
+                        <div class="col-lg-12 mt-4 img-container">';
+                        <?php if (file_exists($path)){
+                            $gl = glob($path.'/*');
+                            if (count($gl)>0){
+                                foreach ($gl as $l): ?>
+                                    <div class="i6" data-id="<?= $l ?>">
+                                        <img src="<?= PHOTO.'/'.trim($id_barang).'/'.basename($l) ?>">
+                                    </div>
+                        <?php endforeach;
+                            } else {
+                                echo 'Gambar Belum Ada';
+                            }
+                        } ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                <a href="main" class="btn btn-danger float-right ml-2"><i class="fas fa-times-circle mr-2"></i>Back</a>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+
+
+<?php if($_SESSION['id_jabatan'] == '1'||$_SESSION['id_jabatan'] == '2'||$_SESSION['id_jabatan'] == '3'||$_SESSION['id_jabatan'] == '4') : ?>
 <script>
     var photos = [];
     var deleted_photos = [];
@@ -401,3 +434,4 @@ if ($_SESSION['id_jabatan'] == '8'||$_SESSION['id_jabatan'] == '7'||$_SESSION['i
         }
     });
 </script>
+<?php endif; ?>

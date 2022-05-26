@@ -43,7 +43,7 @@
                             align-items: flex-end;
                             cursor: move;
                         ">
-                            <img src="<?= SITEURL ?>/banner/<?php echo $row['photo']; ?>" alt="" class="img-thumbnail"
+                            <img src="<?= PHOTO ?>/../banner/<?php echo $row['photo']; ?>" alt="" class="img-thumbnail"
                             style="
                                 border: none;
                                 width: 100%;
