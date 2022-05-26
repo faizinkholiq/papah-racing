@@ -214,7 +214,7 @@ if ($_SESSION['id_jabatan'] == '1'||$_SESSION['id_jabatan'] == '2'||$_SESSION['i
                             <div class="overlay" style="display:<?=($selected_brg['name'] == basename($l))? '' : 'none' ?>">
                                 <i class="fa fa-check"></i>
                             </div>
-                            <img src="<?= PHOTO.'/'.trim($id_barang).'/'.basename($l) ?>">
+                            <img src="<?= str_replace("admin.", "", SITEURL).'/p/'.trim($id_barang).'/'.basename($l) ?>">
                             <button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" data-original-title="Hapus" 
                                 onclick="removeImage('<?= $l ?>', false, event)">
                                 <i class="fas fa-trash-alt"></i>
@@ -265,7 +265,7 @@ if ($_SESSION['id_jabatan'] == '4'){
                                         <div class="overlay" style="display:<?=($selected_brg['name'] == basename($l))? '' : 'none' ?>">
                                             <i class="fa fa-check"></i>
                                         </div>
-                                        <img src="<?= PHOTO.'/'.trim($id_barang).'/'.basename($l) ?>">
+                                        <img src="<?= str_replace("admin.", "", SITEURL).'/p/'.trim($id_barang).'/'.basename($l) ?>">
                                         <button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" data-original-title="Hapus" 
                                             onclick="removeImage('<?= $l ?>', false, event)">
                                             <i class="fas fa-trash-alt"></i>
@@ -304,7 +304,7 @@ if ($_SESSION['id_jabatan'] == '4'){
                             if (count($gl)>0){
                                 foreach ($gl as $l): ?>
                                     <div class="i6" data-id="<?= $l ?>">
-                                        <img src="<?= PHOTO.'/'.trim($id_barang).'/'.basename($l) ?>">
+                                        <img src="<?= str_replace("admin.", "", SITEURL).'/p/'.trim($id_barang).'/'.basename($l) ?>">
                                     </div>
                         <?php endforeach;
                             } else {
