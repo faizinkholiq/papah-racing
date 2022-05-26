@@ -135,7 +135,7 @@ foreach ($posts as $pos){
 			echo '<div class="slider">';
 			$ims = range(1,5);
 			foreach ($banners as $ban){
-				echo '<div><a href="#"><img src="'.SITEURL.'/banner/'.$ban["photo"].'" alt="Image 1" style="height:20rem; object-fit:cover; object-position::center;"></a></div>';
+				echo '<div><a href="#"><img class="img-fluid" src="'.SITEURL.'/banner/'.$ban["photo"].'" alt="Image 1"></a></div>';
 			}
 			echo '</div>';
 			echo '</div></div>';
