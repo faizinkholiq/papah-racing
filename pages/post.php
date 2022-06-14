@@ -22,7 +22,7 @@ foreach ($posts as $r){
 		$i = 1;
 		foreach ($gi as $im){
 			$im = SITEURL.'/p/'.$id.'/'.basename($im);
-			$i9 .= '<a href="'.$im.'"><img onerror="this.onerror=null;this.src=\''.TEMA.'/load.gif\'" src="'.$im.'" alt=""></a>';
+			$i9 .= '<a href="'.$im.'"><img onerror="this.onerror=null;this.src=\''.SITEURL.'/images/load.gif\'" src="'.$im.'" alt=""></a>';
 			if ($i>1){
 			} else {
 				$i6 .= $im;
@@ -52,7 +52,7 @@ if (empty($tambahan)){$tambahan='-';}
 
 echo '<section class="middle"><div class="container">'.
 '<div class="row">'.
-'<div class="col-xl-6 col-lg-6 col-md-12 col-sm-12"><div class="sp-loading"><img onerror="this.onerror=null;this.src=\''.TEMA.'/load.gif\'" src="'.$i6.'" alt=""><br>LOADING IMAGES</div><div class="sp-wrap">'.$i9.'</div></div>'.
+'<div class="col-xl-6 col-lg-6 col-md-12 col-sm-12"><div class="sp-loading"><img onerror="this.onerror=null;this.src=\''.SITEURL.'/images/load.gif\'" src="'.$i6.'" alt=""><br>LOADING IMAGES</div><div class="sp-wrap">'.$i9.'</div></div>'.
 '<div class="col-xl-6 col-lg-6 col-md-12 col-sm-12"><div class="prd_details">';
 echo '<div class="prt_02 mb-2"><h2 class="ft-bold mb-1">'.$ptitle.'</h2><div class="text-left"><div class="elis_rty">'.
 // '<span class="ft-medium text-muted line-through fs-md mr-2">'.rp($harga*1.5).',00</span>'.
@@ -112,7 +112,7 @@ foreach ($random as $pos){
 		foreach ($gi as $im){
 			$im = SITEURL.'/p/'.$id.'/'.basename($im);
 			if ($i>1){} else {$i6 = $im;}
-			$i9 .= '<div class="single_view_slide"><img onerror="this.onerror=null; this.src=\''.TEMA.'/load.gif\'" src="'.$im.'" class="img-fluid" alt="" /></div>';
+			$i9 .= '<div class="single_view_slide"><img onerror="this.onerror=null; this.src=\''.SITEURL.'/images/load.gif\'" src="'.$im.'" class="img-fluid" alt="" /></div>';
 			$i++;
 		}
 	}
@@ -129,7 +129,7 @@ foreach ($random as $pos){
 	echo '<div class="col-xl-2 col-lg-3 col-md-4 col-sm-12"><div class="product_grid card">'.
 	'<div class="badge bg-danger text-white position-absolute ft-regular ab-left text-upper">Stok : '.$stok.'</div>'.
 	'<div class="badge bg-warning text-white position-absolute ft-regular ab-right text-upper">'.$kondisi.$kua1.'</div>'.
-		'<div class="card-body p-0"> <div class="shop_thumb position-relative"> <a class="card-img-top d-block overflow-hidden" href="'.$purl.'"><img class="card-img-top" onerror="this.onerror=null; this.src=\''.TEMA.'/load.gif\'" src="'.$i6.'" alt="'.$ptitle.'"></a> <div class="product-hover-overlay bg-light d-flex align-items-center justify-content-center"> <div class="edlio"><a href="#" data-toggle="modal" data-target="#quickview'.$id.'" class="fs-sm ft-medium"><i class="fas fa-eye mr-1"></i>Quick View</a></div> </div> </div> </div>'.
+		'<div class="card-body p-0"> <div class="shop_thumb position-relative"> <a class="card-img-top d-block overflow-hidden" href="'.$purl.'"><img class="card-img-top" onerror="this.onerror=null; this.src=\''.SITEURL.'/images/load.gif\'" src="'.$i6.'" alt="'.$ptitle.'"></a> <div class="product-hover-overlay bg-light d-flex align-items-center justify-content-center"> <div class="edlio"><a href="#" data-toggle="modal" data-target="#quickview'.$id.'" class="fs-sm ft-medium"><i class="fas fa-eye mr-1"></i>Quick View</a></div> </div> </div> </div>'.
 	'<div class="card-footers b-0 p-3 px-2 bg-white d-flex align-items-start justify-content-center"> <div class="text-left"> <div class="text-center"> <h5 class="fw-bolder fs-sm mb-0 lh-1 mb-1"><a href="'.$purl.'">'.$ptitle.'</a></h5> <div class="elis_rty"><span class="ft-bold fs-sm text-dark">'.rp($harga).',00</span></div> </div> </div> </div>'.
 	'<div class="bg-success d-flex align-items-center justify-content-center"> <div class="edlio"><a href="'.$order.urlencode('Saya order '.$ptitle).'%0a'.urlencode($purl).'" class="btn text-white btn-block mb-1"><i class="lni lni-shopping-basket mr-2"></i>Pesan Sekarang</a></div> </div>'.
 	'</div></div>';

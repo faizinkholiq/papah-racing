@@ -75,7 +75,7 @@ foreach ($posts as $pos){
 			}
 
 			if ($i>1){} else {$i6 = $im;}
-			$i9 .= '<div class="single_view_slide"><img onerror="this.onerror=null; this.src=\''.TEMA.'/load.gif\'" src="'.$im.'" class="img-fluid" alt="" /></div>';
+			$i9 .= '<div class="single_view_slide"><img onerror="this.onerror=null; this.src=\''.SITEURL.'/images/load.gif\'" src="'.$im.'" class="img-fluid" alt="" /></div>';
 			$i++;
 		}
 	}
@@ -90,7 +90,7 @@ foreach ($posts as $pos){
 	echo '<div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-6"><div class="product_grid card">'.
 	'<div class="badge bg-danger text-white position-absolute ft-regular ab-left text-upper">STOK : '.$stok.'</div>'.
 	'<div class="badge bg-warning text-white position-absolute ft-regular ab-right text-upper">'.$kondisi.$kua1.'</div>';
-	echo '<div class="card-body p-0"> <div class="shop_thumb position-relative"> <a class="card-img-top d-block overflow-hidden" href="'.$purl.'"><img style="object-fit: cover; height: 10rem;" class="card-img-top" onerror="this.onerror=null; this.src=\''.TEMA.'/load.gif\'" src="'.$i6.'" alt="'.$ptitle.'"></a>';
+	echo '<div class="card-body p-0"> <div class="shop_thumb position-relative"> <a class="card-img-top d-block overflow-hidden" href="'.$purl.'"><img style="object-fit: cover; height: 10rem;" class="card-img-top" onerror="this.onerror=null; this.src=\''.SITEURL.'/images/load.gif\'" src="'.$i6.'" alt="'.$ptitle.'"></a>';
 	echo !empty($tipe_pelanggan)? '<div style="top: 9rem;" class="badge bg-dark-blue text-white position-absolute ft-regular ab-left text-upper">'.$tipe_pelanggan.'</div>' : '';
 	echo !empty($berat)? '<div style="top: 9rem;" class="badge bg-blue text-white position-absolute ft-regular ab-right text-upper">'.$berat.'gr</div>' : '';
 	echo'<div class="product-hover-overlay bg-light d-flex align-items-center justify-content-center"> <div class="edlio"><a href="#" data-toggle="modal" data-target="#quickview'.$id.'" class="fs-sm ft-medium"><i class="fas fa-eye mr-1"></i>Quick View</a></div> </div> </div> </div>'.

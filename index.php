@@ -80,12 +80,12 @@ if ($count_uri == 1){
 		$title = $toko.' - '.$ket;
 		$page = 1;
 		$nvurl = SITEURL;
-		include('tema/home.php');
+		include('pages/home.php');
 	} elseif (substr($xp[1],0,3)=='?q='){
 		header("Location: ".SITEURL.'/cari/'.str_replace('?q=','',$xp[1].'/'));
 		exit;
 	} else {
-		include('tema/404.php');		
+		include('pages/404.php');		
 	}
 } elseif ($count_uri == 3||$count_uri == 5 || $xp[1] === "kategori"){
 	$px = $xp[1];
@@ -97,7 +97,7 @@ if ($count_uri == 1){
 		if (empty($xp[5])){
 			$p3 = $xp[3];$p4 = $xp[4];$p5 = $xp[5];
 		} else {
-			include('tema/404.php');
+			include('pages/404.php');
 		}
 	} else {
 		$p3 = '';$p4 = '';$p5 = '';
@@ -112,7 +112,7 @@ if ($count_uri == 1){
 		if ($px=='produk'){
 			$posts = mysqli_query($con, "SELECT * FROM barang WHERE id_barang = '".$p."' LIMIT 1");
 			$random = mysqli_query($con, "SELECT * FROM barang ORDER BY created DESC LIMIT 8");
-			include('tema/post.php');
+			include('pages/post.php');
 		} elseif ($px=='page'){
 			$s = (($p-1)*$pp)+1;
 			if(is_numeric($p)&&strlen($p)==3){
@@ -124,9 +124,9 @@ if ($count_uri == 1){
 				$ttl = 'Page '.$p;
 				$nvurl = SITEURL;
 				$title = 'Page : '.$p.' - '.$ket;
-				include('tema/home.php');
+				include('pages/home.php');
 			} else {
-				include('tema/404.php');
+				include('pages/404.php');
 			}
 		} elseif ($px=='merk'){
 			$page = $l;
@@ -139,9 +139,9 @@ if ($count_uri == 1){
 			$bc = '<li class="breadcrumb-item"><a href="'.SITEURL.'/merk/'.$src.'/">'.ucwords($p).'</a></li>';
 			if ($total>0){
 				$title = 'Brand : '.ucwords($p).' ['.$total.']';
-				include('tema/home.php');
+				include('pages/home.php');
 			} else {
-				include('tema/404.php');
+				include('pages/404.php');
 			}
 		} elseif ($px=='kategori'){
 			$page = $l;
@@ -161,12 +161,12 @@ if ($count_uri == 1){
 					$bc = '<li class="breadcrumb-item"><a href="'.SITEURL.'/kategori/'.$p.'/">'.join(', ', $arr_kat).'</a></li>';
 					$ttl = 'Page '.$l;
 					$title = 'Kategori : '.ucwords($p).' ['.$total.']';
-					include('tema/home.php');
+					include('pages/home.php');
 				} else {
-					include('tema/404.php');
+					include('pages/404.php');
 				}
 			}else{
-				include('tema/404.php');
+				include('pages/404.php');
 			}
 		} elseif ($px=='cari'){
 			// $posts = mysqli_query($con, "SELECT * FROM barang WHERE nama LIKE '%".$p."%'");
@@ -180,48 +180,48 @@ if ($count_uri == 1){
 			$ttl = ucwords($p);
 			$title = 'Search : '.ucwords($p).' ('.$total.')';
 			if ($total>0){
-				include('tema/home.php');
+				include('pages/home.php');
 			} else {
-				include('tema/404.php');
+				include('pages/404.php');
 			}
 		} elseif ($px=='sort'&&empty($p3)){
 			if ($p=='harga-asc'){
 				$ttl = 'Harga Terendah';
 				$title = 'Harga Terendah - '.$toko;
 				$posts = mysqli_query($con, "SELECT * FROM barang ORDER BY het != 0 ASC LIMIT ".$pp);
-				include('tema/home.php');
+				include('pages/home.php');
 			} elseif ($p=='harga-desc'){
 				$ttl = 'Harga Tertinggi';
 				$title = 'Harga Tertinggi - '.$toko;
 				$posts = mysqli_query($con, "SELECT * FROM barang ORDER BY het DESC LIMIT ".$pp);
-				include('tema/home.php');
+				include('pages/home.php');
 			} elseif ($p=='stok-asc'){
 				$ttl = 'Stok Paling Sedikit';
 				$title = 'Stok Paling Sedikit - '.$toko;
 				$posts = mysqli_query($con, "SELECT * FROM barang ORDER BY stok ASC LIMIT ".$pp);
-				include('tema/home.php');
+				include('pages/home.php');
 			} elseif ($p=='stok-desc'){
 				$ttl = 'Stok Paling Banyak';
 				$title = 'Stok Paling Banyak - '.$toko;
 				$posts = mysqli_query($con, "SELECT * FROM barang ORDER BY stok DESC LIMIT ".$pp);
-				include('tema/home.php');
+				include('pages/home.php');
 			} else {			
-				include('tema/404.php');
+				include('pages/404.php');
 			}
 		} else {
-			include('tema/404.php');		
+			include('pages/404.php');		
 		}
 	} else {
-		include('tema/404.php');		
+		include('pages/404.php');		
 	}
 } else {
-	include('tema/404.php');
+	include('pages/404.php');
 }
 
 function head(){
 	global $title,$merks,$px,$px2,$banners;
 
-	echo '<!DOCTYPE html><html lang="id"><head><meta charset="utf-8" /><meta name="author" content="Themezhub" /><meta name="viewport" content="width=device-width, initial-scale=1"><title>'.$title.'</title><link href="'.TEMA.'/styles.css?v='.date('Ymdhis').'" rel="stylesheet">'.
+	echo '<!DOCTYPE html><html lang="id"><head><meta charset="utf-8" /><meta name="author" content="Themezhub" /><meta name="viewport" content="width=device-width, initial-scale=1"><title>'.$title.'</title><link href="'.SITEURL.'/css/styles.css?v='.date('Ymdhis').'" rel="stylesheet">'.
 	'<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>'.
 	'<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>'.
 	'<style>.slider .slick-slide img{border-radius:3px;}.slider .slick-slide img{width:100%;}.slick-prev,.slick-next{width:50px;height:50px;z-index:1;}.slick-prev{left:5px;}.slick-next{right:5px;}.slick-prev:before,.slick-next:before{font-size:40px;text-shadow:0 0 10px rgba(0,0,0,0.5);}.slick-dots{bottom:15px;}.slick-dots li button:before{font-size:12px;color:#fff;text-shadow:0 0 10px rgba(0,0,0,0.5);opacity:1;}.slick-dots li.slick-active button:before{color:#dedede;}.slider:not(:hover) .slick-arrow,.slider:not(:hover) .slick-dots{opacity:0;}.slick-arrow,.slick-dots{transition:opacity 0.5s ease-out;}</style>'.
@@ -297,7 +297,7 @@ function head(){
 
 			$select_cat = ($px === "kategori" && strtoupper($px2) === $c)? 'select-border' : '';
 			echo '<div class="col-lg-2 col-md-4 cat"><div class="product_grid card '. $select_cat .'">'.
-			'<div class="card-body p-0"><div class="shop_thumb position-relative"><a class="card-img-top d-block overflow-hidden" href="'.SITEURL.'/kategori/?search_kategori='.implode(",", $search).'"><img class="card-img-top" src="'.TEMA.'/i/'.strtolower(str_replace(' ','-',$c)).'.jpeg"></a></div></div>'.
+			'<div class="card-body p-0"><div class="shop_thumb position-relative"><a class="card-img-top d-block overflow-hidden" href="'.SITEURL.'/kategori/?search_kategori='.implode(",", $search).'"><img class="card-img-top" src="'.SITEURL.'/images/kategori/'.strtolower(str_replace(' ','-',$c)).'.jpeg"></a></div></div>'.
 			'<div class="badge bg-'.$war[$i].' py-2"><div class="text-white">'.$c.'</div></div>'.
 			'</div></div>';
 			$i++;
@@ -383,18 +383,18 @@ function foot(){
 	echo '<a id="back2Top" class="top-scroll" title="Back to top" href="#"><i class="ti-arrow-up"></i></a>';
 	echo '<a id="what" class="top-scroll" title="Back to top" target="_blank" href="https://wa.me/6281329763463?text="><i class="lni lni-whatsapp"></i></a>';
 	echo '</div>';
-	echo '<script src="'.TEMA.'/jquery.min.js"></script>'.
-	'<script src="'.TEMA.'/popper.min.js"></script>'.
-	'<script src="'.TEMA.'/bootstrap.min.js"></script>'.
-	'<script src="'.TEMA.'/ion.rangeSlider.min.js"></script>'.
-	'<script src="'.TEMA.'/slick.js"></script>'.
-	'<script src="'.TEMA.'/slider-bg.js"></script>'.
-	'<script src="'.TEMA.'/lightbox.js"></script> '.
-	'<script src="'.TEMA.'/smoothproducts.js"></script>'.
-	'<script src="'.TEMA.'/snackbar.min.js"></script>'.
-	'<script src="'.TEMA.'/jQuery.style.switcher.js"></script>'.
-	'<script src="'.TEMA.'/custom.js"></script>'.
-	'<script src="'.TEMA.'/bootstrap-show-password.min.js"></script>';
+	echo '<script src="'.SITEURL.'/js/jquery.min.js"></script>'.
+	'<script src="'.SITEURL.'/js/popper.min.js"></script>'.
+	'<script src="'.SITEURL.'/js/bootstrap.min.js"></script>'.
+	'<script src="'.SITEURL.'/js/ion.rangeSlider.min.js"></script>'.
+	'<script src="'.SITEURL.'/js/slick.js"></script>'.
+	'<script src="'.SITEURL.'/js/slider-bg.js"></script>'.
+	'<script src="'.SITEURL.'/js/lightbox.js"></script> '.
+	'<script src="'.SITEURL.'/js/smoothproducts.js"></script>'.
+	'<script src="'.SITEURL.'/js/snackbar.min.js"></script>'.
+	'<script src="'.SITEURL.'/js/jQuery.style.switcher.js"></script>'.
+	'<script src="'.SITEURL.'/js/custom.js"></script>'.
+	'<script src="'.SITEURL.'/js/bootstrap-show-password.min.js"></script>';
 	echo '<script>$(document).ready(function(){$(\'.slider\').slick({autoplay: true,autoplaySpeed: 2500,dots: true});});</script>';
 	echo '<script> function openSearch() { document.getElementById("Search").style.display = "block"; } function closeSearch() { document.getElementById("Search").style.display = "none";}</script>'.
 	'</body></html>';
