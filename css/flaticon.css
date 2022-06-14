@@ -5,21 +5,21 @@
 
 @font-face {
   font-family: "Flaticon";
-  src: url("Flaticon.eot");
-  src: url("Flaticon.eot?#iefix") format("embedded-opentype"),
-       url("Flaticon.woff") format("woff"),
-       url("Flaticon.ttf") format("truetype"),
-       url("Flaticon.svg#Flaticon") format("svg");
+  src: url("fonts/Flaticon.eot");
+  src: url("fonts/Flaticon.eot?#iefix") format("embedded-opentype"),
+       url("fonts/Flaticon.woff") format("woff"),
+       url("fonts/Flaticon.ttf") format("truetype"),
+       url("fonts/Flaticon.svg#Flaticon") format("svg");
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: "Flaticon";
-  src: url("houses.eot");
-  src: url("houses.eot?#iefix") format("embedded-opentype"),
-       url("houses.woff") format("woff"),
-       url("houses.ttf") format("truetype"),
-       url("houses.svg#Flaticon") format("svg");
+  src: url("fonts/houses.eot");
+  src: url("fonts/houses.eot?#iefix") format("embedded-opentype"),
+       url("fonts/houses.woff") format("woff"),
+       url("fonts/houses.ttf") format("truetype"),
+       url("fonts/houses.svg#Flaticon") format("svg");
   font-weight: normal;
   font-style: normal;
 }
@@ -29,7 +29,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: "Flaticon";
-    src: url("Flaticon.svg#Flaticon") format("svg");
+    src: url("fonts/Flaticon.svg#Flaticon") format("svg");
   }
 }
 
