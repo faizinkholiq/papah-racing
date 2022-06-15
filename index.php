@@ -233,14 +233,30 @@ function head(){
 	'<div class="header header-transparent dark-text ' . $header_type . '"><div class="container"><nav id="navigation" class="navigation navigation-landscape">'.
 	'<div class="nav-header"><a class="nav-brand" href="'.SITEURL.'/"><img src="'.SITEURL.'/images/icons/logo.png" class="logo" alt="" /></a>'.
 	// '<div class="nav-toggle"></div>'.
-	'<form method="GET" action="'.SITEURL.'/" class="scl form m-0 p-0"><div class="form-group"><input type="text" class="form-control" name="q" placeholder="Product Keyword.."></div></form>'.
+	'<form method="GET" action="'.SITEURL.'/" class="scl form m-0 p-0">
+		<div class="form-group">
+			<div class="input-group">
+				<input type="text" class="form-control" name="q" placeholder="Product Keyword..">
+				<div class="input-group-append">
+					<button class="btn btn-outline-secondary" type="button">Search</button>
+				</div>
+			</div>
+		</div>
+	</form>'.
 	'<div class="mobile_nav"><ul>'.
 	// '<li><a href="#" onclick="openSearch()"><i class="lni lni-search-alt"></i></a></li>'.
 	'<li><div class="join"><a href="#" data-toggle="modal" data-target="#joinus">JOIN US</a></div></li>'.
 	'<li><div class="loin"> <a href="#" data-toggle="modal" data-target="#login"> LOGIN</a></div></li> '.
 	'</ul></div></div>'.
 	'<div class="nav-menus-wrapper" style="transition-property: none;">'.
-	'<form class="form m-0 p-0" method="GET" action="'.SITEURL.'/"><div class="form-group"><input type="text" class="form-control" name="q" placeholder="Product Keyword.." /></div></form>'.
+	'<form class="form m-0 p-0" method="GET" action="'.SITEURL.'/">
+			<div class="input-group">
+				<input type="text" class="form-control" name="q" placeholder="Product Keyword..">
+				<div class="my-input-group-append">
+					<button class="btn btn-outline-secondary" type="submit"><i class="fa fa-search"></i></button>
+				</div>
+			</div>
+	</form>'.
 	/* '<ul class="nav-menu">'.
 	'<li><a href="'.SITEURL.'/">HOME</a></li>'.
 	'<li><a href="#joinus">JOIN US</a></li>'.
