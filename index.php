@@ -293,6 +293,28 @@ function head(){
 	}
 	echo '</ul></div>'; */
 	echo '</div></div></div></div>';
+	echo '
+	<div class="container mb-1" style="height: 4rem; padding: 0;">
+		<div class="row" style="
+			height: 100%;
+			width: 100%;
+			margin: 0;
+		">
+			<div class="col-lg-3 text-center">
+				<div class="badge bg-success h-75 w-100">TENTANG KAMI</div>
+			</div>
+			<div class="col-lg-3 text-center">
+				<div class="badge bg-success h-75 w-100">TENTANG KAMI</div>
+			</div>
+			<div class="col-lg-3 text-center">
+				<div class="badge bg-success h-75 w-100">TENTANG KAMI</div>
+			</div>
+			<div class="col-lg-3 text-center">
+				<div class="badge bg-success h-75 w-100">TENTANG KAMI</div>
+			</div>
+		</div>
+	</div>
+	';
 	// echo '<section class="py-2 br-bottom br-top"><div class="container"><div class="row align-items-center justify-content-between"><div class="col-xl-3 col-lg-4 col-md-5 col-sm-12"><nav aria-label="breadcrumb"><h2 class="off_title">KATEGORI</h2></nav></div></div></div>';
 	if ($px != "cari" && $px != "kategori" && $px != "merk" && $px != "produk"){
 		echo '<div class="middle"><div class="container"><div class="row align-items-center">';
