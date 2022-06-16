@@ -294,23 +294,31 @@ function head(){
 	echo '</ul></div>'; */
 	echo '</div></div></div></div>';
 	echo '
-	<div class="container mb-1" style="height: 4rem; padding: 0;">
+	<div class="container mb-1" style="height: 5rem;">
 		<div class="row" style="
 			height: 100%;
 			width: 100%;
 			margin: 0;
 		">
-			<div class="col-lg-3 text-center">
-				<div class="badge bg-success h-75 w-100">TENTANG KAMI</div>
+			<div class="col-lg-3 text-center" style="padding:0">
+				<div class="my-badge-nav badge h-75 w-100">
+					<i class="fa fa-exclamation-circle mr-2"></i> PERATURAN PELAYANAN
+				</div>
 			</div>
-			<div class="col-lg-3 text-center">
-				<div class="badge bg-success h-75 w-100">TENTANG KAMI</div>
+			<div class="col-lg-3 text-center" style="padding:0">
+				<div class="my-badge-nav badge h-75 w-100">
+					<i class="fa fa-medal mr-2"></i> GARANSI
+				</div>
 			</div>
-			<div class="col-lg-3 text-center">
-				<div class="badge bg-success h-75 w-100">TENTANG KAMI</div>
+			<div class="col-lg-3 text-center" style="padding:0">
+				<div class="my-badge-nav badge h-75 w-100">
+					<i class="fa fa-users mr-2"></i> TENTANG KAMI
+				</div>
 			</div>
-			<div class="col-lg-3 text-center">
-				<div class="badge bg-success h-75 w-100">TENTANG KAMI</div>
+			<div class="col-lg-3 text-center" style="padding:0">
+				<div class="my-badge-nav badge h-75 w-100">
+					<i class="fa fa-user-plus mr-2"></i> JOIN US
+				</div>
 			</div>
 		</div>
 	</div>

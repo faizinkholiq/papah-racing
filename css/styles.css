@@ -5133,3 +5133,13 @@ footer.skin-dark-footer ul.footer-bottom-social li a:hover, footer.skin-dark-foo
     border-radius: 0 3px 3px 0;
     vertical-align: middle;
 }
+
+.my-badge-nav{
+    border-radius: 1.1rem;
+    color: grey;
+    border: 1.5px solid rgba(0,0,0,.125);
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
