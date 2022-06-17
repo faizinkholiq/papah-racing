@@ -5021,16 +5021,23 @@ footer.skin-dark-footer ul.footer-bottom-social li a:hover, footer.skin-dark-foo
 /*====================================
  Bottom To top Scroll
 =====================================*/
+.fab-collection {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    z-index: 999;
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    gap: 1rem;
+    transition: all 1s;
+}
+
 #back2Top {
     width: 40px;
     line-height: 40px;
-    overflow: hidden;
-    z-index: 999;
     display: none;
     cursor: pointer;
-    position: fixed;
-    bottom: 10px;
-    right: 20px;
     text-align: center;
     font-size: 15px;
     border-radius: 4px;
@@ -5044,26 +5051,25 @@ footer.skin-dark-footer ul.footer-bottom-social li a:hover, footer.skin-dark-foo
 }
 
 #what {
-  width: 40px;
-  line-height: 40px;
-  overflow: hidden;
-  z-index: 999;
-  display: none;
-  cursor: pointer;
-  position: fixed;
-  bottom: 60px;
-  right: 20px;
-  text-align: center;
-  font-size: 25px;
-  border-radius: 20px;
-  text-decoration: none;
-  background: #46df1b;
-  color: #ffffff;
-	display: inline;
+    width: 50px;
+    line-height: 50px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 25px;
+    border-radius: 100%;
+    text-decoration: none;
+    background: #46df1b;
+    color: #ffffff;
+    transition: all 1s;
+
 }
 #what:hover {
     background-color:#ffffff;
     color:#46df1b;
+}
+
+#open24h {
+    transition: all 1s;
 }
 
 .select-border {
@@ -5138,8 +5144,19 @@ footer.skin-dark-footer ul.footer-bottom-social li a:hover, footer.skin-dark-foo
     border-radius: 1.1rem;
     color: grey;
     border: 1.5px solid rgba(0,0,0,.125);
-    font-size: 1rem;
+    font-size: 0.9rem;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.my-badge-nav:hover{
+    color: white;
+    background-color: #03a9f5;
+    border: 1.5px solid #03a9f5;
+    transition:all 0.3s;
+}
+
+.my-btn{
+    border-radius: 0.6rem;
 }

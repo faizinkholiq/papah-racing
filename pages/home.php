@@ -1,39 +1,13 @@
 <?php
 head();
-echo '<section class="py-2 br-bottom br-top"><div class="container"><div class="row align-items-center justify-content-end">';
+echo '<section class="py-2 br-bottom br-top">
+		<div class="container">
+			<div class="row align-items-center justify-content-start">
+				<h3 style="font-weight:bold; padding-left:15px; padding-top:10px; color: grey;">ALL PRODUCT</h3>			
+			</div>
+		</div>
+	</section>';
 
-// echo '<div class="col-xl-9 col-lg-8 col-md-7 col-sm-12"><nav aria-label="breadcrumb">'.
-// '<ol class="breadcrumb"> <li class="breadcrumb-item"><a href="'.SITEURL.'">Home</a></li>'.
-// $bc.
-// '<li class="breadcrumb-item active" aria-current="page">'.$ttl.'</li></ol>'.
-// '</nav></div>';
-
-echo '<div class="col-xl-3 col-lg-4 col-md-5 col-sm-12"><div class="filter_wraps elspo_wrap d-flex align-items-center justify-content-end">';
-
-/* '<form><select class="custom-select simple" name="sort" id="sort" onchange="this.form.submit()">'.
-'<option value="1">Default Sorting</option>'.
-'<option value="harga-asc">Harga Paling Rendah</option>'.
-'<option value="harga-desc">Harga Paling Tinggi</option>'.
-'<option value="stok-asc">Stok Paling Sedikit</option>'.
-'<option value="stok-desc">Stok Paling Banyak</option>'.
-'</select></form>'. */
-
-if(isset($px) && ($px != "cari" && $px != "kategori" && $px != "merk")) {
-	echo '
-	<div class="single_fitres elspo_filter mr-2 br-right"><i class="lni lni-search-alt mr-2"></i></div>
-	<div class="single_fitres mr-2 br-right">
-	<form><select class="custom-select simple" name="merk" id="merk" onchange="this.form.submit()">'.
-	'<option value="1">Pilih Brand</option>';
-	asort($merks);
-	foreach ($merks as $mr){
-		echo '<option value="'.strtolower($mr).'">'.ucwords($mr).'</option>';
-	}
-	echo '</select></form></div></div>';
-}
-
-echo '</div></div>'.
-'</div></section>';
-echo '';
 
 if(isset($px) && ($px == "cari" || $px == "kategori" || $px == "merk")) {
 	echo '

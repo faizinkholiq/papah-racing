@@ -245,8 +245,8 @@ function head(){
 	</form>'.
 	'<div class="mobile_nav"><ul>'.
 	// '<li><a href="#" onclick="openSearch()"><i class="lni lni-search-alt"></i></a></li>'.
-	'<li><div class="join"><a href="#" data-toggle="modal" data-target="#joinus">JOIN US</a></div></li>'.
-	'<li><div class="loin"> <a href="#" data-toggle="modal" data-target="#login"> LOGIN</a></div></li> '.
+	// '<li><div class="join"><a href="#" data-toggle="modal" data-target="#joinus">JOIN US</a></div></li>'.
+	'<li><div class="login"> <a href="#" data-toggle="modal" data-target="#login"> LOGIN</a></div></li> '.
 	'</ul></div></div>'.
 	'<div class="nav-menus-wrapper" style="transition-property: none;">'.
 	'<form class="form m-0 p-0" method="GET" action="'.SITEURL.'/">
@@ -265,8 +265,8 @@ function head(){
 	'</ul>'. */
 	'<ul class="nav-menu nav-menu-social align-to-right">'.
 	// '<li><a href="#" onclick="openSearch()"><i class="lni lni-search-alt"></i></a></li>'.
-	'<li><div class="badge bg-success login"> <a href="#" data-toggle="modal" data-target="#joinus">JOIN US <i class="lni lni-users"></i></a></div></li>'.
-	'<li><div class="badge bg-danger login"> <a href="#" data-toggle="modal" data-target="#login">LOGIN <i class="lni lni-user"></i></a></div></li> '.
+	// '<li><div class="badge bg-success login"> <a href="#" data-toggle="modal" data-target="#joinus">JOIN US <i class="lni lni-users"></i></a></div></li>'.
+	'<li><div class="badge bg-danger login my-btn"> <a href="#" data-toggle="modal" data-target="#login">LOGIN <i class="lni lni-user"></i></a></div></li> '.
 	'</ul></div></nav></div></div>';
 	
 	if ($px == "cari" || $px == "kategori" || $px == "merk") {
@@ -294,31 +294,31 @@ function head(){
 	echo '</ul></div>'; */
 	echo '</div></div></div></div>';
 	echo '
-	<div class="container mb-1" style="height: 5rem;">
+	<div class="container mb-1" style="height: 5rem; padding:0;">
 		<div class="row" style="
 			height: 100%;
 			width: 100%;
 			margin: 0;
 		">
-			<div class="col-lg-3 text-center" style="padding:0">
-				<div class="my-badge-nav badge h-75 w-100">
+			<div class="col-lg-3 text-center">
+				<a href="#!" class="my-badge-nav badge h-75 w-100">
 					<i class="fa fa-exclamation-circle mr-2"></i> PERATURAN PELAYANAN
-				</div>
+				</a>
 			</div>
-			<div class="col-lg-3 text-center" style="padding:0">
-				<div class="my-badge-nav badge h-75 w-100">
+			<div class="col-lg-3 text-center">
+				<a href="#!" class="my-badge-nav badge h-75 w-100">
 					<i class="fa fa-medal mr-2"></i> GARANSI
-				</div>
+				</a>
 			</div>
-			<div class="col-lg-3 text-center" style="padding:0">
-				<div class="my-badge-nav badge h-75 w-100">
+			<div class="col-lg-3 text-center">
+				<a href="#!" class="my-badge-nav badge h-75 w-100">
 					<i class="fa fa-users mr-2"></i> TENTANG KAMI
-				</div>
+				</a>
 			</div>
-			<div class="col-lg-3 text-center" style="padding:0">
-				<div class="my-badge-nav badge h-75 w-100">
+			<div class="col-lg-3 text-center">
+				<a href="#!" class="my-badge-nav badge h-75 w-100" data-toggle="modal" data-target="#joinus">
 					<i class="fa fa-user-plus mr-2"></i> JOIN US
-				</div>
+				</a>
 			</div>
 		</div>
 	</div>
@@ -409,25 +409,55 @@ function foot(){
 	</div>
 	</div><div class="form-group"><div class="d-flex align-items-center justify-content-between"><div class="flex-1"><input id="dd" class="checkbox-custom" name="dd" type="checkbox"><label for="dd" class="checkbox-custom-label">Remember Me</label></div><div class="eltio_k2"><a href="#">Lost Your Password?</a></div>	 </div></div><div class="form-group"><button type="submit" class="btn btn-md full-width bg-dark text-light fs-md ft-medium">Login</button></div><div class="form-group text-center mb-0"><p class="extra">Not a member?<a href="#et-register-wrap" class="text-dark"> Register</a></p></div></form></div></div></div></div>';
 	
-	echo '<div class="modal fade" id="joinus" tabindex="-1" role="dialog" aria-labelledby="loginmodal" aria-hidden="true"><div class="modal-dialog modal-xl login-pop-form" role="document"><div class="modal-content" id="loginmodal"><div class="modal-headers"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="ti-close"></span></button></div><div class="modal-body p-5"><div class="text-center mb-4"><h2 class="m-0 ft-regular">JOIN US</h2></div>'.
-	'<div class="form-group">'.
-	'<h3>Pedagang</h3>'.
-	'<p>Kami memberikan akses login untuk member pedagang mengetahui semua jumlah stok ditoko kita dan membaginya menjadi 3 harga yaitu distributor, reseller dan HET (Harga Eceran Tertinggi). Jadi member bisa membeli dan menjual dengan bisa mengetahui kapasitas keuntungan yang di dapat.</p>'.
-	'<p><a href="https://wa.me/6281385595027?text='.urlencode('Saya join sebagai Pedagang').'" class="badge bg-success login">JOIN</a></p>'.
-	'<h3>Penjual</h3>'.
-	'<p>Anda produsen/importir/APM???</p>'.
-	'<p>Kami menyiapkan Team untuk membantu anda menjual produk dengan cara yang lebih efisien karena kami sudah memiliki banyak agen distributor dan reseller dan kami juga memiliki admin yang sudah siap promosikan produk anda.</p>'.
-	'<p><a href="https://wa.me/6281385595027?text='.urlencode('Saya join sebagai Penjual').'" class="badge bg-success login">JOIN</a></p>'.
-	'</div>'.
-	'</div></div></div></div>';
+	echo '
+	<div class="modal fade" id="joinus" tabindex="-1" role="dialog" aria-labelledby="loginmodal" aria-hidden="true">
+		<div class="modal-dialog modal-xl login-pop-form" role="document">
+			<div class="modal-content" id="loginmodal">
+				<div class="modal-headers">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span class="ti-close"></span>
+					</button>
+				</div>
+				<div class="modal-body p-5">
+					<div class="text-center mb-4">
+						<h2 class="m-0 ft-regular">JOIN US</h2>
+					</div>'.
+					'<div class="form-group">'.
+						'<h3>Pedagang</h3>'.
+						'<p>Kami memberikan akses login untuk member pedagang mengetahui semua jumlah stok ditoko kita dan membaginya menjadi 3 harga yaitu distributor, 
+							reseller dan HET (Harga Eceran Tertinggi). 
+							Jadi member bisa membeli dan menjual dengan bisa mengetahui kapasitas keuntungan yang di dapat.</p>'.
+						'<p><a href="https://wa.me/6281385595027?text='.urlencode('Saya join sebagai Pedagang').'" class="badge bg-success login">JOIN</a></p>'.
+						'<h3>Penjual</h3>'.
+						'<p>Anda produsen/importir/APM???</p>'.
+						'<p>Kami menyiapkan Team untuk membantu anda menjual produk dengan cara yang lebih efisien karena kami sudah memiliki banyak agen distributor dan reseller dan kami juga memiliki admin yang sudah siap promosikan produk anda.</p>'.
+						'<p><a href="https://wa.me/6281385595027?text='.urlencode('Saya join sebagai Penjual').'" class="badge bg-success login">JOIN</a></p>'.
+					'</div>'.
+				'</div>
+			</div>
+		</div>
+	</div>';
 	
 	/* echo '<div class="w3-ch-sideBar w3-bar-block w3-card-2 w3-animate-right" style="display:none;right:0;" id="Search">'.
 	'<div class="rightMenu-scroll"><div class="d-flex align-items-center justify-content-between slide-head py-3 px-3"><h4 class="cart_heading fs-md ft-medium mb-0">Search Products</h4><button onclick="closeSearch()" class="close_slide"><i class="ti-close"></i></button></div>'.
 	'<div class="cart_action px-3 py-4"><form class="form m-0 p-0" method="GET" action="'.SITEURL.'/"><div class="form-group"><input type="text" class="form-control" name="q" placeholder="Product Keyword.." /></div><div class="form-group mb-0"><input type="submit" class="btn d-block full-width btn-dark">Search Product</div></form></div>'.
 	'</div></div>'; */
 	
-	echo '<a id="back2Top" class="top-scroll" title="Back to top" href="#"><i class="ti-arrow-up"></i></a>';
-	echo '<a id="what" class="top-scroll" title="Back to top" target="_blank" href="https://wa.me/6281329763463?text="><i class="lni lni-whatsapp"></i></a>';
+	echo '<div class="fab-collection">
+		<a id="open24h" class="top-scroll" target="_blank" href="https://wa.me/6281329763463?text=" data-toggle="tooltip" data-placement="top" title="
+			Kita buka service 24 jam .
+			Silahkan order melalui whatsapps
+			di bawah ini. Semua pengiriman
+			dilakukan 3 kali dalam sehari.
+			Sehingga memudahkan
+			konsumen lebih cepat menerima
+			barang
+		">
+			<img src="'.SITEURL.'/images/24h.png" />
+		</a>
+		<a id="what" class="top-scroll" title="Whatsapp" target="_blank" href="https://wa.me/6281329763463?text="><i class="lni lni-whatsapp"></i></a>
+		<a id="back2Top" class="top-scroll" title="Back to top" href="#"><i class="ti-arrow-up"></i></a>
+	</div>';
 	echo '</div>';
 	echo '<script src="'.SITEURL.'/js/jquery.min.js"></script>'.
 	'<script src="'.SITEURL.'/js/popper.min.js"></script>'.
