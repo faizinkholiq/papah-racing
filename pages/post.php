@@ -74,9 +74,9 @@ $kua2.
 '</div>'.
 '<div class="prt_05 mb-4 mt-2"><div class="form-row mb-7">'.
 '<div class="col-12 col-lg">
-	<div class="row">
-		<a href="#!" data-toggle="modal" data-target="#order-modal" style="font-size:1.2rem;" class="col-lg-8 col-sm-12 text-white btn custom-height bg-success mb-2 my-btn"><i class="lni lni-shopping-basket mr-2"></i>Pesan Sekarang</a>
-		<a href="'.SITEURL.'" style="font-size:1.2rem;" class="col-lg-3 col-sm-12 text-white btn custom-height bg-danger mb-2 my-btn ml-3">Kembali</a>
+	<div class="row" style="gap:1rem;">
+		<a href="#!" data-toggle="modal" data-target="#order-modal" style="font-size:1.2rem;" class="col-lg-8 col-sm-11 text-white btn custom-height bg-success mb-2 my-btn"><i class="lni lni-shopping-basket mr-2"></i>Pesan Sekarang</a>
+		<a href="'.SITEURL.'" style="font-size:1.2rem;" class="col-lg-3 col-sm-11 text-white btn custom-height bg-danger mb-2 my-btn">Kembali</a>
 	</div>
 </div>'.
 '</div></div>'.
