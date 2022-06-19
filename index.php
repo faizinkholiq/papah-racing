@@ -221,11 +221,19 @@ if ($count_uri == 1){
 function head(){
 	global $title,$merks,$px,$px2,$banners;
 
-	echo '<!DOCTYPE html><html lang="id"><head><meta charset="utf-8" /><meta name="author" content="Themezhub" /><meta name="viewport" content="width=device-width, initial-scale=1"><title>'.$title.'</title><link href="'.SITEURL.'/css/styles.css?v='.date('Ymdhis').'" rel="stylesheet">'.
-	'<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>'.
-	'<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>'.
-	'<style>.slider .slick-slide img{border-radius:3px;}.slider .slick-slide img{width:100%;}.slick-prev,.slick-next{width:50px;height:50px;z-index:1;}.slick-prev{left:5px;}.slick-next{right:5px;}.slick-prev:before,.slick-next:before{font-size:40px;text-shadow:0 0 10px rgba(0,0,0,0.5);}.slick-dots{bottom:15px;}.slick-dots li button:before{font-size:12px;color:#fff;text-shadow:0 0 10px rgba(0,0,0,0.5);opacity:1;}.slick-dots li.slick-active button:before{color:#dedede;}.slider:not(:hover) .slick-arrow,.slider:not(:hover) .slick-dots{opacity:0;}.slick-arrow,.slick-dots{transition:opacity 0.5s ease-out;}</style>'.
-	'</head>';
+	echo '
+	<!DOCTYPE html>
+		<html lang="id">
+			<head>
+				<meta charset="utf-8" />
+				<meta name="author" content="Themezhub" />
+				<meta name="viewport" content="width=device-width, initial-scale=1">
+				<title>'.$title.'</title>
+				<link href="'.SITEURL.'/css/styles.css?v='.date('Ymdhis').'" rel="stylesheet">'.
+				'<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>'.
+				'<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>'.
+				'<style>.slider .slick-slide img{border-radius:3px;}.slider .slick-slide img{width:100%;}.slick-prev,.slick-next{width:50px;height:50px;z-index:1;}.slick-prev{left:5px;}.slick-next{right:5px;}.slick-prev:before,.slick-next:before{font-size:40px;text-shadow:0 0 10px rgba(0,0,0,0.5);}.slick-dots{bottom:15px;}.slick-dots li button:before{font-size:12px;color:#fff;text-shadow:0 0 10px rgba(0,0,0,0.5);opacity:1;}.slick-dots li.slick-active button:before{color:#dedede;}.slider:not(:hover) .slick-arrow,.slider:not(:hover) .slick-dots{opacity:0;}.slick-arrow,.slick-dots{transition:opacity 0.5s ease-out;}</style>'.
+			'</head>';
 
 
 	$header_type = ($px == "cari" || $px == "kategori" || $px == "merk")? 'header-on-top' : '';
@@ -444,18 +452,22 @@ function foot(){
 	'</div></div>'; */
 	
 	echo '<div class="fab-collection">
-		<a id="open24h" class="top-scroll" target="_blank" href="https://wa.me/6281329763463?text=" data-toggle="tooltip" data-placement="top" title="
-			Kita buka service 24 jam .
-			Silahkan order melalui whatsapps
-			di bawah ini. Semua pengiriman
-			dilakukan 3 kali dalam sehari.
-			Sehingga memudahkan
-			konsumen lebih cepat menerima
-			barang
-		">
+		<div id="open24h-tooltip" class="tooltip bs-tooltip-top my-tooltip show" role="tooltip" style="display:none">
+			<div class="arrow" style="left: 11rem;"></div>
+			<div class="my-tooltip-inner">
+				Kita buka service 24 jam .
+				Silahkan order melalui whatsapp
+				di bawah ini. Semua pengiriman
+				dilakukan 3 kali dalam sehari.
+				Sehingga memudahkan
+				konsumen lebih cepat menerima
+				barang
+			</div>
+		</div>
+		<a id="open24h" target="_blank" href="https://wa.me/6281329763463?text=">
 			<img src="'.SITEURL.'/images/24h.png" />
 		</a>
-		<a id="what" class="top-scroll" title="Whatsapp" target="_blank" href="https://wa.me/6281329763463?text="><i class="lni lni-whatsapp"></i></a>
+		<a id="what" title="Whatsapp" target="_blank" href="https://wa.me/6281329763463?text="><i class="lni lni-whatsapp"></i></a>
 		<a id="back2Top" class="top-scroll" title="Back to top" href="#"><i class="ti-arrow-up"></i></a>
 	</div>';
 	echo '</div>';
@@ -471,8 +483,33 @@ function foot(){
 	'<script src="'.SITEURL.'/js/jQuery.style.switcher.js"></script>'.
 	'<script src="'.SITEURL.'/js/custom.js"></script>'.
 	'<script src="'.SITEURL.'/js/bootstrap-show-password.min.js"></script>';
-	echo '<script>$(document).ready(function(){$(\'.slider\').slick({autoplay: true,autoplaySpeed: 2500,dots: true});});</script>';
-	echo '<script> function openSearch() { document.getElementById("Search").style.display = "block"; } function closeSearch() { document.getElementById("Search").style.display = "none";}</script>'.
+	echo '<script>
+			$(document).ready(function(){
+				$(\'.slider\').slick({
+					autoplay: true,
+					autoplaySpeed: 2500,
+					dots: true
+				});
+
+				$("#open24h").mouseover(() => {
+					$("#open24h-tooltip").fadeIn();
+				});
+
+				$("#open24h").mouseleave(() => {
+					$("#open24h-tooltip").fadeOut();
+				});
+			});
+
+			function openSearch() { 
+				document.getElementById("Search").
+					style.display = "block"; 
+			} 
+			
+			function closeSearch() { 
+				document.getElementById("Search").
+					style.display = "none";
+			}
+		</script>'.
 	'</body></html>';
 }
 /*

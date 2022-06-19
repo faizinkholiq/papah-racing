@@ -5160,3 +5160,19 @@ footer.skin-dark-footer ul.footer-bottom-social li a:hover, footer.skin-dark-foo
 .my-btn{
     border-radius: 0.6rem;
 }
+
+.my-tooltip{
+    position: fixed;
+    margin-top: -11.3rem;
+    width: fit-content;
+}
+
+.my-tooltip-inner{
+    padding: 0.5rem 1rem;
+    width: 15rem;
+    margin-right: 8rem;
+    text-align: left;
+    color: #fff;
+    background-color: #000;
+    border-radius: .25rem;
+}
