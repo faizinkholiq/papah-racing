@@ -75,8 +75,8 @@ $kua2.
 '<div class="prt_05 mb-4 mt-2"><div class="form-row mb-7">'.
 '<div class="col-12 col-lg">
 	<div class="row">
-		<a href="#!" data-toggle="modal" data-target="#order-modal" style="font-size:1.2rem;" class="col-lg-8 text-white btn custom-height bg-success mb-2 my-btn"><i class="lni lni-shopping-basket mr-2"></i>Pesan Sekarang</a>
-		<a href="'.SITEURL.'" style="font-size:1.2rem;" class="col-lg-3 text-white btn custom-height bg-danger mb-2 my-btn ml-3">Kembali</a>
+		<a href="#!" data-toggle="modal" data-target="#order-modal" style="font-size:1.2rem;" class="col-lg-8 col-sm-12 text-white btn custom-height bg-success mb-2 my-btn"><i class="lni lni-shopping-basket mr-2"></i>Pesan Sekarang</a>
+		<a href="'.SITEURL.'" style="font-size:1.2rem;" class="col-lg-3 col-sm-12 text-white btn custom-height bg-danger mb-2 my-btn ml-3">Kembali</a>
 	</div>
 </div>'.
 '</div></div>'.
@@ -84,6 +84,8 @@ $kua2.
 '<span class="mr-4">Share:</span>'.
 '<a class="d-inline-flex align-items-center justify-content-center p-3 gray circle fs-sm text-muted mr-2" href="https://www.facebook.com/share.php?u='.$plink.'&p='.urlencode($ptitle).'" target="_blank"><i class="fab fa-facebook-f position-absolute"></i></a>'.
 '<a class="d-inline-flex align-items-center justify-content-center p-3 gray circle fs-sm text-muted mr-2" href="http://instagram.com/sharer.php?u='.$plink.'&media='. $im .'&description='.urlencode($ptitle).'" target="_blank"><i class="fab fa-instagram position-absolute"></i></a>'.
+'<a class="d-inline-flex align-items-center justify-content-center p-3 gray circle fs-sm text-muted mr-2" href="http://telegram.com/sharer.php?u='.$plink.'&media='. $im .'&description='.urlencode($ptitle).'" target="_blank"><i class="fab fa-telegram position-absolute"></i></a>'.
+'<a class="d-inline-flex align-items-center justify-content-center p-3 gray circle fs-sm text-muted mr-2" href="http://whatsapp.com/sharer.php?u='.$plink.'&media='. $im .'&description='.urlencode($ptitle).'" target="_blank"><i class="fab fa-whatsapp position-absolute"></i></a>'.
 '</p></div>'.
 '</div></div></div></div></section>';
 
@@ -239,7 +241,7 @@ foreach ($random as $pos){
 	'<div class="col-12 col-lg"><a href="'.$order.urlencode('Saya order '.$ptitle).'%0a'.urlencode($purl).'" class="text-white btn btn-block custom-height bg-success mb-2"><i class="lni lni-shopping-basket mr-2"></i>Pesan Sekarang</a></div>'.
 	'<div class="col-12 col-lg-auto"><a href="'.$purl.'" class="btn custom-height btn-default btn-block mb-2 text-dark"><i class="lni lni-eye mr-2"></i>View Details</a></div>'.
 	'</div></div>'.
-	'</div></div></div></div></div></div></div>';
+	'</div></div></div></div></div></div>';
 }					
 
 echo '</div></div></div>';

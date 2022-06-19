@@ -137,7 +137,7 @@ if($nav>1&&$nav<11){
 // echo '<div class="c"></div>';
 if ($nav<2){} else {
 	// echo $pnv;
-	echo '<div class="align-items-center">'.$pnv.'</div>';
+	echo '<div class="align-items-center" style="display: flex; gap: 0.1rem; justify-content: center;">'.$pnv.'</div>';
 }
 
 /* 

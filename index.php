@@ -227,14 +227,11 @@ function head(){
 		<div class="form-group">
 			<div class="input-group">
 				<input type="text" class="form-control" name="q" placeholder="Product Keyword..">
-				<div class="input-group-append">
-					<button class="btn btn-outline-secondary" type="button">Search</button>
-				</div>
 			</div>
 		</div>
 	</form>'.
 	'<div class="mobile_nav"><ul>'.
-	'<li><div class="login"> <a href="#" data-toggle="modal" data-target="#login"> LOGIN</a></div></li> '.
+	'<li><div class="badge bg-danger login my-btn"> <a href="#" data-toggle="modal" data-target="#login">LOGIN <i class="lni lni-user"></i></a></div></li> '.
 	'</ul></div></div>'.
 	'<div class="nav-menus-wrapper" style="transition-property: none;">'.
 	'<form class="form m-0 p-0" method="GET" action="'.SITEURL.'/">
@@ -267,28 +264,28 @@ function head(){
 
 	echo '</div></div></div></div>';
 	echo '
-	<div class="container mb-1" style="height: 5rem; padding:0;">
+	<div class="container mb-1" style="padding:0;">
 		<div class="row" style="
 			height: 100%;
 			width: 100%;
 			margin: 0;
 		">
-			<div class="col-lg-3 text-center">
+			<div style="height:5rem;" class="col-lg-3 col-sm-12 text-center">
 				<a href="#!" class="my-badge-nav badge h-75 w-100">
 					<i class="fa fa-exclamation-circle mr-2"></i> PERATURAN PELAYANAN
 				</a>
 			</div>
-			<div class="col-lg-3 text-center">
+			<div style="height:5rem;" class="col-lg-3 col-sm-12 text-center">
 				<a href="#!" class="my-badge-nav badge h-75 w-100">
 					<i class="fa fa-medal mr-2"></i> GARANSI
 				</a>
 			</div>
-			<div class="col-lg-3 text-center">
+			<div style="height:5rem;" class="col-lg-3 col-sm-12 text-center">
 				<a href="#!" class="my-badge-nav badge h-75 w-100">
 					<i class="fa fa-users mr-2"></i> TENTANG KAMI
 				</a>
 			</div>
-			<div class="col-lg-3 text-center">
+			<div style="height:5rem;" class="col-lg-3 col-sm-12 text-center">
 				<a href="#!" class="my-badge-nav badge h-75 w-100" data-toggle="modal" data-target="#joinus">
 					<i class="fa fa-user-plus mr-2"></i> JOIN US
 				</a>
@@ -371,7 +368,7 @@ function foot(){
 	echo '</ul></div></div>';
 	
 	echo '<div class="col-xl-3 col-lg-3 col-md-3 col-sm-12"><div id="alamat" class="footer_widget"><h4 class="widget_title">ALAMAT</h4>'.
-	'<div class="address mt-3"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3967.004731264543!2d106.91843581423603!3d-6.130064361809112!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e6a218a0a0405e7%3A0x8562ade3b663c212!2sPapah%20Racing!5e0!3m2!1sen!2sid!4v1640485094031!5m2!1sen!2sid" width="270" height="200" style="border:0;" allowfullscreen="" loading="lazy"></iframe></div>'.
+	'<div class="address mt-3"><iframe style="width: 100%;" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3967.004731264543!2d106.91843581423603!3d-6.130064361809112!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e6a218a0a0405e7%3A0x8562ade3b663c212!2sPapah%20Racing!5e0!3m2!1sen!2sid!4v1640485094031!5m2!1sen!2sid" width="270" height="200" style="border:0;" allowfullscreen="" loading="lazy"></iframe></div>'.
 	'<div class="address mt-3">'.str_replace("\n",'<br/>',$alamat).'</div>'.
 	'</div></div></div></div></div>'.
 	'</div>'.
