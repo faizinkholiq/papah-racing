@@ -18,12 +18,7 @@ foreach ($tokos as $to){
 	$kontak = $to['kontak_toko'];
 }
 
-$mereks = mysqli_query($con, "SELECT merk FROM barang ORDER BY stok DESC");
-$merks = array();
-foreach ($mereks as $m){
-	$merks[] = trim($m['merk']);
-}
-$merks = array_unique($merks);
+$merks = mysqli_query($con, "SELECT merk FROM barang GROUP BY merk ORDER BY stok DESC");
 
 if (substr($kontak,0,2)=='08'){
 	$phone = '628'.substr($kontak,2);
@@ -34,18 +29,6 @@ $order = 'https://wa.me/'.$phone.'?text=';
 
 $banners = mysqli_query($con, "SELECT * FROM banner ORDER BY order_no ASC LIMIT 5");
 
-/* 
-$now = date('Y-m-d h:i:s');
-$start = date('Y-m').'-01 00:00:00';
-echo $start;
-$qq = mysqli_query($con, "SELECT * FROM penjualan WHERE tanggal > '".$start."' ORDER BY id_pelanggan DESC LIMIT 20");
-$arr = array();
-foreach ($qq as $q){
- $arr[$q['id_pelanggan']] += $q['total_bayar'];  
- echo $q['id_pelanggan'].' : '.$q['total_bayar'].'<br/>';
-}
-print_r($arr);
-*/
 if (isset($_GET['sort'])){
 	$s = $_GET['sort'];
 	header("Location: ".SITEURL.'/sort/'.$s.'/');
@@ -87,7 +70,7 @@ if ($count_uri == 1){
 	} else {
 		include('pages/404.php');		
 	}
-} elseif ($count_uri == 3||$count_uri == 5 || $xp[1] === "kategori"){
+} elseif ($count_uri == 3||$count_uri == 5 || $xp[1] === "kategori" || $xp[1] === "merk"){
 	$px = $xp[1];
 	$p = $xp[2];
 	if ($px!=='sort'){
@@ -131,7 +114,7 @@ if ($count_uri == 1){
 		} elseif ($px=='merk'){
 			$page = $l;
 			$src = str_replace('-', ' ', urldecode($p));
-
+			
 			$total = mysqli_num_rows(mysqli_query($con, "SELECT * FROM barang WHERE merk = '$src'"));
 			$posts = mysqli_query($con, "SELECT * FROM barang WHERE merk = '$src'" );
 			$per = ceil($total/$pp);	
@@ -240,7 +223,6 @@ function head(){
 	echo '<body><div class="preloader"></div><div id="main-wrapper" style="width: 100%; position: absolute; overflow-x: hidden;">'.
 	'<div class="header header-transparent dark-text ' . $header_type . '"><div class="container"><nav id="navigation" class="navigation navigation-landscape">'.
 	'<div class="nav-header"><a class="nav-brand" href="'.SITEURL.'/"><img src="'.SITEURL.'/images/icons/logo.png" class="logo" alt="" /></a>'.
-	// '<div class="nav-toggle"></div>'.
 	'<form method="GET" action="'.SITEURL.'/" class="scl form m-0 p-0">
 		<div class="form-group">
 			<div class="input-group">
@@ -252,8 +234,6 @@ function head(){
 		</div>
 	</form>'.
 	'<div class="mobile_nav"><ul>'.
-	// '<li><a href="#" onclick="openSearch()"><i class="lni lni-search-alt"></i></a></li>'.
-	// '<li><div class="join"><a href="#" data-toggle="modal" data-target="#joinus">JOIN US</a></div></li>'.
 	'<li><div class="login"> <a href="#" data-toggle="modal" data-target="#login"> LOGIN</a></div></li> '.
 	'</ul></div></div>'.
 	'<div class="nav-menus-wrapper" style="transition-property: none;">'.
@@ -265,15 +245,7 @@ function head(){
 				</div>
 			</div>
 	</form>'.
-	/* '<ul class="nav-menu">'.
-	'<li><a href="'.SITEURL.'/">HOME</a></li>'.
-	'<li><a href="#joinus">JOIN US</a></li>'.
-	'<li><a href="#alamat">ALAMAT</a></li>'.
-	'<li><a href="#kontak">KONTAK</a></li>'.
-	'</ul>'. */
 	'<ul class="nav-menu nav-menu-social align-to-right">'.
-	// '<li><a href="#" onclick="openSearch()"><i class="lni lni-search-alt"></i></a></li>'.
-	// '<li><div class="badge bg-success login"> <a href="#" data-toggle="modal" data-target="#joinus">JOIN US <i class="lni lni-users"></i></a></div></li>'.
 	'<li><div class="badge bg-danger login my-btn"> <a href="#" data-toggle="modal" data-target="#login">LOGIN <i class="lni lni-user"></i></a></div></li> '.
 	'</ul></div></nav></div></div>';
 	
@@ -282,24 +254,17 @@ function head(){
 	}else{
 		echo '<div class="clearfix"></div>';
 	}
-	// style="background:url('.SITEURL.'/images/ls.jpg) no-repeat;"	
+
 	echo '<div class="bg-cover"><div class="container">'.'<div class="row align-items-center justify-content-center"><div class="col-xl-12 col-lg-12 col-md-12 col-sm-12"><div class="text-center sld">';
 	
 	if ($px != "cari" && $px != "kategori" && $px != "merk"){
 		echo '<div class="slider">';
 		foreach ($banners as $ban){
 			echo '<div><a href="#"><img class="img-fluid" src="'.SITEURL.'/banner/'.$ban["photo"].'" alt="Image 1"></a></div>';
-		 }
+		}
 		echo '</div>';
 	}
-	/* '<h1 class="ft-medium mb-3">'.$title.'</h1><ul class="shop_categories_list m-0 p-0">';
-	$i = 1;
-	foreach ($merks as $m){
-		if ($i>9){} else {
-			echo '<li><a href="'.SITEURL.'/merk/'.strtolower($m).'/">'.$m.'</a></li>';
-		} $i++;
-	}
-	echo '</ul></div>'; */
+
 	echo '</div></div></div></div>';
 	echo '
 	<div class="container mb-1" style="height: 5rem; padding:0;">
@@ -331,7 +296,7 @@ function head(){
 		</div>
 	</div>
 	';
-	// echo '<section class="py-2 br-bottom br-top"><div class="container"><div class="row align-items-center justify-content-between"><div class="col-xl-3 col-lg-4 col-md-5 col-sm-12"><nav aria-label="breadcrumb"><h2 class="off_title">KATEGORI</h2></nav></div></div></div>';
+	
 	if ($px != "cari" && $px != "kategori" && $px != "merk" && $px != "produk"){
 		echo '<div class="middle"><div class="container"><div class="row align-items-center">';
 		$cats = array('MESIN','OLI','SASIS','PENGAPIAN','ALAT PORTING','APPAREL','KARBURATOR','KNALPOT','KOPLING','PISTON', 'GEARBOX', 'MEMBRAN', 'INTAKE MANIPOL', 'BUSI', 'VARIASI', 'PAKING (GASKET)', 'BEARING', 'SPECIAL DISKON');
@@ -361,31 +326,41 @@ function head(){
 }
 
 function foot(){
-	global $alamat,$kontak,$merks,$toko,$ket,$con;
-	// echo '<section class="px-0 py-3 br-top"><div class="container"><div class="row"><div class="col-xl-3 col-lg-3 col-md-6 col-sm-6"><div class="d-flex align-items-center justify-content-start py-2"><div class="d_ico"><i class="fas fa-shopping-basket"></i></div><div class="d_capt"><h5 class="mb-0">Free Shipping</h5><span class="text-muted">Capped at $10 per order</span></div></div></div><div class="col-xl-3 col-lg-3 col-md-6 col-sm-6"><div class="d-flex align-items-center justify-content-start py-2"><div class="d_ico"><i class="far fa-credit-card"></i></div><div class="d_capt"><h5 class="mb-0">Secure Payments</h5><span class="text-muted">Up to 6 months installments</span></div></div></div><div class="col-xl-3 col-lg-3 col-md-6 col-sm-6"><div class="d-flex align-items-center justify-content-start py-2"><div class="d_ico"><i class="fas fa-shield-alt"></i></div><div class="d_capt"><h5 class="mb-0">15-Days Returns</h5><span class="text-muted">Shop with fully confidence</span></div></div></div><div class="col-xl-3 col-lg-3 col-md-6 col-sm-6"><div class="d-flex align-items-center justify-content-start py-2"><div class="d_ico"><i class="fas fa-headphones-alt"></i></div><div class="d_capt"><h5 class="mb-0">24x7 Fully Support</h5><span class="text-muted">Get friendly support</span></div></div></div></div></div></section>';
-			
+	global $px,$alamat,$kontak,$merks,$toko,$ket,$con;
+
+	if($px != "produk"){
+		$colors = ['purple','red','blue','green','orange','yellow','dark-blue','sky'];
+	
+		echo '<div class="container mb-4">
+			<div class="row">';
+			foreach ($merks as $key => $ban){
+				echo '<div class="col-lg-2">
+					<a href="'.SITEURL.'/merk/'.$ban["merk"].'">
+						<div class="my-badge-filter bg-'.$colors[$key%8].'">'.$ban["merk"].'</div>
+					</a>
+				</div>';
+			}
+		echo'</div>
+		</div>';
+	}
+
 	echo '<footer class="dark-footer skin-dark-footer style-2"><div class="footer-middle"><div class="container"><div class="row">'.
-	'<div class="col-xl-3 col-lg-3 col-md-3 col-sm-12"><div class="footer_widget"><img src="'.SITEURL.'/images/icons/logo.png" class="img-footer small mb-2" alt="" />'.
-	// '<div class="address mt-3">'.str_replace("\n",'<br/>',$alamat).'</div>'.
-	// '<div class="address mt-3"><i class="lni lni-whatsapp"></i> '.$kontak.'</div>'.
+	'<div class="col-xl-3 col-lg-3 col-md-3 col-sm-12"><div class="footer_widget">'.
+	'<div class="mb-4">'.
+	'<img class="mb-3" src="'.SITEURL.'/images/icons/logo.png" style="width: 217px;" alt="" />'.
+	'<h5 style="color: white;font-weight: bold;text-decoration: underline;">Under Management:</h5>'.
+	'<img src="'.SITEURL.'/images/knalpot-racing.png" style="width: 217px;" alt="" />'.
+	'</div>'.
 	'<div class="address mt-3">';
 
 	$socmed = mysqli_query($con, "SELECT * FROM socmed ORDER BY id ASC");
 	foreach ($socmed as $row){
 		echo '<div class="address mt-3"><i class="lni lni-'.strtolower($row['tipe']).'"></i> <a href="'.$row['link'].'">'.$row['keterangan'].'</a></div>';
 	}
-	// '<ul class="list-inline"><li class="list-inline-item"><a href="'.$_fb.'" rel="nofollow"><i class="lni lni-facebook-filled"></i></a></li><li class="list-inline-item"><a href="'.$_tw.'" rel="nofollow"><i class="lni lni-twitter-filled"></i></a></li><li class="list-inline-item"><a href="'.$_yt.'" rel="nofollow"><i class="lni lni-youtube"></i></a></li><li class="list-inline-item"><a href="'.$_in.'" rel="nofollow"><i class="lni lni-instagram-filled"></i></a></li><li class="list-inline-item"><a href="'.$_pi.'" rel="nofollow"><i class="lni lni-pinterest-filled"></i></a></li></ul>'.
+	
 	echo '</div>'.
 	'</div></div>'.
 	'<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">';
-	/* echo '<div class="footer_widget brand"><h4 class="widget_title">Brand</h4>';
-	$i = 1;shuffle($merks);
-	foreach ($merks as $m){
-	if ($i>32){} else {
-	echo '<a href="'.SITEURL.'/merk/'.strtolower($m).'/">'.$m.'</a> ';
-	} $i++;
-	}
-	echo '</div></div>'; */
 	echo '<div id="kontak" class="footer_widget"><h4 class="widget_title">KONTAK KAMI</h4><ul>';
 	
 	$kontak = mysqli_query($con, "SELECT * FROM kontak ORDER BY id ASC");
@@ -446,11 +421,6 @@ function foot(){
 		</div>
 	</div>';
 	
-	/* echo '<div class="w3-ch-sideBar w3-bar-block w3-card-2 w3-animate-right" style="display:none;right:0;" id="Search">'.
-	'<div class="rightMenu-scroll"><div class="d-flex align-items-center justify-content-between slide-head py-3 px-3"><h4 class="cart_heading fs-md ft-medium mb-0">Search Products</h4><button onclick="closeSearch()" class="close_slide"><i class="ti-close"></i></button></div>'.
-	'<div class="cart_action px-3 py-4"><form class="form m-0 p-0" method="GET" action="'.SITEURL.'/"><div class="form-group"><input type="text" class="form-control" name="q" placeholder="Product Keyword.." /></div><div class="form-group mb-0"><input type="submit" class="btn d-block full-width btn-dark">Search Product</div></form></div>'.
-	'</div></div>'; */
-	
 	echo '<div class="fab-collection">
 		<div id="open24h-tooltip" class="tooltip bs-tooltip-top my-tooltip show" role="tooltip" style="display:none">
 			<div class="arrow" style="left: 11rem;"></div>
@@ -464,7 +434,7 @@ function foot(){
 				barang
 			</div>
 		</div>
-		<a id="open24h" target="_blank" href="https://wa.me/6281329763463?text=">
+		<a id="open24h" href="#!">
 			<img src="'.SITEURL.'/images/24h.png" />
 		</a>
 		<a id="what" title="Whatsapp" target="_blank" href="https://wa.me/6281329763463?text="><i class="lni lni-whatsapp"></i></a>
@@ -491,6 +461,10 @@ function foot(){
 					dots: true
 				});
 
+				$("#open24h").click(() => {
+					$("#open24h-tooltip").fadeIn();
+				});
+
 				$("#open24h").mouseover(() => {
 					$("#open24h-tooltip").fadeIn();
 				});
@@ -512,11 +486,4 @@ function foot(){
 		</script>'.
 	'</body></html>';
 }
-/*
-/page-1/
-/brand-honda/
-/search-knalpot/
-/product-1/
-/
-*/
 ?>

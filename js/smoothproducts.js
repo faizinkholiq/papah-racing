@@ -42,7 +42,7 @@
 							firstLarge = large;
 							firstThumb = $('img', this)[0].src;
 						}
-						$(this).parents('.sp-wrap').find('.sp-thumbs').append('<a href="' + large + '" style="background-image:url(' + thumb + ')"'+classes+'></a>');
+						$(this).parents('.sp-wrap').find('.sp-thumbs').append('<a href="' + large + '" style="background-image:url(&quot;' + thumb + '&quot;)"'+classes+'></a>');
 						$(this).remove();
 					});
 					$('.sp-large', this).append('<a href="' + firstLarge + '" class="sp-current-big"><img src="' + firstThumb + '" alt="" /></a>');

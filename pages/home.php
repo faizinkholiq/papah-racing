@@ -95,26 +95,20 @@ foreach ($posts as $pos){
 	'<div class="col-12 col-lg"><a href="'.$order.urlencode('Saya order '.$ptitle).'%0a'.urlencode($purl).'" class="text-white btn btn-block custom-height bg-success mb-2"><i class="lni lni-shopping-basket mr-2"></i>Pesan Sekarang</a></div>'.
 	'<div class="col-12 col-lg-auto"><a href="'.$purl.'" class="btn custom-height btn-default btn-block mb-2 text-dark"><i class="lni lni-eye mr-2"></i>View Details</a></div>'.
 	'</div></div>'.
-	/* '<div class="prt_06"><p class="mb-0 d-flex align-items-center">'.
-	'<span class="mr-4">Share:</span>'.
-	'<a class="d-inline-flex align-items-center justify-content-center p-3 gray circle fs-sm text-muted mr-2" href="#!"><i class="fab fa-twitter position-absolute"></i></a>'.
-	'<a class="d-inline-flex align-items-center justify-content-center p-3 gray circle fs-sm text-muted mr-2" href="#!"><i class="fab fa-facebook-f position-absolute"></i></a>'.
-	'<a class="d-inline-flex align-items-center justify-content-center p-3 gray circle fs-sm text-muted" href="#!"><i class="fab fa-pinterest-p position-absolute"></i></a>'.
-	'</p></div>'. */
 	'</div></div></div></div></div></div></div>';
 	
-	if(isset($px) && ($px != "cari" && $px != "kategori" && $px != "merk")) {
-		if ($j==12||$j==24){
-			echo '<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12"><div class="text-center">';
-			echo '<div class="slider">';
-			$ims = range(1,5);
-			foreach ($banners as $ban){
-				echo '<div><a href="#"><img class="img-fluid" src="'.SITEURL.'/banner/'.$ban["photo"].'" alt="Image 1"></a></div>';
-			}
-			echo '</div>';
-			echo '</div></div>';
-		}
-	}
+	// if(isset($px) && ($px != "cari" && $px != "kategori" && $px != "merk")) {
+	// 	if ($j==12||$j==24){
+	// 		echo '<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12"><div class="text-center">';
+	// 		echo '<div class="slider">';
+	// 		$ims = range(1,5);
+	// 		foreach ($banners as $ban){
+	// 			echo '<div><a href="#"><img class="img-fluid" src="'.SITEURL.'/banner/'.$ban["photo"].'" alt="Image 1"></a></div>';
+	// 		}
+	// 		echo '</div>';
+	// 		echo '</div></div>';
+	// 	}
+	// }
 	
 	$j++;
 }	
