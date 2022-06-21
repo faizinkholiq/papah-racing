@@ -57,6 +57,7 @@ if (ENV === "Development") {
 	$count_uri -= 1;
 	$xp = arr_remove_empty($xp);
 }
+
 if ($count_uri == 1){
 	if (empty($xp[1])){
 		$posts = mysqli_query($con, "SELECT * FROM barang ORDER BY created DESC LIMIT ".$pp);
@@ -64,18 +65,21 @@ if ($count_uri == 1){
 		$page = 1;
 		$nvurl = SITEURL;
 		include('pages/home.php');
+	} elseif($xp[1]==='tentang') {
+		$px = $xp[1];
+		include('pages/tentang.php');
 	} elseif (substr($xp[1],0,3)=='?q='){
 		header("Location: ".SITEURL.'/cari/'.str_replace('?q=','',$xp[1].'/'));
-		exit;
 	} else {
 		include('pages/404.php');		
 	}
-} elseif ($count_uri == 3||$count_uri == 5 || $xp[1] === "kategori" || $xp[1] === "merk"){
+} elseif ($count_uri == 3||$count_uri == 5 || $xp[1] === "kategori" || $xp[1] === "merk" || $xp[1] === "tentang"){
 	$px = $xp[1];
 	$p = $xp[2];
 	if ($px!=='sort'){
 		$nvurl = SITEURL.'/'.$px.'/'.$p;
 	}
+
 	if (isset($xp[5])){
 		if (empty($xp[5])){
 			$p3 = $xp[3];$p4 = $xp[4];$p5 = $xp[5];
@@ -263,38 +267,41 @@ function head(){
 	}
 
 	echo '</div></div></div></div>';
-	echo '
-	<div class="container mb-1" style="padding:0;">
-		<div class="row" style="
-			height: 100%;
-			width: 100%;
-			margin: 0;
-		">
-			<div style="height:5rem;" class="col-lg-3 col-sm-12 text-center">
-				<a href="#!" class="my-badge-nav badge h-75 w-100">
-					<i class="fa fa-exclamation-circle mr-2"></i> PERATURAN PELAYANAN
-				</a>
-			</div>
-			<div style="height:5rem;" class="col-lg-3 col-sm-12 text-center">
-				<a href="#!" class="my-badge-nav badge h-75 w-100">
-					<i class="fa fa-medal mr-2"></i> GARANSI
-				</a>
-			</div>
-			<div style="height:5rem;" class="col-lg-3 col-sm-12 text-center">
-				<a href="#!" class="my-badge-nav badge h-75 w-100">
-					<i class="fa fa-users mr-2"></i> TENTANG KAMI
-				</a>
-			</div>
-			<div style="height:5rem;" class="col-lg-3 col-sm-12 text-center">
-				<a href="#!" class="my-badge-nav badge h-75 w-100" data-toggle="modal" data-target="#joinus">
-					<i class="fa fa-user-plus mr-2"></i> JOIN US
-				</a>
+	
+	if ($px != "tentang") {
+		echo '
+		<div class="container mb-1" style="padding:0;">
+			<div class="row" style="
+				height: 100%;
+				width: 100%;
+				margin: 0;
+			">
+				<div style="height:5rem;" class="col-lg-3 col-sm-12 text-center">
+					<a href="#!" class="my-badge-nav badge h-75 w-100">
+						<i class="fa fa-exclamation-circle mr-2"></i> PERATURAN PELAYANAN
+					</a>
+				</div>
+				<div style="height:5rem;" class="col-lg-3 col-sm-12 text-center">
+					<a href="#!" class="my-badge-nav badge h-75 w-100">
+						<i class="fa fa-medal mr-2"></i> GARANSI
+					</a>
+				</div>
+				<div style="height:5rem;" class="col-lg-3 col-sm-12 text-center">
+					<a href="'.SITEURL.'/tentang" class="my-badge-nav badge h-75 w-100">
+						<i class="fa fa-users mr-2"></i> TENTANG KAMI
+					</a>
+				</div>
+				<div style="height:5rem;" class="col-lg-3 col-sm-12 text-center">
+					<a href="#!" class="my-badge-nav badge h-75 w-100" data-toggle="modal" data-target="#joinus">
+						<i class="fa fa-user-plus mr-2"></i> JOIN US
+					</a>
+				</div>
 			</div>
 		</div>
-	</div>
-	';
+		';
+	}
 	
-	if ($px != "cari" && $px != "kategori" && $px != "merk" && $px != "produk"){
+	if ($px != "cari" && $px != "kategori" && $px != "merk" && $px != "produk" && $px != "tentang"){
 		echo '<div class="middle"><div class="container"><div class="row align-items-center">';
 		$cats = array('MESIN','OLI','SASIS','PENGAPIAN','ALAT PORTING','APPAREL','KARBURATOR','KNALPOT','KOPLING','PISTON', 'GEARBOX', 'MEMBRAN', 'INTAKE MANIPOL', 'BUSI', 'VARIASI', 'PAKING (GASKET)', 'BEARING', 'SPECIAL DISKON');
 		$war = array('purple','red','blue','green','orange','yellow','dark-blue', 'danger','sky','dark-blue', 'purple','red','blue','green','orange', 'yellow', 'dark-blue', 'danger');
@@ -325,13 +332,13 @@ function head(){
 function foot(){
 	global $px,$alamat,$kontak,$merks,$toko,$ket,$con;
 
-	if($px != "produk"){
+	if($px != "produk" && $px !="tentang"){
 		$colors = ['purple','red','blue','green','orange','yellow','dark-blue','sky'];
 	
 		echo '<div class="container mb-4">
-			<div class="row">';
+			<div class="row" style="gap: 0">';
 			foreach ($merks as $key => $ban){
-				echo '<div class="col-lg-2">
+				echo '<div class="col-lg-1 col-xs-4" style="margin:0; padding:0.3rem;">
 					<a href="'.SITEURL.'/merk/'.$ban["merk"].'">
 						<div class="my-badge-filter bg-'.$colors[$key%8].'">'.$ban["merk"].'</div>
 					</a>
