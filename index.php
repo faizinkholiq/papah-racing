@@ -276,22 +276,22 @@ function head(){
 				width: 100%;
 				margin: 0;
 			">
-				<div style="height:5rem;" class="col-lg-3 col-sm-12 text-center">
+				<div style="height:5rem;" class="col-lg-3 col-sm-6 col-xs-6 text-center">
 					<a href="#!" class="my-badge-nav badge h-75 w-100">
 						<i class="fa fa-exclamation-circle mr-2"></i> PERATURAN PELAYANAN
 					</a>
 				</div>
-				<div style="height:5rem;" class="col-lg-3 col-sm-12 text-center">
+				<div style="height:5rem;" class="col-lg-3 col-sm-6 col-xs-6 text-center">
 					<a href="#!" class="my-badge-nav badge h-75 w-100">
 						<i class="fa fa-medal mr-2"></i> GARANSI
 					</a>
 				</div>
-				<div style="height:5rem;" class="col-lg-3 col-sm-12 text-center">
+				<div style="height:5rem;" class="col-lg-3 col-sm-6 col-xs-6 text-center">
 					<a href="'.SITEURL.'/tentang" class="my-badge-nav badge h-75 w-100">
 						<i class="fa fa-users mr-2"></i> TENTANG KAMI
 					</a>
 				</div>
-				<div style="height:5rem;" class="col-lg-3 col-sm-12 text-center">
+				<div style="height:5rem;" class="col-lg-3 col-sm-6 col-xs-6 text-center">
 					<a href="#!" class="my-badge-nav badge h-75 w-100" data-toggle="modal" data-target="#joinus">
 						<i class="fa fa-user-plus mr-2"></i> JOIN US
 					</a>
@@ -335,17 +335,11 @@ function foot(){
 	if($px != "produk" && $px !="tentang"){
 		$colors = ['purple','red','blue','green','orange','yellow','dark-blue','sky'];
 	
-		echo '<div class="container mb-4">
-			<div class="row" style="gap: 0">';
+		echo '<div class="container mb-4 container-merk">';
 			foreach ($merks as $key => $ban){
-				echo '<div class="col-lg-1 my-col-xs-5" style="margin:0;">
-					<a href="'.SITEURL.'/merk/'.$ban["merk"].'">
-						<div class="my-badge-filter bg-'.$colors[$key%8].'">'.$ban["merk"].'</div>
-					</a>
-				</div>';
+				echo '<a class="my-badge-filter bg-'.$colors[$key%8].'" href="'.SITEURL.'/merk/'.$ban["merk"].'">'.$ban["merk"].'</a>';
 			}
-		echo'</div>
-		</div>';
+		echo'</div>';
 	}
 
 	echo '<footer class="dark-footer skin-dark-footer style-2"><div class="footer-middle"><div class="container"><div class="row">'.
@@ -475,6 +469,14 @@ function foot(){
 
 				$("#open24h").mouseleave(() => {
 					$("#open24h-tooltip").fadeOut();
+				});
+
+				$(".my-badge-filter").each(function(){
+					var el= $(this);
+					var textLength = el.html().length;
+						if (textLength > 18) {
+							el.css("font-size", "0.44rem");
+						}
 				});
 			});
 

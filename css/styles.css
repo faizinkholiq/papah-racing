@@ -5092,19 +5092,6 @@ footer.skin-dark-footer ul.footer-bottom-social li a:hover, footer.skin-dark-foo
         padding:0.1rem;
     }
 
-    .my-badge-filter{
-        color: white;
-        /* font-weight: bold; */
-        border-radius: 0.3rem;
-        height: 2rem;
-        font-size: 0.5rem;
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-    }
-
     .img-fluid {
         height:5rem;
     }
@@ -5123,19 +5110,6 @@ footer.skin-dark-footer ul.footer-bottom-social li a:hover, footer.skin-dark-foo
 
     .my-col-xs-5{
         padding:0.2rem;
-    }
-
-    .my-badge-filter{
-        color: white;
-        /* font-weight: bold; */
-        border-radius: 0.3rem;
-        height: 3rem;
-        font-size: 0.7rem;
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
     }
 
 }
@@ -5290,4 +5264,25 @@ footer.skin-dark-footer ul.footer-bottom-social li a:hover, footer.skin-dark-foo
 .my-list-group-item.active {
     z-index: 2;
     font-weight: bold;
+}
+
+.my-badge-filter{
+    color: white;
+    font-weight: bold;
+    font-size: 0.7rem;
+    align-items: center;
+    padding: 0.2rem 0.4rem;
+    display: inline-flex;
+}
+
+.container-merk{
+    display: flex; 
+    flex-wrap: wrap; 
+    gap: 0.2rem;
+    justify-content: space-between;
+}
+
+.container-merk:after{
+    content: "";
+    flex: auto;
 }
