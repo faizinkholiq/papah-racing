@@ -18,7 +18,7 @@ foreach ($tokos as $to){
 	$kontak = $to['kontak_toko'];
 }
 
-$merks = mysqli_query($con, "SELECT merk FROM barang GROUP BY merk ORDER BY stok DESC");
+$merks = mysqli_query($con, "SELECT merk FROM barang GROUP BY merk ORDER BY merk ASC");
 
 if (substr($kontak,0,2)=='08'){
 	$phone = '628'.substr($kontak,2);
