@@ -338,7 +338,7 @@ function foot(){
 		echo '<div class="container mb-4">
 			<div class="row" style="gap: 0">';
 			foreach ($merks as $key => $ban){
-				echo '<div class="col-lg-1 col-xs-4" style="margin:0; padding:0.3rem;">
+				echo '<div class="col-lg-1 my-col-xs-5" style="margin:0;">
 					<a href="'.SITEURL.'/merk/'.$ban["merk"].'">
 						<div class="my-badge-filter bg-'.$colors[$key%8].'">'.$ban["merk"].'</div>
 					</a>
