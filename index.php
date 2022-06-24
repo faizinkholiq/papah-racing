@@ -278,22 +278,22 @@ function head(){
 			">
 				<div style="height:5rem;" class="col-lg-3 col-sm-6 col-xs-6 text-center">
 					<a href="#!" class="my-badge-nav badge h-75 w-100">
-						<i class="fa fa-exclamation-circle mr-2"></i> PERATURAN PELAYANAN
+						<i class="fa fa-exclamation-circle mr-2"></i> <div>PERATURAN PELAYANAN</div>
 					</a>
 				</div>
 				<div style="height:5rem;" class="col-lg-3 col-sm-6 col-xs-6 text-center">
 					<a href="#!" class="my-badge-nav badge h-75 w-100">
-						<i class="fa fa-medal mr-2"></i> GARANSI
+						<i class="fa fa-medal mr-2"></i> <div>GARANSI</div>
 					</a>
 				</div>
 				<div style="height:5rem;" class="col-lg-3 col-sm-6 col-xs-6 text-center">
 					<a href="'.SITEURL.'/tentang" class="my-badge-nav badge h-75 w-100">
-						<i class="fa fa-users mr-2"></i> TENTANG KAMI
+						<i class="fa fa-users mr-2"></i> <div>TENTANG KAMI</div>
 					</a>
 				</div>
 				<div style="height:5rem;" class="col-lg-3 col-sm-6 col-xs-6 text-center">
 					<a href="#!" class="my-badge-nav badge h-75 w-100" data-toggle="modal" data-target="#joinus">
-						<i class="fa fa-user-plus mr-2"></i> JOIN US
+						<i class="fa fa-user-plus mr-2"></i> <div>JOIN US</div>
 					</a>
 				</div>
 			</div>
