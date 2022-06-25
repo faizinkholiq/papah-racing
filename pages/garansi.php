@@ -12,7 +12,7 @@
 							<a href="<?=SITEURL?>/">Home</a>
 						</li>
 						<li class="breadcrumb-item active" aria-current="page">
-							Tentang Kami
+							Garansi
 						</li>
 					</ol>
 				</nav>
@@ -26,8 +26,8 @@
 			<div class="col-lg-3 my-list-group" style="padding: 0 0 2rem;">
 				<a class="my-list-group-item my-list-group-item-action" href="<?=SITEURL?>">Beranda</a>
 				<a class="my-list-group-item my-list-group-item-action" href="<?=SITEURL?>/pelayanan">Peraturan Pelayanan</a>
-				<a class="my-list-group-item my-list-group-item-action" href="<?=SITEURL?>/garansi">Garansi</a>
-				<a class="my-list-group-item my-list-group-item-action active" href="<?=SITEURL?>/tentang">Tentang Kami</a>
+				<a class="my-list-group-item my-list-group-item-action active" href="<?=SITEURL?>/garansi">Garansi</a>
+				<a class="my-list-group-item my-list-group-item-action" href="<?=SITEURL?>/tentang">Tentang Kami</a>
 				<a class="my-list-group-item my-list-group-item-action" href="#!">Join Us</a>
 			</div>
 			<div class="col-lg-9">

@@ -5029,8 +5029,8 @@ footer.skin-dark-footer ul.footer-bottom-social li a:hover, footer.skin-dark-foo
     flex-direction: column;
     z-index: 999;
     position: fixed;
-    bottom: 2rem;
-    right: 2rem;
+    bottom: 1rem;
+    right: 0.5rem;
     gap: 1rem;
     transition: all 1s;
 }

@@ -68,12 +68,18 @@ if ($count_uri == 1){
 	} elseif($xp[1]==='tentang') {
 		$px = $xp[1];
 		include('pages/tentang.php');
+	} elseif($xp[1]==='pelayanan') {
+		$px = $xp[1];
+		include('pages/pelayanan.php');
+	} elseif($xp[1]==='garansi') {
+		$px = $xp[1];
+		include('pages/garansi.php');
 	} elseif (substr($xp[1],0,3)=='?q='){
 		header("Location: ".SITEURL.'/cari/'.str_replace('?q=','',$xp[1].'/'));
 	} else {
 		include('pages/404.php');		
 	}
-} elseif ($count_uri == 3||$count_uri == 5 || $xp[1] === "kategori" || $xp[1] === "merk" || $xp[1] === "tentang"){
+} elseif ($count_uri == 3||$count_uri == 5 || $xp[1] === "kategori" || $xp[1] === "merk" || $xp[1] === "tentang" || $xp[1] === "pelayanan" || $xp[1] === "garansi"){
 	$px = $xp[1];
 	$p = $xp[2];
 	if ($px!=='sort'){
@@ -268,7 +274,7 @@ function head(){
 
 	echo '</div></div></div></div>';
 	
-	if ($px != "tentang") {
+	if ($px != "tentang" && $px != "pelayanan" && $px != "garansi") {
 		echo '
 		<div class="container mb-1" style="padding:0;">
 			<div class="row" style="
@@ -277,12 +283,12 @@ function head(){
 				margin: 0;
 			">
 				<div style="height:5rem;" class="col-lg-3 col-sm-6 col-xs-6 text-center">
-					<a href="#!" class="my-badge-nav badge h-75 w-100">
+					<a href="'.SITEURL.'/pelayanan" class="my-badge-nav badge h-75 w-100">
 						<i class="fa fa-exclamation-circle mr-2"></i> <div>PERATURAN PELAYANAN</div>
 					</a>
 				</div>
 				<div style="height:5rem;" class="col-lg-3 col-sm-6 col-xs-6 text-center">
-					<a href="#!" class="my-badge-nav badge h-75 w-100">
+					<a href="'.SITEURL.'/garansi" class="my-badge-nav badge h-75 w-100">
 						<i class="fa fa-medal mr-2"></i> <div>GARANSI</div>
 					</a>
 				</div>
@@ -301,7 +307,7 @@ function head(){
 		';
 	}
 	
-	if ($px != "cari" && $px != "kategori" && $px != "merk" && $px != "produk" && $px != "tentang"){
+	if ($px != "cari" && $px != "kategori" && $px != "merk" && $px != "produk" && $px != "tentang" && $px != "pelayanan" && $px != "garansi"){
 		echo '<div class="middle"><div class="container"><div class="row align-items-center">';
 		$cats = array('MESIN','OLI','SASIS','PENGAPIAN','ALAT PORTING','APPAREL','KARBURATOR','KNALPOT','KOPLING','PISTON', 'GEARBOX', 'MEMBRAN', 'INTAKE MANIPOL', 'BUSI', 'VARIASI', 'PAKING (GASKET)', 'BEARING', 'SPECIAL DISKON');
 		$war = array('purple','red','blue','green','orange','yellow','dark-blue', 'danger','sky','dark-blue', 'purple','red','blue','green','orange', 'yellow', 'dark-blue', 'danger');
@@ -332,7 +338,7 @@ function head(){
 function foot(){
 	global $px,$alamat,$kontak,$merks,$toko,$ket,$con;
 
-	if($px != "produk" && $px !="tentang"){
+	if($px != "produk" && $px !="tentang" && $px !="pelayanan" && $px !="garansi"){
 		$colors = ['purple','red','blue','green','orange','yellow','dark-blue','sky'];
 	
 		echo '<div class="container mb-4 container-merk">';
