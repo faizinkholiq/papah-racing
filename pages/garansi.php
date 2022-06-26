@@ -31,22 +31,21 @@
 				<a class="my-list-group-item my-list-group-item-action" href="#!">Join Us</a>
 			</div>
 			<div class="col-lg-9">
-				<h1 class="ml-lg-4 ml-sm-0"><strong>Tentang Kami</strong></h1>
+				<h1 class="ml-lg-4 ml-sm-0"><strong>Garansi</strong></h1>
 				<div class="my-flat-card mt-4 ml-lg-4 ml-sm-0">
-					<p>Papahracing.com adalah situs jual-beli dunia otomotif khususnya barang balap dan harian. Ada ribuan katalog sparepart racing yang kita siapkan untuk mencukupi kebutuhan anda. 
-					Website papahracing.com bisa diakses menggunakan handphone,pc,laptop,tablet,dll selama terhubung dengan jaringan internet.</p> 
-
-					<p>Kita berkerja sama dengan berbagai merk dagang kenamaan yang familiar di pasar otomotif tanah air baik itu brand lokal maupun internasional. 
-					Brand yang ada merupakan hasil pilihan kita dengan kesesuaian permintaan pasar dan kualitas barang tersebut. 
-					Jadi hanya produk dan merk-merk yang berkualitas aja yang kita pilih.</p>
-					
-					<p>Didalam usaha papahracing.com dibantu banyak admin yang bekerja sebagai customer service, packaging, pengiriman dan managemen.</p>
-
-					<p>Sebagian besar produk kita adalah original, dan kita lampirkan informasinya di setiap detail barang di website bagian detail produk,yaitu banyaknya stok, original atau fake, baru atau bekas, berat barang, bisa digrosir atau tidak.</p>
-					
-					<p>Papahracing.com adalah cabang dan dalam pengawasan knalpot-racing.com speedshop. Yang tentunya sudah dikenal dan familiar didunia penjualan sparepart dan ajang balap tanah air.</p> 
-					
-					<p>Visi papahracing.com dapat menjadi platform online otomotif kesayangan kita semua. Dan Misi kita menjadi toko online otomotif terbesar di tanah air.</p>
+					<p>
+						Garansi kami:
+						<ol>
+							<li>Kami memberikan garansi atas kerusakan barang dalam pengiriman selama konsumen membeli menggunakan asuransi pengiriman. Tanpa asuransi dalam pengiriman oleh kurir bukan tanggung jawab kami.</li>
+							<li>Garansi tukar barang jika ada kesalahan dalam pengiriman barang pesanan. Dan semua pengiriman balik dan kirim kembali merupakan tanggung jawab kami.</li>
+							<li>Tidak ada garansi untuk kerusakan/ tidak berfungsi untuk part original(sampai sekarang original belum pernah ada pengalaman komplain).</li>
+							<li>Tidak ada tukar barang jika itu sudah sesuai pesanan konsumen.</li>
+							<li>Untuk barang copotan garansi hanya 1 bulan setelah pembayaran. Diharapkan segera di pakai(pasang) sehingga garansi kita masih aktip selama kurun waktu tersebut.</li>
+							<li>Barang yang kurang dari pemesanan dan kita susulkan merupakan tanggung jawab biaya kirim dari kami.</li>
+							<li>semua garansi berlaku selama bukti transaksi masih tersedia (histori chat/bukti tf/nota).</li>
+						</ol>
+					</p>
+					<p style="color:red;">WARNING : Tidak menerima garansi apapun diluar peraturan service kita diatas.</p>
 				</div>
 			</div>
 		</div>
