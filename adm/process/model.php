@@ -618,6 +618,25 @@ class con
 		header('location:../main?url=kontak');
 	}
 
+	function tambahmerk($con, $merk)
+	{
+		$query = mysqli_query($con, "INSERT INTO merk SET name='$merk' ");
+		header('location:../main?url=merk');
+	}
+
+	function ubahmerk($con, $id, $merk)
+	{
+		$query = mysqli_query($con, "UPDATE merk SET name='$merk' WHERE id='$id' ");
+		header('location:../main?url=merk');
+	}
+
+	function hapusmerk($con, $id)
+	{
+		$query = mysqli_query($con, "DELETE FROM merk WHERE id='$id' ");
+		header('location:../main?url=merk');
+	}
+
+
 	function upload_banner($con)
 	{
 		$err = "";

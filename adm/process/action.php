@@ -192,5 +192,12 @@ if (empty($_GET['url'])) {
 		$nc->upload_banner($con);
 	} else if ($to == 'update-order') {
 		$nc->update_banner_order($con);
+	}  else if ($to == 'tambah-merk') {
+		$nc->tambahmerk($con, $_POST['name']);
+	} else if ($to == 'ubah-merk') {
+		$nc->ubahmerk($con, $_POST['id'], $_POST['name']);
+	} else if ($to == 'hapus-merk') {
+		$id = $_GET['this'];
+		$nc->hapusmerk($con, $id);
 	}
 }

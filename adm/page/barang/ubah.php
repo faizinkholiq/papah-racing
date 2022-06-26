@@ -36,7 +36,18 @@ if ($_SESSION['id_jabatan'] == '1'||$_SESSION['id_jabatan'] == '2'||$_SESSION['i
         <div class="form-group row">
             <label for="merk" class="col-sm-2 col-form-label">Merk</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="merk" name="merk" value="<?= $data['merk']; ?>" required>
+                <select class="form-control selectpicker" id="merk" name="merk" data-live-search="true" required>
+                    <?php
+                    $merks = mysqli_query($con, "SELECT * FROM merk ORDER BY name ");
+                    foreach ($merks as $q){
+                        if ($q['name']==$data['merk']){
+                            echo '<option value="'.$q['name'].'" selected>'.ucwords($q['name']).'</option>';
+                        } else {
+                            echo '<option value="'.$q['name'].'">'.ucwords($q['name']).'</option>';
+                        }
+                    }
+                    ?>
+                </select>
             </div>
         </div>
         <div class="form-group row">

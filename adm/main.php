@@ -49,6 +49,7 @@ $id_user = $_SESSION['id_user'];
                                 <?php if ($_SESSION['id_jabatan'] == '1' || $_SESSION['id_jabatan'] == '2') { ?>
                                     <li class="nav-item"><a class="nav-link" href="main?url=supplier"><span class="ml-2"><i class='fas fa-store mr-2'></i>Data Supplier</span></a></li>
                                     <li class="nav-item"><a class="nav-link" href="main?url=user"><span class="ml-2"><i class='fas fa-user mr-2'></i>Data User</span></a></li>
+                                    <li class="nav-item"><a class="nav-link" href="main?url=merk"><span class="ml-2"><i class='fas fa-bookmark mr-2'></i>Data Merk</span></a></li>
                                 <?php } ?>
                                 <li class="nav-item"><a class="nav-link" href="main?url=jenis-pengeluaran"><span class="ml-2"><i class='fas fa-shopping-basket mr-2'></i>Jenis Pengeluaran</span></a></li>
                                 <li class="nav-item"><a class="nav-link" href="main?url=banner"><span class="ml-2"><i class='fas fa-images mr-2'></i>Banner</span></a></li>
@@ -267,6 +268,12 @@ if ($_SESSION['id_jabatan'] == '8'||$_SESSION['id_jabatan'] == '7'||$_SESSION['i
 			require 'page/kontak/ubah.php';
 		} else if ($act == 'tambah-kontak') {
 			require 'page/kontak/tambah.php';
+		} else if ($act == 'merk') {
+			require 'page/merk/index.php';
+		} else if ($act == 'ubah-merk') {
+			require 'page/merk/ubah.php';
+		} else if ($act == 'tambah-merk') {
+			require 'page/merk/tambah.php';
 		} else if ($act == 'banner') {
 			require 'page/banner/index.php';
 		} else {

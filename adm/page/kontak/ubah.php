@@ -8,7 +8,7 @@ $data = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM kontak WHERE id='$i
 
 <div class="row">
     <div class="col-8">
-        <h3 class="font-weight-bolder"><i class='fas fa-store'></i> Ubah Kontak</h3>
+        <h3 class="font-weight-bolder"><i class='fas fa-phone'></i> Ubah Kontak</h3>
     </div>
     <div class="col-4"><a href="main?url=kontak" class="btn btn-danger float-right"><i class='fas fa-times-circle mr-2'></i>Back</a></div>
 </div>
