@@ -41,7 +41,18 @@ foreach ($posts as $r){
 echo '<section class="py-2 br-bottom br-top"><div class="container"><div class="row align-items-center justify-content-between">';
 
 echo '<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12"><nav aria-label="breadcrumb">'.
-'<ol class="breadcrumb"> <li class="breadcrumb-item"><a href="'.SITEURL.'/">Home</a></li><li class="breadcrumb-item"><a href="'.SITEURL.'/kategori/'.strtolower(str_replace(' ','-',$kategori)).'/">'.$kategori.'</a></li><li class="breadcrumb-item"><a href="'.SITEURL.'/merk/'.strtolower(str_replace(' ','-',$merk)).'/">'.$merk.'</a></li><li class="breadcrumb-item active" aria-current="page">'.$barcode.'</li></ol>'.
+	'<ol class="breadcrumb">'. 
+		'<li class="breadcrumb-item">
+			<a href="'.SITEURL.'/">Home</a>
+		</li>'.
+		// '<li class="breadcrumb-item">
+		// 	<a href="'.SITEURL.'/kategori/'.strtolower(str_replace(' ','-',$kategori)).'/">'.$kategori.'</a>
+		// </li>'.
+		// '<li class="breadcrumb-item">
+		// 	<a href="'.SITEURL.'/merk/'.strtolower(str_replace(' ','-',$merk)).'/">'.$merk.'</a>
+		// </li>'.
+		'<li class="breadcrumb-item active" aria-current="page">'.$barcode.'</li>'.
+	'</ol>'.
 '</nav></div>';
 
 echo '</div>'.
@@ -64,7 +75,7 @@ echo '<div class="prt_02 mb-4"><h1 class="ft-bold mb-1">'.$ptitle.'</h1><div cla
 '<div class="prt_03 mb-4" style="font-size: 1.2rem;">';
 echo 
 // '<p><span class="label">Nama</span> : '.$ptitle.'</p>'.
-'<p><span class="label">Kode</span> : '.$barcode.'</p>'.
+// '<p><span class="label">Kode</span> : '.$barcode.'</p>'.
 '<p><span class="label">Merk</span> : <a href="'.SITEURL.'/merk/'.$merk.'/">'.$merk.'</a></p>'.
 '<p><span class="label">Stok</span> : '.$stok.'</p>'.
 '<p><span class="label">Kondisi</span> : '.$kondisi.'</p>'.
@@ -117,25 +128,43 @@ $ordermodal .= '<div class="prt_02 mb-2">
 		<div class="elis_rty">'.
 			'<span style="font-size:1.2rem" class="ft-bold theme-cl mr-2 text-red">'.rp($harga).',00</span>'.
 			'</div></div></div>'.
-			'<div class="prt_03 mb-3 mt-2 row" style="font-size:1rem">'.
+			'<div class="prt_03 mb-3 mt-3 row" style="font-size:1rem">'.
 			'<div class="col-lg-6">'.
-			'<p><span class="label">Merk</span> : '.$merk.'</p>'.
-			'<p><span class="label">Stok</span> : '.$stok.'</p>'.
-			'<p><span class="label">Kondisi</span> : '.$kondisi.'</p>'.
+			'<p><span class="label" style="width:5.5rem">Merk</span> : '.$merk.'</p>'.
+			'<p><span class="label" style="width:5.5rem">Stok</span> : '.$stok.'</p>'.
+			'<p><span class="label" style="width:5.5rem">Kondisi</span> : '.$kondisi.'</p>'.
 			'</div>'.
 			'<div class="col-lg-6">'.
-				'<p><span class="label">Kualitas</span> : '.$kualitas.'</p>'.
-				'<p><span class="label">Keterangan</span> : '.$tambahan.'</p>'.
-				'<p><span class="label">Deskripsi</span> : '.$deskripsi.'</p>'.
+				'<p><span class="label" style="width:5.5rem">Kualitas</span> : '.$kualitas.'</p>'.
+				'<p><span class="label" style="width:5.5rem">Keterangan</span> : '.$tambahan.'</p>'.
+				'<p><span class="label" style="width:5.5rem">Deskripsi</span> : '.$deskripsi.'</p>'.
 			'</div>'.
 		'</div>
 	</div>
-	<div class="mt-2" style="font-size:1.1rem">
+	<div class="mt-2" style="font-size:1rem">
 	Silahkan melakukan pemesanan dengan menghubungi salah satu kontak dibawah ini :
-		<div class="mt-2" style="display: flex; gap: 0.5rem; flex-direction: column;">
-			<a href="https://wa.me/6281385595013'.'?text='.urlencode('Saya order '.$ptitle).'%0a'.urlencode($plink).'" target="_blank"><div style="display:flex"><div class="mini-wa mr-1" style="color: white; background:#46df1b;"><i class="lni lni-whatsapp"></i></div> 081385595013</div></a>
-			<a href="https://wa.me/6281385595027'.'?text='.urlencode('Saya order '.$ptitle).'%0a'.urlencode($plink).'" target="_blank"><div style="display:flex"><div class="mini-wa mr-1" style="color: white; background:#46df1b;"><i class="lni lni-whatsapp"></i></div> 081385595027</div></a>
-			<a href="https://wa.me/6287877481465'.'?text='.urlencode('Saya order '.$ptitle).'%0a'.urlencode($plink).'" target="_blank"><div style="display:flex"><div class="mini-wa mr-1" style="color: white; background:#46df1b;"><i class="lni lni-whatsapp"></i></div> 087877481465</div></a>
+		<div class="mt-3" style="display: flex; gap: 1rem; flex-direction: column;">
+			<a href="https://wa.me/6281385595013'.'?text='.urlencode('Saya order '.$ptitle).'%0a'.urlencode($plink).'" target="_blank">
+				<div style="display:flex">
+					<div class="mini-wa mr-1" style="color: white; background:#46df1b;">
+						<i class="lni lni-whatsapp"></i>
+					</div> 081385595013
+				</div>
+			</a>
+			<a href="https://wa.me/6281385595027'.'?text='.urlencode('Saya order '.$ptitle).'%0a'.urlencode($plink).'" target="_blank">
+				<div style="display:flex">
+					<div class="mini-wa mr-1" style="color: white; background:#46df1b;">
+						<i class="lni lni-whatsapp"></i>
+					</div> 081385595027
+				</div>
+			</a>
+			<a href="https://wa.me/6287877481465'.'?text='.urlencode('Saya order '.$ptitle).'%0a'.urlencode($plink).'" target="_blank">
+				<div style="display:flex">
+					<div class="mini-wa mr-1" style="color: white; background:#46df1b;">
+						<i class="lni lni-whatsapp"></i>
+					</div> 087877481465
+				</div>
+			</a>
 		</div>
 	</div>
 </div>
@@ -230,7 +259,7 @@ foreach ($random as $pos){
 	'<span class="ft-bold theme-cl fs-lg mr-2">'.rp($harga).',00</span>'.
 	'</div></div></div>'.
 	'<div class="prt_03 mb-3">'.
-	'<p><span class="label">Kode</span> : '.$barcode.'</p>'.
+	// '<p><span class="label">Kode</span> : '.$barcode.'</p>'.
 	'<p><span class="label">Merk</span> : '.$merk.'</p>'.
 	'<p><span class="label">Stok</span> : '.$stok.'</p>'.
 	'<p><span class="label">Kondisi</span> : '.$kondisi.'</p>'.

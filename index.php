@@ -414,7 +414,7 @@ function foot(){
 						'<p>Kami memberikan akses login untuk member pedagang mengetahui semua jumlah stok ditoko kita dan membaginya menjadi 3 harga yaitu distributor, 
 							reseller dan HET (Harga Eceran Tertinggi). 
 							Jadi member bisa membeli dan menjual dengan bisa mengetahui kapasitas keuntungan yang di dapat.</p>'.
-						'<p><a href="https://wa.me/6281385595027?text='.urlencode('Saya join sebagai Pedagang').'" class="badge bg-success login">JOIN</a></p>'.
+						'<p><a href="https://wa.me/6281385595027?text='.urlencode('Saya join sebagai Pedagang').'" class="badge bg-success login">JOIN</a></p><br/>'.
 						'<h3>Penjual</h3>'.
 						'<p>Anda produsen/importir/APM???</p>'.
 						'<p>Kami menyiapkan Team untuk membantu anda menjual produk dengan cara yang lebih efisien karena kami sudah memiliki banyak agen distributor dan reseller dan kami juga memiliki admin yang sudah siap promosikan produk anda.</p>'.

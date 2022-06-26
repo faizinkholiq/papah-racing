@@ -28,7 +28,7 @@
 				<a class="my-list-group-item my-list-group-item-action" href="<?=SITEURL?>/pelayanan">Peraturan Pelayanan</a>
 				<a class="my-list-group-item my-list-group-item-action" href="<?=SITEURL?>/garansi">Garansi</a>
 				<a class="my-list-group-item my-list-group-item-action active" href="<?=SITEURL?>/tentang">Tentang Kami</a>
-				<a class="my-list-group-item my-list-group-item-action" href="#!">Join Us</a>
+				<a class="my-list-group-item my-list-group-item-action" href="#!" data-toggle="modal" data-target="#joinus">Join Us</a>
 			</div>
 			<div class="col-lg-9">
 				<h1 class="ml-lg-4 ml-sm-0"><strong>Tentang Kami</strong></h1>
