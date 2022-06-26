@@ -21,7 +21,14 @@
         <div class="form-group row">
             <label for="merk" class="col-sm-2 col-form-label">Merk</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="merk" name="merk" required>
+                <select class="form-control selectpicker" id="merk" name="merk" data-live-search="true" required>
+                    <?php
+                    $merks = mysqli_query($con, "SELECT * FROM merk ORDER BY name ");
+                    foreach ($merks as $q){
+                        echo '<option value="'.$q['name'].'">'.ucwords($q['name']).'</option>';
+                    }
+                    ?>
+                </select>
             </div>
         </div>
         <div class="form-group row">
