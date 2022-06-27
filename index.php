@@ -145,10 +145,9 @@ if ($count_uri == 1){
 				$src = str_replace(["(",")"], "", $src);
 				$src = str_replace(" ", "|", $src);
 				
-				$total = mysqli_num_rows(mysqli_query($con, "SELECT * FROM barang WHERE kategori  REGEXP '$src'"));
-
-				$posts = mysqli_query($con, "SELECT * FROM barang WHERE kategori REGEXP '$src'");
-	
+				$posts = mysqli_query($con, "SELECT * FROM barang WHERE kategori REGEXP '$src' ORDER BY rand()");
+				$total = mysqli_num_rows($posts);
+				
 				$per = ceil($total/$pp);	
 				if ($total>0){
 					$bc = '<li class="breadcrumb-item"><a href="'.SITEURL.'/kategori/'.$p.'/">'.join(', ', $arr_kat).'</a></li>';

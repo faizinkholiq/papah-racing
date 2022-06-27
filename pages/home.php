@@ -12,7 +12,7 @@ echo '<section class="py-2 br-bottom br-top">
 if(isset($px) && ($px == "cari" || $px == "kategori" || $px == "merk")) {
 	echo '
 		<section class="middle" style="padding-top:10px!important;"><div class="container">
-		<a href="'.SITEURL.'" class="btn btn-sm bg-light text-dark fs-md ft-medium mb-4"><i class="lni lni-chevron-left mr-2"></i> Back</a>
+		<a href="'.SITEURL.'" class="btn btn-sm bg-light text-dark fs-md ft-medium mb-4"><i class="lni lni-chevron-left mr-2"></i> Kembali</a>
 		<div class="row align-items-center">';
 }else{
 	echo '<section class="middle"><div class="container"><div class="row align-items-center">';
