@@ -5181,6 +5181,7 @@ footer.skin-dark-footer ul.footer-bottom-social li a:hover, footer.skin-dark-foo
     align-items: center;
     justify-content: center;
     white-space: pre-wrap;
+    height: 90%;
 }
 
 .my-badge-nav:hover{
