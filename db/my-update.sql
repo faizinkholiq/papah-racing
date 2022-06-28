@@ -39,7 +39,7 @@ CREATE TABLE `papah_racing`.`banner` ( `id` INT NOT NULL AUTO_INCREMENT , `photo
 INSERT INTO `banner` (`id`, `photo`, `order_no`) VALUES (NULL, 's1.jpeg', 1), (NULL, 's2.jpeg', 2), (NULL, 's3.jpeg', 3), (NULL, 's4.jpeg', 4), (NULL, 's5.jpeg', 5);
 ALTER TABLE `banner` ADD `order_no` INT NOT NULL AFTER `photo`;
 
--- 26 Mei 2022
+-- 26 Juni 2022
 CREATE TABLE `merk` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
@@ -153,3 +153,6 @@ INSERT INTO `merk` (`id`, `name`) VALUES
 (104, 'YAMAHA'),
 (105, 'YOSHIMURA'),
 (106, 'YYPANG');
+
+-- 28 Juni 2022
+ALTER TABLE `kontak` ADD `letak` ENUM('footer','order') NULL AFTER `kontak`, ADD `aktif` BOOLEAN NOT NULL DEFAULT FALSE AFTER `letak`;
