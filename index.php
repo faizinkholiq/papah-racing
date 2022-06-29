@@ -240,7 +240,7 @@ function head(){
 		</div>
 	</form>'.
 	'<div class="mobile_nav"><ul>'.
-	'<li><div class="badge bg-danger login my-btn"> <a href="#" data-toggle="modal" data-target="#login">LOGIN <i class="lni lni-user"></i></a></div></li> '.
+	'<li><div class="badge bg-danger btn-login my-btn"> <a href="#" data-toggle="modal" data-target="#login">LOGIN <i class="lni lni-user"></i></a></div></li> '.
 	'</ul></div></div>'.
 	'<div class="nav-menus-wrapper" style="transition-property: none;">'.
 	'<form class="form m-0 p-0" method="GET" action="'.SITEURL.'/">
@@ -252,7 +252,7 @@ function head(){
 			</div>
 	</form>'.
 	'<ul class="nav-menu nav-menu-social align-to-right">'.
-	'<li><div class="badge bg-danger login my-btn"> <a href="#" data-toggle="modal" data-target="#login">LOGIN <i class="lni lni-user"></i></a></div></li> '.
+	'<li><div class="badge bg-danger btn-login my-btn"> <a href="#" data-toggle="modal" data-target="#login">LOGIN <i class="lni lni-user"></i></a></div></li> '.
 	'</ul></div></nav></div></div>';
 	
 	if ($px == "cari" || $px == "kategori" || $px == "merk") {
@@ -374,7 +374,10 @@ function foot(){
 	echo '</ul></div></div>';
 	
 	echo '<div class="col-xl-3 col-lg-3 col-md-3 col-sm-12"><div id="alamat" class="footer_widget"><h4 class="widget_title">ALAMAT</h4>'.
-	'<div class="address mt-3"><iframe style="width: 100%;" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3967.004731264543!2d106.91843581423603!3d-6.130064361809112!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e6a218a0a0405e7%3A0x8562ade3b663c212!2sPapah%20Racing!5e0!3m2!1sen!2sid!4v1640485094031!5m2!1sen!2sid" width="270" height="200" style="border:0;" allowfullscreen="" loading="lazy"></iframe></div>'.
+	'<div class="address mt-3">
+		<iframe style="width: 100%;" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3967.004731264543!2d106.91843581423603!3d-6.130064361809112!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e6a218a0a0405e7%3A0x8562ade3b663c212!2sPapah%20Racing!5e0!3m2!1sen!2sid!4v1640485094031!5m2!1sen!2sid" 
+			width="270" height="200" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+	</div>'.
 	'<div class="address mt-3">'.str_replace("\n",'<br/>',$alamat).'</div>'.
 	'</div></div></div></div></div>'.
 	'</div>'.
@@ -382,21 +385,7 @@ function foot(){
 			
 	/* ------------------------------- */
 			
-	echo '<div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="loginmodal" aria-hidden="true"><div class="modal-dialog modal-xl login-pop-form" role="document"><div class="modal-content" id="loginmodal"><div class="modal-headers"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="ti-close"></span></button></div><div class="modal-body p-5"><div class="text-center mb-4"><h2 class="m-0 ft-regular">Login</h2></div><form action="'.SITEURL.'/adm/process/action?url=login" method="post">			 <div class="form-group"><label>User Name</label><input type="text" class="form-control" placeholder="Username*" name="username"></div>
-	<div class="form-group">
-	<label>Password</label>
-	<div class="input-group">
-	<input type="password" class="form-control" placeholder="Password*" name="password" id="password" data-toggle="password">
-	<div class="input-group-append">
-	<span class="input-group-text">
-	<i class="fa fa-eye"></i>
-	</span>
-	</div>
-	</div>
-	</div><div class="form-group"><div class="d-flex align-items-center justify-content-between"><div class="flex-1"><input id="dd" class="checkbox-custom" name="dd" type="checkbox"><label for="dd" class="checkbox-custom-label">Remember Me</label></div><div class="eltio_k2"><a href="#">Lost Your Password?</a></div>	 </div></div><div class="form-group"><button type="submit" class="btn btn-md full-width bg-dark text-light fs-md ft-medium">Login</button></div><div class="form-group text-center mb-0"><p class="extra">Not a member?<a href="#et-register-wrap" class="text-dark"> Register</a></p></div></form></div></div></div></div>';
-	
-	echo '
-	<div class="modal fade" id="joinus" tabindex="-1" role="dialog" aria-labelledby="loginmodal" aria-hidden="true">
+	echo '<div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="loginmodal" aria-hidden="true">
 		<div class="modal-dialog modal-xl login-pop-form" role="document">
 			<div class="modal-content" id="loginmodal">
 				<div class="modal-headers">
@@ -406,18 +395,68 @@ function foot(){
 				</div>
 				<div class="modal-body p-5">
 					<div class="text-center mb-4">
-						<h2 class="m-0 ft-regular">JOIN US</h2>
+						<h2 class="m-0 ft-regular">Login</h2>
+					</div>
+					<form action="'.SITEURL.'/adm/process/action?url=login" method="post">			 
+						<div class="form-group">
+							<label>User Name</label>
+							<input type="text" class="form-control" placeholder="Username*" name="username">
+						</div>
+						<div class="form-group">
+							<label>Password</label>
+							<div class="input-group">
+								<input type="password" class="form-control" placeholder="Password*" name="password" id="password" data-toggle="password">
+								<div class="input-group-append">
+									<span class="input-group-text"><i class="fa fa-eye"></i></span>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="d-flex align-items-center justify-content-between">
+								<div class="flex-1">
+									<input id="dd" class="checkbox-custom" name="dd" type="checkbox">
+									<label for="dd" class="checkbox-custom-label">Remember Me</label>
+								</div>
+								<div class="eltio_k2">
+									<a href="#">Lost Your Password?</a>
+								</div>	 
+							</div>
+						</div>
+						<div class="form-group">
+							<button type="submit" class="btn btn-md full-width bg-dark text-light fs-md ft-medium">Login</button>
+						</div>
+						<div class="form-group text-center mb-0">
+							<p class="extra">Not a member?<a href="#et-register-wrap" class="text-dark"> Register</a></p>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>';
+	
+	echo '
+	<div class="modal fade" id="joinus" tabindex="-1" role="dialog" aria-labelledby="joinusmodal" aria-hidden="true">
+		<div class="modal-dialog modal-xl joinus-pop-form" role="document">
+			<div class="modal-content" id="joinusmodal">
+				<div class="modal-headers">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span class="ti-close"></span>
+					</button>
+				</div>
+				<div class="modal-body p-lg-4">
+					<div class="text-center mb-4">
+						<h2 class="m-0 ft-bold"><i class="fa fa-user-plus mr-2"></i> JOIN US</h2>
 					</div>'.
-					'<div class="form-group">'.
+					'<div class="form-group mb-4">'.
 						'<h3>Pedagang</h3>'.
 						'<p>Kami memberikan akses login untuk member pedagang mengetahui semua jumlah stok ditoko kita dan membaginya menjadi 3 harga yaitu distributor, 
 							reseller dan HET (Harga Eceran Tertinggi). 
 							Jadi member bisa membeli dan menjual dengan bisa mengetahui kapasitas keuntungan yang di dapat.</p>'.
-						'<p><a href="https://wa.me/6281385595027?text='.urlencode('Saya join sebagai Pedagang').'" class="badge bg-success login">JOIN</a></p><br/>'.
-						'<h3>Penjual</h3>'.
+						'<p><a href="https://wa.me/6281385595027?text='.urlencode('Saya join sebagai Pedagang').'" class="btn badge bg-success my-btn btn-join">JOIN</a></p>'.
+						'<h3 style="margin-top:2rem">Penjual</h3>'.
 						'<p>Anda produsen/importir/APM???</p>'.
 						'<p>Kami menyiapkan Team untuk membantu anda menjual produk dengan cara yang lebih efisien karena kami sudah memiliki banyak agen distributor dan reseller dan kami juga memiliki admin yang sudah siap promosikan produk anda.</p>'.
-						'<p><a href="https://wa.me/6281385595027?text='.urlencode('Saya join sebagai Penjual').'" class="badge bg-success login">JOIN</a></p>'.
+						'<p><a href="https://wa.me/6281385595027?text='.urlencode('Saya join sebagai Penjual').'" class="btn badge bg-success my-btn btn-join">JOIN</a></p>'.
 					'</div>'.
 				'</div>
 			</div>

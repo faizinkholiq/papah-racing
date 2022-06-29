@@ -4789,12 +4789,23 @@ footer.skin-dark-footer ul.footer-bottom-social li a:hover, footer.skin-dark-foo
     float: left;
     width: 25%;
 }
-.login {
-  padding: 10px 10px 10px 20px;
-  font-size: 17px;
-  height: 40px;
+.btn-login {
+    padding: 10px 10px 10px 20px;
+    font-size: 17px;
+    height: 40px;
 }
-.login a{color:#fff;font-size: 14px;}
+
+.btn-login a{
+    color:#fff;
+    font-size: 14px;
+}
+
+.btn-join {
+    font-size: 12px;
+    height: 40px;
+    padding: 12px 18px;
+}
+
 @media (max-width:1920px) {
 	.cat {width:10%;flex:10%;}
 	.sld {padding-top: 75px;}

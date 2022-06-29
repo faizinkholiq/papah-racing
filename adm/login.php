@@ -34,11 +34,16 @@ $data = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM toko WHERE id_toko=
                 <input type="text" name="username" class="form-control" id="username" placeholder="Username" required>
             </div>
             <label class="sr-only" for="password">Password</label>
-            <div class="input-group mb-2 mr-sm-2">
-                <div class="input-group-prepend">
-                    <div class="input-group-text"><i class='fas fa-key'></i></div>
+            <div class="input-group mb-2 mr-sm-2" style="border: 1px solid #ced4da; border-radius: .25rem;">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text" style="border:none"><i class='fas fa-key'></i></div>
+                    </div>
+                    <input type="password" class="form-control" placeholder="Password*" name="password" id="password" data-toggle="password" style="border: none; border-left: 1px solid #ced4da;">
+                    <div class="input-group-append">
+                        <span class="input-group-text" style="background-color: #ffffff; border: none;"><i class="fa fa-eye"></i></span>
+                    </div>
                 </div>
-                <input type="password" minlength="6" name="password" class="form-control" id="password" placeholder="Password" required>
             </div>
             <div class="mt-4">
                 <button type="submit" class="btn btn-primary btn-block"><i class='fas fa-sign-in-alt mr-2'></i>Login</button>
@@ -51,5 +56,10 @@ $data = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM toko WHERE id_toko=
         <p>Knalpot Racing Speedshop Group</p>
     </div>
 </body>
+
+<footer>
+	<script src="<?=SITEURL?>/js/jquery.min.js"></script>
+    <script src="<?=SITEURL?>/js/bootstrap-show-password.min.js"></script>;
+</footer>
 
 </html>
