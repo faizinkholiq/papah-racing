@@ -15,6 +15,8 @@ $query = mysqli_query($con, "SELECT * FROM kontak ORDER BY id DESC");
                 <tr class="text-center">
                     <th>No.</th>
                     <th>Kontak</th>
+                    <th>Letak</th>
+                    <th>Status</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -24,10 +26,14 @@ $query = mysqli_query($con, "SELECT * FROM kontak ORDER BY id DESC");
                     <tr class="text-center">
                         <td><?= $no++; ?></td>
                         <td class="text-left"><?= $data['keterangan']; ?> : <?= $data['kontak']; ?></td>
+                        <td class="text-center"><?= $data['letak']; ?></td>
+                        <td class="text-center"><?= ($data['aktif'])? "Aktif" : "Tidak Aktif"; ?></td>
                         <td>
-                            <!-- <a href="" class="btn btn-info btn-sm"><i class='fas fa-eye'></i></a> -->
-                            <a href="main?url=ubah-kontak&this=<?= $data['id']; ?>" class="btn btn-primary btn-sm"><i class='fas fa-edit'></i></a>
-                            <a href="process/action?url=hapus-kontak&this=<?= $data['id']; ?>" class="btn btn-danger btn-sm" data-toggle="tooltip" data-original-title="Hapus" onclick="return confirm('Anda yakin ingin hapus data ini?')"><i class='fas fa-trash-alt'></i></a>
+                            <a href="" title="<?= ($data["aktif"])? 'Set Active' : 'Set Inactive' ?>" class="btn <?= ($data["aktif"])? 'btn-secondary' : 'btn-warning' ?> btn-sm">
+                                <i class='fas <?= ($data["aktif"])? 'fa-eye-slash' : 'fa-eye' ?>'></i>
+                            </a>
+                            <a href="main?url=ubah-kontak&this=<?= $data['id']; ?>" title="Edit" class="btn btn-primary btn-sm"><i class='fas fa-edit'></i></a>
+                            <a href="process/action?url=hapus-kontak&this=<?= $data['id']; ?>" title="Delete" class="btn btn-danger btn-sm" data-toggle="tooltip" data-original-title="Hapus" onclick="return confirm('Anda yakin ingin hapus data ini?')"><i class='fas fa-trash-alt'></i></a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
