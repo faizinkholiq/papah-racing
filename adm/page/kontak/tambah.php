@@ -23,6 +23,24 @@
                 <button type="submit" class="btn btn-primary"><i class='fas fa-save mr-2'></i>Simpan</button>
             </div>
         </div>
-
+        <div class="form-group row">
+            <label for="kontak" class="col-sm-2 col-form-label">Letak</label>
+            <div class="col-sm-10">
+                <select class="form-control" id="letak" name="letak">
+                    <option value=""></option>
+                    <option value="footer">Footer</option>
+                    <option value="order">Order</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="kontak" class="col-sm-2 col-form-label">Status</label>
+            <div class="col-sm-10">
+                <select class="form-control" id="letak" name="letak">
+                    <option value="1">Aktif</option>
+                    <option value="0">Tidak Aktif</option>
+                </select>
+            </div>
+        </div>
     </form>
 </div>

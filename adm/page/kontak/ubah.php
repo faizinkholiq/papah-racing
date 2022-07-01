@@ -27,6 +27,25 @@ $data = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM kontak WHERE id='$i
                 <input type="text" class="form-control" id="kontak" name="kontak" value="<?= $data['kontak']; ?>" required>
             </div>
         </div>
+        <div class="form-group row">
+            <label for="kontak" class="col-sm-2 col-form-label">Letak</label>
+            <div class="col-sm-10">
+                <select class="form-control" id="letak" name="letak">
+                    <option value=""></option>
+                    <option <?=($data['letak'] == 'footer')? 'selected' : '' ?> value="footer">Footer</option>
+                    <option <?=($data['letak'] == 'order')? 'selected' : '' ?> value="order">Order</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="kontak" class="col-sm-2 col-form-label">Status</label>
+            <div class="col-sm-10">
+                <select class="form-control" id="letak" name="letak">
+                    <option <?=($data['aktif'] == true)? 'selected' : '' ?> value="1">Aktif</option>
+                    <option <?=($data['aktif'] == false)? 'selected' : '' ?> value="0">Tidak Aktif</option>
+                </select>
+            </div>
+        </div>
         <div class="form-row text-center">
             <div class="col-12">
                 <button type="submit" class="btn btn-primary"><i class='fas fa-save mr-2'></i>Simpan</button>
