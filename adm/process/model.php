@@ -180,7 +180,10 @@ class con
 			}
 
 			// Update selected
-			mysqli_query($con,"REPLACE INTO foto_barang (id_barang, name) VALUES ($id_barang, '".$f['gambar']['name'][0]."')");
+			if (isset($post["selected_barang"])) {
+				$selected_barang = basename($post["selected_barang"]);
+				mysqli_query($con,"REPLACE INTO foto_barang (id_barang, name) VALUES ($id_barang, '$selected_barang')");
+			}
 
 			header('location:../main?url=barang');
 		}else{

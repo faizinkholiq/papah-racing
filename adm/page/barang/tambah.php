@@ -191,6 +191,7 @@
         </div>
         <div class="card bg-light mb-3">
             <div class="card-header font-weight-bolder">Upload Gambar Maximum 5, Ukuran file Maximum 4 Mb</div><br>
+            <input type="text" id="selected_barang" name="selected_barang" value=""/>
             <div class="card-body" style="text-align: center">
                 <input id="imgInp" type="file" name="gambar[]" accept="image/*" multiple>
                 <div class="col-lg-12 mt-4 img-container">
@@ -223,7 +224,8 @@
             
               reader.onload = function (e) {
                   $('.img-container').append(`
-                    <div class="i6">
+                    <div class="i6" onclick="selectImage('${file.name}')" data-id="${file.name}">
+                        <div class="overlay" style="display:none"><i class="fa fa-check"></i></div>
                         <img src="${e.target.result}">
                         <button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" data-original-title="Hapus" 
                             onclick="removeImage('${file.name}')">
@@ -245,6 +247,12 @@
 
         updateValue()
         doPreview($("#imgInp")[0].files)
+    }
+
+    function selectImage(name) {
+        $('#selected_barang').val(name)
+        $('.i6 .overlay').hide()
+        $(`div[data-id='${name}'] .overlay`).fadeIn()
     }
     
     function updateValue() {
