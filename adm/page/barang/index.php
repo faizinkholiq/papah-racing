@@ -48,7 +48,7 @@ if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2") {
             } ?> -->
     <?php if ($_SESSION['id_jabatan'] == '6') { ?>
         <div class="table-responsive mt-3">
-            <table class="table table-striped table-bordered display" style="width:100%">
+            <table id="tb-barang" class="table table-striped table-bordered " style="width:100%">
                 <thead>
                     <tr class="text-center">
                         <th>No.</th>
@@ -84,7 +84,7 @@ if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2") {
         </div>
     <?php } else if ($_SESSION['id_jabatan'] == '7') { ?>
         <div class="table-responsive mt-3">
-            <table class="table table-striped table-bordered display" style="width:100%">
+            <table id="tb-barang" class="table table-striped table-bordered " style="width:100%">
                 <thead>
                     <tr class="text-center">
                         <th>No.</th>
@@ -122,7 +122,7 @@ if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2") {
         </div>
     <?php } else { ?>
         <div class="table-responsive mt-3">
-            <table class="table table-striped table-bordered display" style="width:100%">
+            <table id="tb-barang" class="table table-striped table-bordered " style="width:100%">
                 <thead>
                     <tr class="text-center">
                         <th class="align-middle" rowspan="2">No.</th>
@@ -179,7 +179,7 @@ if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2") {
                             <?php if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2") { ?>
                                 <td class="text-center">
                                     <!-- <a href="" class="btn btn-info btn-sm"><i class='fas fa-eye'></i></a> -->
-                                    <a href="main?url=ubah-barang&this=<?= $data['id_barang']; ?>" class="btn btn-primary btn-sm"><i class='fas fa-edit'></i></a>
+                                    <a href="#!" onclick="editBarang(<?=$data['id_barang']?>)" class="btn btn-primary btn-sm"><i class='fas fa-edit'></i></a>
                                     <a href="process/action?url=hapusbarang&this=<?= $data['id_barang']; ?>" class="btn btn-danger btn-sm" data-toggle="tooltip" data-original-title="Hapus" onclick="return confirm('Anda yakin ingin hapus data ini?')"><i class='fas fa-trash-alt'></i></a>
                                 </td>
                             <?php 
@@ -245,3 +245,24 @@ if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2") {
         </div>
     </div>
 </div>
+
+<script>
+    let page = <?=isset($_GET["page"])? (int)$_GET["page"] : 0 ?>;
+    let tb_barang = $("#tb-barang").DataTable({
+        order: [],
+    });
+
+    $(document).ready(function() {
+        // $("#tb-barang").on('draw.dt', function () {
+        //     console.log(tb_barang.page.info())
+        // });
+        if(page != null && page != ""){
+            tb_barang.page(page).draw(false);
+        }
+    });
+
+    function editBarang(id) {
+        let page_now = tb_barang.page.info().page;
+        window.open("main?url=ubah-barang&this="+id+"&page="+page_now, "_self")
+    }
+</script>

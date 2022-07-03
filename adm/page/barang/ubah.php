@@ -16,7 +16,7 @@ if ($_SESSION['id_jabatan'] == '1'||$_SESSION['id_jabatan'] == '2'||$_SESSION['i
     <div class="col-8">
         <h3 class="font-weight-bolder"><i class='fas fa-box'></i> Ubah Barang</h3>
     </div>
-    <div class="col-4"><a href="main?url=barang" class="btn btn-danger float-right"><i class='fas fa-times-circle mr-2'></i>Back</a></div>
+    <div class="col-4"><a href="main?url=barang&page=<?=isset($_GET["page"])? (int)$_GET["page"] : 0 ?>" class="btn btn-danger float-right"><i class='fas fa-times-circle mr-2'></i>Back</a></div>
 </div>
 <div class="wrapper">
     <form action="process/action?url=ubahbarang" enctype="multipart/form-data" method="post">
