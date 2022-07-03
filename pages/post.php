@@ -19,6 +19,7 @@ foreach ($posts as $r){
 	$time = $r['updated'];
 	$gi = glob(PHOTO.'/'.$id.'/*');
 	$selected_brg = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM foto_barang WHERE id_barang='$id'"));
+	$kontaks = mysqli_query($con, "SELECT * FROM kontak WHERE letak = 'order' AND aktif = 1 ORDER BY id ASC");
 	if (empty($gi)){} else {
 		$i = 1;
 		foreach ($gi as $im){
@@ -143,29 +144,19 @@ $ordermodal .= '<div class="prt_02 mb-2">
 	</div>
 	<div class="mt-2" style="font-size:1rem">
 	Silahkan melakukan pemesanan dengan menghubungi salah satu kontak dibawah ini :
-		<div class="mt-3" style="display: flex; gap: 1rem; flex-direction: column;">
-			<a href="https://wa.me/6281385595013'.'?text='.urlencode('Saya order '.$ptitle).'%0a'.urlencode($plink).'" target="_blank">
+		<div class="mt-3" style="display: flex; gap: 1rem; flex-direction: column;">';
+			
+		foreach($kontaks as $item) {
+			$ordermodal .= '<a href="https://wa.me/'.$item["kontak"].'?text='.urlencode('Saya order '.$ptitle).'%0a'.urlencode($plink).'" target="_blank">
 				<div style="display:flex">
 					<div class="mini-wa mr-1" style="color: white; background:#46df1b;">
 						<i class="lni lni-whatsapp"></i>
-					</div> 081385595013
+					</div> '.$item["kontak"].'
 				</div>
-			</a>
-			<a href="https://wa.me/6281385595027'.'?text='.urlencode('Saya order '.$ptitle).'%0a'.urlencode($plink).'" target="_blank">
-				<div style="display:flex">
-					<div class="mini-wa mr-1" style="color: white; background:#46df1b;">
-						<i class="lni lni-whatsapp"></i>
-					</div> 081385595027
-				</div>
-			</a>
-			<a href="https://wa.me/6287877481465'.'?text='.urlencode('Saya order '.$ptitle).'%0a'.urlencode($plink).'" target="_blank">
-				<div style="display:flex">
-					<div class="mini-wa mr-1" style="color: white; background:#46df1b;">
-						<i class="lni lni-whatsapp"></i>
-					</div> 087877481465
-				</div>
-			</a>
-		</div>
+			</a>';
+		}
+
+		$ordermodal .= '</div>
 	</div>
 </div>
 </div></div></div></div></div></div>';

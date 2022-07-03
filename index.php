@@ -366,7 +366,7 @@ function foot(){
 	'<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">';
 	echo '<div id="kontak" class="footer_widget"><h4 class="widget_title">KONTAK KAMI</h4><ul>';
 	
-	$kontak = mysqli_query($con, "SELECT * FROM kontak ORDER BY id ASC");
+	$kontak = mysqli_query($con, "SELECT * FROM kontak WHERE letak = 'footer' AND aktif = 1 ORDER BY id ASC");
 	foreach ($kontak as $row){
 		echo "<li>".$row['keterangan']." : ".$row['kontak']."</li>";
 	}

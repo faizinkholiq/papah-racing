@@ -182,9 +182,11 @@ if (empty($_GET['url'])) {
 		$id = $_GET['this'];
 		$nc->hapussocmed($con, $id);
 	} else if ($to == 'tambah-kontak') {
-		$nc->tambahkontak($con, $_POST['keterangan'], $_POST['kontak']);
+		$nc->tambahkontak($con, $_POST['keterangan'], $_POST['kontak'], $_POST["letak"], $_POST["aktif"]);
 	} else if ($to == 'ubah-kontak') {
-		$nc->ubahkontak($con, $_POST['id'], $_POST['keterangan'], $_POST['kontak']);
+		$nc->ubahkontak($con, $_POST['id'], $_POST['keterangan'], $_POST['kontak'], $_POST["letak"], $_POST["aktif"]);
+	} else if ($to == 'set-aktif') {
+		$nc->setaktif($con, $_GET['id'], $_GET["aktif"]);
 	} else if ($to == 'hapus-kontak') {
 		$id = $_GET['this'];
 		$nc->hapuskontak($con, $id);

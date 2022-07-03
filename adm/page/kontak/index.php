@@ -29,11 +29,13 @@ $query = mysqli_query($con, "SELECT * FROM kontak ORDER BY id DESC");
                         <td class="text-center"><?= $data['letak']; ?></td>
                         <td class="text-center"><?= ($data['aktif'])? "Aktif" : "Tidak Aktif"; ?></td>
                         <td>
-                            <a href="" title="<?= ($data["aktif"])? 'Set Active' : 'Set Inactive' ?>" class="btn <?= ($data["aktif"])? 'btn-secondary' : 'btn-warning' ?> btn-sm">
+                            <a href="process/action?url=set-aktif&id=<?= $data['id']; ?>&aktif=<?= (int)!$data["aktif"] ?>" title="<?= ($data["aktif"])? 'Set Active' : 'Set Inactive' ?>" class="btn <?= ($data["aktif"])? 'btn-secondary' : 'btn-warning' ?> btn-sm">
                                 <i class='fas <?= ($data["aktif"])? 'fa-eye-slash' : 'fa-eye' ?>'></i>
                             </a>
                             <a href="main?url=ubah-kontak&this=<?= $data['id']; ?>" title="Edit" class="btn btn-primary btn-sm"><i class='fas fa-edit'></i></a>
-                            <a href="process/action?url=hapus-kontak&this=<?= $data['id']; ?>" title="Delete" class="btn btn-danger btn-sm" data-toggle="tooltip" data-original-title="Hapus" onclick="return confirm('Anda yakin ingin hapus data ini?')"><i class='fas fa-trash-alt'></i></a>
+                            <a href="process/action?url=hapus-kontak&this=<?= $data['id']; ?>" title="Delete" class="btn btn-danger btn-sm" data-toggle="tooltip" data-original-title="Hapus" onclick="return confirm('Anda yakin ingin hapus data ini?')">
+                                <i class='fas fa-trash-alt'></i>
+                            </a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

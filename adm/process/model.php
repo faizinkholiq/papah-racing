@@ -600,15 +600,21 @@ class con
 		header('location:../main?url=socmed');
 	}
 
-	function tambahkontak($con, $keterangan, $kontak)
+	function tambahkontak($con, $keterangan, $kontak, $letak, $aktif)
 	{
-		$query = mysqli_query($con, "INSERT INTO kontak SET keterangan='$keterangan',kontak='$kontak' ");
+		$query = mysqli_query($con, "INSERT INTO kontak SET keterangan='$keterangan', kontak='$kontak', letak='$letak', aktif='$aktif' ");
 		header('location:../main?url=kontak');
 	}
 
-	function ubahkontak($con, $id, $keterangan, $kontak)
+	function ubahkontak($con, $id, $keterangan, $kontak, $letak, $aktif)
 	{
-		$query = mysqli_query($con, "UPDATE kontak SET keterangan='$keterangan',kontak='$kontak' WHERE id='$id' ");
+		$query = mysqli_query($con, "UPDATE kontak SET keterangan='$keterangan', kontak='$kontak', letak='$letak', aktif='$aktif' WHERE id='$id' ");
+		header('location:../main?url=kontak');
+	}
+
+	function setaktif($con, $id, $aktif)
+	{
+		$query = mysqli_query($con, "UPDATE kontak SET aktif='$aktif' WHERE id='$id' ");
 		header('location:../main?url=kontak');
 	}
 

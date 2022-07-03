@@ -18,11 +18,6 @@
                 <input type="text" class="form-control" id="kontak" name="kontak" required>
             </div>
         </div>
-        <div class="form-row text-center">
-            <div class="col-12">
-                <button type="submit" class="btn btn-primary"><i class='fas fa-save mr-2'></i>Simpan</button>
-            </div>
-        </div>
         <div class="form-group row">
             <label for="kontak" class="col-sm-2 col-form-label">Letak</label>
             <div class="col-sm-10">
@@ -36,10 +31,15 @@
         <div class="form-group row">
             <label for="kontak" class="col-sm-2 col-form-label">Status</label>
             <div class="col-sm-10">
-                <select class="form-control" id="letak" name="letak">
+                <select class="form-control" id="aktif" name="aktif">
                     <option value="1">Aktif</option>
                     <option value="0">Tidak Aktif</option>
                 </select>
+            </div>
+        </div>
+        <div class="form-row text-center">
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary"><i class='fas fa-save mr-2'></i>Simpan</button>
             </div>
         </div>
     </form>

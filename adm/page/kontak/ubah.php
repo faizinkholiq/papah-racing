@@ -40,9 +40,9 @@ $data = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM kontak WHERE id='$i
         <div class="form-group row">
             <label for="kontak" class="col-sm-2 col-form-label">Status</label>
             <div class="col-sm-10">
-                <select class="form-control" id="letak" name="letak">
-                    <option <?=($data['aktif'] == true)? 'selected' : '' ?> value="1">Aktif</option>
-                    <option <?=($data['aktif'] == false)? 'selected' : '' ?> value="0">Tidak Aktif</option>
+                <select class="form-control" id="aktif" name="aktif">
+                    <option <?=($data['aktif'] == 1)? 'selected' : '' ?> value="1">Aktif</option>
+                    <option <?=($data['aktif'] == 0)? 'selected' : '' ?> value="0">Tidak Aktif</option>
                 </select>
             </div>
         </div>
