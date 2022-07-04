@@ -196,7 +196,7 @@ class con
 		session_start();
 		$id_barang = $post['id_barang'];
 		$barcode = !empty($post['barcode'])? htmlspecialchars(str_replace(' ', '', strtoupper($post['barcode']))) : null;
-		$nama = !empty($post['nama'])? htmlspecialchars(ucwords($post['nama'])) : null;
+		$nama = !empty($post['nama'])? htmlspecialchars(ucwords(addslashes($post['nama']))) : null;
 		$merk = !empty($post['merk'])? htmlspecialchars(strtoupper($post['merk'])) : null;
 		$stok = !empty($post['stok'])? $post['stok'] : null;
 		$modal = !empty($post['modal'])? str_replace('.', '', $post['modal']) : null;
@@ -209,11 +209,30 @@ class con
 		$kualitas = !empty($post['kualitas'])? htmlspecialchars(strtoupper($post['kualitas'])) : null;
 		$kategori = !empty($post['kategori'])? join(',', $post['kategori']) : null;
 		$tipe_pelanggan = !empty($post['tipe_pelanggan'])? $post['tipe_pelanggan'] : null;
-		$tambahan = !empty($post['tambahan'])? htmlspecialchars(strtoupper($post['tambahan'])) : null;
-		$deskripsi = !empty($post['deskripsi'])? $post['deskripsi'] : null;
+		$tambahan = !empty($post['tambahan'])? htmlspecialchars(strtoupper(addslashes($post['tambahan']))) : null;
+		$deskripsi = !empty($post['deskripsi'])? addslashes($post['deskripsi']) : null;
 		$berat = !empty($post['berat'])? $post['berat'] : null;
 		$updated = date("Y-m-d h:i:s");
-		$query = mysqli_query($con, "UPDATE barang SET barcode='$barcode',nama='$nama',merk='$merk',stok='$stok',modal='$modal',distributor='$distributor',reseller='$reseller',bengkel='$bengkel',admin='$admin',het='$het',kondisi='$kondisi',kualitas='$kualitas',kategori='$kategori',tipe_pelanggan='$tipe_pelanggan',tambahan='$tambahan',deskripsi='$deskripsi',updated='$updated',berat='$berat' WHERE id_barang='$id_barang' ");
+		$query = mysqli_query($con, "UPDATE barang SET  
+			barcode = '$barcode', 
+			nama = '$nama', 
+			merk = '$merk', 
+			stok = '$stok', 
+			modal = '$modal',
+			distributor = '$distributor', 
+			reseller = '$reseller', 
+			bengkel = '$bengkel', 
+			admin = '$admin', 
+			het = '$het',
+			kondisi = '$kondisi',
+			kualitas = '$kualitas',
+			kategori = '$kategori',
+			tipe_pelanggan = '$tipe_pelanggan',
+			tambahan = '$tambahan',
+			deskripsi = '$deskripsi',
+			updated = '$updated',
+			berat = '$berat' 
+			WHERE id_barang = '$id_barang' ");
 
 		// Hapus barang
 		if(!empty($post['hapus_barang'])) {

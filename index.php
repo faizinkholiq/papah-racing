@@ -164,8 +164,9 @@ if ($count_uri == 1){
 			// $posts = mysqli_query($con, "SELECT * FROM barang WHERE nama LIKE '%".$p."%'");
 			$src = str_replace('-', ' ', urldecode($p));
 			$page = $l;
-
-			$posts = mysqli_query($con, "SELECT * FROM barang WHERE nama LIKE '%$src%'");
+			$srcpart = explode(' ', $src);
+			$srcnew = '%'.implode('%', $srcpart).'%';
+			$posts = mysqli_query($con, "SELECT * FROM barang WHERE nama LIKE '$srcnew'");
 			$total = mysqli_num_rows($posts);
 			$per = ceil($total/$pp);
 			$bc = '';
@@ -211,7 +212,7 @@ if ($count_uri == 1){
 }
 
 function head(){
-	global $title,$merks,$px,$px2,$banners;
+	global $title,$merks,$px,$px2,$banners,$p;
 
 	echo '
 	<!DOCTYPE html>
@@ -227,7 +228,7 @@ function head(){
 				'<style>.slider .slick-slide img{border-radius:3px;}.slider .slick-slide img{width:100%;}.slick-prev,.slick-next{width:50px;height:50px;z-index:1;}.slick-prev{left:5px;}.slick-next{right:5px;}.slick-prev:before,.slick-next:before{font-size:40px;text-shadow:0 0 10px rgba(0,0,0,0.5);}.slick-dots{bottom:15px;}.slick-dots li button:before{font-size:12px;color:#fff;text-shadow:0 0 10px rgba(0,0,0,0.5);opacity:1;}.slick-dots li.slick-active button:before{color:#dedede;}.slider:not(:hover) .slick-arrow,.slider:not(:hover) .slick-dots{opacity:0;}.slick-arrow,.slick-dots{transition:opacity 0.5s ease-out;}</style>'.
 			'</head>';
 
-
+	$now_src = isset($p)? urldecode($p) : '';
 	$header_type = ($px == "cari" || $px == "kategori" || $px == "merk")? 'header-on-top' : '';
 	echo '<body><div class="preloader"></div><div id="main-wrapper" style="width: 100%; position: absolute; overflow-x: hidden;">'.
 	'<div class="header header-transparent dark-text ' . $header_type . '"><div class="container"><nav id="navigation" class="navigation navigation-landscape">'.
@@ -235,7 +236,7 @@ function head(){
 	'<form method="GET" action="'.SITEURL.'/" class="scl form m-0 p-0">
 		<div class="form-group">
 			<div class="input-group">
-				<input type="text" class="form-control" name="q" placeholder="Product Keyword..">
+				<input type="text" class="form-control" name="q" placeholder="Product Keyword.." value="'.$now_src.'">
 			</div>
 		</div>
 	</form>'.
@@ -245,7 +246,7 @@ function head(){
 	'<div class="nav-menus-wrapper" style="transition-property: none;">'.
 	'<form class="form m-0 p-0" method="GET" action="'.SITEURL.'/">
 			<div class="input-group">
-				<input type="text" class="form-control" name="q" placeholder="Product Keyword..">
+				<input type="text" class="form-control" name="q" placeholder="Product Keyword.." value="'.$now_src.'">
 				<div class="my-input-group-append">
 					<button class="btn btn-outline-secondary" type="submit"><i class="fa fa-search"></i></button>
 				</div>
