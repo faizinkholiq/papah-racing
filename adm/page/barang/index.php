@@ -183,10 +183,10 @@ if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2") {
                                     <a href="process/action?url=hapusbarang&this=<?= $data['id_barang']; ?>" class="btn btn-danger btn-sm" data-toggle="tooltip" data-original-title="Hapus" onclick="return confirm('Anda yakin ingin hapus data ini?')"><i class='fas fa-trash-alt'></i></a>
                                 </td>
                             <?php 
-														} elseif ($_SESSION['id_jabatan'] == "5"){
-															echo '<td class="text-center">'.'<a href="main?url=ubah-barang&this='.$data['id_barang'].'" class="btn btn-primary btn-sm"><i class="fas fa-photo-video"></i></a>'.'</td>';
-														} else {} 
-														?>
+                                } elseif ($_SESSION['id_jabatan'] == "5"){
+                                    echo '<td class="text-center">'.'<a href="main?url=ubah-barang&this='.$data['id_barang'].'" class="btn btn-primary btn-sm"><i class="fas fa-photo-video"></i></a>'.'</td>';
+                                } else {} 
+                            ?>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

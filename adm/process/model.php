@@ -7,15 +7,43 @@ class con
 		// Cek Username
 		if ($query != NULL) {
 			if (password_verify($password, $query['password'])) {
-				session_start();
-				$_SESSION['id_user'] = $query['id_user'];;
-				$_SESSION['username'] = $query['username'];;
-				$_SESSION['nama'] = $query['nama'];;
-				$_SESSION['id_jabatan'] = $query['id_jabatan'];
-				$id_user = $_SESSION['id_user'];
-				$date = date("Y-m-d h:i:s");
-				$query1 = mysqli_query($con, "UPDATE user SET last_login='$date' WHERE id_user='$id_user' ");
-				header('location:../main');
+				$log = false;
+				if (!empty($user["last_login"])){
+					$now = time();
+					$datediff = $now - strtotime($user["last_login"]);
+					$diffday = round($datediff / (60 * 60 * 24));
+		
+					if ($diffday > 30) {
+						$log = false;
+					} else {
+						$log = true;
+					}
+				}else{
+					$log = true;
+				}
+
+				if ($log) {
+					if($query["aktif"] == 1){
+						session_start();
+						$_SESSION['id_user'] = $query['id_user'];
+						$_SESSION['username'] = $query['username'];
+						$_SESSION['nama'] = $query['nama'];
+						$_SESSION['id_jabatan'] = $query['id_jabatan'];
+						$id_user = $_SESSION['id_user'];
+						$date = date("Y-m-d h:i:s");
+						$query1 = mysqli_query($con, "UPDATE user SET last_login='$date' WHERE id_user='$id_user' ");
+						header('location:../main');
+					}else{
+						echo "<script type='text/javascript'>alert('Akun anda tidak aktif, silahkan hubungi admin!');window.location='../login.php';</script>";
+					}
+				}else{
+					if($query["aktif"] == 1) {
+						$query = mysqli_query($con, "UPDATE user SET aktif = 0 WHERE id_user='".$query['id_user']."' ");
+					}
+
+					echo "<script type='text/javascript'>alert('Akun anda tidak aktif, silahkan hubungi admin!');window.location='../login.php';</script>";
+				}
+
 			} else {
 				echo "<script type='text/javascript'>alert('Password Salah!!!');window.location='../login.php';</script>";
 			}
@@ -71,6 +99,25 @@ class con
 	function hapususer($con, $id_user)
 	{
 		$query = mysqli_query($con, "DELETE FROM user WHERE id_user='$id_user' ");
+		header('location:../main?url=user');
+	}
+
+	function setaktifuser($con, $id_user, $aktif)
+	{
+		$user = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM user WHERE id_user='$id_user'"));
+
+		if($aktif == 1){
+			if (!empty($user["last_login"])){
+				$now = time();
+				$datediff = $now - strtotime($user["last_login"]);
+				$diffday = round($datediff / (60 * 60 * 24));
+	
+				if ($diffday > 30) {
+					$user["last_login"] = date("Y-m-d H:i:s");
+				} 
+			}
+		}
+		$query = mysqli_query($con, "UPDATE user SET aktif = $aktif, last_login = '".$user['last_login']."' WHERE id_user='$id_user' ");
 		header('location:../main?url=user');
 	}
 

@@ -93,11 +93,11 @@ $query = mysqli_query($con, "SELECT * FROM user WHERE id_jabatan!='1' ORDER BY i
                                 echo "<td class='text-center'><span class='badge badge-warning'>" . $qj['nama'] . "</span></td>";
                             } else if ($qj['nama'] == 'Admin') {
                                 echo "<td class='text-center'><span class='badge badge-info'>" . $qj['nama'] . "</span></td>";
-														} else if ($qj['nama'] == 'Marketer') {
+                            } else if ($qj['nama'] == 'Marketer') {
                                 echo "<td class='text-center'><span class='badge badge-danger'>" . $qj['nama'] . "</span></td>";
                             } else if ($qj['nama'] == 'Reseller') {
                                 echo "<td class='text-center'><span class='badge badge-primary'>" . $qj['nama'] . "</span></td>";
-														} else if ($qj['nama'] == 'Distributor') {
+                            } else if ($qj['nama'] == 'Distributor') {
                                 echo "<td class='text-center'><span class='badge badge-secondary'>" . $qj['nama'] . "</span></td>";
                             } else {
                                 echo "<td class='text-center'><span class='badge badge-dark'>" . $qj['nama'] . "</span></td>";
@@ -115,7 +115,11 @@ $query = mysqli_query($con, "SELECT * FROM user WHERE id_jabatan!='1' ORDER BY i
                         echo "<td class='text-center'>" . $tago . "</td>";
                         ?>
                             <td class="text-center">
-                                <a title="Set Aktif" href="main?url=aktif&this=<?= $data['id_user']; ?>" class="btn btn-info btn-sm"><i class='fas fa-eye'></i></a>
+                                <a  title="Set Aktif" 
+                                    href="process/action?url=setaktifuser&this=<?= $data['id_user']; ?>&aktif=<?= (int)!$data['aktif'] ?>" 
+                                    class="btn <?= ($data["aktif"])? 'btn-secondary' : 'btn-info' ?> btn-sm">
+                                    <i class="fas <?= ($data["aktif"])? 'fa-eye-slash' : 'fa-eye' ?>"></i>
+                                </a>
                                 <a title="Ubah User" href="main?url=ubah-user&this=<?= $data['id_user']; ?>" class="btn btn-primary btn-sm"><i class='fas fa-edit'></i></a>
                                 <a title="Reset Password" href="main?url=reset-password-user&this=<?= $data['id_user']; ?>" class="btn btn-warning btn-sm"><i class='fas fa-key'></i></a>
                                 <a title="Hapus User" href="process/action?url=hapususer&this=<?= $data['id_user']; ?>" class="btn btn-danger btn-sm" data-toggle="tooltip" data-original-title="Hapus" onclick="return confirm('Anda yakin ingin hapus data ini?')"><i class='fas fa-trash-alt'></i></a>
