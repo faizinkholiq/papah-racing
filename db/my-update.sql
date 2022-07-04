@@ -156,3 +156,7 @@ INSERT INTO `merk` (`id`, `name`) VALUES
 
 -- 28 Juni 2022
 ALTER TABLE `kontak` ADD `letak` ENUM('footer','order') NULL AFTER `kontak`, ADD `aktif` BOOLEAN NOT NULL DEFAULT FALSE AFTER `letak`;
+
+-- 4 Juli 2022
+ALTER TABLE `user` ADD `aktif` BOOLEAN NOT NULL DEFAULT FALSE AFTER `last_login`;
+UPDATE `user` SET aktif = 1 WHERE DATEDIFF(NOW(), last_login ) <= 30;

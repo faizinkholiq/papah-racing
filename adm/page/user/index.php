@@ -25,9 +25,10 @@ $query = mysqli_query($con, "SELECT * FROM user WHERE id_jabatan!='1' ORDER BY i
                     <th>Alamat</th>
                     <th>Kontak</th>
                     <th>Jabatan</th>
+                    <th>Status</th>
                     <?php if ($_SESSION['id_jabatan'] == '1' || $_SESSION['id_jabatan'] == '2') { ?>
                         <th>Terakhir Login</th>
-                        <th>Aksi</th>
+                        <th width="15%">Aksi</th>
                     <?php } ?>
                 </tr>
             </thead>
@@ -101,7 +102,11 @@ $query = mysqli_query($con, "SELECT * FROM user WHERE id_jabatan!='1' ORDER BY i
                             } else {
                                 echo "<td class='text-center'><span class='badge badge-dark'>" . $qj['nama'] . "</span></td>";
                             }
-                        endforeach; ?>
+                        endforeach; 
+                        
+                        $aktif = ($data["aktif"])? '<span class="badge badge-success">Aktif</span>' : '<span class="badge badge-secondary">Not Aktif</span>';
+                        echo "<td class='text-center'>". $aktif ."</td>";
+                        ?>
                         
                         <?php if ($_SESSION['id_jabatan'] == '1' || $_SESSION['id_jabatan'] == '2') { 
                         if ($data['last_login']!==null){
@@ -110,10 +115,10 @@ $query = mysqli_query($con, "SELECT * FROM user WHERE id_jabatan!='1' ORDER BY i
                         echo "<td class='text-center'>" . $tago . "</td>";
                         ?>
                             <td class="text-center">
-                                <!-- <a href="main?url=lihat-user&this=<?= $data['id_user']; ?>" class="btn btn-info btn-sm"><i class='fas fa-eye'></i></a> -->
-                                <a href="main?url=ubah-user&this=<?= $data['id_user']; ?>" class="btn btn-primary btn-sm"><i class='fas fa-edit'></i></a>
-                                <a href="main?url=reset-password-user&this=<?= $data['id_user']; ?>" class="btn btn-warning btn-sm"><i class='fas fa-key'></i></a>
-                                <a href="process/action?url=hapususer&this=<?= $data['id_user']; ?>" class="btn btn-danger btn-sm" data-toggle="tooltip" data-original-title="Hapus" onclick="return confirm('Anda yakin ingin hapus data ini?')"><i class='fas fa-trash-alt'></i></a>
+                                <a title="Set Aktif" href="main?url=aktif&this=<?= $data['id_user']; ?>" class="btn btn-info btn-sm"><i class='fas fa-eye'></i></a>
+                                <a title="Ubah User" href="main?url=ubah-user&this=<?= $data['id_user']; ?>" class="btn btn-primary btn-sm"><i class='fas fa-edit'></i></a>
+                                <a title="Reset Password" href="main?url=reset-password-user&this=<?= $data['id_user']; ?>" class="btn btn-warning btn-sm"><i class='fas fa-key'></i></a>
+                                <a title="Hapus User" href="process/action?url=hapususer&this=<?= $data['id_user']; ?>" class="btn btn-danger btn-sm" data-toggle="tooltip" data-original-title="Hapus" onclick="return confirm('Anda yakin ingin hapus data ini?')"><i class='fas fa-trash-alt'></i></a>
                             </td>
                         <?php } ?>
                     </tr>
