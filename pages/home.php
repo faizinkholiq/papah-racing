@@ -61,93 +61,153 @@ foreach ($posts as $pos){
 	if (empty($tambahan)){$tambahan='-';}
 	// if ($stok==0){$stok='Habis';}
 	// bg-info NEW,bg-warning HOT, bg-danger HOT
-	echo '<div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-6"><div class="product_grid card">'.
-	'<div class="badge bg-danger text-white position-absolute ft-regular ab-left text-upper">STOK : '.$stok.'</div>'.
-	'<div class="badge bg-warning text-white position-absolute ft-regular ab-right text-upper">'.$kondisi.$kua1.'</div>';
-	echo '<div class="card-body p-0"> <div class="shop_thumb position-relative"> <a class="card-img-top d-block overflow-hidden" href="'.$purl.'"><img style="object-fit: cover; height: 10rem;" class="card-img-top" onerror="this.onerror=null; this.src=\''.SITEURL.'/images/load.gif\'" src="'.$i6.'" alt="'.$ptitle.'"></a>';
-	echo !empty($tipe_pelanggan)? '<div style="top: 9rem;" class="badge bg-dark-blue text-white position-absolute ft-regular ab-left text-upper">'.$tipe_pelanggan.'</div>' : '';
-	echo !empty($berat)? '<div style="top: 9rem;" class="badge bg-blue text-white position-absolute ft-regular ab-right text-upper">'.$berat.'gr</div>' : '';
-	echo'<div class="product-hover-overlay bg-light d-flex align-items-center justify-content-center"> <div class="edlio"><a href="#" data-toggle="modal" data-target="#quickview'.$id.'" class="fs-sm ft-medium"><i class="fas fa-eye mr-1"></i>Quick View</a></div> </div> </div> </div>'.
-	'<div class="card-footers b-0 p-3 px-2 bg-white d-flex align-items-start justify-content-center"> <div class="text-left"> <div class="text-center"> <h5 class="fw-bolder fs-sm mb-0 lh-1 mb-1"><a href="'.$purl.'">'.$ptitle.'</a></h5> <div class="elis_rty"><span class="ft-bold fs-sm text-dark">'.rp($harga).',00</span></div> </div> </div> </div>'.
-	'<div class="bg-success d-flex align-items-center justify-content-center"> <div class="edlio"><a href="'.$order.urlencode('Saya order '.$ptitle).'%0a'.urlencode($purl).'" class="btn text-white btn-block mb-1"><i class="lni lni-shopping-basket mr-2"></i>Pesan Sekarang</a></div> </div>'.
-	'</div></div>';
-	$all .= '<div class="modal fade lg-modal" id="quickview'.$id.'" tabindex="-1" role="dialog" aria-labelledby="quickviewmodal" aria-hidden="true"><div class="modal-dialog modal-xl login-pop-form" role="document"><div class="modal-content" id="quickviewmodal"><div class="modal-headers"> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span class="ti-close"></span> </button> </div>'.
-	'<div class="modal-body"><div class="quick_view_wrap"><div class="quick_view_thmb"><div class="quick_view_slide">'.$i9.'</div></div>'.
-	'<div class="quick_view_capt"><div class="prd_details">';
-	if (!empty($kategori)){
-		$all .= '<div class="prt_01 mb-1"><span class="text-light bg-info rounded px-2 py-1"><a href="'.SITEURL.'/kategori/'.strtolower($kategori).'/">'.$kategori.'</a></span></div>';
-	} else {}
-	$all .= '<div class="prt_02 mb-2 mt-4"><h2 class="ft-bold mb-1">'.$ptitle.'</h2><div class="text-left"><div class="elis_rty">'.
-	// '<span class="ft-medium text-muted line-through fs-md mr-2">'.rp($harga*1.5).',00</span>'.
-	'<span class="ft-bold theme-cl fs-lg mr-2">'.rp($harga).',00</span>'.
-	// '<span class="ft-regular text-danger bg-light-danger py-1 px-2 fs-sm">Out of Stock</span>'.
-	'</div></div></div>'.
+	echo '<div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-xs-6">
+		<div class="product_grid card">'.
+			'<div class="badge bg-danger text-white position-absolute ft-regular ab-left text-upper">STOK : '.$stok.'</div>'.
+			'<div class="badge bg-warning text-white position-absolute ft-regular ab-right text-upper">'.$kondisi.$kua1.'</div>'.
+			'<div class="card-body p-0">
+				<div class="shop_thumb position-relative"> 
+					<a class="card-img-top d-block overflow-hidden" href="'.$purl.'">
+						<img style="object-fit: cover; height: 10rem;" class="card-img-top" 
+							onerror="this.onerror=null; this.src=\''.SITEURL.'/images/load.gif\'" src="'.$i6.'" alt="'.$ptitle.'">
+					</a>';
+					echo !empty($tipe_pelanggan)? '<div style="top: 9rem;" class="badge bg-dark-blue text-white position-absolute ft-regular ab-left text-upper">'.$tipe_pelanggan.'</div>' : '';
+					echo !empty($berat)? '<div style="top: 9rem;" class="badge bg-blue text-white position-absolute ft-regular ab-right text-upper">'.$berat.'gr</div>' : '';
+					echo'<div class="product-hover-overlay bg-light d-flex align-items-center justify-content-center"> 
+						<div class="edlio">
+							<a href="#" data-toggle="modal" data-target="#quickview'.$id.'" class="fs-sm ft-medium">
+								<i class="fas fa-eye mr-1"></i>Quick View
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>'.
+			'<div class="card-footers b-0 p-3 px-2 bg-white d-flex align-items-start justify-content-center"> 
+				<div class="text-left"> 
+					<div class="text-center"> 
+						<h5 class="fw-bolder fs-sm mb-0 lh-1 mb-1">
+							<a href="'.$purl.'">'.$ptitle.'</a>
+						</h5> 
+						<div class="elis_rty">
+							<span class="ft-bold fs-sm text-dark">'.rp($harga).',00</span>
+						</div> 
+					</div> 
+				</div> 
+			</div>'.
+			'<div class="bg-success d-flex align-items-center justify-content-center"> 
+				<div class="edlio">
+					<a href="'.$order.urlencode('Saya order '.$ptitle).'%0a'.urlencode($purl).'" class="btn text-white btn-block mb-1">
+						<i class="lni lni-shopping-basket mr-2"></i>Pesan Sekarang
+					</a>
+				</div> 
+			</div>
+		</div>
+	</div>';
+
+	$all .= '<div class="modal fade lg-modal" id="quickview'.$id.'" tabindex="-1" role="dialog" aria-labelledby="quickviewmodal" aria-hidden="true">
+		<div class="modal-dialog modal-xl login-pop-form" role="document">
+			<div class="modal-content" id="quickviewmodal">
+				<div class="modal-headers"> 
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"> 
+						<span class="ti-close"></span> 
+					</button> 
+				</div>'.
+				'<div class="modal-body">
+					<div class="quick_view_wrap">
+						<div class="quick_view_thmb">
+							<div class="quick_view_slide">'.$i9.'</div>
+						</div>'.
+						'<div class="quick_view_capt">
+							<div class="prd_details">';
+							if (!empty($kategori)){
+								$all .= '<div class="prt_01 mb-1"><span class="text-light bg-info rounded px-2 py-1"><a href="'.SITEURL.'/kategori/'.strtolower($kategori).'/">'.$kategori.'</a></span></div>';
+							} else {}
+
+	$all .= '<div class="prt_02 mb-2 mt-4">
+		<h2 class="ft-bold mb-1">'.$ptitle.'</h2>
+		<div class="text-left">
+			<div class="elis_rty">'.
+			'<span class="ft-bold theme-cl fs-lg mr-2">'.rp($harga).',00</span>'.
+			'</div>
+		</div>
+	</div>'.
 	'<div class="prt_03 mb-3">'.
-	'<p><span class="label">Kode</span> : '.$barcode.'</p>'.
-	'<p><span class="label">Merk</span> : '.$merk.'</p>'.
-	'<p><span class="label">Stok</span> : '.$stok.'</p>'.
-	'<p><span class="label">Kondisi</span> : '.$kondisi.'</p>'.
-	$kua2.
-	'<p><span class="label">Keterangan</span> : '.$tambahan.'</p>'.
-	'<p><span class="label">Deskripsi</span> : '.$deskripsi.'</p>'.
+		'<p><span class="label">Kode</span> : '.$barcode.'</p>'.
+		'<p><span class="label">Merk</span> : '.$merk.'</p>'.
+		'<p><span class="label">Stok</span> : '.$stok.'</p>'.
+		'<p><span class="label">Kondisi</span> : '.$kondisi.'</p>'.
+		$kua2.
+		'<p><span class="label">Keterangan</span> : '.$tambahan.'</p>'.
+		'<p><span class="label">Deskripsi</span> : '.$deskripsi.'</p>'.
 	'</div>'.
-	'<div class="prt_05 mb-4"><div class="form-row mb-7">'.
-	'<div class="col-12 col-lg"><a href="'.$order.urlencode('Saya order '.$ptitle).'%0a'.urlencode($purl).'" class="text-white btn btn-block custom-height bg-success mb-2"><i class="lni lni-shopping-basket mr-2"></i>Pesan Sekarang</a></div>'.
-	'<div class="col-12 col-lg-auto"><a href="'.$purl.'" class="btn custom-height btn-default btn-block mb-2 text-dark"><i class="lni lni-eye mr-2"></i>View Details</a></div>'.
-	'</div></div>'.
+	'<div class="prt_05 mb-4">
+		<div class="form-row mb-7">'.
+			'<div class="col-12 col-lg">
+				<a href="'.$order.urlencode('Saya order '.$ptitle).'%0a'.urlencode($purl).'" class="text-white btn btn-block custom-height bg-success mb-2">
+					<i class="lni lni-shopping-basket mr-2"></i>Pesan Sekarang</a>
+				</div>'.
+			'<div class="col-12 col-lg-auto">
+				<a href="'.$purl.'" class="btn custom-height btn-default btn-block mb-2 text-dark">
+					<i class="lni lni-eye mr-2"></i>View Details
+				</a>
+			</div>'.
+		'</div></div>'.
 	'</div></div></div></div></div></div></div>';
-	
-	// if(isset($px) && ($px != "cari" && $px != "kategori" && $px != "merk")) {
-	// 	if ($j==12||$j==24){
-	// 		echo '<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12"><div class="text-center">';
-	// 		echo '<div class="slider">';
-	// 		$ims = range(1,5);
-	// 		foreach ($banners as $ban){
-	// 			echo '<div><a href="#"><img class="img-fluid" src="'.SITEURL.'/banner/'.$ban["photo"].'" alt="Image 1"></a></div>';
-	// 		}
-	// 		echo '</div>';
-	// 		echo '</div></div>';
-	// 	}
-	// }
 	
 	$j++;
 }	
 echo '</div>';
 echo '<div class="row" style="margin-top:2rem"><div class="col-xl-12 col-lg-12 col-md-12 text-center">';
 
-if($px != "merk" && $px != "kategori" && $px != "cari"):
-$nav = $per;
-$clas = 'pnv bg-facebook';
-if($nav>1&&$nav<11){
-	$pns = range(2,$nav); $pnv = '<a href="'.$nvurl.'/" title="Homepage" rel="nofollow" class="'.$clas.'">001</a>';
-	foreach ($pns as $pn){$np = sprintf('%03d',$pn);$pnv .= '<a href="'.$nvurl.'/page/'.$np.'/" title="Page '.$pn.'" class="'.$clas.'">'.$np.'</a>';} $pnv .= '';
-} else {
-	$pnv = '<a href="'.$nvurl.'/" title="Homepage" rel="nofollow" class="'.$clas.'">001</a><span class="pnv bg-blue">&llarr;</span>';
-	if ($page<4){
-		$pns = range(2,5);
-	} elseif ($page>3&&$page+2<$nav-1){
-		$pns = range($page-2,$page+2);
-	} else {
-		$pns = range($nav-5,$nav-1);
-	}
-	// $pns = range(2,$nav);
-	foreach ($pns as $pn){ $np = sprintf('%03d',$pn);$pnv .= '<a href="'.$nvurl.'/page/'.$np.'/" title="Page '.$pn.'" class="'.$clas.'">'.$np.'</a>';}
-	$pnv .= '<span class="pnv bg-blue">&rrarr;</span><a href="'.$nvurl.'/page/'.sprintf('%03d',$nav).'/" title="Page '.$nav.'" class="'.$clas.'">'.sprintf('%03d',$nav).'</a>';
-}
-// echo '<div class="c"></div>';
-if ($nav<2){} else {
-	// echo $pnv;
-	echo '<div class="align-items-center" style="display: flex; gap: 0.1rem; justify-content: center;">'.$pnv.'</div>';
+if($px != "merk" && $px != "cari"):
+
+$pnv = '<a href="'.$nvurl.'" title="First Page" rel="nofollow" class="pnv bg-facebook">001</a>';
+if(!empty($_GET["kategori"])){
+	$nvurl .= "&";
+}else{
+	$nvurl .= "?";
 }
 
-/* 
-if ($per>1){
-	$pg = range(1,$per);
-	foreach($pg as $p){
-		echo '<a href="'.SITEURL.'/page/'.$p.'/" class="btn stretched-link borders m-auto">'.$p.'</a>';
+$pns = [];
+if($total_page > 1 && $total_page < 11){
+	$pns = range(2, $total_page); 
+	
+	foreach ($pns as $pn){
+		$np = sprintf('%03d',$pn);
+		$page_selected = ($pn == $_GET["page"])? 'paging-selected' : 'bg-facebook';
+		$pnv .= '<a href="'.$nvurl.'page='.$np.'" title="Page '.$pn.'" class="pnv '.$page_selected .'">'.$np.'</a>';
+	} 
+
+} else {
+	
+	if ($page<4){
+		$pns = range(2,5);
+	} elseif ($page>3&&$page+2<$total_page-1){
+		$pns = range($page-2,$page+2);
+	} else {
+		$pns = range($total_page-5,$total_page-1);
 	}
-} else {}
- */
+
+	$prev = $pns[0] - 1;
+	$pnv .= '<a href="'.$nvurl.'page='.sprintf('%03d',$prev).'"><span class="pnv bg-blue">&llarr;</span></a>';
+	$next = 1;
+	foreach ($pns as $pn){ 
+		$np = sprintf('%03d',$pn);
+		$page_selected = ($pn == $_GET["page"])? 'paging-selected' : 'bg-facebook';
+		$pnv .= '<a href="'.$nvurl.'page='.$np.'" title="Page '.$pn.'" class="pnv '.$page_selected .'">'.$np.'</a>';
+
+		if($pn == $pns[count($pns)-1]){
+			$next += $pn;
+		}
+	}
+	
+	$pnv .= '<a href="'.$nvurl.'page='.sprintf('%03d',$next).'"><span class="pnv bg-blue">&rrarr;</span></a>
+	<a href="'.sprintf('%03d',$nvurl).'page='.$total_page.'" title="Last Page" class="pnv bg-facebook">'.$total_page.'</a>';
+}
+
+if ($total_page>1){
+	echo '<div class="align-items-center" style="display: flex; gap: 0.1rem; justify-content: center;">'.$pnv.'</div>';
+}
 
 echo '</div></div>';
 endif;

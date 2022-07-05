@@ -5299,3 +5299,18 @@ footer.skin-dark-footer ul.footer-bottom-social li a:hover, footer.skin-dark-foo
     content: "";
     flex: auto;
 }
+
+.paging-selected {
+    background-color: #ffffff;
+    color: #3b5a9a;
+}
+
+.paging-selected:hover {
+    background-color: #ffffff;
+    color: #3b5a9a;
+}
+
+.paging-disabled {
+    background-color: #d3d3d3;
+    color: #3b5a9a;
+}

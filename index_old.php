@@ -2,9 +2,14 @@
 require 'adm/config/connect.php';
 require 'adm/config/function.php';
 
+$_fb = '';
+$_yt = '';
+$_tw = '';
+$_in = '';
+$_pi = '';
+
 date_default_timezone_set('Asia/Jakarta');
 
-// Data Toko
 $tokos = mysqli_query($con, "SELECT * FROM toko WHERE id_toko = '1' LIMIT 1");
 foreach ($tokos as $to){
 	$toko = $to['nama_toko'];
@@ -13,71 +18,200 @@ foreach ($tokos as $to){
 	$kontak = $to['kontak_toko'];
 }
 
-// Kontak
+$merks = mysqli_query($con, "SELECT name merk FROM merk ORDER BY name ASC");
+
 if (substr($kontak,0,2)=='08'){
 	$phone = '628'.substr($kontak,2);
 } else {
 	$phone = $kontak;
-}
+} 
 $order = 'https://wa.me/'.$phone.'?text=';
 
-// Banners
 $banners = mysqli_query($con, "SELECT * FROM banner ORDER BY order_no ASC LIMIT 5");
-// Merk
-$merks = mysqli_query($con, "SELECT name merk FROM merk ORDER BY name ASC");
 
-// URI
+if (isset($_GET['sort'])){
+	$s = $_GET['sort'];
+	header("Location: ".SITEURL.'/sort/'.$s.'/');
+	exit;
+} elseif (isset($_GET['merk'])){
+	$s = $_GET['merk'];
+	header("Location: ".SITEURL.'/merk/'.$s.'/');
+	exit;
+} else {}
+
+$pp = 24;
 $requri = REQURI;
 $xp = explode('/',$requri);
+
+$count = mysqli_query($con, "SELECT * FROM barang WHERE stok > 0 AND het > 0");
+
+$total = mysqli_num_rows($count);
+$per = ceil($total/$pp);
+$bc = '';
+$ttl = $toko.' - '.$ket;
+$px = '';
+$px2 = '';
 
 $count_uri = substr_count($requri,'/');
 if (ENV === "Development") {
 	$count_uri -= 1;
 	$xp = arr_remove_empty($xp);
 }
-// Routing
-if (empty($xp[1]) OR !empty($_GET)){
-	// Pagination
-	$limit = 24;
-	$page = isset($_GET['page'])?(int)$_GET['page'] : 1;
-	$first_page = ($page>1) ? ($page * $limit) - $limit : 0;
 
-	$all_data = mysqli_query($con,"SELECT * FROM barang");
-	$total_data = mysqli_num_rows($all_data);
-	$total_page = ceil($total_data / $limit);
-	
-	// Data
-	$posts = mysqli_query($con, "SELECT * FROM barang ORDER BY created DESC LIMIT $first_page, $limit");
-
-	// Page Info
-	$title = $toko.' - '.$ket;
-	
-	if(!empty($_GET["kategori"])){
-		
-	}else if(!empty($_GET["merk"])){
-		
-	}else if(!empty($_GET["cari"])){
-		
-	}else{
+if ($count_uri == 1){
+	if (empty($xp[1])){
+		$posts = mysqli_query($con, "SELECT * FROM barang ORDER BY created DESC LIMIT ".$pp);
+		$title = $toko.' - '.$ket;
+		$page = 1;
 		$nvurl = SITEURL;
 		include('pages/home.php');
+	} elseif($xp[1]==='tentang') {
+		$px = $xp[1];
+		include('pages/tentang.php');
+	} elseif($xp[1]==='pelayanan') {
+		$px = $xp[1];
+		include('pages/pelayanan.php');
+	} elseif($xp[1]==='garansi') {
+		$px = $xp[1];
+		include('pages/garansi.php');
+	} elseif (substr($xp[1],0,3)=='?q='){
+		header("Location: ".SITEURL.'/cari/'.str_replace('?q=','',$xp[1].'/'));
+	} else {
+		include('pages/404.php');		
 	}
-} elseif($xp[1]==='tentang') {
+} elseif ($count_uri == 3||$count_uri == 5 || $xp[1] === "kategori" || $xp[1] === "merk" || $xp[1] === "tentang" || $xp[1] === "pelayanan" || $xp[1] === "garansi"){
 	$px = $xp[1];
-	include('pages/tentang.php');
-} elseif($xp[1]==='pelayanan') {
-	$px = $xp[1];
-	include('pages/pelayanan.php');
-} elseif($xp[1]==='garansi') {
-	$px = $xp[1];
-	include('pages/garansi.php');
+	$p = $xp[2];
+	if ($px!=='sort'){
+		$nvurl = SITEURL.'/'.$px.'/'.$p;
+	}
+
+	if (isset($xp[5])){
+		if (empty($xp[5])){
+			$p3 = $xp[3];$p4 = $xp[4];$p5 = $xp[5];
+		} else {
+			include('pages/404.php');
+		}
+	} else {
+		$p3 = '';$p4 = '';$p5 = '';
+	}
+	if ($p3=='page'){
+		$l = intval($p4);
+	} else {
+		$l = 1;
+	}
+
+	if (empty($p3)||$p3=='page'){
+		if ($px=='produk'){
+			$posts = mysqli_query($con, "SELECT * FROM barang WHERE id_barang = '".$p."' LIMIT 1");
+			$random = mysqli_query($con, "SELECT * FROM barang ORDER BY created DESC LIMIT 8");
+			include('pages/post.php');
+		} elseif ($px=='page'){
+			$s = (($p-1)*$pp)+1;
+			if(is_numeric($p)&&strlen($p)==3){
+				$p = intval($p);
+				$posts = mysqli_query($con, "SELECT * FROM barang ORDER BY created DESC LIMIT ".$s.",".$pp);
+				// $total = mysqli_num_rows($posts);
+				// $per = ceil($total/$pp);	
+				$page = $p;
+				$ttl = 'Page '.$p;
+				$nvurl = SITEURL;
+				$title = 'Page : '.$p.' - '.$ket;
+				include('pages/home.php');
+			} else {
+				include('pages/404.php');
+			}
+		} elseif ($px=='merk'){
+			$page = $l;
+			$src = str_replace('-', ' ', urldecode($p));
+			
+			$total = mysqli_num_rows(mysqli_query($con, "SELECT * FROM barang WHERE merk = '$src'"));
+			$posts = mysqli_query($con, "SELECT * FROM barang WHERE merk = '$src'" );
+			$per = ceil($total/$pp);	
+			$ttl = 'Page '.$l;
+			$bc = '<li class="breadcrumb-item"><a href="'.SITEURL.'/merk/'.$src.'/">'.ucwords($p).'</a></li>';
+			if ($total>0){
+				$title = 'Brand : '.ucwords($p).' ['.$total.']';
+				include('pages/home.php');
+			} else {
+				include('pages/404.php');
+			}
+		} elseif ($px=='kategori'){
+			$page = $l;
+			$px2 = $p;
+			if (!empty($_GET["search_kategori"])) {
+				$arr_kat = explode(",", $_GET["search_kategori"]);
+				$src = sprintf("%s", join("'|'",$arr_kat));
+				$src = str_replace(["(",")"], "", $src);
+				$src = str_replace(" ", "|", $src);
+				
+				$posts = mysqli_query($con, "SELECT * FROM barang WHERE kategori REGEXP '$src' ORDER BY rand()");
+				$total = mysqli_num_rows($posts);
+				
+				$per = ceil($total/$pp);	
+				if ($total>0){
+					$bc = '<li class="breadcrumb-item"><a href="'.SITEURL.'/kategori/'.$p.'/">'.join(', ', $arr_kat).'</a></li>';
+					$ttl = 'Page '.$l;
+					$title = 'Kategori : '.ucwords($p).' ['.$total.']';
+					include('pages/home.php');
+				} else {
+					include('pages/404.php');
+				}
+			}else{
+				include('pages/404.php');
+			}
+		} elseif ($px=='cari'){
+			// $posts = mysqli_query($con, "SELECT * FROM barang WHERE nama LIKE '%".$p."%'");
+			$src = str_replace('-', ' ', urldecode($p));
+			$page = $l;
+
+			$posts = mysqli_query($con, "SELECT * FROM barang WHERE nama LIKE '%$src%'");
+			$total = mysqli_num_rows($posts);
+			$per = ceil($total/$pp);
+			$bc = '';
+			$ttl = ucwords($p);
+			$title = 'Search : '.ucwords($p).' ('.$total.')';
+			if ($total>0){
+				include('pages/home.php');
+			} else {
+				include('pages/404.php');
+			}
+		} elseif ($px=='sort'&&empty($p3)){
+			if ($p=='harga-asc'){
+				$ttl = 'Harga Terendah';
+				$title = 'Harga Terendah - '.$toko;
+				$posts = mysqli_query($con, "SELECT * FROM barang ORDER BY het != 0 ASC LIMIT ".$pp);
+				include('pages/home.php');
+			} elseif ($p=='harga-desc'){
+				$ttl = 'Harga Tertinggi';
+				$title = 'Harga Tertinggi - '.$toko;
+				$posts = mysqli_query($con, "SELECT * FROM barang ORDER BY het DESC LIMIT ".$pp);
+				include('pages/home.php');
+			} elseif ($p=='stok-asc'){
+				$ttl = 'Stok Paling Sedikit';
+				$title = 'Stok Paling Sedikit - '.$toko;
+				$posts = mysqli_query($con, "SELECT * FROM barang ORDER BY stok ASC LIMIT ".$pp);
+				include('pages/home.php');
+			} elseif ($p=='stok-desc'){
+				$ttl = 'Stok Paling Banyak';
+				$title = 'Stok Paling Banyak - '.$toko;
+				$posts = mysqli_query($con, "SELECT * FROM barang ORDER BY stok DESC LIMIT ".$pp);
+				include('pages/home.php');
+			} else {			
+				include('pages/404.php');
+			}
+		} else {
+			include('pages/404.php');		
+		}
+	} else {
+		include('pages/404.php');		
+	}
 } else {
-	include('pages/404.php');		
+	include('pages/404.php');
 }
 
-
 function head(){
-	global $title,$merks,$px,$px2,$banners,$p;
+	global $title,$merks,$px,$px2,$banners;
 
 	echo '
 	<!DOCTYPE html>
@@ -93,7 +227,7 @@ function head(){
 				'<style>.slider .slick-slide img{border-radius:3px;}.slider .slick-slide img{width:100%;}.slick-prev,.slick-next{width:50px;height:50px;z-index:1;}.slick-prev{left:5px;}.slick-next{right:5px;}.slick-prev:before,.slick-next:before{font-size:40px;text-shadow:0 0 10px rgba(0,0,0,0.5);}.slick-dots{bottom:15px;}.slick-dots li button:before{font-size:12px;color:#fff;text-shadow:0 0 10px rgba(0,0,0,0.5);opacity:1;}.slick-dots li.slick-active button:before{color:#dedede;}.slider:not(:hover) .slick-arrow,.slider:not(:hover) .slick-dots{opacity:0;}.slick-arrow,.slick-dots{transition:opacity 0.5s ease-out;}</style>'.
 			'</head>';
 
-	$now_src = isset($p)? urldecode($p) : '';
+
 	$header_type = ($px == "cari" || $px == "kategori" || $px == "merk")? 'header-on-top' : '';
 	echo '<body><div class="preloader"></div><div id="main-wrapper" style="width: 100%; position: absolute; overflow-x: hidden;">'.
 	'<div class="header header-transparent dark-text ' . $header_type . '"><div class="container"><nav id="navigation" class="navigation navigation-landscape">'.
@@ -101,7 +235,7 @@ function head(){
 	'<form method="GET" action="'.SITEURL.'/" class="scl form m-0 p-0">
 		<div class="form-group">
 			<div class="input-group">
-				<input type="text" class="form-control" name="q" placeholder="Product Keyword.." value="'.$now_src.'">
+				<input type="text" class="form-control" name="q" placeholder="Product Keyword..">
 			</div>
 		</div>
 	</form>'.
@@ -111,7 +245,7 @@ function head(){
 	'<div class="nav-menus-wrapper" style="transition-property: none;">'.
 	'<form class="form m-0 p-0" method="GET" action="'.SITEURL.'/">
 			<div class="input-group">
-				<input type="text" class="form-control" name="q" placeholder="Product Keyword.." value="'.$now_src.'">
+				<input type="text" class="form-control" name="q" placeholder="Product Keyword..">
 				<div class="my-input-group-append">
 					<button class="btn btn-outline-secondary" type="submit"><i class="fa fa-search"></i></button>
 				</div>
@@ -147,22 +281,22 @@ function head(){
 				width: 100%;
 				margin: 0;
 			">
-				<div style="height:5rem; padding: 0.2rem 0.8rem;" class="col-lg-3 col-sm-6 col-xs-6 text-center">
+				<div style="height:5rem; padding: 0.5rem;" class="col-lg-3 col-sm-6 col-xs-6 text-center">
 					<a href="'.SITEURL.'/pelayanan" class="my-badge-nav badge w-100">
 						<i class="fa fa-exclamation-circle mr-2"></i> <div>PERATURAN PELAYANAN</div>
 					</a>
 				</div>
-				<div style="height:5rem; padding: 0.2rem 0.8rem;" class="col-lg-3 col-sm-6 col-xs-6 text-center">
+				<div style="height:5rem; padding: 0.5rem;" class="col-lg-3 col-sm-6 col-xs-6 text-center">
 					<a href="'.SITEURL.'/garansi" class="my-badge-nav badge w-100">
 						<i class="fa fa-medal mr-2"></i> <div>GARANSI</div>
 					</a>
 				</div>
-				<div style="height:5rem; padding: 0.2rem 0.8rem;" class="col-lg-3 col-sm-6 col-xs-6 text-center">
+				<div style="height:5rem; padding: 0.5rem;" class="col-lg-3 col-sm-6 col-xs-6 text-center">
 					<a href="'.SITEURL.'/tentang" class="my-badge-nav badge w-100">
 						<i class="fa fa-users mr-2"></i> <div>TENTANG KAMI</div>
 					</a>
 				</div>
-				<div style="height:5rem; padding: 0.2rem 0.8rem;" class="col-lg-3 col-sm-6 col-xs-6 text-center">
+				<div style="height:5rem; padding: 0.5rem;" class="col-lg-3 col-sm-6 col-xs-6 text-center">
 					<a href="#!" class="my-badge-nav badge w-100" data-toggle="modal" data-target="#joinus">
 						<i class="fa fa-user-plus mr-2"></i> <div>JOIN US</div>
 					</a>
@@ -178,8 +312,8 @@ function head(){
 		$war = array('purple','red','blue','green','orange','yellow','dark-blue', 'danger','sky','dark-blue', 'purple','red','blue','green','orange', 'yellow', 'dark-blue', 'danger');
 		$i = 0;
 		foreach ($cats as $c){
-			if (!empty($_GET['kategori'])) {
-				$search = explode(",", $_GET['kategori']);
+			if (!empty($_GET['search_kategori'])) {
+				$search = explode(",", $_GET['search_kategori']);
 
 				if(!in_array(strtolower($c), $search)){
 					$search[] = strtolower($c);
@@ -191,7 +325,7 @@ function head(){
 
 			$select_cat = ($px === "kategori" && strtoupper($px2) === $c)? 'select-border' : '';
 			echo '<div class="col-lg-2 col-md-4 cat"><div class="product_grid card '. $select_cat .'">'.
-			'<div class="card-body p-0"><div class="shop_thumb position-relative"><a class="card-img-top d-block overflow-hidden" href="'.SITEURL.'?kategori='.implode(",", $search).'"><img class="card-img-top" src="'.SITEURL.'/images/kategori/'.strtolower(str_replace(' ','-',$c)).'.jpeg"></a></div></div>'.
+			'<div class="card-body p-0"><div class="shop_thumb position-relative"><a class="card-img-top d-block overflow-hidden" href="'.SITEURL.'/kategori/?search_kategori='.implode(",", $search).'"><img class="card-img-top" src="'.SITEURL.'/images/kategori/'.strtolower(str_replace(' ','-',$c)).'.jpeg"></a></div></div>'.
 			'<div class="badge bg-'.$war[$i].' py-2"><div class="text-white">'.$c.'</div></div>'.
 			'</div></div>';
 			$i++;
@@ -368,19 +502,15 @@ function foot(){
 					autoplaySpeed: 2500,
 					dots: true
 				});
-
 				$("#open24h").click(() => {
 					$("#open24h-tooltip").fadeIn();
 				});
-
 				$("#open24h").mouseover(() => {
 					$("#open24h-tooltip").fadeIn();
 				});
-
 				$("#open24h").mouseleave(() => {
 					$("#open24h-tooltip").fadeOut();
 				});
-
 				$(".my-badge-filter").each(function(){
 					var el= $(this);
 					var textLength = el.html().length;
@@ -389,7 +519,6 @@ function foot(){
 						}
 				});
 			});
-
 			function openSearch() { 
 				document.getElementById("Search").
 					style.display = "block"; 
