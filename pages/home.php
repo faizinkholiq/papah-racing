@@ -193,7 +193,7 @@ if($total_page > 1 && $total_page < 11){
 	$next = 1;
 	foreach ($pns as $pn){ 
 		$np = sprintf('%03d',$pn);
-		$page_selected = ($pn == $_GET["page"])? 'paging-selected' : 'bg-facebook';
+		$page_selected = (!empty($_GET["page"]) && $pn == $_GET["page"])? 'paging-selected' : 'bg-facebook';
 		$pnv .= '<a href="'.$nvurl.'page='.$np.'" title="Page '.$pn.'" class="pnv '.$page_selected .'">'.$np.'</a>';
 
 		if($pn == $pns[count($pns)-1]){

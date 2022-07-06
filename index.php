@@ -37,30 +37,70 @@ if (ENV === "Development") {
 }
 // Routing
 if (empty($xp[1]) OR !empty($_GET)){
-	// Pagination
-	$limit = 24;
-	$page = isset($_GET['page'])?(int)$_GET['page'] : 1;
-	$first_page = ($page>1) ? ($page * $limit) - $limit : 0;
-
-	$all_data = mysqli_query($con,"SELECT * FROM barang");
-	$total_data = mysqli_num_rows($all_data);
-	$total_page = ceil($total_data / $limit);
-	
-	// Data
-	$posts = mysqli_query($con, "SELECT * FROM barang ORDER BY created DESC LIMIT $first_page, $limit");
-
 	// Page Info
 	$title = $toko.' - '.$ket;
 	
 	if(!empty($_GET["kategori"])){
 		
+		// Filter
+		$arr_kat = explode(",", $_GET["kategori"]);
+		$src = sprintf("%s", join("'|'",$arr_kat));
+		$src = str_replace(["(",")"], "", $src);
+		$src = str_replace(" ", "|", $src);
+		
+
+		// Pagination
+		$limit = 24;
+		$page = isset($_GET['page'])?(int)$_GET['page'] : 1;
+		$first_page = ($page>1) ? ($page * $limit) - $limit : 0;
+
+		// All Data
+		$all_data = mysqli_query($con,"SELECT * FROM barang WHERE kategori REGEXP '$src'");
+		$total_data = mysqli_num_rows($all_data);
+		$total_page = ceil($total_data / $limit);
+		
+		if($total_data > 0) {
+			// Limited Data
+			$posts = mysqli_query($con, "SELECT * FROM barang WHERE kategori REGEXP '$src' ORDER BY rand() LIMIT $first_page, $limit");
+	
+			$nvurl = SITEURL;
+			
+			include('pages/home.php');
+		}else{
+			include('pages/404.php');
+		}
+	
 	}else if(!empty($_GET["merk"])){
-		
-	}else if(!empty($_GET["cari"])){
-		
-	}else{
+	
 		$nvurl = SITEURL;
+	
 		include('pages/home.php');
+	
+	}else if(!empty($_GET["cari"])){
+	
+		$nvurl = SITEURL;
+	
+		include('pages/home.php');
+	
+	}else{
+
+		// Pagination
+		$limit = 24;
+		$page = isset($_GET['page'])?(int)$_GET['page'] : 1;
+		$first_page = ($page>1) ? ($page * $limit) - $limit : 0;
+
+		// All Data
+		$all_data = mysqli_query($con,"SELECT * FROM barang");
+		$total_data = mysqli_num_rows($all_data);
+		$total_page = ceil($total_data / $limit);
+		
+		// Limited Data
+		$posts = mysqli_query($con, "SELECT * FROM barang ORDER BY created DESC LIMIT $first_page, $limit");
+
+		$nvurl = SITEURL;
+
+		include('pages/home.php');
+	
 	}
 } elseif($xp[1]==='tentang') {
 	$px = $xp[1];

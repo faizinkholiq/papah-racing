@@ -5303,6 +5303,7 @@ footer.skin-dark-footer ul.footer-bottom-social li a:hover, footer.skin-dark-foo
 .paging-selected {
     background-color: #ffffff;
     color: #3b5a9a;
+    border: 1px solid #3b5a9a; 
 }
 
 .paging-selected:hover {
