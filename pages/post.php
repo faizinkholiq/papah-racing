@@ -46,13 +46,7 @@ echo '<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12"><nav aria-label="brea
 		'<li class="breadcrumb-item">
 			<a href="'.SITEURL.'/">Home</a>
 		</li>'.
-		// '<li class="breadcrumb-item">
-		// 	<a href="'.SITEURL.'/kategori/'.strtolower(str_replace(' ','-',$kategori)).'/">'.$kategori.'</a>
-		// </li>'.
-		// '<li class="breadcrumb-item">
-		// 	<a href="'.SITEURL.'/merk/'.strtolower(str_replace(' ','-',$merk)).'/">'.$merk.'</a>
-		// </li>'.
-		'<li class="breadcrumb-item active" aria-current="page">'.$barcode.'</li>'.
+		'<li class="breadcrumb-item active" aria-current="page">'.$ptitle.'</li>'.
 	'</ol>'.
 '</nav></div>';
 
@@ -75,8 +69,6 @@ echo '<div class="prt_02 mb-4"><h1 class="ft-bold mb-1">'.$ptitle.'</h1><div cla
 '</div></div></div>'.
 '<div class="prt_03 mb-4" style="font-size: 1.2rem;">';
 echo 
-// '<p><span class="label">Nama</span> : '.$ptitle.'</p>'.
-// '<p><span class="label">Kode</span> : '.$barcode.'</p>'.
 '<p><span class="label">Merk</span> : <a href="'.SITEURL.'/merk/'.$merk.'/">'.$merk.'</a></p>'.
 '<p><span class="label">Stok</span> : '.$stok.'</p>'.
 '<p><span class="label">Kondisi</span> : '.$kondisi.'</p>'.

@@ -35,19 +35,20 @@ if (ENV === "Development") {
 	$count_uri -= 1;
 	$xp = arr_remove_empty($xp);
 }
+
 // Routing
 if (empty($xp[1]) OR !empty($_GET)){
 	// Page Info
 	$title = $toko.' - '.$ket;
 	
 	if(!empty($_GET["kategori"])){
+		$paging = true;
 		
 		// Filter
 		$arr_kat = explode(",", $_GET["kategori"]);
 		$src = sprintf("%s", join("'|'",$arr_kat));
 		$src = str_replace(["(",")"], "", $src);
 		$src = str_replace(" ", "|", $src);
-		
 
 		// Pagination
 		$limit = 24;
@@ -63,7 +64,7 @@ if (empty($xp[1]) OR !empty($_GET)){
 			// Limited Data
 			$posts = mysqli_query($con, "SELECT * FROM barang WHERE kategori REGEXP '$src' ORDER BY rand() LIMIT $first_page, $limit");
 	
-			$nvurl = SITEURL;
+			$nvurl = SITEURL."?kategori=".$_GET["kategori"];
 			
 			include('pages/home.php');
 		}else{
@@ -71,18 +72,37 @@ if (empty($xp[1]) OR !empty($_GET)){
 		}
 	
 	}else if(!empty($_GET["merk"])){
-	
-		$nvurl = SITEURL;
-	
-		include('pages/home.php');
+		$paging = false;
+
+		$src = $_GET["merk"];
+
+		$posts = mysqli_query($con, "SELECT * FROM barang WHERE merk = '$src' ORDER BY created" );
+		
+		$nvurl = SITEURL."?merk=".$_GET["merk"];
+		
+		if(mysqli_num_rows($posts) > 0){
+			include('pages/home.php');
+		}else{
+			include('pages/404.php');
+		}
 	
 	}else if(!empty($_GET["cari"])){
+		$paging = false;
+
+		$src = $_GET["cari"];
+
+		$posts = mysqli_query($con, "SELECT * FROM barang WHERE nama LIKE '%$src%' ORDER BY created");
+		
+		$nvurl = SITEURL."?cari=".$_GET["cari"];
 	
-		$nvurl = SITEURL;
-	
-		include('pages/home.php');
-	
+		if(mysqli_num_rows($posts) > 0){
+			include('pages/home.php');
+		}else{
+			include('pages/404.php');
+		}
+
 	}else{
+		$paging = true;
 
 		// Pagination
 		$limit = 24;
@@ -101,6 +121,18 @@ if (empty($xp[1]) OR !empty($_GET)){
 
 		include('pages/home.php');
 	
+	}
+} elseif($xp[1]==='produk') {
+	$px = $xp[1];
+	$posts = mysqli_query($con, "SELECT * FROM barang WHERE id_barang = '".$xp[2]."' LIMIT 1");
+
+	if(mysqli_num_rows($posts) > 0){
+		$row = mysqli_fetch_assoc($posts);
+		$random = mysqli_query($con, "SELECT * FROM barang WHERE nama SOUNDS LIKE '".$row['nama']."' OR kategori = '".$row['kategori']."' ORDER BY rand() LIMIT 8");
+	
+		include('pages/post.php');
+	}else{
+		include('pages/404.php');
 	}
 } elseif($xp[1]==='tentang') {
 	$px = $xp[1];
@@ -133,7 +165,7 @@ function head(){
 				'<style>.slider .slick-slide img{border-radius:3px;}.slider .slick-slide img{width:100%;}.slick-prev,.slick-next{width:50px;height:50px;z-index:1;}.slick-prev{left:5px;}.slick-next{right:5px;}.slick-prev:before,.slick-next:before{font-size:40px;text-shadow:0 0 10px rgba(0,0,0,0.5);}.slick-dots{bottom:15px;}.slick-dots li button:before{font-size:12px;color:#fff;text-shadow:0 0 10px rgba(0,0,0,0.5);opacity:1;}.slick-dots li.slick-active button:before{color:#dedede;}.slider:not(:hover) .slick-arrow,.slider:not(:hover) .slick-dots{opacity:0;}.slick-arrow,.slick-dots{transition:opacity 0.5s ease-out;}</style>'.
 			'</head>';
 
-	$now_src = isset($p)? urldecode($p) : '';
+	$now_src = isset($_GET["cari"])? $_GET["cari"] : '';
 	$header_type = ($px == "cari" || $px == "kategori" || $px == "merk")? 'header-on-top' : '';
 	echo '<body><div class="preloader"></div><div id="main-wrapper" style="width: 100%; position: absolute; overflow-x: hidden;">'.
 	'<div class="header header-transparent dark-text ' . $header_type . '"><div class="container"><nav id="navigation" class="navigation navigation-landscape">'.
@@ -141,7 +173,7 @@ function head(){
 	'<form method="GET" action="'.SITEURL.'/" class="scl form m-0 p-0">
 		<div class="form-group">
 			<div class="input-group">
-				<input type="text" class="form-control" name="q" placeholder="Product Keyword.." value="'.$now_src.'">
+				<input type="text" class="form-control" name="cari" placeholder="Aku mau cari..." value="'.$now_src.'">
 			</div>
 		</div>
 	</form>'.
@@ -151,7 +183,7 @@ function head(){
 	'<div class="nav-menus-wrapper" style="transition-property: none;">'.
 	'<form class="form m-0 p-0" method="GET" action="'.SITEURL.'/">
 			<div class="input-group">
-				<input type="text" class="form-control" name="q" placeholder="Product Keyword.." value="'.$now_src.'">
+				<input type="text" class="form-control" name="cari" placeholder="Aku mau cari..." value="'.$now_src.'">
 				<div class="my-input-group-append">
 					<button class="btn btn-outline-secondary" type="submit"><i class="fa fa-search"></i></button>
 				</div>
@@ -248,7 +280,7 @@ function foot(){
 	
 		echo '<div class="container mb-4 container-merk">';
 			foreach ($merks as $key => $ban){
-				echo '<a class="my-badge-filter bg-'.$colors[$key%8].'" href="'.SITEURL.'/merk/'.$ban["merk"].'">'.$ban["merk"].'</a>';
+				echo '<a class="my-badge-filter bg-'.$colors[$key%8].'" href="'.SITEURL.'?merk='.$ban["merk"].'">'.$ban["merk"].'</a>';
 			}
 		echo'</div>';
 	}

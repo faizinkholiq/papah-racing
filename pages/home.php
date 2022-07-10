@@ -159,7 +159,7 @@ foreach ($posts as $pos){
 echo '</div>';
 echo '<div class="row" style="margin-top:2rem"><div class="col-xl-12 col-lg-12 col-md-12 text-center">';
 
-if($px != "merk" && $px != "cari"):
+if($paging):
 
 $pnv = '<a href="'.$nvurl.'" title="First Page" rel="nofollow" class="pnv bg-facebook">001</a>';
 if(!empty($_GET["kategori"])){
@@ -169,6 +169,7 @@ if(!empty($_GET["kategori"])){
 }
 
 $pns = [];
+
 if($total_page > 1 && $total_page < 11){
 	$pns = range(2, $total_page); 
 	
