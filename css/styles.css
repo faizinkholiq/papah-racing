@@ -106,9 +106,6 @@ section{
 section.space{
 	padding:60px 0 60px;
 }
-section.middle{
-	padding:50px 0 50px;
-}
 section.space.min{
 	padding:60px 0 30px;
 }
@@ -177,10 +174,6 @@ h2 {
   line-height: 36px;
   font-size: 30px; }
 
-h3 {
-  line-height: 30px;
-  font-size: 24px; }
-
 h4 {
   line-height: 26px;
   font-size: 21px; }
@@ -220,7 +213,7 @@ html body .db {
 	background:#ee1c47 !important;
 }
 .trans-bg{
-	background:rgba(255,255,255,0.1); !important;
+	background:rgba(255,255,255,0.1) !important;
 }
 .theme-bg-light{
 	background:rgba(238, 28, 71,0.11) !important;
@@ -345,12 +338,7 @@ ul.list-style.style-2 li:before {
 .text-upper{
 	text-transform:uppercase;
 }
-.badge {
-    padding: .47em .8em;
-    font-size: 70%;
-    border-radius: .15rem;
-    letter-spacing: 0.08rem;
-}
+
 /*------------ Global Settings: Cutom Height ----------------*/
 .ht-10{
 	height:10px;
@@ -2042,11 +2030,6 @@ nav a {
     display: inline-block
 }
 
-.header {
-    background:#fff;
-	z-index:6;
-}
-
 .header-top {
     padding: 1em 0;
     background: #05222A
@@ -2615,13 +2598,6 @@ li._my_prt_list a span {
 }
 .mobile_nav ul li:first-child{
 	padding-left:0;
-}
-.mobile_nav ul li a {
-    display: inline-flex;
-    font-size:15px;
-    font-weight: 700;
-    /*! color:#293544; */
-    font-family: 'Jost', sans-serif;
 }
 .mobile_nav ul li._my_prt_list a span {
     width: auto;
@@ -3210,10 +3186,7 @@ ul.dahs_navbar li a.active {
     transform: translate(-50%, -50%);
 }
 /*------------ Product Grid Styles -----------------*/
-.product_grid, .product_grid.card {
-    margin-bottom: 30px;
-	background:transparent;
-}
+
 .product_grid .card-footer{
 	background:transparent;
 }
@@ -4789,16 +4762,6 @@ footer.skin-dark-footer ul.footer-bottom-social li a:hover, footer.skin-dark-foo
     float: left;
     width: 25%;
 }
-.btn-login {
-    padding: 10px 10px 10px 20px;
-    font-size: 17px;
-    height: 40px;
-}
-
-.btn-login a{
-    color:#fff;
-    font-size: 14px;
-}
 
 .btn-join {
     font-size: 12px;
@@ -5094,6 +5057,7 @@ footer.skin-dark-footer ul.footer-bottom-social li a:hover, footer.skin-dark-foo
         -ms-flex: 0 0 50%;
         flex: 0 0 50%;
         max-width: 50%;
+        padding: 0.3rem;
     }
 
     .my-col-xs-5{
@@ -5106,13 +5070,108 @@ footer.skin-dark-footer ul.footer-bottom-social li a:hover, footer.skin-dark-foo
     .img-fluid {
         height:5rem;
     }
+
+    .little-container{
+        padding: 0 1rem 0.5rem!important;
+    }
+
+    .little-4{
+        flex: 0 0 25%;
+        max-width: 25%;
+        padding: 0 0.1rem;
+    }
+
+    .my-badge-nav {
+        height: 2rem;
+        border-radius: 8px;
+        color: grey;
+        border: 1.5px solid rgba(0,0,0,.125);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        white-space: pre-wrap;
+        font-weight: bold;
+        font-size: 0.46rem;
+        padding: 1rem;
+        line-height: 9px;
+        text-align: center;
+    }
+
+    .my-badge-nav:hover{
+        color: white;
+        background-color: #03a9f5;
+        border: 1.5px solid #03a9f5;
+        transition:all 0.3s;
+    }
+
+    .slick-dotted.slick-slider {
+        margin-bottom: 12px!important;
+    }
+
+    .my-btn{
+        border-radius: 0.6rem;
+    }
+
+    .btn-login {
+        padding: 10px 12px;
+    }
+
+    .btn-login a{
+        color:#fff;
+        font-size: 12px;
+    }
+
+    .mobile-only{
+        display:block;
+    }
+
+    .header {
+        background: #fff;
+        z-index: 6;
+        box-shadow: 1px 1px 12px #dcdcdc;
+    }
+
+    .product_grid, .product_grid.card {
+        margin-bottom: 0.2rem;
+        background:transparent;
+    }
+
+    .product-container{
+        margin: 0.1rem
+    }
+
+    .badge {
+        font-size: 0.45rem;
+        letter-spacing: 0.08rem;
+    }
+
+    h3 {
+        font-size: 1rem; 
+    }
+
+    section.middle{
+        padding: 10px 0;
+    }
 }
 
 @media (min-width: 576px){
+    .little-container{
+        padding: 0!important;
+    }
+
     .col-sm-4 {
         -ms-flex: 0 0 33.333333%;
         flex: 0 0 33.333333%;
         max-width: 33.333333%;
+    }
+
+    .little-4{
+        padding: 0;
+        position: relative;
+        width: 100%;
+        min-height: 1px;
+        padding-right: 15px;
+        padding-left: 15px;
     }
 
     .img-fluid {
@@ -5121,6 +5180,82 @@ footer.skin-dark-footer ul.footer-bottom-social li a:hover, footer.skin-dark-foo
 
     .my-col-xs-5{
         padding:0.2rem;
+    }
+
+    .my-badge-nav{
+        border-radius: 1.1rem;
+        color: grey;
+        border: 1.5px solid rgba(0,0,0,.125);
+        font-size: 0.9rem;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        white-space: pre-wrap;
+        height: 90%;
+        letter-spacing: 0.08rem;
+    }
+
+    .my-badge-nav:hover{
+        color: white;
+        background-color: #03a9f5;
+        border: 1.5px solid #03a9f5;
+        transition:all 0.3s;
+    }
+
+    .container-badge{
+        height: 4.5rem;
+        padding: 0.2rem 0.8rem;
+    }
+
+    .my-btn{
+        border-radius: 0.6rem;
+    }
+
+    .btn-login {
+        padding: 10px 10px 10px 20px;
+        font-size: 17px;
+        height: 40px;
+    }
+
+    .btn-login a{
+        color:#fff;
+        font-size: 14px;
+    }
+
+    .mobile-only{
+        display:none;
+    }
+
+    .header {
+        background:#fff;
+        z-index:6;
+    }
+
+    .product_grid, .product_grid.card {
+        margin-bottom: 15px;
+        background:transparent;
+    }
+
+    .product-container{
+        margin-right: -15px;
+        margin-left: -15px;
+    }
+
+    .badge {
+        padding: .47em .8em;
+        font-size: 70%;
+        border-radius: .15rem;
+        letter-spacing: 0.08rem;
+    }
+
+    h3 {
+        line-height: 30px;
+        font-size: 24px; 
+    }
+
+    section.middle{
+        padding: 10px 0;
     }
 
 }
@@ -5181,29 +5316,6 @@ footer.skin-dark-footer ul.footer-bottom-social li a:hover, footer.skin-dark-foo
     text-align: center;
     border-radius: 0 3px 3px 0;
     vertical-align: middle;
-}
-
-.my-badge-nav{
-    border-radius: 1.1rem;
-    color: grey;
-    border: 1.5px solid rgba(0,0,0,.125);
-    font-size: 0.9rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    white-space: pre-wrap;
-    height: 90%;
-}
-
-.my-badge-nav:hover{
-    color: white;
-    background-color: #03a9f5;
-    border: 1.5px solid #03a9f5;
-    transition:all 0.3s;
-}
-
-.my-btn{
-    border-radius: 0.6rem;
 }
 
 .my-tooltip{

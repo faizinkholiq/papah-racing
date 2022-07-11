@@ -169,16 +169,9 @@ function head(){
 	$header_type = ($px == "cari" || $px == "kategori" || $px == "merk")? 'header-on-top' : '';
 	echo '<body><div class="preloader"></div><div id="main-wrapper" style="width: 100%; position: absolute; overflow-x: hidden;">'.
 	'<div class="header header-transparent dark-text ' . $header_type . '"><div class="container"><nav id="navigation" class="navigation navigation-landscape">'.
-	'<div class="nav-header"><a class="nav-brand" href="'.SITEURL.'/"><img src="'.SITEURL.'/images/icons/logo.png" class="logo" alt="" /></a>'.
-	'<form method="GET" action="'.SITEURL.'/" class="scl form m-0 p-0">
-		<div class="form-group">
-			<div class="input-group">
-				<input type="text" class="form-control" name="cari" placeholder="Aku mau cari..." value="'.$now_src.'">
-			</div>
-		</div>
-	</form>'.
+	'<div class="nav-header"><div class="nav-brand"><a href="'.SITEURL.'/"><img src="'.SITEURL.'/images/icons/logo.png" class="logo" alt="" /></a></div>'.
 	'<div class="mobile_nav"><ul>'.
-	'<li><div class="badge bg-danger btn-login my-btn"> <a href="#" data-toggle="modal" data-target="#login">LOGIN <i class="lni lni-user"></i></a></div></li> '.
+	'<li><div class="badge bg-danger my-btn btn-login"> <a href="#" data-toggle="modal" data-target="#login">LOGIN <i class="lni lni-user"></i></a></div></li> '.
 	'</ul></div></div>'.
 	'<div class="nav-menus-wrapper" style="transition-property: none;">'.
 	'<form class="form m-0 p-0" method="GET" action="'.SITEURL.'/">
@@ -199,6 +192,18 @@ function head(){
 		echo '<div class="clearfix"></div>';
 	}
 
+	echo '
+		<div class="little-container mobile-only" style="margin-bottom: 3.5rem!important;">
+			<form class="form m-0 p-0" method="GET" action="'.SITEURL.'/">
+					<div class="input-group">
+						<input type="text" class="form-control" name="cari" placeholder="Aku mau cari..." value="'.$now_src.'" style="font-size:13px">
+						<div class="my-input-group-append">
+							<button class="btn btn-outline-secondary" type="submit"><i class="fa fa-search"></i></button>
+						</div>
+					</div>
+			</form>
+		</div>
+	';
 	echo '<div class="bg-cover"><div class="container">'.'<div class="row align-items-center justify-content-center"><div class="col-xl-12 col-lg-12 col-md-12 col-sm-12"><div class="text-center sld">';
 	
 	if ($px != "cari" && $px != "kategori" && $px != "merk"){
@@ -213,30 +218,30 @@ function head(){
 	
 	if ($px != "tentang" && $px != "pelayanan" && $px != "garansi") {
 		echo '
-		<div class="container mb-1" style="padding:0;">
+		<div class="container little-container mb-1" style="padding:0;">
 			<div class="row" style="
 				height: 100%;
 				width: 100%;
 				margin: 0;
 			">
-				<div style="height:5rem; padding: 0.2rem 0.8rem;" class="col-lg-3 col-sm-6 col-xs-6 text-center">
-					<a href="'.SITEURL.'/pelayanan" class="my-badge-nav badge w-100">
-						<i class="fa fa-exclamation-circle mr-2"></i> <div>PERATURAN PELAYANAN</div>
+				<div class="container-badge col-lg-3 little-4 text-center">
+					<a href="'.SITEURL.'/pelayanan" class="my-badge-nav">
+						<i class="fa fa-exclamation-circle mr-lg-2 mr-1"></i> <span>PERATURAN PELAYANAN</span>
 					</a>
 				</div>
-				<div style="height:5rem; padding: 0.2rem 0.8rem;" class="col-lg-3 col-sm-6 col-xs-6 text-center">
-					<a href="'.SITEURL.'/garansi" class="my-badge-nav badge w-100">
-						<i class="fa fa-medal mr-2"></i> <div>GARANSI</div>
+				<div class="container-badge col-lg-3 little-4 text-center">
+					<a href="'.SITEURL.'/garansi" class="my-badge-nav">
+						<i class="fa fa-medal mr-lg-2 mr-1"></i> <span>GARANSI</span>
 					</a>
 				</div>
-				<div style="height:5rem; padding: 0.2rem 0.8rem;" class="col-lg-3 col-sm-6 col-xs-6 text-center">
-					<a href="'.SITEURL.'/tentang" class="my-badge-nav badge w-100">
-						<i class="fa fa-users mr-2"></i> <div>TENTANG KAMI</div>
+				<div class="container-badge col-lg-3 little-4 text-center">
+					<a href="'.SITEURL.'/tentang" class="my-badge-nav">
+						<i class="fa fa-users mr-lg-2 mr-1"></i> <span>TENTANG KAMI</span>
 					</a>
 				</div>
-				<div style="height:5rem; padding: 0.2rem 0.8rem;" class="col-lg-3 col-sm-6 col-xs-6 text-center">
-					<a href="#!" class="my-badge-nav badge w-100" data-toggle="modal" data-target="#joinus">
-						<i class="fa fa-user-plus mr-2"></i> <div>JOIN US</div>
+				<div class="container-badge col-lg-3 little-4 text-center">
+					<a href="#!" class="my-badge-nav" data-toggle="modal" data-target="#joinus">
+						<i class="fa fa-user-plus mr-lg-2 mr-1"></i> <span>JOIN US</span>
 					</a>
 				</div>
 			</div>
@@ -245,7 +250,7 @@ function head(){
 	}
 	
 	if ($px != "cari" && $px != "kategori" && $px != "merk" && $px != "produk" && $px != "tentang" && $px != "pelayanan" && $px != "garansi"){
-		echo '<div class="middle"><div class="container"><div class="row align-items-center">';
+		echo '<div class="middle"><div class="container"><div class="row align-items-center product-container">';
 		$cats = array('MESIN','OLI','SASIS','PENGAPIAN','ALAT PORTING','APPAREL','KARBURATOR','KNALPOT','KOPLING','PISTON', 'GEARBOX', 'MEMBRAN', 'INTAKE MANIPOL', 'BUSI', 'VARIASI', 'PAKING (GASKET)', 'BEARING', 'SPECIAL DISKON');
 		$war = array('purple','red','blue','green','orange','yellow','dark-blue', 'danger','sky','dark-blue', 'purple','red','blue','green','orange', 'yellow', 'dark-blue', 'danger');
 		$i = 0;
@@ -262,7 +267,7 @@ function head(){
 			}
 
 			$select_cat = ($px === "kategori" && strtoupper($px2) === $c)? 'select-border' : '';
-			echo '<div class="col-lg-2 col-md-4 cat"><div class="product_grid card '. $select_cat .'">'.
+			echo '<div class="little-4 col-lg-2 col-md-4 cat"><div class="product_grid card '. $select_cat .'">'.
 			'<div class="card-body p-0"><div class="shop_thumb position-relative"><a class="card-img-top d-block overflow-hidden" href="'.SITEURL.'?kategori='.implode(",", $search).'"><img class="card-img-top" src="'.SITEURL.'/images/kategori/'.strtolower(str_replace(' ','-',$c)).'.jpeg"></a></div></div>'.
 			'<div class="badge bg-'.$war[$i].' py-2"><div class="text-white">'.$c.'</div></div>'.
 			'</div></div>';

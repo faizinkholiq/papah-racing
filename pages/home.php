@@ -1,6 +1,6 @@
 <?php
 head();
-echo '<section class="py-2 br-bottom br-top">
+echo '<section class="py-2 br-bottom br-top" style="margin-top: 1rem;">
 		<div class="container">
 			<div class="row align-items-center justify-content-start">
 				<h3 style="font-weight:bold; padding-left:15px; padding-top:10px; color: grey;">ALL PRODUCT</h3>			
@@ -13,9 +13,9 @@ if(isset($px) && ($px == "cari" || $px == "kategori" || $px == "merk")) {
 	echo '
 		<section class="middle" style="padding-top:10px!important;"><div class="container">
 		<a href="'.SITEURL.'" class="btn btn-sm bg-light text-dark fs-md ft-medium mb-4"><i class="lni lni-chevron-left mr-2"></i> Kembali</a>
-		<div class="row align-items-center">';
+		<div class="row align-items-center" style="margin: 0;">';
 }else{
-	echo '<section class="middle"><div class="container"><div class="row align-items-center">';
+	echo '<section class="middle"><div class="container"><div class="row align-items-center" style="margin: 0;">';
 }
 
 $all = '';$j = 1;
@@ -157,7 +157,7 @@ foreach ($posts as $pos){
 	$j++;
 }	
 echo '</div>';
-echo '<div class="row" style="margin-top:2rem"><div class="col-xl-12 col-lg-12 col-md-12 text-center">';
+echo '<div class="row" style="margin:1rem 0 2rem"><div class="col-xl-12 col-lg-12 col-md-12 text-center">';
 
 if($paging):
 
