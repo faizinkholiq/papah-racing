@@ -165,11 +165,6 @@ h6 {
 	font-weight:400;
 }
 
-
-h1 {
-  line-height: 40px;
-  font-size: 36px; }
-
 h2 {
   line-height: 36px;
   font-size: 30px; }
@@ -5125,6 +5120,10 @@ footer.skin-dark-footer ul.footer-bottom-social li a:hover, footer.skin-dark-foo
         display:block;
     }
 
+    .desktop-only{
+        display:none;
+    }
+
     .header {
         background: #fff;
         z-index: 6;
@@ -5149,8 +5148,22 @@ footer.skin-dark-footer ul.footer-bottom-social li a:hover, footer.skin-dark-foo
         font-size: 1rem; 
     }
 
+    h1 {
+        line-height: 40px;
+        font-size: 1.5rem; 
+    }
+
     section.middle{
         padding: 10px 0;
+    }
+
+    .my-flat-card{
+        /* border: 1px solid #d2d2d2; */
+        border: 1px solid #e8e8e8;
+        border-radius: 0.8rem;
+        padding: 1.4rem 1.3rem;
+        font-size: 0.8rem;
+        color: #1f1f1f;
     }
 }
 
@@ -5216,6 +5229,13 @@ footer.skin-dark-footer ul.footer-bottom-social li a:hover, footer.skin-dark-foo
         padding: 10px 10px 10px 20px;
         font-size: 17px;
         height: 40px;
+        display: inline-block;
+        font-weight: 700;
+        line-height: 1;
+        color: #fff;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
     }
 
     .btn-login a{
@@ -5225,6 +5245,10 @@ footer.skin-dark-footer ul.footer-bottom-social li a:hover, footer.skin-dark-foo
 
     .mobile-only{
         display:none;
+    }
+
+    .desktop-only{
+        display:block;
     }
 
     .header {
@@ -5254,8 +5278,22 @@ footer.skin-dark-footer ul.footer-bottom-social li a:hover, footer.skin-dark-foo
         font-size: 24px; 
     }
 
+    h1 {
+        line-height: 40px;
+        font-size: 36px; 
+    }
+
     section.middle{
         padding: 10px 0;
+    }
+
+    .my-flat-card{
+        /* border: 1px solid #d2d2d2; */
+        border: 1px solid #e8e8e8;
+        border-radius: 0.8rem;
+        padding: 1.4rem 1.3rem;
+        font-size: 1rem;
+        color: #1f1f1f;
     }
 
 }
@@ -5349,15 +5387,6 @@ footer.skin-dark-footer ul.footer-bottom-social li a:hover, footer.skin-dark-foo
     border-radius: 1rem;
 }
 
-.my-flat-card{
-    /* border: 1px solid #d2d2d2; */
-    border: 1px solid #e8e8e8;
-    border-radius: 0.8rem;
-    padding: 1.4rem 1.3rem;
-    font-size: 1rem;
-    color: #1f1f1f;
-}
-
 .my-list-group{
     display: flex;
     flex-direction: column;
@@ -5387,6 +5416,29 @@ footer.skin-dark-footer ul.footer-bottom-social li a:hover, footer.skin-dark-foo
 }
 
 .my-list-group-item.active {
+    z-index: 2;
+    font-weight: bold;
+}
+
+.my-nav-group{
+    display: flex;
+    flex-direction: row;
+    padding: 0;
+    margin: 0;
+    font-size: 0.8rem;
+}
+
+.my-nav-group-item {
+    flex: 1;
+    background-color: #fff;
+    text-align: center;
+    border-right: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.my-nav-group-item.active {
     z-index: 2;
     font-weight: bold;
 }

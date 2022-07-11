@@ -37,7 +37,7 @@ if (ENV === "Development") {
 }
 
 // Routing
-if (empty($xp[1]) OR !empty($_GET)){
+if (empty($xp[1]) OR (!empty($_GET["kategori"]) || !empty($_GET["merk"]) || !empty($_GET["cari"]))){
 	// Page Info
 	$title = $toko.' - '.$ket;
 	
@@ -143,6 +143,9 @@ if (empty($xp[1]) OR !empty($_GET)){
 } elseif($xp[1]==='garansi') {
 	$px = $xp[1];
 	include('pages/garansi.php');
+} elseif($xp[1]==='info' || strpos($xp[1], 'info') !== false ) {
+	$px = 'info';
+	include('pages/info.php');
 } else {
 	include('pages/404.php');		
 }
@@ -183,7 +186,7 @@ function head(){
 			</div>
 	</form>'.
 	'<ul class="nav-menu nav-menu-social align-to-right">'.
-	'<li><div class="badge bg-danger btn-login my-btn"> <a href="#" data-toggle="modal" data-target="#login">LOGIN <i class="lni lni-user"></i></a></div></li> '.
+	'<li><div class="bg-danger btn-login my-btn"> <a href="#" data-toggle="modal" data-target="#login">LOGIN <i class="lni lni-user"></i></a></div></li> '.
 	'</ul></div></nav></div></div>';
 	
 	if ($px == "cari" || $px == "kategori" || $px == "merk") {
@@ -216,7 +219,7 @@ function head(){
 
 	echo '</div></div></div></div>';
 	
-	if ($px != "tentang" && $px != "pelayanan" && $px != "garansi") {
+	if ($px != "info" && $px != "tentang" && $px != "pelayanan" && $px != "garansi") {
 		echo '
 		<div class="container little-container mb-1" style="padding:0;">
 			<div class="row" style="
@@ -225,17 +228,17 @@ function head(){
 				margin: 0;
 			">
 				<div class="container-badge col-lg-3 little-4 text-center">
-					<a href="'.SITEURL.'/pelayanan" class="my-badge-nav">
+					<a href="'.SITEURL.'/info?active=pelayanan" class="my-badge-nav">
 						<i class="fa fa-exclamation-circle mr-lg-2 mr-1"></i> <span>PERATURAN PELAYANAN</span>
 					</a>
 				</div>
 				<div class="container-badge col-lg-3 little-4 text-center">
-					<a href="'.SITEURL.'/garansi" class="my-badge-nav">
+					<a href="'.SITEURL.'/info?active=garansi" class="my-badge-nav">
 						<i class="fa fa-medal mr-lg-2 mr-1"></i> <span>GARANSI</span>
 					</a>
 				</div>
 				<div class="container-badge col-lg-3 little-4 text-center">
-					<a href="'.SITEURL.'/tentang" class="my-badge-nav">
+					<a href="'.SITEURL.'/info?active=tentang" class="my-badge-nav">
 						<i class="fa fa-users mr-lg-2 mr-1"></i> <span>TENTANG KAMI</span>
 					</a>
 				</div>
@@ -249,7 +252,7 @@ function head(){
 		';
 	}
 	
-	if ($px != "cari" && $px != "kategori" && $px != "merk" && $px != "produk" && $px != "tentang" && $px != "pelayanan" && $px != "garansi"){
+	if ($px != "cari" && $px != "kategori" && $px != "merk" && $px != "produk" && $px != "tentang" && $px != "pelayanan" && $px != "garansi" && $px != "info"){
 		echo '<div class="middle"><div class="container"><div class="row align-items-center product-container">';
 		$cats = array('MESIN','OLI','SASIS','PENGAPIAN','ALAT PORTING','APPAREL','KARBURATOR','KNALPOT','KOPLING','PISTON', 'GEARBOX', 'MEMBRAN', 'INTAKE MANIPOL', 'BUSI', 'VARIASI', 'PAKING (GASKET)', 'BEARING', 'SPECIAL DISKON');
 		$war = array('purple','red','blue','green','orange','yellow','dark-blue', 'danger','sky','dark-blue', 'purple','red','blue','green','orange', 'yellow', 'dark-blue', 'danger');
@@ -280,7 +283,7 @@ function head(){
 function foot(){
 	global $px,$alamat,$kontak,$merks,$toko,$ket,$con;
 
-	if($px != "produk" && $px !="tentang" && $px !="pelayanan" && $px !="garansi"){
+	if($px != "produk" && $px !="tentang" && $px !="pelayanan" && $px !="garansi" && $px != "info"){
 		$colors = ['purple','red','blue','green','orange','yellow','dark-blue','sky'];
 	
 		echo '<div class="container mb-4 container-merk">';

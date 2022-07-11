@@ -21,18 +21,21 @@
 	</div>
 </section>
 <section style="padding: 2rem 0 4rem;">
+
 	<div class="container">
 		<div class="row">
-			<div class="col-lg-3 my-list-group" style="padding: 0 0 2rem;">
-				<a class="my-list-group-item my-list-group-item-action" href="<?=SITEURL?>">Beranda</a>
-				<a class="my-list-group-item my-list-group-item-action active" href="<?=SITEURL?>/pelayanan">Peraturan Pelayanan</a>
-				<a class="my-list-group-item my-list-group-item-action" href="<?=SITEURL?>/garansi">Garansi</a>
-				<a class="my-list-group-item my-list-group-item-action" href="<?=SITEURL?>/tentang">Tentang Kami</a>
-				<a class="my-list-group-item my-list-group-item-action" href="#!" data-toggle="modal" data-target="#joinus">Join Us</a>
+			<div class="col-lg-3 desktop-only">
+				<div class="my-list-group" style="padding: 0 0 2rem;">
+					<a class="my-list-group-item my-list-group-item-action" href="<?=SITEURL?>">Beranda</a>
+					<a class="my-list-group-item my-list-group-item-action active" href="<?=SITEURL?>/pelayanan">Peraturan Pelayanan</a>
+					<a class="my-list-group-item my-list-group-item-action" href="<?=SITEURL?>/garansi">Garansi</a>
+					<a class="my-list-group-item my-list-group-item-action" href="<?=SITEURL?>/tentang">Tentang Kami</a>
+					<a class="my-list-group-item my-list-group-item-action" href="#!" data-toggle="modal" data-target="#joinus">Join Us</a>
+				</div>
 			</div>
 			<div class="col-lg-9">
 				<h1 class="ml-lg-4 ml-sm-0"><strong>Peraturan Pelayanan</strong></h1>
-				<div class="my-flat-card mt-4 ml-lg-4 ml-sm-0">
+				<div class="my-flat-card mt-lg-4 ml-lg-4 ml-sm-0">
 					<p>Papahracing.com melayani online 24 jam melalui cust.service kami via chat. Kontak chat tersedia di halaman depan website dan link aktip ke whatapps konsumen secara langsung dengan klik tombol icon whatapps.</p>
 					<p>
 						Untuk toko kita buka dari jam 09.00-18.00. Pemesanan kita usahakan 3 kali dalam sehari sesuai jam pemesanan. 
