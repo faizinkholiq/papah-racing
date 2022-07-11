@@ -204,5 +204,10 @@ if (empty($_GET['url'])) {
 	} else if ($to == 'hapus-merk') {
 		$id = $_GET['this'];
 		$nc->hapusmerk($con, $id);
+	} else if ($to == 'get-untung') {
+		$data = $nc->getuntung($con);
+		
+		ob_end_clean();
+		echo json_encode($data);
 	}
 }

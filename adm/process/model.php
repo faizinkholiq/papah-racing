@@ -792,4 +792,74 @@ class con
 			"message" => "Success update"
 		]);
 	}
+
+	function getuntung($con) 
+	{
+		$query = mysqli_query($con, "
+			SELECT
+				penjualan.no_faktur,
+				penjualan.tanggal,
+				pelanggan.nama pelanggan,
+				pelanggan.type,
+				barang.nama barang,
+				penjualan_det.qty jumlah,
+				barang.modal harga_modal,
+				CASE 
+					WHEN pelanggan.type = 'distributor' THEN barang.distributor
+					WHEN pelanggan.type = 'reseller' THEN barang.reseller
+					WHEN pelanggan.type = 'bengkel' THEN barang.bengkel
+					WHEN pelanggan.type = 'admin' THEN barang.admin
+					WHEN pelanggan.type = 'het' THEN barang.het
+				END harga_transaksi,
+				penjualan_det.qty * barang.modal total_harga_modal,
+				penjualan_det.qty * (
+					CASE 
+						WHEN pelanggan.type = 'distributor' THEN barang.distributor
+						WHEN pelanggan.type = 'reseller' THEN barang.reseller
+						WHEN pelanggan.type = 'bengkel' THEN barang.bengkel
+						WHEN pelanggan.type = 'admin' THEN barang.admin
+						WHEN pelanggan.type = 'het' THEN barang.het
+					END
+				) total_harga_transaksi,
+				sum_penjualan.modal total_modal,
+				sum_penjualan.transaksi total_transaksi,
+				sum_penjualan.transaksi - sum_penjualan.modal laba,
+				user.nama oleh
+			FROM penjualan
+			JOIN penjualan_det ON penjualan.no_faktur=penjualan_det.no_faktur
+			JOIN barang ON penjualan_det.id_barang = barang.id_barang
+			LEFT JOIN pelanggan ON penjualan.id_pelanggan = pelanggan.id_pelanggan
+			LEFT JOIN user ON user.id_user = penjualan.id_user
+			LEFT JOIN (
+				SELECT 
+					penjualan.no_faktur,
+					SUM(penjualan_det.qty * barang.modal) modal,
+					SUM(penjualan_det.qty * (
+						CASE 
+							WHEN pelanggan.type = 'distributor' THEN barang.distributor
+							WHEN pelanggan.type = 'reseller' THEN barang.reseller
+							WHEN pelanggan.type = 'bengkel' THEN barang.bengkel
+							WHEN pelanggan.type = 'admin' THEN barang.admin
+							WHEN pelanggan.type = 'het' THEN barang.het
+						END
+					)) transaksi
+				FROM penjualan
+				JOIN penjualan_det ON penjualan.no_faktur=penjualan_det.no_faktur
+				JOIN barang ON penjualan_det.id_barang = barang.id_barang
+				LEFT JOIN pelanggan ON penjualan.id_pelanggan = pelanggan.id_pelanggan
+				GROUP BY penjualan.no_faktur
+			) sum_penjualan ON penjualan.no_faktur = sum_penjualan.no_faktur
+			GROUP BY penjualan.no_faktur, penjualan_det.id_barang
+			ORDER BY penjualan.tanggal DESC, penjualan_det.id_barang
+		");
+		
+		while($row = $query->fetch_assoc())
+		{
+			$rows[] = $row;
+		}
+		
+		return [
+			"data" => $rows
+		];
+	}
 }

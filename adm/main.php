@@ -74,6 +74,7 @@ $id_user = $_SESSION['id_user'];
                             <li class="nav-item"><a class="nav-link" href="main?url=laporan-pengeluaran"><span class="ml-2"><i class='fas fa-file-upload mr-2'></i>Pengeluaran</span></a></li>
                             <li class="nav-item"><a class="nav-link" href="main?url=laporan-barang-keluar"><span class="ml-2"><i class='fas fa-box mr-2'></i>Barang Keluar</span></a></li>
                             <li class="nav-item"><a class="nav-link" href="main?url=laporan-barang-masuk"><span class="ml-2"><i class='fas fa-box-open mr-2'></i>Barang Masuk</span></a></li>
+                            <li class="nav-item"><a class="nav-link" href="main?url=laporan-keuntungan"><span class="ml-2"><i class='fas fa-file-invoice-dollar mr-2'></i>Keuntungan</span></a></li>
                         </ul>
                     </div>
                 </li>
@@ -243,6 +244,8 @@ if ($_SESSION['id_jabatan'] == '8'||$_SESSION['id_jabatan'] == '7'||$_SESSION['i
 			require 'page/laporan/barang_keluar.php';
 		} else if ($act == 'laporan-barang-masuk') {
 			require 'page/laporan/barang_masuk.php';
+		} else if ($act == 'laporan-keuntungan') {
+			require 'page/laporan/keuntungan.php';
 		} else if ($act == 'jenis-pengeluaran') {
 			require 'page/jenis_pengeluaran/index.php';
 		} else if ($act == 'tambah-jenis-pengeluaran') {
