@@ -93,8 +93,9 @@ if (empty($xp[1]) OR (!empty($_GET["kategori"]) || !empty($_GET["merk"]) || !emp
 		$px = "cari";
 		
 		$src = $_GET["cari"];
+		$multi_src = str_replace(' ', '%', $src);
 		
-		$posts = mysqli_query($con, "SELECT * FROM barang WHERE nama LIKE '%$src%' OR SOUNDS LIKE '$src' ORDER BY created");
+		$posts = mysqli_query($con, "SELECT * FROM barang WHERE nama LIKE '%$src%' OR nama LIKE '%$multi_src%' OR nama SOUNDS LIKE '$src' ORDER BY created");
 		
 		$nvurl = SITEURL."?cari=".$_GET["cari"];
 	
