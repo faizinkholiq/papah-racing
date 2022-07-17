@@ -37,12 +37,13 @@ if (ENV === "Development") {
 }
 
 // Routing
-if (empty($xp[1]) OR (!empty($_GET["kategori"]) || !empty($_GET["merk"]) || !empty($_GET["cari"]))){
+if (empty($xp[1]) OR (!empty($_GET["kategori"]) || !empty($_GET["merk"]) || !empty($_GET["cari"]) || !empty($_GET["page"]))){
 	// Page Info
 	$title = $toko.' - '.$ket;
 	
 	if(!empty($_GET["kategori"])){
 		$paging = true;
+		$px = "kategori";
 		
 		// Filter
 		$arr_kat = explode(",", $_GET["kategori"]);
@@ -73,6 +74,7 @@ if (empty($xp[1]) OR (!empty($_GET["kategori"]) || !empty($_GET["merk"]) || !emp
 	
 	}else if(!empty($_GET["merk"])){
 		$paging = false;
+		$px = "merk";
 
 		$src = $_GET["merk"];
 
@@ -88,10 +90,11 @@ if (empty($xp[1]) OR (!empty($_GET["kategori"]) || !empty($_GET["merk"]) || !emp
 	
 	}else if(!empty($_GET["cari"])){
 		$paging = false;
-
+		$px = "cari";
+		
 		$src = $_GET["cari"];
-
-		$posts = mysqli_query($con, "SELECT * FROM barang WHERE nama LIKE '%$src%' ORDER BY created");
+		
+		$posts = mysqli_query($con, "SELECT * FROM barang WHERE nama LIKE '%$src%' OR SOUNDS LIKE '$src' ORDER BY created");
 		
 		$nvurl = SITEURL."?cari=".$_GET["cari"];
 	
@@ -123,7 +126,7 @@ if (empty($xp[1]) OR (!empty($_GET["kategori"]) || !empty($_GET["merk"]) || !emp
 	
 	}
 } elseif($xp[1]==='produk') {
-	$px = $xp[1];
+	$px = "produk";
 	$posts = mysqli_query($con, "SELECT * FROM barang WHERE id_barang = '".$xp[2]."' LIMIT 1");
 
 	if(mysqli_num_rows($posts) > 0){
