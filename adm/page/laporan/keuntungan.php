@@ -2,6 +2,7 @@
     $where = "1=1";
     $tgl1 = isset($_POST['tgl1']) && !isset($_POST["semua"]) ? $_POST['tgl1'] : "";
     $tgl2 = isset($_POST['tgl2']) && !isset($_POST["semua"]) ? $_POST['tgl2'] : "";
+    $total_laba = 0;
 
     if (isset($_POST["prosess"])){
         $where = "DATE_FORMAT(penjualan.tanggal, '%Y-%m-%d') BETWEEN '$tgl1' AND '$tgl2'";
@@ -67,7 +68,12 @@
         GROUP BY penjualan.no_faktur, penjualan_det.id_barang
         ORDER BY penjualan.tanggal DESC, penjualan_det.id_barang
     ");
-    echo mysqli_error($con);
+
+    if (isset($_POST['prosess']) || isset($_POST['semua'])){
+        foreach ($query as $key => $data) {
+            $total_laba += $data["laba"];
+        }
+    }
 
 ?>
 <div class="row">
@@ -105,7 +111,9 @@
     </form>
     <div class="col-md-12">
         <div class="card" style="max-height: 75vh;">
-            <div class="card-header" align="center">
+            <div class="card-header" align="center" style="display:flex">
+                <div style="width: 20%; font-weight:bold; color: red; font-size: 1.2rem">Total Laba: <?=rp($total_laba)?></div>
+                <div style="margin-left: 2vw;">
                 <?php
                 if (isset($_POST['prosess'])) :
                     if ($_POST['tgl1'] == NULL && $_POST['tgl2'] == NULL) {
@@ -125,6 +133,7 @@
                     <button class="btn btn-secondary" disabled><i class="fa fa-print mr-2"></i>Cetak</button>
                     <button class="btn btn-success" disabled><i class="fa fa-file-excel mr-2"></i>Export Excel</button>
                 <?php endif ?>
+                </div>
             </div>
             <div class="card-body table-responsive">
                 <table class="table table-striped table-bordered" style="width:100%" id="tb-untung">
@@ -163,13 +172,13 @@
                                 <td <?= ($data['rowspan'] > 0)? "rowspan='".$data['rowspan']."'" : "style='display:none;'"; ?>><?= $data['type']; ?></td>
                                 <td><?= $data['barang']; ?></td>
                                 <td><?= $data['jumlah']; ?></td>
-                                <td><?= $data['harga_modal']; ?></td>
-                                <td><?= $data['harga_transaksi']; ?></td>
-                                <td><?= $data['total_harga_modal']; ?></td>
-                                <td><?= $data['total_harga_transaksi']; ?></td>
-                                <td <?= ($data['rowspan'] > 0)? "rowspan='".$data['rowspan']."'" : "style='display:none;'"; ?>><?= $data['total_modal']; ?></td>
-                                <td <?= ($data['rowspan'] > 0)? "rowspan='".$data['rowspan']."'" : "style='display:none;'"; ?>><?= $data['total_transaksi']; ?></td>
-                                <td <?= ($data['rowspan'] > 0)? "rowspan='".$data['rowspan']."'" : "style='display:none;'"; ?>><?= $data['laba']; ?></td>
+                                <td><?= rp($data['harga_modal']); ?></td>
+                                <td><?= rp($data['harga_transaksi']); ?></td>
+                                <td><?= rp($data['total_harga_modal']); ?></td>
+                                <td><?= rp($data['total_harga_transaksi']); ?></td>
+                                <td <?= ($data['rowspan'] > 0)? "rowspan='".$data['rowspan']."'" : "style='display:none;'"; ?>><?= rp($data['total_modal']); ?></td>
+                                <td <?= ($data['rowspan'] > 0)? "rowspan='".$data['rowspan']."'" : "style='display:none;'"; ?>><?= rp($data['total_transaksi']); ?></td>
+                                <td <?= ($data['rowspan'] > 0)? "rowspan='".$data['rowspan']."'" : "style='display:none;'"; ?>><?= rp($data['laba']); ?></td>
                                 <td <?= ($data['rowspan'] > 0)? "rowspan='".$data['rowspan']."'" : "style='display:none;'"; ?>><?= $data['oleh']; ?></td>
                             </tr>
                         <?php $before_date = $data["tanggal"]; endforeach; endif; ?>
