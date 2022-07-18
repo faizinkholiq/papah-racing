@@ -1,4 +1,9 @@
 <?php
+$where = "";
+if (isset($_GET["admin"])) {
+    $where = "AND penjualan.id_user = ".$_GET["admin"];
+}
+
 if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2") {
 	$query = mysqli_query($con, "
         SELECT * 
@@ -7,7 +12,7 @@ if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2") {
             AND status = 'Lunas' AND persetujuan = 'Approved' 
         UNION ALL
         SELECT * FROM penjualan
-        WHERE CONCAT(status,persetujuan) != CONCAT('Lunas','Approved')
+        WHERE CONCAT(status,persetujuan) != CONCAT('Lunas','Approved') $where
         ORDER BY tanggal DESC");
 } else {
 	$query = mysqli_query($con, "
@@ -18,7 +23,7 @@ if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2") {
             AND status = 'Lunas' AND persetujuan = 'Approved'
         UNION ALL
         SELECT * FROM penjualan
-        WHERE CONCAT(status,persetujuan) != CONCAT('Lunas','Approved')
+        WHERE CONCAT(status,persetujuan) != CONCAT('Lunas','Approved') $where
         ORDER BY tanggal DESC");
 }
 
@@ -38,8 +43,9 @@ $admins = mysqli_query($con, "SELECT * FROM user WHERE id_jabatan = 5");
             <span class="text-white pl-2"><i class='fas fa-plus-circle mr-2'></i>Tambah Data</span>
         </button>
         <div style="font-size:1.3rem; margin-top: 1rem;">
+            <a href="main?url=penjualan" class="badge bg-primary text-white">All Data</a>
             <?php foreach($admins as $item): ?>
-            <a href="#!" class="badge bg-info text-white"><?=$item["nama"] ?></a>
+            <a href="main?url=penjualan&admin=<?=$item["id_user"] ?>" class="badge <?=(isset($_GET["admin"]) && $_GET["admin"] == $item["id_user"])? 'bg-secondary text-white' : 'bg-info text-white' ?> "><?=$item["nama"] ?></a>
             <?php endforeach; ?>
         </div>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
