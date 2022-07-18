@@ -21,6 +21,9 @@ if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2") {
         WHERE CONCAT(status,persetujuan) != CONCAT('Lunas','Approved')
         ORDER BY tanggal DESC");
 }
+
+$admins = mysqli_query($con, "SELECT * FROM user WHERE id_jabatan = 5");
+
 ?>
 <div class="row">
     <div class="col-8">
@@ -34,6 +37,11 @@ if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2") {
         <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="text-white pl-2"><i class='fas fa-plus-circle mr-2'></i>Tambah Data</span>
         </button>
+        <div style="font-size:1.3rem; margin-top: 1rem;">
+            <?php foreach($admins as $item): ?>
+            <a href="#!" class="badge bg-info text-white"><?=$item["nama"] ?></a>
+            <?php endforeach; ?>
+        </div>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <?php
             $query_type = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM penjualan_temp WHERE id_user='" . $_SESSION['id_user'] . "'"));
