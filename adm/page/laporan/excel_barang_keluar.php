@@ -90,7 +90,7 @@ if (isset($_GET['tgl1']) && isset($_GET['tgl2'])) {
                 <tr>
                     <td><?= $no++; ?></td>
                     <td><?= tgl($data['tanggal']) . ", " . date("H:i", strtotime($data['tanggal'])); ?></td>
-                    <td class="text-left"><?= $data['nama']; ?></td>
+                    <td <?= ($data['deleted'] == 1)? 'class="text-left text-danger" title="Barang telah dihapus"' : 'class="text-left"' ?>><?= $data['nama']; ?></td>
                     <td><?= ucwords($data['type']); ?></td>
                     <td class="text-left"><?= rp($data['harga']); ?></td>
                     <td><?= $data['qty']; ?></td>

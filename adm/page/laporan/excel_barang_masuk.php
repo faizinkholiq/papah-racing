@@ -81,7 +81,7 @@ if (isset($_GET['tgl1']) && isset($_GET['tgl2'])) {
                 <tr>
                     <td><?= $no++; ?></td>
                     <td><?= $data['tanggal']; ?></td>
-                    <td><?= $data['nama']; ?></td>
+                    <td <?= ($data['deleted'] == 1)? 'class="text-left text-danger" title="Barang telah dihapus"' : 'class="text-left"' ?>><?= $data['nama']; ?></td>
                     <td><?= $data['jenis']; ?></td>
                     <td><?= $data['keterangan']; ?></td>
                     <td><?= $data['jumlah']; ?></td>

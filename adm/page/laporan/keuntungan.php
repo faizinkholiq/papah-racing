@@ -38,7 +38,8 @@
             sum_penjualan.transaksi total_transaksi,
             sum_penjualan.transaksi - sum_penjualan.modal laba,
             user.nama oleh,
-            sum_penjualan.rowspan
+            sum_penjualan.rowspan,
+            barang.deleted
         FROM penjualan
         JOIN penjualan_det ON penjualan.no_faktur=penjualan_det.no_faktur
         JOIN barang ON penjualan_det.id_barang = barang.id_barang
@@ -167,10 +168,10 @@
                             if ($data["tanggal"] == $before_date ) $data['rowspan'] = 0;
                         ?>
                             <tr class="text-center">
-                                <td <?= ($data['rowspan'] > 0)? "rowspan='".$data['rowspan']."'" : "style='display:none;'"; ?>><?= tgl($data['tanggal']) . ", " . date("H:i", strtotime($data['tanggal'])); ?></td>
-                                <td <?= ($data['rowspan'] > 0)? "rowspan='".$data['rowspan']."'" : "style='display:none;'"; ?>><?= $data['pelanggan']; ?></td>
+                                <td class="text-left" <?= ($data['rowspan'] > 0)? "rowspan='".$data['rowspan']."'" : "style='display:none;'"; ?>><?= tgl($data['tanggal']) . ", " . date("H:i", strtotime($data['tanggal'])); ?></td>
+                                <td class="text-left" <?= ($data['rowspan'] > 0)? "rowspan='".$data['rowspan']."'" : "style='display:none;'"; ?>><?= $data['pelanggan']; ?></td>
                                 <td <?= ($data['rowspan'] > 0)? "rowspan='".$data['rowspan']."'" : "style='display:none;'"; ?>><?= $data['type']; ?></td>
-                                <td><?= $data['barang']; ?></td>
+                                <td <?= ($data['deleted'] == 1)? 'class="text-left text-danger" title="Barang telah dihapus"' : 'class="text-left"' ?>><?= $data['barang']; ?></td>
                                 <td><?= $data['jumlah']; ?></td>
                                 <td><?= rp($data['harga_modal']); ?></td>
                                 <td><?= rp($data['harga_transaksi']); ?></td>

@@ -8,7 +8,7 @@ if (empty($_SESSION['id_user'])) {
     header('location:login');
 }
 
-$query = mysqli_query($con, "SELECT * FROM barang");
+$query = mysqli_query($con, "SELECT * FROM barang WHERE deleted = 0 ORDER BY created DESC");
 $data_toko = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM toko"));
 ?>
 <!DOCTYPE html>

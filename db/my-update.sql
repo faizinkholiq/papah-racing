@@ -160,3 +160,6 @@ ALTER TABLE `kontak` ADD `letak` ENUM('footer','order') NULL AFTER `kontak`, ADD
 -- 4 Juli 2022
 ALTER TABLE `user` ADD `aktif` BOOLEAN NOT NULL DEFAULT FALSE AFTER `last_login`;
 UPDATE `user` SET aktif = 1 WHERE DATEDIFF(NOW(), last_login ) <= 30;
+
+-- 19 Juli 2022
+ALTER TABLE `barang` ADD `deleted` BOOLEAN NOT NULL DEFAULT FALSE AFTER `updated`;

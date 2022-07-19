@@ -65,7 +65,7 @@ if (isset($_GET['tgl1']) && isset($_GET['tgl2'])) {
                 <tr>
                     <td><?= $no++; ?></td>
                     <td><?= tgl($data['tanggal']) . ", " . date("H:i", strtotime($data['tanggal'])); ?></td>
-                    <td class="text-left"><?= $data['nama']; ?></td>
+                    <td <?= ($data['deleted'] == 1)? 'class="text-left text-danger" title="Barang telah dihapus"' : 'class="text-left"' ?>><?= $data['nama']; ?></td>
                     <td class="text-left"><?= rp($data['modal']); ?></td>
                     <td><?= $data['qty']; ?></td>
                     <td class="text-left"><?= rp($data['total_harga']); ?></td>

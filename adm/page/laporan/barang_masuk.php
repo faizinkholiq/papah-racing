@@ -103,7 +103,7 @@ if (isset($_POST['prosess'])) {
                                         <tr>
                                             <td><?= $no++; ?></td>
                                             <td><?= tgl($qp['tanggal']) . ", " . date("H:i", strtotime($qp['tanggal'])); ?></td>
-                                            <td class="text-left"><?= $qp['nama']; ?></td>
+                                            <td <?= ($qp['deleted'] == 1)? 'class="text-left text-danger" title="Barang telah dihapus"' : 'class="text-left"' ?>><?= $qp['nama']; ?></td>
                                             <td class="text-left"><?= rp($qp['modal']); ?></td>
                                             <td><?= $qp['qty']; ?></td>
                                             <td class="text-left"><?= rp($qp['total_harga']); ?></td>

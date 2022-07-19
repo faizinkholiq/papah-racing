@@ -334,6 +334,16 @@ class con
 		}
 	}
 
+	function softhapusbarang($con, $id_barang)
+	{	
+		$query = mysqli_query($con, "UPDATE barang SET deleted = 1 WHERE id_barang='$id_barang' ");
+		$path = str_replace('/adm/process','/p/'.trim($id_barang),dirname(__FILE__));
+		if(file_exists($path)){
+			$this->rrmdir($path);
+		}
+		header('location:../main?url=barang');
+	}
+
 	function hapusbarang($con, $id_barang)
 	{	
 		$query = mysqli_query($con, "DELETE FROM barang WHERE id_barang='$id_barang' ");
@@ -350,7 +360,7 @@ class con
 			foreach ($objects as $object) { 
 			if ($object != "." && $object != "..") { 
 				if (is_dir($dir. DIRECTORY_SEPARATOR .$object) && !is_link($dir."/".$object))
-				rrmdir($dir. DIRECTORY_SEPARATOR .$object);
+				rmdir($dir. DIRECTORY_SEPARATOR .$object);
 				else
 				unlink($dir. DIRECTORY_SEPARATOR .$object); 
 			} 

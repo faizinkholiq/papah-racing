@@ -173,7 +173,7 @@
                     </thead>
                     <tbody>
                         <?php
-                        $query = mysqli_query($con, "SELECT * FROM barang");
+                        $query = mysqli_query($con, "SELECT * FROM barang WHERE deleted = 0 ORDER BY created DESC");
                         foreach ($query as $data) {
                         ?>
                             <tr class="text-left">

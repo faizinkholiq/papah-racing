@@ -11,7 +11,7 @@ header('Content-Disposition: attachment; filename="' . $filename . '";');
 
 //menampilkan data sebagai array dari tabel barang
 $out = array();
-$sql = mysqli_query($con, "SELECT * FROM barang");
+$sql = mysqli_query($con, "SELECT * FROM barang WHERE deleted = 0 ORDER BY created DESC");
 while ($data = mysqli_fetch_assoc($sql)) $out[] = $data;
 
 // create a file pointer connected to the output stream
