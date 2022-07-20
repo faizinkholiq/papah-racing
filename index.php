@@ -119,7 +119,7 @@ if (empty($xp[1]) OR (!empty($_GET["kategori"]) || !empty($_GET["merk"]) || !emp
 		$total_page = ceil($total_data / $limit);
 		
 		// Limited Data
-		$posts = mysqli_query($con, "SELECT * FROM barang deleted = 0 ORDER BY created DESC LIMIT $first_page, $limit");
+		$posts = mysqli_query($con, "SELECT * FROM barang WHERE deleted = 0 ORDER BY created DESC LIMIT $first_page, $limit");
 
 		$nvurl = SITEURL;
 
@@ -192,12 +192,6 @@ function head(){
 	'<ul class="nav-menu nav-menu-social align-to-right">'.
 	'<li><div class="bg-danger btn-login my-btn"> <a href="#" data-toggle="modal" data-target="#login">LOGIN <i class="lni lni-user"></i></a></div></li> '.
 	'</ul></div></nav></div></div>';
-	
-	if ($px == "cari" || $px == "kategori" || $px == "merk") {
-		echo '<div class="clearfix" style="margin-top:6vh;"></div>';
-	}else{
-		echo '<div class="clearfix"></div>';
-	}
 
 	echo '
 		<div class="little-container mobile-only" style="margin-bottom: 3.5rem!important;">
