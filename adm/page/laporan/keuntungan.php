@@ -69,10 +69,15 @@
         GROUP BY penjualan.no_faktur, penjualan_det.id_barang
         ORDER BY penjualan.tanggal DESC, penjualan_det.id_barang
     ");
-
+    
+    $before_date = null;
     if (isset($_POST['prosess']) || isset($_POST['semua'])){
         foreach ($query as $key => $data) {
-            $total_laba += $data["laba"];
+            if ($data["tanggal"] != $before_date ) {
+                $total_laba += $data["laba"];
+            }
+
+            $before_date = $data["tanggal"];
         }
     }
 
