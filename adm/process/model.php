@@ -201,7 +201,9 @@ class con
 			LIMIT $limit OFFSET $offset
 		");
 		
-		$data["data"] = mysqli_fetch_all($result, MYSQLI_ASSOC);
+		while($row = mysqli_fetch_assoc($result)){
+			$data["data"][] = $row;
+		}
 		$data["draw"] = intval($_POST["draw"]);
 
 		$result_all = mysqli_query($con, "
