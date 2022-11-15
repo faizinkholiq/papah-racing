@@ -144,6 +144,79 @@ class con
 		header('location:../main?url=supplier');
 	}
 
+	function getpelanggan($con)
+	{	
+		$search = $_GET["search"];
+		
+		$q_src = "";
+		if(!empty($search["value"])){
+			$col = ["nama", "type", "alamat", "kontak"];
+			$src = $search["value"];
+			foreach($col as $key => $val){
+				if($key == 0) {
+					$q_src .= "$val LIKE '%$src%'";
+				}else{
+					$q_src .= " OR $val LIKE '%$src%'";
+				}
+			}
+		}
+
+		$whereFilter = "";
+		if(!empty($q_src)){
+			$whereFilter = "AND ($q_src)";
+		}
+
+		$limit = $_GET["length"];
+		$offset = $_GET["start"];
+		$btn_aksi = "CONCAT(
+			'<a href=\"main?url=ubah-pelanggan&this=', pelanggan.id_pelanggan,'\" class=\"btn btn-primary btn-sm\"><i class=\"fas fa-edit\"></i></a>
+			<a href=\"process/action?url=hapuspelanggan&this=', pelanggan.id_pelanggan, '\" class=\"btn btn-danger btn-sm\" data-toggle=\"tooltip\" data-original-title=\"Hapus\" onclick=\"return confirm(`Anda yakin ingin hapus data ini?`)\"><i class=\"fas fa-trash-alt\"></i></a>'
+		)";
+
+		$result = mysqli_query($con, "
+			SELECT 
+				pelanggan.id_pelanggan,
+				CONCAT(UCASE(LEFT(type, 1)), LCASE(SUBSTRING(type, 2))) type,
+				nama,
+				COUNT(this_month.no_faktur) bulan_ini,
+				COUNT(prev_month.no_faktur) bulan_lalu,
+				alamat,
+				kontak,
+				$btn_aksi aksi,
+				pelanggan.created,
+				pelanggan.updated,
+				ROW_NUMBER() OVER(ORDER BY pelanggan.id_pelanggan DESC) AS row_no
+			FROM pelanggan 
+			LEFT JOIN penjualan this_month ON this_month.id_pelanggan = pelanggan.id_pelanggan 
+				AND YEAR(this_month.tanggal) = YEAR(CURRENT_DATE())
+				AND MONTH(this_month.tanggal) = MONTH(CURRENT_DATE())
+			LEFT JOIN penjualan prev_month ON prev_month.id_pelanggan = pelanggan.id_pelanggan 
+				AND YEAR(prev_month.tanggal) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH)
+				AND MONTH(prev_month.tanggal) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH)
+			WHERE pelanggan.id_pelanggan!='1' 
+			AND pelanggan.id_pelanggan!='2' 
+			$whereFilter
+			GROUP BY pelanggan.id_pelanggan
+			ORDER BY pelanggan.id_pelanggan DESC
+			LIMIT $limit OFFSET $offset
+		");
+		
+		$data["data"] = mysqli_fetch_all($result, MYSQLI_ASSOC);
+		$data["draw"] = intval($_GET["draw"]);
+
+		$result_all = mysqli_query($con, "
+			SELECT * 
+			FROM pelanggan 
+			WHERE id_pelanggan!='1' 
+			AND id_pelanggan!='2' 
+			ORDER BY id_pelanggan DESC
+		");
+		$data["recordsTotal"] = mysqli_num_rows($result_all);
+		$data["recordsFiltered"] = mysqli_num_rows($result_all);
+		
+		echo json_encode($data);
+	}
+
 	function tambahpelanggan($con, $nama, $type, $alamat, $kontak)
 	{
 		$nama = htmlspecialchars(ucwords($nama));
