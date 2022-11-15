@@ -146,7 +146,7 @@ class con
 
 	function getpelanggan($con)
 	{	
-		$search = $_GET["search"];
+		$search = $_POST["search"];
 		
 		$q_src = "";
 		if(!empty($search["value"])){
@@ -166,8 +166,8 @@ class con
 			$whereFilter = "AND ($q_src)";
 		}
 
-		$limit = $_GET["length"];
-		$offset = $_GET["start"];
+		$limit = $_POST["length"];
+		$offset = $_POST["start"];
 		$btn_aksi = "CONCAT(
 			'<a href=\"main?url=ubah-pelanggan&this=', pelanggan.id_pelanggan,'\" class=\"btn btn-primary btn-sm\"><i class=\"fas fa-edit\"></i></a>
 			<a href=\"process/action?url=hapuspelanggan&this=', pelanggan.id_pelanggan, '\" class=\"btn btn-danger btn-sm\" data-toggle=\"tooltip\" data-original-title=\"Hapus\" onclick=\"return confirm(`Anda yakin ingin hapus data ini?`)\"><i class=\"fas fa-trash-alt\"></i></a>'
@@ -202,7 +202,7 @@ class con
 		");
 		
 		$data["data"] = mysqli_fetch_all($result, MYSQLI_ASSOC);
-		$data["draw"] = intval($_GET["draw"]);
+		$data["draw"] = intval($_POST["draw"]);
 
 		$result_all = mysqli_query($con, "
 			SELECT * 

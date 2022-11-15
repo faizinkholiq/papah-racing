@@ -35,7 +35,7 @@
             dom: "Bfrtip",
             ajax: {
                 url: 'process/action?url=getpelanggan',
-                type: "GET"
+                type: "POST"
             },
             processing: true,
             serverSide: true,
