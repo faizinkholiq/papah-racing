@@ -1,6 +1,6 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/nnfproco/paphracing.nnf-pro.com
+    - export DEPLOYPATH=/home/nnfproco/papahracing.nnf-pro.com
 
     - /usr/bin/cp -r * $DEPLOYPATH
