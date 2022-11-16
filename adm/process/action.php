@@ -53,6 +53,8 @@ if (empty($_GET['url'])) {
 	} else if ($to == 'hapuspelanggan') {
 		$id_pelanggan = $_GET['this'];
 		$nc->hapuspelanggan($con, $id_pelanggan);
+	} else if ($to == 'getbarang') {
+		$nc->getbarang($con);
 	} else if ($to == 'tambahbarang') {
 		$nc->tambahbarang($con, $_POST);
 	} else if ($to == 'ubahbarang') {

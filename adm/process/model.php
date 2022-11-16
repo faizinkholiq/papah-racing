@@ -242,6 +242,62 @@ class con
 		header('location:../main?url=pelanggan');
 	}
 
+	function getbarang($con)
+	{	
+		$search = $_POST["search"];
+		
+		$q_src = "";
+		if(!empty($search["value"])){
+			$col = ["nama", "type", "alamat", "kontak"];
+			$src = $search["value"];
+			foreach($col as $key => $val){
+				if($key == 0) {
+					$q_src .= "$val LIKE '%$src%'";
+				}else{
+					$q_src .= " OR $val LIKE '%$src%'";
+				}
+			}
+		}
+
+		$whereFilter = "";
+		if(!empty($q_src)){
+			$whereFilter = "AND ($q_src)";
+		}
+
+		$limit = $_POST["length"];
+		$offset = $_POST["start"];
+		$btn_aksi = "CONCAT(
+			'<a href=\"main?url=ubah-pelanggan&this=', pelanggan.id_pelanggan,'\" class=\"btn btn-primary btn-sm\"><i class=\"fas fa-edit\"></i></a>
+			<a href=\"process/action?url=hapuspelanggan&this=', pelanggan.id_pelanggan, '\" class=\"btn btn-danger btn-sm\" data-toggle=\"tooltip\" data-original-title=\"Hapus\" onclick=\"return confirm(`Anda yakin ingin hapus data ini?`)\"><i class=\"fas fa-trash-alt\"></i></a>'
+		)";
+
+		$result = mysqli_query($con, "
+			SELECT * 
+			FROM barang 
+			WHERE deleted = 0 
+			$whereFilter
+			ORDER BY created DESC
+			LIMIT $limit OFFSET $offset
+		");
+		
+		while($row = mysqli_fetch_assoc($result)){
+			$data["data"][] = $row;
+		}
+		$data["draw"] = intval($_POST["draw"]);
+
+		$result_all = mysqli_query($con, "
+			SELECT * 
+			FROM pelanggan 
+			WHERE id_pelanggan!='1' 
+			AND id_pelanggan!='2' 
+			ORDER BY id_pelanggan DESC
+		");
+		$data["recordsTotal"] = mysqli_num_rows($result_all);
+		$data["recordsFiltered"] = mysqli_num_rows($result_all);
+		
+		echo json_encode($data);
+	}
+
 	function tambahbarang($con, $post)
 	{
 		// Kode Barcode Otomatis

@@ -24,28 +24,7 @@ if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2") {
         <a href="page/barang/export_excel.php" target="_blank" class="btn btn-success mb-2"><i class='fas fa-file-excel mr-2'></i>Export Excel</a>
         <!-- <a href="page/barang/export_csv.php" target="_blank" class="btn btn-success"><i class='fas fa-file-csv mr-2'></i>Export CSV</a> -->
     <?php } ?>
-    <!-- <?php
-            $cekstok = mysqli_query($con, "SELECT * FROM barang WHERE stok < 5");
-            foreach ($cekstok as $cs) {
-                if ($cs['stok'] <= 2) {
-            ?>
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>Perhatian!</strong> Sisa Stok Barang <strong><?= $cs['nama']; ?></strong> Sangat Minimal !!
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        <?php
-                } else {
-        ?>
-            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                <strong>Perhatian!</strong> Sisa Stok Barang <strong><?= $cs['nama']; ?></strong> Sudah Hampir Habis !!
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-    <?php }
-            } ?> -->
+
     <?php if ($_SESSION['id_jabatan'] == '6') { ?>
         <div class="table-responsive mt-3">
             <table id="tb-barang" class="table table-striped table-bordered " style="width:100%">
@@ -61,24 +40,6 @@ if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2") {
                     </tr>
                 </thead>
                 <tbody>
-                    <?php $no = 1;
-                    foreach ($query as $data) : ?>
-                        <tr class="text-center">
-                            <td><?= $no++; ?></td>
-                            <td class="text-left"><?= $data['barcode']; ?></td>
-                            <td class="text-left"><?= $data['nama']; ?></td>
-                            <td><?= $data['merk']; ?></td>
-                            <?php if ($data['stok'] <= 2) { ?>
-                                <td><span class="badge badge-danger"><?= $data['stok']; ?></span></td>
-                            <?php } else if ($data['stok'] <= 5) { ?>
-                                <td><span class="badge badge-warning"><?= $data['stok']; ?></span></td>
-                            <?php } else { ?>
-                                <td><?= $data['stok']; ?></td>
-                            <?php } ?>
-                            <td><?= rp($data['reseller']); ?></td>
-                            <td><?= rp($data['het']); ?></td>
-                        </tr>
-                    <?php endforeach; ?>
                 </tbody>
             </table>
         </div>
@@ -98,25 +59,6 @@ if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2") {
                     </tr>
                 </thead>
                 <tbody>
-                    <?php $no = 1;
-                    foreach ($query as $data) : ?>
-                        <tr class="text-center">
-                            <td><?= $no++; ?></td>
-                            <td class="text-left"><?= $data['barcode']; ?></td>
-                            <td class="text-left"><?= $data['nama']; ?></td>
-                            <td><?= $data['merk']; ?></td>
-                            <?php if ($data['stok'] <= 2) { ?>
-                                <td><span class="badge badge-danger"><?= $data['stok']; ?></span></td>
-                            <?php } else if ($data['stok'] <= 5) { ?>
-                                <td><span class="badge badge-warning"><?= $data['stok']; ?></span></td>
-                            <?php } else { ?>
-                                <td><?= $data['stok']; ?></td>
-                            <?php } ?>
-                            <td><?= rp($data['distributor']); ?></td>
-                            <td><?= rp($data['reseller']); ?></td>
-                            <td><?= rp($data['het']); ?></td>
-                        </tr>
-                    <?php endforeach; ?>
                 </tbody>
             </table>
         </div>
@@ -131,13 +73,9 @@ if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2") {
                         <th class="align-middle" rowspan="2">Merk</th>
                         <th class="align-middle" rowspan="2">Stok</th>
                         <th colspan="6">Harga</th>
-                        <?php 
-												if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2") {
-													echo '<th class="align-middle" rowspan="2">Aksi</th>';
-												} elseif ($_SESSION['id_jabatan'] == "5"){
-													echo '<th class="align-middle" rowspan="2">Lihat Gambar</th>';
-												} else {} 
-												?>
+                        <th class="align-middle" rowspan="2">Aksi</th>;
+                        <th class="align-middle" rowspan="2">Lihat Gambar</th>; 
+                        ?>
                     </tr>
                     <tr>
                         <th>Modal</th>
@@ -149,46 +87,6 @@ if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2") {
                     </tr>
                 </thead>
                 <tbody>
-                    <?php $no = 1;
-                    foreach ($query as $data) : ?>
-                        <tr class="text-center">
-                            <td><?= $no++; ?></td>
-                            <td class="text-left">
-                                <a href="#" class="btn btn-secondary btn-sm editbarang" data-target="#cetakbarcode" data-toggle="modal" data-barcode="<?= $data['barcode']; ?>" data-nama="<?= $data['nama']; ?>" data-harga="<?= $data['het']; ?>"><i class='fas fa-barcode'></i></a>
-                                <?= $data['barcode']; ?>
-                            </td>
-                            <td class="text-left"><?= $data['nama']; ?></td>
-                            <td><?= $data['merk']; ?></td>
-                            <?php if ($data['stok'] <= 2) { ?>
-                                <td><span class="badge badge-danger"><?= $data['stok']; ?></span></td>
-                            <?php } else if ($data['stok'] <= 5) { ?>
-                                <td><span class="badge badge-warning"><?= $data['stok']; ?></span></td>
-                            <?php } else { ?>
-                                <td><?= $data['stok']; ?></td>
-                            <?php } ?>
-                            <?php if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2") { ?>
-                                <td class="text-left"><?= rp($data['modal']); ?></td>
-                            <?php } else { ?>
-                                <td><?= '-'; ?></td>
-                            <?php } ?>
-                            <td class="text-left"><?= rp($data['distributor']); ?></td>
-                            <td class="text-left"><?= rp($data['reseller']); ?></td>
-                            <td class="text-left"><?= rp($data['bengkel']); ?></td>
-                            <td class="text-left"><?= rp($data['admin']); ?></td>
-                            <td class="text-left"><?= rp($data['het']); ?></td>
-                            <?php if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2") { ?>
-                                <td class="text-center">
-                                    <!-- <a href="" class="btn btn-info btn-sm"><i class='fas fa-eye'></i></a> -->
-                                    <a href="#!" onclick="editBarang(<?=$data['id_barang']?>)" class="btn btn-primary btn-sm"><i class='fas fa-edit'></i></a>
-                                    <a href="process/action?url=hapusbarang&this=<?= $data['id_barang']; ?>" class="btn btn-danger btn-sm" data-toggle="tooltip" data-original-title="Hapus" onclick="return confirm('Anda yakin ingin hapus data ini?')"><i class='fas fa-trash-alt'></i></a>
-                                </td>
-                            <?php 
-                                } elseif ($_SESSION['id_jabatan'] == "5"){
-                                    echo '<td class="text-center">'.'<a href="main?url=ubah-barang&this='.$data['id_barang'].'" class="btn btn-primary btn-sm"><i class="fas fa-photo-video"></i></a>'.'</td>';
-                                } else {} 
-                            ?>
-                        </tr>
-                    <?php endforeach; ?>
                 </tbody>
             </table>
         </div>
@@ -247,17 +145,70 @@ if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2") {
 </div>
 
 <script>
-    let page = <?=isset($_GET["page"])? (int)$_GET["page"] : 0 ?>;
-    let tb_barang = $("#tb-barang").DataTable({
-        order: [],
-    });
 
-    $(document).ready(function() {
-        // $("#tb-barang").on('draw.dt', function () {
-        //     console.log(tb_barang.page.info())
-        // });
+    const sess_data = <?= json_encode($_SESSION) ?>;
+    const page = <?=isset($_GET["page"])? (int)$_GET["page"] : 0 ?>;
+
+    $(document).ready(function () {
+        let columns = [];
+
+        if (sess_data["id_jabatan"] == 6) {
+            columns = [
+                { data: "row_no" },
+                { data: "barcode" },
+                { data: "nama" },
+                { data: "merk" },
+                { data: "stok" },
+                { data: "reseller" },
+                { data: "het" },
+            ]
+        } else if (sess_data["id_jabatan"] != 7) {
+            columns = [
+                { data: "row_no" },
+                { data: "barcode" },
+                { data: "nama" },
+                { data: "merk" },
+                { data: "stok" },
+                { data: "distributor" },
+                { data: "reseller" },
+                { data: "het" },
+            ]
+        }else {
+            columns = [
+                { data: "row_no" },
+                { data: "barcode" },
+                { data: "nama" },
+                { data: "merk" },
+                { data: "stok" },
+                { data: "modal" },
+                { data: "distributor" },
+                { data: "reseller" },
+                { data: "bengkel" },
+                { data: "admin" },
+                { data: "het" },
+                { data: "aksi" },
+                { data: "gambar" },
+            ]
+        }
+
+        var dt = $('#pelangganTable').DataTable({
+            dom: "Bfrtip",
+            ajax: {
+                url: 'process/action?url=getpelanggan',
+                type: "POST"
+            },
+            processing: true,
+            serverSide: true,
+            columns: columns,
+            ordering: false
+        });
+
+        if (sess_data["id_jabatan"] != 1 && sess_data["id_jabatan"] != 2){
+            dt.columns([11]).visible(false);
+        }
+
         if(page != null && page != ""){
-            tb_barang.page(page).draw(false);
+            dt.page(page).draw(false);
         }
     });
 
@@ -265,4 +216,5 @@ if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2") {
         let page_now = tb_barang.page.info().page;
         window.open("main?url=ubah-barang&this="+id+"&page="+page_now, "_self")
     }
+
 </script>
