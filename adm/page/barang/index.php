@@ -1,11 +1,6 @@
 <?php
 $query = mysqli_query($con, "SELECT * FROM barang WHERE deleted = 0 ORDER BY created DESC");
 $aset = 0;
-if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2") {
-	foreach ($query as $data){
-		$aset += floatval($data['stok'])*floatval($data['modal']);
-	}
-} else {}
 ?>
 <div class="row">
     <div class="col-8">
@@ -14,20 +9,24 @@ if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2") {
     <div class="col-4"><a href="index.php" class="btn btn-danger float-right"><i class='fas fa-times-circle mr-2'></i>Back</a></div>
 </div>
 <div class="wrapper">
-    <?php if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2") { 
-		echo '<h3 style="color:red;">Total Aset : '.rp($aset).'</h3>';
+    <?php if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2"):
+        foreach ($query as $data){
+            $aset += floatval($data['stok'])*floatval($data['modal']);
+        }   
+        
+        echo '<h3 style="color:red;">Total Aset : '.rp($aset).'</h3>';
 		?>
         <a href="main?url=tambah-barang" class="btn btn-primary mb-2"><i class='fas fa-plus-circle mr-2'></i>Tambah Data</a>
-    <?php } ?>
-    <?php if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2" || $_SESSION['id_jabatan'] == "3" || $_SESSION['id_jabatan'] == "5") { ?>
+    <?php endif; ?>
+    <?php if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2" || $_SESSION['id_jabatan'] == "3" || $_SESSION['id_jabatan'] == "5"): ?>
         <a href="page/barang/cetak.php" target="_blank" class="btn btn-secondary mb-2"><i class='fas fa-print mr-2'></i>Cetak Data</a>
         <a href="page/barang/export_excel.php" target="_blank" class="btn btn-success mb-2"><i class='fas fa-file-excel mr-2'></i>Export Excel</a>
         <!-- <a href="page/barang/export_csv.php" target="_blank" class="btn btn-success"><i class='fas fa-file-csv mr-2'></i>Export CSV</a> -->
-    <?php } ?>
+    <?php endif; ?>
 
-    <?php if ($_SESSION['id_jabatan'] == '6') { ?>
+    <?php if ($_SESSION['id_jabatan'] == '6'): ?>
         <div class="table-responsive mt-3">
-            <table id="tb-barang" class="table table-striped table-bordered " style="width:100%">
+            <table id="barangTable" class="table table-striped table-bordered " style="width:100%">
                 <thead>
                     <tr class="text-center">
                         <th>No.</th>
@@ -43,9 +42,9 @@ if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2") {
                 </tbody>
             </table>
         </div>
-    <?php } else if ($_SESSION['id_jabatan'] == '7') { ?>
+    <?php elseif ($_SESSION['id_jabatan'] == '7'): ?>
         <div class="table-responsive mt-3">
-            <table id="tb-barang" class="table table-striped table-bordered " style="width:100%">
+            <table id="barangTable" class="table table-striped table-bordered " style="width:100%">
                 <thead>
                     <tr class="text-center">
                         <th>No.</th>
@@ -62,9 +61,9 @@ if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2") {
                 </tbody>
             </table>
         </div>
-    <?php } else { ?>
+    <?php else: ?>
         <div class="table-responsive mt-3">
-            <table id="tb-barang" class="table table-striped table-bordered " style="width:100%">
+            <table id="barangTable" class="table table-striped table-bordered " style="width:100%">
                 <thead>
                     <tr class="text-center">
                         <th class="align-middle" rowspan="2">No.</th>
@@ -73,9 +72,8 @@ if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2") {
                         <th class="align-middle" rowspan="2">Merk</th>
                         <th class="align-middle" rowspan="2">Stok</th>
                         <th colspan="6">Harga</th>
-                        <th class="align-middle" rowspan="2">Aksi</th>;
-                        <th class="align-middle" rowspan="2">Lihat Gambar</th>; 
-                        ?>
+                        <th class="align-middle" rowspan="2">Aksi</th>
+                        <th class="align-middle" rowspan="2">Lihat Gambar</th>
                     </tr>
                     <tr>
                         <th>Modal</th>
@@ -90,7 +88,7 @@ if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2") {
                 </tbody>
             </table>
         </div>
-    <?php } ?>
+    <?php endif; ?>
 </div>
 
 
@@ -151,6 +149,7 @@ if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2") {
 
     $(document).ready(function () {
         let columns = [];
+        let columnDefs = [];
 
         if (sess_data["id_jabatan"] == 6) {
             columns = [
@@ -161,8 +160,8 @@ if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2") {
                 { data: "stok" },
                 { data: "reseller" },
                 { data: "het" },
-            ]
-        } else if (sess_data["id_jabatan"] != 7) {
+            ];
+        } else if (sess_data["id_jabatan"] == 7) {
             columns = [
                 { data: "row_no" },
                 { data: "barcode" },
@@ -172,7 +171,7 @@ if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2") {
                 { data: "distributor" },
                 { data: "reseller" },
                 { data: "het" },
-            ]
+            ];
         }else {
             columns = [
                 { data: "row_no" },
@@ -186,15 +185,15 @@ if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2") {
                 { data: "bengkel" },
                 { data: "admin" },
                 { data: "het" },
-                { data: "aksi" },
-                { data: "gambar" },
-            ]
+                { data: "aksi", "visible": false },
+                { data: "gambar", "visible": false },
+            ];
         }
 
-        var dt = $('#pelangganTable').DataTable({
+        var dt = $('#barangTable').DataTable({
             dom: "Bfrtip",
             ajax: {
-                url: 'process/action?url=getpelanggan',
+                url: 'process/action?url=getbarang',
                 type: "POST"
             },
             processing: true,
@@ -203,8 +202,10 @@ if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2") {
             ordering: false
         });
 
-        if (sess_data["id_jabatan"] != 1 && sess_data["id_jabatan"] != 2){
-            dt.columns([11]).visible(false);
+        if (sess_data["id_jabatan"] == 1 || sess_data["id_jabatan"] == 2){
+            dt.columns([11]).visible(true);
+        }else if(sess_data["id_jabatan"] == 5){
+            dt.columns([12]).visible(true);
         }
 
         if(page != null && page != ""){

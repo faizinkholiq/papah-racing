@@ -248,7 +248,7 @@ class con
 		
 		$q_src = "";
 		if(!empty($search["value"])){
-			$col = ["nama", "type", "alamat", "kontak"];
+			$col = ["barcode", "nama", "merk", "stok", "modal", "distributor", "reseller", "bengkel", "admin", "het"];
 			$src = $search["value"];
 			foreach($col as $key => $val){
 				if($key == 0) {
@@ -267,12 +267,26 @@ class con
 		$limit = $_POST["length"];
 		$offset = $_POST["start"];
 		$btn_aksi = "CONCAT(
-			'<a href=\"main?url=ubah-pelanggan&this=', pelanggan.id_pelanggan,'\" class=\"btn btn-primary btn-sm\"><i class=\"fas fa-edit\"></i></a>
-			<a href=\"process/action?url=hapuspelanggan&this=', pelanggan.id_pelanggan, '\" class=\"btn btn-danger btn-sm\" data-toggle=\"tooltip\" data-original-title=\"Hapus\" onclick=\"return confirm(`Anda yakin ingin hapus data ini?`)\"><i class=\"fas fa-trash-alt\"></i></a>'
+			'<a href=\"#!\" onclick=\"editBarang(', id_barang, ')\" class=\"btn btn-primary btn-sm\"><i class=\"fas fa-edit\"></i></a>
+			<a href=\"process/action?url=hapusbarang&this=', id_barang, '\" class=\"btn btn-danger btn-sm\" data-toggle=\"tooltip\" data-original-title=\"Hapus\" onclick=\"return confirm(`Anda yakin ingin hapus data ini?`)\"><i class=\"fas fa-trash-alt\"></i></a>'
 		)";
+		$btn_gambar = "CONCAT('<a href=\"main?url=ubah-barang&this=', id_barang, '\" class=\"btn btn-primary btn-sm\"><i class=\"fas fa-photo-video\"></i></a>')";
 
 		$result = mysqli_query($con, "
-			SELECT * 
+			SELECT  
+				ROW_NUMBER() OVER(ORDER BY created DESC) AS row_no,
+				barcode,
+				nama,
+				merk,
+				stok,
+				modal,
+				distributor,
+				reseller,
+				bengkel,
+				admin,
+				het,
+				$btn_aksi aksi,
+				$btn_gambar gambar
 			FROM barang 
 			WHERE deleted = 0 
 			$whereFilter
@@ -285,13 +299,7 @@ class con
 		}
 		$data["draw"] = intval($_POST["draw"]);
 
-		$result_all = mysqli_query($con, "
-			SELECT * 
-			FROM pelanggan 
-			WHERE id_pelanggan!='1' 
-			AND id_pelanggan!='2' 
-			ORDER BY id_pelanggan DESC
-		");
+		$result_all = mysqli_query($con, "SELECT * FROM barang");
 		$data["recordsTotal"] = mysqli_num_rows($result_all);
 		$data["recordsFiltered"] = mysqli_num_rows($result_all);
 		
