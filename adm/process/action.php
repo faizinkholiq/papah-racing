@@ -37,6 +37,8 @@ if (empty($_GET['url'])) {
 	} else if ($to == 'setaktifuser') {
 		$id_user = $_GET['this'];
 		$nc->setaktifuser($con, $id_user, $_GET["aktif"]);
+	} else if ($to == 'getsupplier') {
+		$nc->getsupplier($con);
 	} else if ($to == 'tambahsupplier') {
 		$nc->tambahsupplier($con, $_POST['nama'], $_POST['alamat'], $_POST['kontak']);
 	} else if ($to == 'ubahsupplier') {

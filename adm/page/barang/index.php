@@ -147,61 +147,61 @@ $aset = 0;
     const sess_data = <?= json_encode($_SESSION) ?>;
     const page = <?=isset($_GET["page"])? (int)$_GET["page"] : 0 ?>;
 
-    $(document).ready(function () {
-        let columns = [];
-        let columnDefs = [];
+    let columns = [];
+    let columnDefs = [];
 
-        if (sess_data["id_jabatan"] == 6) {
-            columns = [
-                { data: "row_no" },
-                { data: "barcode" },
-                { data: "nama" },
-                { data: "merk" },
-                { data: "stok" },
-                { data: "reseller" },
-                { data: "het" },
-            ];
-        } else if (sess_data["id_jabatan"] == 7) {
-            columns = [
-                { data: "row_no" },
-                { data: "barcode" },
-                { data: "nama" },
-                { data: "merk" },
-                { data: "stok" },
-                { data: "distributor" },
-                { data: "reseller" },
-                { data: "het" },
-            ];
-        }else {
-            columns = [
-                { data: "row_no" },
-                { data: "barcode" },
-                { data: "nama" },
-                { data: "merk" },
-                { data: "stok" },
-                { data: "modal" },
-                { data: "distributor" },
-                { data: "reseller" },
-                { data: "bengkel" },
-                { data: "admin" },
-                { data: "het" },
-                { data: "aksi", "visible": false },
-                { data: "gambar", "visible": false },
-            ];
-        }
+    if (sess_data["id_jabatan"] == 6) {
+        columns = [
+            { data: "row_no" },
+            { data: "barcode" },
+            { data: "nama" },
+            { data: "merk" },
+            { data: "stok" },
+            { data: "reseller" },
+            { data: "het" },
+        ];
+    } else if (sess_data["id_jabatan"] == 7) {
+        columns = [
+            { data: "row_no" },
+            { data: "barcode" },
+            { data: "nama" },
+            { data: "merk" },
+            { data: "stok" },
+            { data: "distributor" },
+            { data: "reseller" },
+            { data: "het" },
+        ];
+    }else {
+        columns = [
+            { data: "row_no" },
+            { data: "barcode" },
+            { data: "nama" },
+            { data: "merk" },
+            { data: "stok" },
+            { data: "modal" },
+            { data: "distributor" },
+            { data: "reseller" },
+            { data: "bengkel" },
+            { data: "admin" },
+            { data: "het" },
+            { data: "aksi", "visible": false },
+            { data: "gambar", "visible": false },
+        ];
+    }
 
-        var dt = $('#barangTable').DataTable({
-            dom: "Bfrtip",
-            ajax: {
-                url: 'process/action?url=getbarang',
-                type: "POST"
-            },
-            processing: true,
-            serverSide: true,
-            columns: columns,
-            ordering: false
-        });
+    let dt = $('#barangTable').DataTable({
+        dom: "Bfrtip",
+        ajax: {
+            url: 'process/action?url=getbarang',
+            type: "POST"
+        },
+        processing: true,
+        serverSide: true,
+        columns: columns,
+        ordering: false
+    });
 
+    $(document).ready(()=>{
         if (sess_data["id_jabatan"] == 1 || sess_data["id_jabatan"] == 2){
             dt.columns([11]).visible(true);
         }else if(sess_data["id_jabatan"] == 5){
@@ -214,8 +214,10 @@ $aset = 0;
     });
 
     function editBarang(id) {
-        let page_now = tb_barang.page.info().page;
+        let page_now = dt.page.info().page;
         window.open("main?url=ubah-barang&this="+id+"&page="+page_now, "_self")
     }
+
+
 
 </script>
