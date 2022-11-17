@@ -11,6 +11,8 @@ if (empty($_GET['url'])) {
 		$nc->login($con, $_POST['username'], $_POST['password']);
 	} else if ($to == 'logout') {
 		$nc->logout();
+	} else if ($to == 'getuser') {
+		$nc->getuser($con);
 	} else if ($to == 'tambahuser') {
 		$nc->tambahuser($con, $_POST['username'], $_POST['password'], $_POST['nama'], $_POST['alamat'], $_POST['kontak'], $_POST['id_jabatan']);
 	} else if ($to == 'ubahuser') {

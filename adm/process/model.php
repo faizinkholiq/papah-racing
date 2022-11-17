@@ -63,6 +63,156 @@ class con
 		header('location:../login');
 	}
 
+	function getuser($con)
+	{	
+		$search = $_POST["search"];
+		
+		$q_src = "";
+		if(!empty($search["value"])){
+			$col = ["user.nama", "user.username", "user.alamat", "user.kontak", "jabatan.nama", "user.last_login"];
+			$src = $search["value"];
+			foreach($col as $key => $val){
+				if($key == 0) {
+					$q_src .= "$val LIKE '%$src%'";
+				}else{
+					$q_src .= " OR $val LIKE '%$src%'";
+				}
+			}
+		}
+
+		$whereFilter = "";
+		if(!empty($q_src)){
+			$whereFilter = "AND ($q_src)";
+		}
+
+		$limit = $_POST["length"];
+		$offset = $_POST["start"];
+
+		$btn_aksi = "CONCAT(
+			'<a title=\"Set Aktif\" 
+				href=\"process/action?url=setaktifuser&this=', user.id_user, '&aktif=', IF(aktif = 1, 0, 1), '\" 
+				class=\"btn ', IF(aktif = 1, 'btn-secondary', 'btn-info') , ' btn-sm\">
+				<i class=\"fas ', IF(aktif = 1, 'fa-eye-slash',  'fa-eye') , '\"></i>
+			</a>
+			<a title=\"Ubah User\" href=\"main?url=ubah-user&this=', user.id_user,'\" class=\"btn btn-primary btn-sm\"><i class=\"fas fa-edit\"></i></a>
+			<a title=\"Reset Password\" href=\"main?url=reset-password-user&this=', user.id_user, '\" class=\"btn btn-warning btn-sm\"><i class=\"fas fa-key\"></i></a>
+			<a title=\"Hapus User\" href=\"process/action?url=hapususer&this=', user.id_user, '\" class=\"btn btn-danger btn-sm\" data-toggle=\"tooltip\" data-original-title=\"Hapus\" onclick=\"return confirm(`Anda yakin ingin hapus data ini?`)\"><i class=\"fas fa-trash-alt\"></i></a>'
+		)";
+		
+		$badge_aktif = "IF(aktif = 1, '<span class=\"badge badge-success\">Aktif</span>', '<span class=\"badge badge-secondary\">Not Aktif</span>')";
+
+		$badge_jabatan = "
+			CASE 
+				WHEN jabatan.nama = 'Owner' THEN CONCAT('<td class=\"text-center\"><span class=\"badge badge-success\">', jabatan.nama, '</span></td>')
+				WHEN jabatan.nama = 'Manager' THEN CONCAT('<td class=\"text-center\"><span class=\"badge badge-warning\">', jabatan.nama, '</span></td>')
+				WHEN jabatan.nama = 'Admin' THEN CONCAT('<td class=\"text-center\"><span class=\"badge badge-info\">', jabatan.nama, '</span></td>')
+				WHEN jabatan.nama = 'Marketer' THEN CONCAT('<td class=\"text-center\"><span class=\"badge badge-danger\">', jabatan.nama, '</span></td>')
+				WHEN jabatan.nama = 'Reseller' THEN CONCAT('<td class=\"text-center\"><span class=\"badge badge-primary\">', jabatan.nama, '</span></td>')
+				WHEN jabatan.nama = 'Distributor' THEN CONCAT('<td class=\"text-center\"><span class=\"badge badge-secondary\">', jabatan.nama, '</span></td>')
+				ELSE CONCAT('<td class=\"text-center\"><span class=\"badge badge-dark\">', jabatan.nama, '</span></td>')
+			END 
+		";
+
+		$result = mysqli_query($con, "
+			SELECT 
+				ROW_NUMBER() OVER(ORDER BY user.id_jabatan ASC) AS row_no,
+				user.id_user,
+				user.nama,
+				COUNT(this_month.no_faktur) bulan_ini,
+				COUNT(prev_month.no_faktur) bulan_lalu,
+				user.username,
+				user.alamat,
+				user.kontak,
+				$badge_jabatan jabatan,
+				$badge_aktif status,
+				user.last_login,
+				$btn_aksi aksi
+			FROM user
+			LEFT JOIN jabatan ON jabatan.id_jabatan = user.id_jabatan
+			LEFT JOIN penjualan this_month ON this_month.id_user = user.id_user 
+				AND YEAR(this_month.tanggal) = YEAR(CURRENT_DATE())
+				AND MONTH(this_month.tanggal) = MONTH(CURRENT_DATE())
+			LEFT JOIN penjualan prev_month ON prev_month.id_user = user.id_user 
+				AND YEAR(prev_month.tanggal) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH)
+				AND MONTH(prev_month.tanggal) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH)
+			WHERE user.id_jabatan!='1'
+			$whereFilter
+			GROUP BY user.id_user
+			ORDER BY user.id_jabatan ASC
+			LIMIT $limit OFFSET $offset
+		");
+		
+		while($row = mysqli_fetch_assoc($result)){
+			$row["last_login"] = $this->time_ago(substr($row['last_login'],0,-3));
+			$data["data"][] = $row;
+		}
+		$data["draw"] = intval($_POST["draw"]);
+
+		$result_all = mysqli_query($con, "
+			SELECT * 
+			FROM user 
+			WHERE id_jabatan!='1'
+		");
+		$data["recordsTotal"] = mysqli_num_rows($result_all);
+		$data["recordsFiltered"] = mysqli_num_rows($result_all);
+		
+		echo json_encode($data);
+	}
+
+	function time_ago($timestamp){
+		date_default_timezone_set('Asia/Jakarta');  
+		$time_ago = strtotime($timestamp);  
+		$current_time = time();  
+		$time_difference = $current_time - $time_ago;  
+		$seconds = $time_difference;  
+		$minutes      = round($seconds / 60 );        // value 60 is seconds  
+		$hours        = round($seconds / 3600);       //value 3600 is 60 minutes * 60 sec  
+		$days         = round($seconds / 86400);      //86400 = 24 * 60 * 60;  
+		$weeks        = round($seconds / 604800);     // 7*24*60*60;  
+		$months       = round($seconds / 2629440);    //((365+365+365+365+366)/5/12)*24*60*60  
+		$years        = round($seconds / 31553280);   //(365+365+365+365+366)/5 * 24 * 60 * 60  
+		
+		if($seconds <= 60) {  
+			return "Just Now";  
+		} else if($minutes <=60) {  
+			if($minutes==1){  
+				return "one minute ago";  
+			}else {  
+				return "$minutes minutes ago";  
+			}  
+		} else if($hours <=24) {  
+			if($hours==1) {  
+				return "an hour ago";  
+			} else {  
+				return "$hours hrs ago";  
+			}  
+		}else if($days <= 7) {  
+			if($days==1) {  
+				return "yesterday";  
+			}else {  
+				return "$days days ago";  
+			}  
+		}else if($weeks <= 4.3) {  //4.3 == 52/12
+			if($weeks==1){  
+				return "a week ago";  
+			}else {  
+				return "$weeks weeks ago";  
+			}  
+		} else if($months <=12){  
+			if($months==1){  
+				return "a month ago";  
+			}else{  
+				return "$months months ago";  
+			}  
+		}else {  
+			if($years==1){  
+				return "one year ago";  
+			}else {  
+				return "$years years ago";  
+			}  
+		}  
+	} 
+
 	function tambahuser($con, $username, $password, $nama, $alamat, $kontak, $id_jabatan)
 	{
 		$username = $username = htmlspecialchars(str_replace(' ', '', strtolower($username)));
