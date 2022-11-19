@@ -136,6 +136,8 @@ if (empty($_GET['url'])) {
 		$id_user = $_GET['user'];
 		$id_barang = $_GET['this'];
 		$nc->hapusbarangpenjualan($con, $id_barang, $id_user);
+	} else if ($to == 'getpembelian') {
+		$nc->getpembelian($con);
 	} else if ($to == 'tambahpenjualan') {
 		$nc->tambahpenjualan($con, $_POST['id_pelanggan'], $_POST['id_user'], $_POST['total_transaksi'], $_POST['total_bayar']);
 	} else if ($to == 'cicilanpenjualan') {
