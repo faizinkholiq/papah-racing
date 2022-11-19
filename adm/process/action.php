@@ -6,6 +6,7 @@ if (empty($_GET['url'])) {
 	require 'model.php';
 	$nc = new con();
 	$to = $_GET['url'];
+	session_start();
 
 	if ($to == 'login') {
 		$nc->login($con, $_POST['username'], $_POST['password']);
@@ -100,6 +101,8 @@ if (empty($_GET['url'])) {
 		$no_po = $_GET['no_po'];
 		$id_pembelian_debt = $_GET['this'];
 		$nc->hapuscicilanpembelian($con, $no_po, $id_pembelian_debt);
+	} else if ($to == 'getpembelian') {
+		$nc->getpembelian($con);
 	} else if ($to == 'hapuspembelian') {
 		$no_po = $_GET['this'];
 		$nc->hapuspembelian($con, $no_po);

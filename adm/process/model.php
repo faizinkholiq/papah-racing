@@ -811,6 +811,86 @@ class con
 		header('location:../main?url=lihat-pembelian&this=' . $no_po . '');
 	}
 
+	function getpembelian($con)
+	{	
+		$search = $_POST["search"];
+		
+		$q_src = "";
+		if(!empty($search["value"])){
+			$col = ["pembelian.jenis"];
+			$src = $search["value"];
+			foreach($col as $key => $val){
+				if($key == 0) {
+					$q_src .= "$val LIKE '%$src%'";
+				}else{
+					$q_src .= " OR $val LIKE '%$src%'";
+				}
+			}
+		}
+
+		$whereFilter = "";
+		if(!empty($q_src)){
+			$whereFilter = "AND ($q_src)";
+		}
+
+		$limit = $_POST["length"];
+		$offset = $_POST["start"];
+
+		if ($_SESSION['id_jabatan'] == '1' || $_SESSION['id_jabatan'] == '2'){
+			$btn_aksi = "CONCAT(
+				'<a href=\"main?url=lihat-pembelian&this=', pembelian.no_po, '\" class=\"btn btn-info btn-sm\"><i class=\"fas fa-eye\"></i></a>
+				<a href=\"page/pembelian/cetak_det.php?this=', pembelian.no_po, '\" target=\"_blank\" class=\"btn btn-secondary btn-sm\"><i class=\"fas fa-print\"></i></a> ',
+				IF(pembelian.status = 'Hutang', CONCAT('<a href=\"main?url=cicilan-pembelian&this=', pembelian.no_po, '\" class=\"btn btn-success btn-sm\"><i class=\"fas fa-hand-holding-usd\"></i></a> '), ''),
+				'<a href=\"process/action?url=hapuspembelian&this=', pembelian.no_po, '\" class=\"btn btn-danger btn-sm\" data-toggle=\"tooltip\" data-original-title=\"Hapus\" onclick=\"return confirm(`Anda yakin ingin hapus data ini?`)\"><i class=\"fas fa-trash-alt\"></i></a>'
+			)";
+		}else{
+			$btn_aksi = "CONCAT(
+				'<a href=\"main?url=lihat-pembelian&this=', pembelian.no_po, '\" class=\"btn btn-info btn-sm\"><i class=\"fas fa-eye\"></i></a>
+				<a href=\"page/pembelian/cetak_det.php?this=', pembelian.no_po, '\" target=\"_blank\" class=\"btn btn-secondary btn-sm\"><i class=\"fas fa-print\"></i></a>'
+			)";
+		}
+
+		$badge_status = "IF(pembelian.status = 'Lunas', CONCAT('<span class=\"badge badge-success\">', pembelian.status, '</span>'), CONCAT('<span class=\"badge badge-danger\">', pembelian.status, '</span>'))";
+
+		if ($_SESSION['id_jabatan'] != "1" && $_SESSION['id_jabatan'] != "2") {
+			$whereFilter .=  "AND pembelian.id_user='" . $_SESSION['id_user'];
+		}
+
+		$result = mysqli_query($con, "
+			SELECT 
+				ROW_NUMBER() OVER(ORDER BY pembelian.tanggal DESC) AS row_no,
+				pembelian.no_po,
+				pembelian.id_supplier,
+				supplier.nama supplier,
+				DATE_FORMAT(pembelian.tanggal, '%e %M %Y') tanggal,
+				$badge_status status,
+				CONCAT('Rp', FORMAT(pembelian.total_transaksi, 0,'id_ID')) total_transaksi,
+				CONCAT('Rp', FORMAT(IF(pembelian.status = 'Lunas', pembelian.total_transaksi, pembelian.total_bayar), 0,'id_ID')) total_bayar,
+				pembelian.id_user,
+				user.nama user,
+				pembelian.updated,
+				$btn_aksi aksi
+			FROM pembelian
+			LEFT JOIN supplier ON supplier.id_supplier = pembelian.id_supplier
+			LEFT JOIN user ON user.id_user = pembelian.id_user
+			WHERE 1=1 $whereFilter
+			ORDER BY pembelian.tanggal DESC
+			LIMIT $limit OFFSET $offset
+		");
+		
+		while($row = mysqli_fetch_assoc($result)){
+			$data["data"][] = $row;
+		}
+		$data["draw"] = intval($_POST["draw"]);
+
+		$result_all = mysqli_query($con, "SELECT * FROM pembelian WHERE 1=1 $whereFilter");
+		$data["recordsTotal"] = mysqli_num_rows($result_all);
+		$data["recordsFiltered"] = mysqli_num_rows($result_all);
+		
+		echo json_encode($data);
+	}
+
+
 	function hapuspembelian($con, $no_po)
 	{
 		$pembelian_det = mysqli_query($con, "SELECT * FROM pembelian_det WHERE no_po='$no_po'");
