@@ -10,7 +10,7 @@ $query = mysqli_query($con, "SELECT * FROM pengeluaran_type ORDER BY id_pengelua
 <div class="wrapper">
     <a href="main?url=tambah-jenis-pengeluaran" class="btn btn-primary"><i class='fas fa-plus-circle mr-2'></i>Tambah Data</a>
     <div class="table-responsive mt-3">
-        <table class="table table-striped table-bordered display" style="width:100%">
+        <table id="jenisPengeluaranTable" class="table table-striped table-bordered" style="width:100%">
             <thead>
                 <tr class="text-center">
                     <th>No.</th>
@@ -25,7 +25,6 @@ $query = mysqli_query($con, "SELECT * FROM pengeluaran_type ORDER BY id_pengelua
                         <td><?= $no++; ?></td>
                         <td><?= $data['jenis']; ?></td>
                         <td>
-                            <!-- <a href="" class="btn btn-info btn-sm"><i class='fas fa-eye'></i></a> -->
                             <a href="main?url=ubah-jenis-pengeluaran&this=<?= $data['id_pengeluaran_type']; ?>" class="btn btn-primary btn-sm"><i class='fas fa-edit'></i></a>
                             <a href="process/action?url=hapusjenispengeluaran&this=<?= $data['id_pengeluaran_type']; ?>" class="btn btn-danger btn-sm" data-toggle="tooltip" data-original-title="Hapus" onclick="return confirm('Anda yakin ingin hapus data ini?')"><i class='fas fa-trash-alt'></i></a>
                         </td>
@@ -35,3 +34,24 @@ $query = mysqli_query($con, "SELECT * FROM pengeluaran_type ORDER BY id_pengelua
         </table>
     </div>
 </div>
+<script>
+    const sess_data = <?= json_encode($_SESSION) ?>;
+
+    $(document).ready(function () {
+        var dt = $('#jenisPengeluaranTable').DataTable({
+            dom: "Bfrtip",
+            ajax: {
+                url: 'process/action?url=getjenispengeluaran',
+                type: "POST"
+            },
+            processing: true,
+            serverSide: true,
+            columns: [
+                { data: "row_no" },
+                { data: "jenis" },
+                { data: "aksi" },
+            ],
+            ordering: false
+        });
+    });
+</script>

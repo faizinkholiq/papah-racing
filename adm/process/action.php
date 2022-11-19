@@ -144,6 +144,8 @@ if (empty($_GET['url'])) {
 	} else if ($to == 'hapuspenjualan') {
 		$no_faktur = $_GET['this'];
 		$nc->hapuspenjualan($con, $no_faktur);
+	} else if ($to == 'getjenispengeluaran') {
+		$nc->getjenispengeluaran($con);
 	} else if ($to == 'tambahjenispengeluaran') {
 		$nc->tambahjenispengeluaran($con, $_POST['jenis']);
 	} else if ($to == 'ubahjenispengeluaran') {
@@ -205,7 +207,9 @@ if (empty($_GET['url'])) {
 		$nc->upload_banner($con);
 	} else if ($to == 'update-order') {
 		$nc->update_banner_order($con);
-	}  else if ($to == 'tambah-merk') {
+	} else if ($to == 'getmerk') {
+		$nc->getmerk($con);
+	} else if ($to == 'tambah-merk') {
 		$nc->tambahmerk($con, $_POST['name']);
 	} else if ($to == 'ubah-merk') {
 		$nc->ubahmerk($con, $_POST['id'], $_POST['name']);

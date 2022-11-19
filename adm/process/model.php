@@ -952,6 +952,59 @@ class con
 		header('location:../main?url=penjualan');
 	}
 
+	function getjenispengeluaran($con)
+	{	
+		$search = $_POST["search"];
+		
+		$q_src = "";
+		if(!empty($search["value"])){
+			$col = ["jenis"];
+			$src = $search["value"];
+			foreach($col as $key => $val){
+				if($key == 0) {
+					$q_src .= "$val LIKE '%$src%'";
+				}else{
+					$q_src .= " OR $val LIKE '%$src%'";
+				}
+			}
+		}
+
+		$whereFilter = "";
+		if(!empty($q_src)){
+			$whereFilter = "AND ($q_src)";
+		}
+
+		$limit = $_POST["length"];
+		$offset = $_POST["start"];
+		$btn_aksi = "CONCAT(
+			'<a href=\"main?url=ubahjenispengeluaran&this=', id_pengeluaran_type, '\" class=\"btn btn-primary btn-sm\"><i class=\"fas fa-edit\"></i></a>
+			<a href=\"process/action?url=hapusjenispengeluaran&this=', id_pengeluaran_type, '\" class=\"btn btn-danger btn-sm\" data-toggle=\"tooltip\" data-original-title=\"Hapus\" onclick=\"return confirm(`Anda yakin ingin hapus data ini?`)\"><i class=\"fas fa-trash-alt\"></i></a>'
+		)";
+
+		$result = mysqli_query($con, "
+			SELECT 
+				ROW_NUMBER() OVER(ORDER BY id_pengeluaran_type DESC) AS row_no,
+				id_pengeluaran_type,
+				jenis,
+				$btn_aksi aksi
+			FROM pengeluaran_type
+			WHERE 1=1 $whereFilter
+			ORDER BY id_pengeluaran_type DESC
+			LIMIT $limit OFFSET $offset
+		");
+		
+		while($row = mysqli_fetch_assoc($result)){
+			$data["data"][] = $row;
+		}
+		$data["draw"] = intval($_POST["draw"]);
+
+		$result_all = mysqli_query($con, "SELECT * FROM pengeluaran_type");
+		$data["recordsTotal"] = mysqli_num_rows($result_all);
+		$data["recordsFiltered"] = mysqli_num_rows($result_all);
+		
+		echo json_encode($data);
+	}
+
 	function tambahjenispengeluaran($con, $jenis)
 	{
 		$jenis = htmlspecialchars(strtoupper($jenis));
@@ -1050,6 +1103,59 @@ class con
 	{
 		$query = mysqli_query($con, "DELETE FROM kontak WHERE id='$id' ");
 		header('location:../main?url=kontak');
+	}
+
+	function getmerk($con)
+	{	
+		$search = $_POST["search"];
+		
+		$q_src = "";
+		if(!empty($search["value"])){
+			$col = ["name"];
+			$src = $search["value"];
+			foreach($col as $key => $val){
+				if($key == 0) {
+					$q_src .= "$val LIKE '%$src%'";
+				}else{
+					$q_src .= " OR $val LIKE '%$src%'";
+				}
+			}
+		}
+
+		$whereFilter = "";
+		if(!empty($q_src)){
+			$whereFilter = "AND ($q_src)";
+		}
+
+		$limit = $_POST["length"];
+		$offset = $_POST["start"];
+		$btn_aksi = "CONCAT(
+			'<a href=\"main?url=ubah-merk&this=', id, '\" class=\"btn btn-primary btn-sm\"><i class=\"fas fa-edit\"></i></a>
+			<a href=\"process/action?url=hapus-merk&this=', id, '\" class=\"btn btn-danger btn-sm\" data-toggle=\"tooltip\" data-original-title=\"Hapus\" onclick=\"return confirm(`Anda yakin ingin hapus data ini?`)\"><i class=\"fas fa-trash-alt\"></i></a>'
+		)";
+
+		$result = mysqli_query($con, "
+			SELECT 
+				ROW_NUMBER() OVER(ORDER BY name ASC) AS row_no,
+				id,
+				name,
+				$btn_aksi aksi
+			FROM merk
+			WHERE 1=1 $whereFilter
+			ORDER BY name ASC
+			LIMIT $limit OFFSET $offset
+		");
+		
+		while($row = mysqli_fetch_assoc($result)){
+			$data["data"][] = $row;
+		}
+		$data["draw"] = intval($_POST["draw"]);
+
+		$result_all = mysqli_query($con, "SELECT * FROM merk");
+		$data["recordsTotal"] = mysqli_num_rows($result_all);
+		$data["recordsFiltered"] = mysqli_num_rows($result_all);
+		
+		echo json_encode($data);
 	}
 
 	function tambahmerk($con, $merk)
