@@ -8,7 +8,6 @@ $admins = mysqli_query($con, "SELECT * FROM user WHERE id_jabatan = 5");
     <div class="col-4"><a href="index.php" class="btn btn-danger float-right"><i class='fas fa-times-circle mr-2'></i>Back</a></div>
 </div>
 <div class="wrapper">
-    <!-- <a href="main?url=tambah-penjualan" class="btn btn-primary"><i class='fas fa-plus-circle mr-2'></i>Tambah Data</a> -->
     <div class="dropdown">
         <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="text-white pl-2"><i class='fas fa-plus-circle mr-2'></i>Tambah Data</span>
@@ -22,9 +21,9 @@ $admins = mysqli_query($con, "SELECT * FROM user WHERE id_jabatan = 5");
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <?php
             $query_type = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM penjualan_temp WHERE id_user='" . $_SESSION['id_user'] . "'"));
-            if ($query_type['id_user'] != NULL) {
+            if (isset($query_type['id_user']) && $query_type['id_user'] != NULL) {
             ?>
-                <a class="dropdown-item text-center" href="main?url=tambah-penjualan&type=<?= $query_type['type']; ?>"><?= ucfirst($query_type['type']); ?></a>
+                <a class="dropdown-item text-center" href="main?url=tambah-penjualan&type=<?= isset($query_type['type'])? $query_type['type'] : ''  ?>"><?= isset($query_type['type'])? ucfirst($query_type['type']) : '' ?></a>
             <?php } else { ?>
                 <a class="dropdown-item text-center" href="main?url=tambah-penjualan&type=distributor">Distributor</a>
                 <a class="dropdown-item text-center" href="main?url=tambah-penjualan&type=reseller">Reseller</a>
@@ -65,7 +64,10 @@ $admins = mysqli_query($con, "SELECT * FROM user WHERE id_jabatan = 5");
             dom: "Bfrtip",
             ajax: {
                 url: 'process/action?url=getpenjualan',
-                type: "POST"
+                type: "POST",
+                data: {
+                    admin: <?= isset($_GET['admin'])? $_GET['admin'] : 0 ?>
+                }
             },
             processing: true,
             serverSide: true,
@@ -77,7 +79,7 @@ $admins = mysqli_query($con, "SELECT * FROM user WHERE id_jabatan = 5");
                 { data: "status", className: "text-center", },
                 { data: "total_transaksi" },
                 { data: "total_bayar" },
-                { data: "keterangan", className: "text-center", },
+                { data: "persetujuan", className: "text-center", },
                 { data: "user", className: "text-center", },
                 { data: "aksi", className: "text-center", },
             ],

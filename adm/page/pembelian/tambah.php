@@ -119,7 +119,7 @@
                     <div class="col-12">
                         <?php
                         $cek = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM pembelian_temp WHERE id_user='" . $_SESSION['id_user'] . "'"));
-                        if (isset($cek['id_user']) && $cek['id_user'] == 0) {
+                        if (!isset($cek['id_user']) && $cek['id_user'] == 0) {
                             echo "<button type='submit' class='btn btn-primary btn-block' disabled><i class='fas fa-money-bill-alt mr-2'></i>Bayar</button>";
                         } else {
                             echo "<button type='submit' class='btn btn-primary btn-block'><i class='fas fa-money-bill-alt mr-2'></i>Bayar</button>";

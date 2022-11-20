@@ -957,7 +957,7 @@ class con
 		
 		$q_src = "";
 		if(!empty($search["value"])){
-			$col = ["pembelian.jenis"];
+			$col = ["penjualan.no_faktur", "penjualan.tanggal",  "pelanggan.nama", "pelanggan.type",];
 			$src = $search["value"];
 			foreach($col as $key => $val){
 				if($key == 0) {
@@ -980,57 +980,71 @@ class con
 
 		if ($_SESSION['id_jabatan'] == '1' || $_SESSION['id_jabatan'] == '2'){
 			$btn_aksi = "CONCAT(
-				'<a href=\"main?url=lihat-pembelian&this=', pembelian.no_po, '\" class=\"btn btn-info btn-sm\"><i class=\"fas fa-eye\"></i></a>
-				<a href=\"page/pembelian/cetak_det.php?this=', pembelian.no_po, '\" target=\"_blank\" class=\"btn btn-secondary btn-sm\"><i class=\"fas fa-print\"></i></a> ',
-				IF(pembelian.status = 'Hutang', CONCAT('<a href=\"main?url=cicilan-pembelian&this=', pembelian.no_po, '\" class=\"btn btn-success btn-sm\"><i class=\"fas fa-hand-holding-usd\"></i></a> '), ''),
-				'<a href=\"process/action?url=hapuspembelian&this=', pembelian.no_po, '\" class=\"btn btn-danger btn-sm\" data-toggle=\"tooltip\" data-original-title=\"Hapus\" onclick=\"return confirm(`Anda yakin ingin hapus data ini?`)\"><i class=\"fas fa-trash-alt\"></i></a>'
+				'<a href=\"main?url=lihat-penjualan&this=', penjualan.no_faktur, '\" class=\"btn btn-info btn-sm\"><i class=\"fas fa-eye\"></i></a>
+				<a href=\"page/penjualan/cetak_det.php?this=', penjualan.no_faktur, '\" target=\"_blank\" class=\"btn btn-secondary btn-sm\"><i class=\"fas fa-print\"></i></a> ',
+				IF(penjualan.persetujuan = 'Pending', CONCAT('<a href=\"process/action?url=approved&this=', penjualan.no_faktur, '\" class=\"btn btn-primary btn-sm\"><i class=\"fas fa-check\"></i></a> '), ''),
+				IF(penjualan.status = 'Hutang', CONCAT('<a href=\"main?url=cicilan-penjualan&this=', penjualan.no_faktur, '\" class=\"btn btn-success btn-sm\"><i class=\"fas fa-hand-holding-usd\"></i></a> '), ''),
+				'<a href=\"process/action?url=hapuspenjualan&this=', penjualan.no_faktur, '\" class=\"btn btn-danger btn-sm\" data-toggle=\"tooltip\" data-original-title=\"Hapus\" onclick=\"return confirm(`Anda yakin ingin hapus data ini?`)\"><i class=\"fas fa-trash-alt\"></i></a>'
 			)";
 		}else{
 			$btn_aksi = "CONCAT(
-				'<a href=\"main?url=lihat-pembelian&this=', pembelian.no_po, '\" class=\"btn btn-info btn-sm\"><i class=\"fas fa-eye\"></i></a>
-				<a href=\"page/pembelian/cetak_det.php?this=', pembelian.no_po, '\" target=\"_blank\" class=\"btn btn-secondary btn-sm\"><i class=\"fas fa-print\"></i></a>'
+				'<a href=\"main?url=lihat-penjualan&this=', penjualan.no_faktur, '\" class=\"btn btn-info btn-sm\"><i class=\"fas fa-eye\"></i></a>
+				<a href=\"page/penjualan/cetak_det.php?this=', penjualan.no_faktur, '\" target=\"_blank\" class=\"btn btn-secondary btn-sm\"><i class=\"fas fa-print\"></i></a>'
 			)";
 		}
 
-		$badge_status = "IF(pembelian.status = 'Lunas', CONCAT('<span class=\"badge badge-success\">', pembelian.status, '</span>'), CONCAT('<span class=\"badge badge-danger\">', pembelian.status, '</span>'))";
+		$badge_status = "IF(penjualan.status = 'Lunas', CONCAT('<span class=\"badge badge-success\">', penjualan.status, '</span>'), CONCAT('<span class=\"badge badge-danger\">', penjualan.status, '</span>'))";
+		$badge_approve = "IF(penjualan.persetujuan = 'Approved', CONCAT('<span class=\"badge badge-primary\">', penjualan.persetujuan, '</span>'), CONCAT('<span class=\"badge badge-warning\">', penjualan.persetujuan, '</span>'))";
 
 		if ($_SESSION['id_jabatan'] != "1" && $_SESSION['id_jabatan'] != "2") {
 			$whereFilter1 .=  "AND DATEDIFF(NOW(), tanggal) <= 90 AND status = 'Lunas' AND persetujuan = 'Approved' ";
 			$whereFilter2 .=  "AND CONCAT(status,persetujuan) != CONCAT('Lunas','Approved') ";
 		}else{
-			$whereFilter1 .=  "AND id_user='" . $_SESSION['id_user'] . "' AND DATEDIFF(NOW(), tanggal) <= 90 AND status = 'Lunas' AND persetujuan = 'Approved'";
-			$whereFilter2 .=  "AND CONCAT(status,persetujuan) != CONCAT('Lunas','Approved') ";
+			$whereFilter1 .=  "AND penjualan.id_user='" . $_SESSION['id_user'] . "' AND DATEDIFF(NOW(), penjualan.tanggal) <= 90 AND penjualan.status = 'Lunas' AND penjualan.persetujuan = 'Approved'";
+			$whereFilter2 .=  "AND CONCAT(penjualan.status, penjualan.persetujuan) != CONCAT('Lunas','Approved') ";
 		}
 		
-		if (isset($_GET["admin"])) {
-			$whereFilter2 .= "AND penjualan.id_user = ".$_GET["admin"];
+		if (isset($_POST["admin"]) && !empty($_POST["admin"])) {
+			$whereFilter2 .= "AND penjualan.id_user = ".$_POST["admin"];
 		}
 
 		$result = mysqli_query($con, "
 			SELECT 
 				penjualan.no_faktur,
 				penjualan.id_pelanggan,
+				pelanggan.nama pelanggan,
+				CONCAT(UCASE(LEFT(pelanggan.type, 1)), SUBSTRING(pelanggan.type, 2)) type,
 				penjualan.tanggal,
-				penjualan.status,
-				penjualan.total_transaksi,
-				penjualan.total_bayar,
-				penjualan.persetujuan,
+				$badge_status status,
+				CONCAT('Rp', FORMAT(penjualan.total_transaksi, 0,'id_ID')) total_transaksi,
+				CONCAT('Rp', FORMAT(IF(penjualan.status = 'Lunas', penjualan.total_transaksi, penjualan.total_bayar), 0,'id_ID')) total_bayar,
+				$badge_approve persetujuan,
 				penjualan.id_user,
-				penjualan.updated
+				user.nama user,
+				penjualan.updated,
+				$btn_aksi aksi
 			FROM penjualan 
+			LEFT JOIN pelanggan ON pelanggan.id_pelanggan = penjualan.id_pelanggan
+			LEFT JOIN user ON user.id_user = penjualan.id_user
 			WHERE 1=1 $whereFilter1
 			UNION ALL
 			SELECT
 				penjualan.no_faktur,
 				penjualan.id_pelanggan,
+				pelanggan.nama pelanggan,
+				CONCAT(UCASE(LEFT(pelanggan.type, 1)), SUBSTRING(pelanggan.type, 2)) type,
 				penjualan.tanggal,
-				penjualan.status,
-				penjualan.total_transaksi,
-				penjualan.total_bayar,
-				penjualan.persetujuan,
+				$badge_status status,
+				CONCAT('Rp', FORMAT(penjualan.total_transaksi, 0,'id_ID')) total_transaksi,
+				CONCAT('Rp', FORMAT(IF(penjualan.status = 'Lunas', penjualan.total_transaksi, penjualan.total_bayar), 0,'id_ID')) total_bayar,
+				$badge_approve persetujuan,
 				penjualan.id_user,
-				penjualan.updated
+				user.nama user,
+				penjualan.updated,
+				$btn_aksi aksi
 			FROM penjualan
+			LEFT JOIN pelanggan ON pelanggan.id_pelanggan = penjualan.id_pelanggan
+			LEFT JOIN user ON user.id_user = penjualan.id_user
 			WHERE 1=1 $whereFilter2
 			ORDER BY tanggal DESC
 			LIMIT $limit OFFSET $offset
@@ -1042,9 +1056,18 @@ class con
 		$data["draw"] = intval($_POST["draw"]);
 
 		$result_all = mysqli_query($con, "
-			SELECT * FROM penjualan WHERE 1=1 $whereFilter1
+			SELECT penjualan.no_faktur
+			FROM penjualan 
+			LEFT JOIN pelanggan ON pelanggan.id_pelanggan = penjualan.id_pelanggan
+			LEFT JOIN user ON user.id_user = penjualan.id_user
+			WHERE 1=1 $whereFilter1
 			UNION ALL
-			SELECT * FROM penjualan WHERE 1=1 $whereFilter2");
+			SELECT penjualan.no_faktur
+			FROM penjualan 
+			LEFT JOIN pelanggan ON pelanggan.id_pelanggan = penjualan.id_pelanggan
+			LEFT JOIN user ON user.id_user = penjualan.id_user
+			WHERE 1=1 $whereFilter2");
+			
 		$data["recordsTotal"] = mysqli_num_rows($result_all);
 		$data["recordsFiltered"] = mysqli_num_rows($result_all);
 		
