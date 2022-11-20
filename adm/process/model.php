@@ -152,6 +152,7 @@ class con
 			SELECT * 
 			FROM user 
 			WHERE id_jabatan!='1'
+			$whereFilter
 		");
 		$data["recordsTotal"] = mysqli_num_rows($result_all);
 		$data["recordsFiltered"] = mysqli_num_rows($result_all);
@@ -323,7 +324,7 @@ class con
 		$result_all = mysqli_query($con, "
 			SELECT * 
 			FROM supplier 
-			WHERE id_supplier!='1'
+			WHERE id_supplier!='1' $whereFilter
 		");
 		$data["recordsTotal"] = mysqli_num_rows($result_all);
 		$data["recordsFiltered"] = mysqli_num_rows($result_all);
@@ -421,6 +422,7 @@ class con
 			FROM pelanggan 
 			WHERE id_pelanggan!='1' 
 			AND id_pelanggan!='2' 
+			$whereFilter
 			ORDER BY id_pelanggan DESC
 		");
 		$data["recordsTotal"] = mysqli_num_rows($result_all);
@@ -509,7 +511,7 @@ class con
 		}
 		$data["draw"] = intval($_POST["draw"]);
 
-		$result_all = mysqli_query($con, "SELECT * FROM barang");
+		$result_all = mysqli_query($con, "SELECT * FROM barang WHERE deleted = 0 $whereFilter");
 		$data["recordsTotal"] = mysqli_num_rows($result_all);
 		$data["recordsFiltered"] = mysqli_num_rows($result_all);
 		
@@ -1201,7 +1203,7 @@ class con
 		}
 		$data["draw"] = intval($_POST["draw"]);
 
-		$result_all = mysqli_query($con, "SELECT * FROM pengeluaran_type");
+		$result_all = mysqli_query($con, "SELECT * FROM pengeluaran_type WHERE 1=1 $whereFilter");
 		$data["recordsTotal"] = mysqli_num_rows($result_all);
 		$data["recordsFiltered"] = mysqli_num_rows($result_all);
 		
@@ -1226,6 +1228,74 @@ class con
 	{
 		$query = mysqli_query($con, "DELETE FROM pengeluaran_type WHERE id_pengeluaran_type='$id_pengeluaran_type' ");
 		header('location:../main?url=pengeluaran');
+	}
+
+	function getpengeluaran($con)
+	{	
+		$search = $_POST["search"];
+		
+		$q_src = "";
+		if(!empty($search["value"])){
+			$col = ["jenis"];
+			$src = $search["value"];
+			foreach($col as $key => $val){
+				if($key == 0) {
+					$q_src .= "$val LIKE '%$src%'";
+				}else{
+					$q_src .= " OR $val LIKE '%$src%'";
+				}
+			}
+		}
+
+		$whereFilter = "";
+		if(!empty($q_src)){
+			$whereFilter = "AND ($q_src) ";
+		}
+
+		if ($_SESSION['id_jabatan'] != "1" && $_SESSION['id_jabatan'] != "2") {
+			$whereFilter .= "AND user.id_user='" . $_SESSION['id_user'] . "' ";
+		}
+
+		$limit = $_POST["length"];
+		$offset = $_POST["start"];
+		$btn_aksi = "CONCAT(
+			'<a href=\"main?url=ubah-pengeluaran&this=', pengeluaran.id_pengeluaran, '\" class=\"btn btn-primary btn-sm\"><i class=\"fas fa-edit\"></i></a>
+			<a href=\"process/action?url=hapuspengeluaran&this=', pengeluaran.id_pengeluaran, '\" class=\"btn btn-danger btn-sm\" data-toggle=\"tooltip\" data-original-title=\"Hapus\" onclick=\"return confirm(`Anda yakin ingin hapus data ini?`)\"><i class=\"fas fa-trash-alt\"></i></a>'
+		)";
+
+		$result = mysqli_query($con, "
+			SELECT 
+				ROW_NUMBER() OVER(ORDER BY pengeluaran.tanggal DESC) AS row_no,
+				pengeluaran.id_pengeluaran,
+				DATE_FORMAT(pengeluaran.tanggal, '%e %M %Y, %H:%i') tanggal,
+				pengeluaran_type.jenis,
+				pengeluaran.jumlah,
+				pengeluaran.keterangan,
+				user.nama user,
+				$btn_aksi aksi
+			FROM pengeluaran
+			JOIN pengeluaran_type ON pengeluaran.id_pengeluaran_type = pengeluaran_type.id_pengeluaran_type 
+			JOIN user ON pengeluaran.id_user = user.id_user
+			WHERE 1=1 $whereFilter
+			ORDER BY pengeluaran.tanggal DESC
+			LIMIT $limit OFFSET $offset
+		");
+		
+		while($row = mysqli_fetch_assoc($result)){
+			$data["data"][] = $row;
+		}
+		$data["draw"] = intval($_POST["draw"]);
+
+		$result_all = mysqli_query($con, "
+			SELECT pengeluaran.id_pengeluaran 
+			FROM pengeluaran 
+			JOIN pengeluaran_type ON pengeluaran.id_pengeluaran_type = pengeluaran_type.id_pengeluaran_type 
+			JOIN user ON pengeluaran.id_user = user.id_user
+			WHERE 1=1 $whereFilter");
+		$data["recordsTotal"] = mysqli_num_rows($result_all);
+		$data["recordsFiltered"] = mysqli_num_rows($result_all);
+		
+		echo json_encode($data);
 	}
 
 	function tambahpengeluaran($con, $id_pengeluaran_type, $jumlah, $keterangan, $id_user)
@@ -1354,7 +1424,7 @@ class con
 		}
 		$data["draw"] = intval($_POST["draw"]);
 
-		$result_all = mysqli_query($con, "SELECT * FROM merk");
+		$result_all = mysqli_query($con, "SELECT * FROM merk WHERE 1=1 $whereFilter");
 		$data["recordsTotal"] = mysqli_num_rows($result_all);
 		$data["recordsFiltered"] = mysqli_num_rows($result_all);
 		

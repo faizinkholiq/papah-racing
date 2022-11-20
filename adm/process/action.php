@@ -158,6 +158,8 @@ if (empty($_GET['url'])) {
 	} else if ($to == 'hapusjenispengeluaran') {
 		$id_pengeluaran_type = $_GET['this'];
 		$nc->hapusjenispengeluaran($con, $id_pengeluaran_type);
+	} else if ($to == 'getpengeluaran') {
+		$nc->getpengeluaran($con);
 	} else if ($to == 'tambahpengeluaran') {
 		$nc->tambahpengeluaran($con, $_POST['id_pengeluaran_type'], $_POST['jumlah'], $_POST['keterangan'], $_POST['id_user']);
 	} else if ($to == 'ubahpengeluaran') {
