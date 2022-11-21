@@ -71,7 +71,7 @@ $aset = 0;
                         <th class="align-middle" rowspan="2">Nama</th>
                         <th class="align-middle" rowspan="2">Merk</th>
                         <th class="align-middle" rowspan="2">Stok</th>
-                        <th colspan="6">Harga</th>
+                        <th id="thHarga" colspan="6">Harga</th>
                         <th class="align-middle" rowspan="2">Aksi</th>
                         <th class="align-middle" rowspan="2">Lihat Gambar</th>
                     </tr>
@@ -178,14 +178,14 @@ $aset = 0;
             { data: "nama" },
             { data: "merk" },
             { data: "stok" },
-            { data: "modal" },
+            { data: "modal", "visible": false },
             { data: "distributor" },
             { data: "reseller" },
             { data: "bengkel" },
             { data: "admin" },
             { data: "het" },
             { data: "aksi", "visible": false },
-            { data: "gambar", "visible": false },
+            { data: "gambar", className:"text-center", "visible": false },
         ];
     }
 
@@ -204,6 +204,7 @@ $aset = 0;
     $(document).ready(()=>{
         if (sess_data["id_jabatan"] == 1 || sess_data["id_jabatan"] == 2){
             dt.columns([11]).visible(true);
+            dt.columns([5]).visible(true);
         }else if(sess_data["id_jabatan"] == 5){
             dt.columns([12]).visible(true);
         }

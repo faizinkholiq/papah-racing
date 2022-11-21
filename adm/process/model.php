@@ -819,7 +819,7 @@ class con
 		
 		$q_src = "";
 		if(!empty($search["value"])){
-			$col = ["pembelian.jenis"];
+			$col = ["pembelian.no_po", "supplier.nama"];
 			$src = $search["value"];
 			foreach($col as $key => $val){
 				if($key == 0) {
@@ -885,7 +885,12 @@ class con
 		}
 		$data["draw"] = intval($_POST["draw"]);
 
-		$result_all = mysqli_query($con, "SELECT * FROM pembelian WHERE 1=1 $whereFilter");
+		$result_all = mysqli_query($con, "
+			SELECT pembelian.no_po
+			FROM pembelian 
+			LEFT JOIN supplier ON supplier.id_supplier = pembelian.id_supplier
+			LEFT JOIN user ON user.id_user = pembelian.id_user
+			WHERE 1=1 $whereFilter");
 		$data["recordsTotal"] = mysqli_num_rows($result_all);
 		$data["recordsFiltered"] = mysqli_num_rows($result_all);
 		
