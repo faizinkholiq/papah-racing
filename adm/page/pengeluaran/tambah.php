@@ -21,9 +21,9 @@
             </div>
         </div>
         <div class="form-group row">
-            <label for="jumlah" class="col-sm-2 col-form-label">Jumlah</label>
+            <label for="jumlah" class="col-sm-2 col-form-label">Jumlah (Rp)</label>
             <div class="col-sm-10">
-                <input type="number" min="0" class="form-control" id="jumlah" name="jumlah" required>
+                <input type="text" min="0" class="form-control uang" id="jumlah" name="jumlah" required>
             </div>
         </div>
         <div class="form-group row">

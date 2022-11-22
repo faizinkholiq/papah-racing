@@ -195,7 +195,7 @@
         </div>
         <div class="card bg-light mb-3">
             <div class="card-header font-weight-bolder">Upload Gambar Maximum 5, Ukuran file Maximum 4 Mb</div><br>
-            <input type="text" id="selected_barang" name="selected_barang" value=""/>
+            <input type="hidden" id="selected_barang" name="selected_barang" value=""/>
             <div class="card-body" style="text-align: center">
                 <input id="imgInp" type="file" name="gambar[]" accept="image/*" multiple>
                 <div class="col-lg-12 mt-4 img-container">

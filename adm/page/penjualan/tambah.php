@@ -147,7 +147,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
             <div class="modal-body table-responsive">
-                <table class="table table-bordered table-striped table-hover text-center display mt-3">
+                <table style="width: 100%;" id="barangTable" class="table table-bordered table-striped table-hover text-center mt-3">
                     <thead>
                         <tr>
                             <th>Barcode</th>
@@ -156,21 +156,7 @@
                             <th>Aksi</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <?php
-                        $query = mysqli_query($con, "SELECT * FROM barang");
-                        foreach ($query as $data) {
-                        ?>
-                            <tr class="text-left">
-                                <td><?= $data['barcode']; ?></td>
-                                <td><?= $data['nama']; ?></td>
-                                <td class="text-center"><?= $data['stok']; ?></td>
-                                <td class="text-center">
-                                    <button id="pilihbarang" class="btn btn-sm btn-info" data-id="<?= $data['id_barang']; ?>" data-barcode="<?= $data['barcode']; ?>" data-nama="<?= $data['nama']; ?>" data-stok="<?= $data['stok']; ?>">Pilih</button>
-                                </td>
-                            </tr>
-                        <?php } ?>
-                    </tbody>
+                    <tbody></tbody>
                 </table>
             </div>
             <!-- <div class="modal-footer">
@@ -247,3 +233,26 @@
         </div>
     </div>
 </div>
+
+<script>
+    const sess_data = <?= json_encode($_SESSION) ?>;
+
+    $(document).ready(function () {
+        var dt = $('#barangTable').DataTable({
+            dom: "Bfrtip",
+            ajax: {
+                url: 'process/action?url=getbarang',
+                type: "POST",
+            },
+            processing: true,
+            serverSide: true,
+            columns: [
+                { data: "barcode" },
+                { data: "nama" },
+                { data: "stok", className: "text-center", },
+                { data: "aksi_pilih", className: "text-center", },
+            ],
+            ordering: false
+        });
+    });
+</script>

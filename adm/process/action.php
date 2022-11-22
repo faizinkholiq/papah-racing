@@ -161,9 +161,9 @@ if (empty($_GET['url'])) {
 	} else if ($to == 'getpengeluaran') {
 		$nc->getpengeluaran($con);
 	} else if ($to == 'tambahpengeluaran') {
-		$nc->tambahpengeluaran($con, $_POST['id_pengeluaran_type'], $_POST['jumlah'], $_POST['keterangan'], $_POST['id_user']);
+		$nc->tambahpengeluaran($con, $_POST['id_pengeluaran_type'], str_replace(".", "", $_POST['jumlah']), $_POST['keterangan'], $_POST['id_user']);
 	} else if ($to == 'ubahpengeluaran') {
-		$nc->ubahpengeluaran($con, $_POST['id_pengeluaran'], $_POST['id_pengeluaran_type'], $_POST['jumlah'], $_POST['keterangan'], $_POST['id_user']);
+		$nc->ubahpengeluaran($con, $_POST['id_pengeluaran'], $_POST['id_pengeluaran_type'], str_replace(".", "", $_POST['jumlah']), $_POST['keterangan'], $_POST['id_user']);
 	} else if ($to == 'hapuspengeluaran') {
 		$id_pengeluaran = $_GET['this'];
 		$nc->hapuspengeluaran($con, $id_pengeluaran);

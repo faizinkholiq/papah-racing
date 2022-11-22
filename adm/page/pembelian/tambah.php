@@ -119,7 +119,7 @@
                     <div class="col-12">
                         <?php
                         $cek = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM pembelian_temp WHERE id_user='" . $_SESSION['id_user'] . "'"));
-                        if (!isset($cek['id_user']) && $cek['id_user'] == 0) {
+                        if (!isset($cek['id_user']) || $cek['id_user'] == 0) {
                             echo "<button type='submit' class='btn btn-primary btn-block' disabled><i class='fas fa-money-bill-alt mr-2'></i>Bayar</button>";
                         } else {
                             echo "<button type='submit' class='btn btn-primary btn-block'><i class='fas fa-money-bill-alt mr-2'></i>Bayar</button>";
@@ -141,7 +141,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
             <div class="modal-body table-responsive">
-                <table class="table table-bordered table-striped table-hover text-center display mt-3">
+                <table style="width:100%" id="barangTable" class="table table-bordered table-striped table-hover text-center mt-3">
                     <thead>
                         <tr>
                             <th>Barcode</th>
@@ -151,19 +151,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php
-                        $query = mysqli_query($con, "SELECT * FROM barang WHERE deleted = 0 ORDER BY created DESC");
-                        foreach ($query as $data) {
-                        ?>
-                            <tr class="text-left">
-                                <td><?= $data['barcode']; ?></td>
-                                <td><?= $data['nama']; ?></td>
-                                <td class="text-center"><?= $data['stok']; ?></td>
-                                <td class="text-center">
-                                    <button id="pilihbarang" class="btn btn-sm btn-info" data-id="<?= $data['id_barang']; ?>" data-barcode="<?= $data['barcode']; ?>" data-nama="<?= $data['nama']; ?>" data-stok="<?= $data['stok']; ?>">Pilih</button>
-                                </td>
-                            </tr>
-                        <?php } ?>
                     </tbody>
                 </table>
             </div>
@@ -224,3 +211,26 @@
         </div>
     </div>
 </div>
+
+<script>
+    const sess_data = <?= json_encode($_SESSION) ?>;
+
+    $(document).ready(function () {
+        var dt = $('#barangTable').DataTable({
+            dom: "Bfrtip",
+            ajax: {
+                url: 'process/action?url=getbarang',
+                type: "POST",
+            },
+            processing: true,
+            serverSide: true,
+            columns: [
+                { data: "barcode" },
+                { data: "nama" },
+                { data: "stok", className: "text-center", },
+                { data: "aksi_pilih", className: "text-center", },
+            ],
+            ordering: false
+        });
+    });
+</script>

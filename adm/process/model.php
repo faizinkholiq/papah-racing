@@ -487,6 +487,7 @@ class con
 			<a href=\"process/action?url=hapusbarang&this=', id_barang, '\" class=\"btn btn-danger btn-sm\" data-toggle=\"tooltip\" data-original-title=\"Hapus\" onclick=\"return confirm(`Anda yakin ingin hapus data ini?`)\"><i class=\"fas fa-trash-alt\"></i></a>'
 		)";
 		$btn_gambar = "CONCAT('<a href=\"main?url=ubah-barang&this=', id_barang, '\" class=\"btn btn-primary btn-sm\"><i class=\"fas fa-photo-video\"></i></a>')";
+		$btn_pilih = "CONCAT('<button id=\"pilihbarang\" class=\"btn btn-sm btn-info\" data-id=\"', id_barang, '\" data-barcode=\"', barcode, '\" data-nama=\"', nama, '\" data-stok=\"', stok, '\">Pilih</button>')";
 
 		$result = mysqli_query($con, "
 			SELECT  
@@ -502,7 +503,8 @@ class con
 				CONCAT('RP', FORMAT(admin, 0, 'id_ID')) admin,
 				CONCAT('RP', FORMAT(het, 0, 'id_ID')) het,
 				$btn_aksi aksi,
-				$btn_gambar gambar
+				$btn_gambar gambar,
+				$btn_pilih aksi_pilih
 			FROM barang 
 			WHERE deleted = 0 
 			$whereFilter
@@ -956,8 +958,8 @@ class con
 
 	function hapusbarangpenjualan($con, $id_barang, $id_user)
 	{
-		$query = mysqli_query($con, "DELETE FROM penjualan_temp WHERE id_barang='$id_barang' AND id_user='$id_user' ");
 		$query_type = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM penjualan_temp WHERE id_user='$id_user'"));
+		$query = mysqli_query($con, "DELETE FROM penjualan_temp WHERE id_barang='$id_barang' AND id_user='$id_user' ");
 		if ($query_type['id_user'] != NULL) {
 			header('location:../main?url=tambah-penjualan&type=' . $query_type['type'] . '');
 		} else {
@@ -1285,7 +1287,7 @@ class con
 				pengeluaran.id_pengeluaran,
 				DATE_FORMAT(pengeluaran.tanggal, '%e %M %Y, %H:%i') tanggal,
 				pengeluaran_type.jenis,
-				pengeluaran.jumlah,
+				CONCAT('Rp', FORMAT(pengeluaran.jumlah, 0,'id_ID')) jumlah,
 				pengeluaran.keterangan,
 				user.nama user,
 				$btn_aksi aksi
