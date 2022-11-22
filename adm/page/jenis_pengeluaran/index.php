@@ -13,7 +13,7 @@ $query = mysqli_query($con, "SELECT * FROM pengeluaran_type ORDER BY id_pengelua
         <table id="jenisPengeluaranTable" class="table table-striped table-bordered" style="width:100%">
             <thead>
                 <tr class="text-center">
-                    <th>No.</th>
+                    <th width="10">No.</th>
                     <th>Jenis</th>
                     <th>Aksi</th>
                 </tr>

@@ -142,6 +142,7 @@ class con
 			LIMIT $limit OFFSET $offset
 		");
 		
+		$data["data"] = [];
 		while($row = mysqli_fetch_assoc($result)){
 			$row["last_login"] = $this->time_ago(substr($row['last_login'],0,-3));
 			$data["data"][] = $row;
@@ -149,9 +150,10 @@ class con
 		$data["draw"] = intval($_POST["draw"]);
 
 		$result_all = mysqli_query($con, "
-			SELECT * 
+			SELECT user.id_user
 			FROM user 
-			WHERE id_jabatan!='1'
+			LEFT JOIN jabatan ON jabatan.id_jabatan = user.id_jabatan
+			WHERE user.id_jabatan!='1'
 			$whereFilter
 		");
 		$data["recordsTotal"] = mysqli_num_rows($result_all);
@@ -315,7 +317,8 @@ class con
 			ORDER BY id_supplier DESC
 			LIMIT $limit OFFSET $offset
 		");
-		
+			
+		$data["data"] = [];
 		while($row = mysqli_fetch_assoc($result)){
 			$data["data"][] = $row;
 		}
@@ -412,6 +415,7 @@ class con
 			LIMIT $limit OFFSET $offset
 		");
 		
+		$data["data"] = [];
 		while($row = mysqli_fetch_assoc($result)){
 			$data["data"][] = $row;
 		}
@@ -491,12 +495,12 @@ class con
 				nama,
 				merk,
 				stok,
-				modal,
-				distributor,
-				reseller,
-				bengkel,
-				admin,
-				het,
+				CONCAT('RP', FORMAT(modal, 0, 'id_ID')) modal,
+				CONCAT('RP', FORMAT(distributor, 0, 'id_ID')) distributor,
+				CONCAT('RP', FORMAT(reseller, 0, 'id_ID')) reseller,
+				CONCAT('RP', FORMAT(bengkel, 0, 'id_ID')) bengkel,
+				CONCAT('RP', FORMAT(admin, 0, 'id_ID')) admin,
+				CONCAT('RP', FORMAT(het, 0, 'id_ID')) het,
 				$btn_aksi aksi,
 				$btn_gambar gambar
 			FROM barang 
@@ -506,6 +510,7 @@ class con
 			LIMIT $limit OFFSET $offset
 		");
 		
+		$data["data"] = [];
 		while($row = mysqli_fetch_assoc($result)){
 			$data["data"][] = $row;
 		}
@@ -819,7 +824,7 @@ class con
 		
 		$q_src = "";
 		if(!empty($search["value"])){
-			$col = ["pembelian.no_po", "supplier.nama"];
+			$col = ["pembelian.no_po", "supplier.nama", "DATE_FORMAT(pembelian.tanggal, '%e %M %Y')", "supplier.nama", "pembelian.status", "user.nama"];
 			$src = $search["value"];
 			foreach($col as $key => $val){
 				if($key == 0) {
@@ -880,9 +885,11 @@ class con
 			LIMIT $limit OFFSET $offset
 		");
 		
+		$data["data"] = [];
 		while($row = mysqli_fetch_assoc($result)){
 			$data["data"][] = $row;
 		}
+
 		$data["draw"] = intval($_POST["draw"]);
 
 		$result_all = mysqli_query($con, "
@@ -964,7 +971,7 @@ class con
 		
 		$q_src = "";
 		if(!empty($search["value"])){
-			$col = ["penjualan.no_faktur", "penjualan.tanggal",  "pelanggan.nama", "pelanggan.type",];
+			$col = ["penjualan.no_faktur", "DATE_FORMAT(penjualan.tanggal, '%e %M %Y, %H:%i')",  "pelanggan.nama", "pelanggan.type", "penjualan.status", "penjualan.persetujuan", "user.nama"];
 			$src = $search["value"];
 			foreach($col as $key => $val){
 				if($key == 0) {
@@ -1021,7 +1028,7 @@ class con
 				penjualan.id_pelanggan,
 				pelanggan.nama pelanggan,
 				CONCAT(UCASE(LEFT(pelanggan.type, 1)), SUBSTRING(pelanggan.type, 2)) type,
-				penjualan.tanggal,
+				DATE_FORMAT(penjualan.tanggal, '%e %M %Y, %H:%i') tanggal,
 				$badge_status status,
 				CONCAT('Rp', FORMAT(penjualan.total_transaksi, 0,'id_ID')) total_transaksi,
 				CONCAT('Rp', FORMAT(IF(penjualan.status = 'Lunas', penjualan.total_transaksi, penjualan.total_bayar), 0,'id_ID')) total_bayar,
@@ -1040,7 +1047,7 @@ class con
 				penjualan.id_pelanggan,
 				pelanggan.nama pelanggan,
 				CONCAT(UCASE(LEFT(pelanggan.type, 1)), SUBSTRING(pelanggan.type, 2)) type,
-				penjualan.tanggal,
+				DATE_FORMAT(penjualan.tanggal, '%e %M %Y, %H:%i') tanggal,
 				$badge_status status,
 				CONCAT('Rp', FORMAT(penjualan.total_transaksi, 0,'id_ID')) total_transaksi,
 				CONCAT('Rp', FORMAT(IF(penjualan.status = 'Lunas', penjualan.total_transaksi, penjualan.total_bayar), 0,'id_ID')) total_bayar,
@@ -1057,9 +1064,11 @@ class con
 			LIMIT $limit OFFSET $offset
 		");
 		
+		$data["data"] = [];
 		while($row = mysqli_fetch_assoc($result)){
 			$data["data"][] = $row;
 		}
+
 		$data["draw"] = intval($_POST["draw"]);
 
 		$result_all = mysqli_query($con, "
@@ -1203,9 +1212,11 @@ class con
 			LIMIT $limit OFFSET $offset
 		");
 		
+		$data["data"] = [];
 		while($row = mysqli_fetch_assoc($result)){
 			$data["data"][] = $row;
 		}
+
 		$data["draw"] = intval($_POST["draw"]);
 
 		$result_all = mysqli_query($con, "SELECT * FROM pengeluaran_type WHERE 1=1 $whereFilter");
@@ -1241,7 +1252,7 @@ class con
 		
 		$q_src = "";
 		if(!empty($search["value"])){
-			$col = ["jenis"];
+			$col = ["DATE_FORMAT(pengeluaran.tanggal, '%e %M %Y, %H:%i')", "pengeluaran_type.jenis", "pengeluaran.keterangan", "user.nama"];
 			$src = $search["value"];
 			foreach($col as $key => $val){
 				if($key == 0) {
@@ -1286,9 +1297,11 @@ class con
 			LIMIT $limit OFFSET $offset
 		");
 		
+		$data["data"] = [];
 		while($row = mysqli_fetch_assoc($result)){
 			$data["data"][] = $row;
 		}
+
 		$data["draw"] = intval($_POST["draw"]);
 
 		$result_all = mysqli_query($con, "
@@ -1424,9 +1437,11 @@ class con
 			LIMIT $limit OFFSET $offset
 		");
 		
+		$data["data"] = [];
 		while($row = mysqli_fetch_assoc($result)){
 			$data["data"][] = $row;
 		}
+
 		$data["draw"] = intval($_POST["draw"]);
 
 		$result_all = mysqli_query($con, "SELECT * FROM merk WHERE 1=1 $whereFilter");
