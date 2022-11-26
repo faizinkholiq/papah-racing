@@ -466,11 +466,29 @@ class con
 		if(!empty($search["value"])){
 			$col = ["barcode", "nama", "merk", "stok", "modal", "distributor", "reseller", "bengkel", "admin", "het"];
 			$src = $search["value"];
+			$src_arr = explode(" ", $src);
+
 			foreach($col as $key => $val){
 				if($key == 0) {
-					$q_src .= "$val LIKE '%$src%'";
+					$q_src .= "(";
+					foreach($src_arr as $k => $v){
+						if($k == 0) {
+							$q_src .= "$val LIKE '%$v%'"; 
+						}else{
+							$q_src .= " AND $val LIKE '%$v%'";
+						}
+					}
+					$q_src .= ")";
 				}else{
-					$q_src .= " OR $val LIKE '%$src%'";
+					$q_src .= " OR (";
+					foreach($src_arr as $k => $v){
+						if($k == 0) {
+							$q_src .= "$val LIKE '%$v%'"; 
+						}else{
+							$q_src .= " AND $val LIKE '%$v%'";
+						}
+					}
+					$q_src .= ")";
 				}
 			}
 		}
