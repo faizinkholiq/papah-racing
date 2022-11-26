@@ -1497,7 +1497,8 @@ class con
 
 	function approved($con, $no_faktur)
 	{
-		$query = mysqli_query($con, "UPDATE penjualan SET persetujuan='Approved' WHERE no_faktur='$no_faktur' ");
+		$date = date('Y-m-d H:i:s');
+		$query = mysqli_query($con, "UPDATE penjualan SET persetujuan='Approved', updated='$date' WHERE no_faktur='$no_faktur' ");
 		header('location:../main?url=penjualan');
 	}
 
