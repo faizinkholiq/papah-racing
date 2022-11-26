@@ -1120,11 +1120,13 @@ class con
 		$badge_status = "IF(penjualan.status = 'Lunas', CONCAT('<span class=\"badge badge-success\">', penjualan.status, '</span>'), CONCAT('<span class=\"badge badge-danger\">', penjualan.status, '</span>'))";
 		$badge_approve = "IF(penjualan.persetujuan = 'Approved', CONCAT('<span class=\"badge badge-primary\">', penjualan.persetujuan, '</span>'), CONCAT('<span class=\"badge badge-warning\">', penjualan.persetujuan, '</span>'))";
 
-		if ($_SESSION['id_jabatan'] != "1" && $_SESSION['id_jabatan'] != "2") {
-			$whereFilter1 .=  "AND DATEDIFF(NOW(), tanggal) <= 90 AND status = 'Lunas' AND persetujuan = 'Approved' ";
+		if ($_SESSION['id_jabatan'] != "1" || $_SESSION['id_jabatan'] != "2") {
+			// $whereFilter1 .=  "AND DATEDIFF(NOW(), tanggal) <= 90 AND status = 'Lunas' AND persetujuan = 'Approved' ";
+			$whereFilter1 .=  "AND status = 'Lunas' AND persetujuan = 'Approved' ";
 			$whereFilter2 .=  "AND CONCAT(status,persetujuan) != CONCAT('Lunas','Approved') ";
 		}else{
-			$whereFilter1 .=  "AND penjualan.id_user='" . $_SESSION['id_user'] . "' AND DATEDIFF(NOW(), penjualan.tanggal) <= 90 AND penjualan.status = 'Lunas' AND penjualan.persetujuan = 'Approved'";
+			// $whereFilter1 .=  "AND penjualan.id_user='" . $_SESSION['id_user'] . "' AND DATEDIFF(NOW(), penjualan.tanggal) <= 90 AND penjualan.status = 'Lunas' AND penjualan.persetujuan = 'Approved'";
+			$whereFilter1 .=  "AND penjualan.id_user='" . $_SESSION['id_user'] . "' AND penjualan.status = 'Lunas' AND penjualan.persetujuan = 'Approved'";
 			$whereFilter2 .=  "AND CONCAT(penjualan.status, penjualan.persetujuan) != CONCAT('Lunas','Approved') ";
 		}
 		
