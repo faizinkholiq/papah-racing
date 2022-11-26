@@ -71,11 +71,29 @@ class con
 		if(!empty($search["value"])){
 			$col = ["user.nama", "user.username", "user.alamat", "user.kontak", "jabatan.nama", "user.last_login"];
 			$src = $search["value"];
+			$src_arr = explode(" ", $src);
+
 			foreach($col as $key => $val){
 				if($key == 0) {
-					$q_src .= "$val LIKE '%$src%'";
+					$q_src .= "(";
+					foreach($src_arr as $k => $v){
+						if($k == 0) {
+							$q_src .= "$val LIKE '%$v%'"; 
+						}else{
+							$q_src .= " AND $val LIKE '%$v%'";
+						}
+					}
+					$q_src .= ")";
 				}else{
-					$q_src .= " OR $val LIKE '%$src%'";
+					$q_src .= " OR (";
+					foreach($src_arr as $k => $v){
+						if($k == 0) {
+							$q_src .= "$val LIKE '%$v%'"; 
+						}else{
+							$q_src .= " AND $val LIKE '%$v%'";
+						}
+					}
+					$q_src .= ")";
 				}
 			}
 		}
@@ -282,11 +300,29 @@ class con
 		if(!empty($search["value"])){
 			$col = ["nama", "alamat", "kontak"];
 			$src = $search["value"];
+			$src_arr = explode(" ", $src);
+
 			foreach($col as $key => $val){
 				if($key == 0) {
-					$q_src .= "$val LIKE '%$src%'";
+					$q_src .= "(";
+					foreach($src_arr as $k => $v){
+						if($k == 0) {
+							$q_src .= "$val LIKE '%$v%'"; 
+						}else{
+							$q_src .= " AND $val LIKE '%$v%'";
+						}
+					}
+					$q_src .= ")";
 				}else{
-					$q_src .= " OR $val LIKE '%$src%'";
+					$q_src .= " OR (";
+					foreach($src_arr as $k => $v){
+						if($k == 0) {
+							$q_src .= "$val LIKE '%$v%'"; 
+						}else{
+							$q_src .= " AND $val LIKE '%$v%'";
+						}
+					}
+					$q_src .= ")";
 				}
 			}
 		}
@@ -366,11 +402,29 @@ class con
 		if(!empty($search["value"])){
 			$col = ["nama", "type", "alamat", "kontak"];
 			$src = $search["value"];
+			$src_arr = explode(" ", $src);
+
 			foreach($col as $key => $val){
 				if($key == 0) {
-					$q_src .= "$val LIKE '%$src%'";
+					$q_src .= "(";
+					foreach($src_arr as $k => $v){
+						if($k == 0) {
+							$q_src .= "$val LIKE '%$v%'"; 
+						}else{
+							$q_src .= " AND $val LIKE '%$v%'";
+						}
+					}
+					$q_src .= ")";
 				}else{
-					$q_src .= " OR $val LIKE '%$src%'";
+					$q_src .= " OR (";
+					foreach($src_arr as $k => $v){
+						if($k == 0) {
+							$q_src .= "$val LIKE '%$v%'"; 
+						}else{
+							$q_src .= " AND $val LIKE '%$v%'";
+						}
+					}
+					$q_src .= ")";
 				}
 			}
 		}
@@ -846,11 +900,29 @@ class con
 		if(!empty($search["value"])){
 			$col = ["pembelian.no_po", "supplier.nama", "DATE_FORMAT(pembelian.tanggal, '%e %M %Y')", "supplier.nama", "pembelian.status", "user.nama"];
 			$src = $search["value"];
+			$src_arr = explode(" ", $src);
+
 			foreach($col as $key => $val){
 				if($key == 0) {
-					$q_src .= "$val LIKE '%$src%'";
+					$q_src .= "(";
+					foreach($src_arr as $k => $v){
+						if($k == 0) {
+							$q_src .= "$val LIKE '%$v%'"; 
+						}else{
+							$q_src .= " AND $val LIKE '%$v%'";
+						}
+					}
+					$q_src .= ")";
 				}else{
-					$q_src .= " OR $val LIKE '%$src%'";
+					$q_src .= " OR (";
+					foreach($src_arr as $k => $v){
+						if($k == 0) {
+							$q_src .= "$val LIKE '%$v%'"; 
+						}else{
+							$q_src .= " AND $val LIKE '%$v%'";
+						}
+					}
+					$q_src .= ")";
 				}
 			}
 		}
@@ -993,11 +1065,29 @@ class con
 		if(!empty($search["value"])){
 			$col = ["penjualan.no_faktur", "DATE_FORMAT(penjualan.tanggal, '%e %M %Y, %H:%i')",  "pelanggan.nama", "pelanggan.type", "penjualan.status", "penjualan.persetujuan", "user.nama"];
 			$src = $search["value"];
+			$src_arr = explode(" ", $src);
+
 			foreach($col as $key => $val){
 				if($key == 0) {
-					$q_src .= "$val LIKE '%$src%'";
+					$q_src .= "(";
+					foreach($src_arr as $k => $v){
+						if($k == 0) {
+							$q_src .= "$val LIKE '%$v%'"; 
+						}else{
+							$q_src .= " AND $val LIKE '%$v%'";
+						}
+					}
+					$q_src .= ")";
 				}else{
-					$q_src .= " OR $val LIKE '%$src%'";
+					$q_src .= " OR (";
+					foreach($src_arr as $k => $v){
+						if($k == 0) {
+							$q_src .= "$val LIKE '%$v%'"; 
+						}else{
+							$q_src .= " AND $val LIKE '%$v%'";
+						}
+					}
+					$q_src .= ")";
 				}
 			}
 		}
@@ -1199,11 +1289,29 @@ class con
 		if(!empty($search["value"])){
 			$col = ["jenis"];
 			$src = $search["value"];
+			$src_arr = explode(" ", $src);
+
 			foreach($col as $key => $val){
 				if($key == 0) {
-					$q_src .= "$val LIKE '%$src%'";
+					$q_src .= "(";
+					foreach($src_arr as $k => $v){
+						if($k == 0) {
+							$q_src .= "$val LIKE '%$v%'"; 
+						}else{
+							$q_src .= " AND $val LIKE '%$v%'";
+						}
+					}
+					$q_src .= ")";
 				}else{
-					$q_src .= " OR $val LIKE '%$src%'";
+					$q_src .= " OR (";
+					foreach($src_arr as $k => $v){
+						if($k == 0) {
+							$q_src .= "$val LIKE '%$v%'"; 
+						}else{
+							$q_src .= " AND $val LIKE '%$v%'";
+						}
+					}
+					$q_src .= ")";
 				}
 			}
 		}
@@ -1274,11 +1382,29 @@ class con
 		if(!empty($search["value"])){
 			$col = ["DATE_FORMAT(pengeluaran.tanggal, '%e %M %Y, %H:%i')", "pengeluaran_type.jenis", "pengeluaran.keterangan", "user.nama"];
 			$src = $search["value"];
+			$src_arr = explode(" ", $src);
+
 			foreach($col as $key => $val){
 				if($key == 0) {
-					$q_src .= "$val LIKE '%$src%'";
+					$q_src .= "(";
+					foreach($src_arr as $k => $v){
+						if($k == 0) {
+							$q_src .= "$val LIKE '%$v%'"; 
+						}else{
+							$q_src .= " AND $val LIKE '%$v%'";
+						}
+					}
+					$q_src .= ")";
 				}else{
-					$q_src .= " OR $val LIKE '%$src%'";
+					$q_src .= " OR (";
+					foreach($src_arr as $k => $v){
+						if($k == 0) {
+							$q_src .= "$val LIKE '%$v%'"; 
+						}else{
+							$q_src .= " AND $val LIKE '%$v%'";
+						}
+					}
+					$q_src .= ")";
 				}
 			}
 		}
@@ -1424,11 +1550,29 @@ class con
 		if(!empty($search["value"])){
 			$col = ["name"];
 			$src = $search["value"];
+			$src_arr = explode(" ", $src);
+
 			foreach($col as $key => $val){
 				if($key == 0) {
-					$q_src .= "$val LIKE '%$src%'";
+					$q_src .= "(";
+					foreach($src_arr as $k => $v){
+						if($k == 0) {
+							$q_src .= "$val LIKE '%$v%'"; 
+						}else{
+							$q_src .= " AND $val LIKE '%$v%'";
+						}
+					}
+					$q_src .= ")";
 				}else{
-					$q_src .= " OR $val LIKE '%$src%'";
+					$q_src .= " OR (";
+					foreach($src_arr as $k => $v){
+						if($k == 0) {
+							$q_src .= "$val LIKE '%$v%'"; 
+						}else{
+							$q_src .= " AND $val LIKE '%$v%'";
+						}
+					}
+					$q_src .= ")";
 				}
 			}
 		}
