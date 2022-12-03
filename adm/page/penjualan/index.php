@@ -1,5 +1,6 @@
 <?php
 $admins = mysqli_query($con, "SELECT * FROM user WHERE id_jabatan = 5");
+$params = (!empty($_GET))? http_build_query($_GET) : "";
 ?>
 <div class="row">
     <div class="col-8">
@@ -15,22 +16,27 @@ $admins = mysqli_query($con, "SELECT * FROM user WHERE id_jabatan = 5");
         <div style="font-size:1.3rem; margin-top: 1rem;">
             <a href="main?url=penjualan" class="badge bg-primary text-white">All Data</a>
             <?php foreach($admins as $item): ?>
-            <a href="main?url=penjualan&admin=<?=$item["id_user"] ?>" class="badge <?=(isset($_GET["admin"]) && $_GET["admin"] == $item["id_user"])? 'bg-secondary text-white' : 'bg-info text-white' ?> "><?=$item["nama"] ?></a>
+            <a href="main?<?= $params ?>&admin=<?=$item["id_user"] ?>" class="badge <?=(isset($_GET["admin"]) && $_GET["admin"] == $item["id_user"])? 'bg-secondary text-white' : 'bg-info text-white' ?> "><?=$item["nama"] ?></a>
             <?php endforeach; ?>
+        </div>
+        <div style="font-size:1.3rem; margin-top: 1rem;">
+            Status:
+            <a href="main?<?= $params ?>&status=lunas" class="badge bg-success text-white">Lunas</a>
+            <a href="main?<?= $params ?>&status=hutang" class="badge bg-danger text-white">Hutang</a>
         </div>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <?php
-            $query_type = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM penjualan_temp WHERE id_user='" . $_SESSION['id_user'] . "'"));
-            if (isset($query_type['id_user']) && $query_type['id_user'] != NULL) {
+                $query_type = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM penjualan_temp WHERE id_user='" . $_SESSION['id_user'] . "'"));
+                if (isset($query_type['id_user']) && $query_type['id_user'] != NULL):
             ?>
                 <a class="dropdown-item text-center" href="main?url=tambah-penjualan&type=<?= isset($query_type['type'])? $query_type['type'] : ''  ?>"><?= isset($query_type['type'])? ucfirst($query_type['type']) : '' ?></a>
-            <?php } else { ?>
+            <?php else: ?>
                 <a class="dropdown-item text-center" href="main?url=tambah-penjualan&type=distributor">Distributor</a>
                 <a class="dropdown-item text-center" href="main?url=tambah-penjualan&type=reseller">Reseller</a>
                 <a class="dropdown-item text-center" href="main?url=tambah-penjualan&type=bengkel">Bengkel</a>
                 <a class="dropdown-item text-center" href="main?url=tambah-penjualan&type=admin">Admin</a>
                 <a class="dropdown-item text-center" href="main?url=tambah-penjualan&type=het">HET</a>
-            <?php } ?>
+            <?php endif; ?>
         </div>
     </div>
     <div class="table-responsive mt-3">
