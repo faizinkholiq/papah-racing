@@ -1172,7 +1172,7 @@ class con
 			LEFT JOIN pelanggan ON pelanggan.id_pelanggan = penjualan.id_pelanggan
 			LEFT JOIN user ON user.id_user = penjualan.id_user
 			WHERE 1=1 $whereFilter2
-			ORDER BY tanggal DESC
+			ORDER BY tanggal ASC
 			LIMIT $limit OFFSET $offset
 		");
 		
