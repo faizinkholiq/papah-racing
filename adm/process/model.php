@@ -1131,7 +1131,13 @@ class con
 		}
 		
 		if (isset($_POST["admin"]) && !empty($_POST["admin"])) {
+			$whereFilter1 .= "AND penjualan.id_user = ".$_POST["admin"];
 			$whereFilter2 .= "AND penjualan.id_user = ".$_POST["admin"];
+		}
+
+		if (isset($_POST["status"]) && !empty($_POST["status"])) {
+			$whereFilter1 .= "AND penjualan.status = '".$_POST["status"]."'";
+			$whereFilter2 .= "AND penjualan.status = '".$_POST["status"]."'";
 		}
 
 		$result = mysqli_query($con, "

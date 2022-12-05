@@ -1,5 +1,6 @@
 <?php
 $admins = mysqli_query($con, "SELECT * FROM user WHERE id_jabatan = 5");
+echo ($_GET["admin"]);
 $params = (!empty($_GET))? http_build_query($_GET) : "";
 ?>
 <div class="row">
@@ -16,13 +17,13 @@ $params = (!empty($_GET))? http_build_query($_GET) : "";
         <div style="font-size:1.3rem; margin-top: 1rem;">
             <a href="main?url=penjualan" class="badge bg-primary text-white">All Data</a>
             <?php foreach($admins as $item): ?>
-            <a href="main?<?= $params ?>&admin=<?=$item["id_user"] ?>" class="badge <?=(isset($_GET["admin"]) && $_GET["admin"] == $item["id_user"])? 'bg-secondary text-white' : 'bg-info text-white' ?> "><?=$item["nama"] ?></a>
+            <a href="main?url=penjualan&admin=<?=$item["id_user"] ?>" class="badge <?=(isset($_GET["admin"]) && $_GET["admin"] == $item["id_user"])? 'bg-secondary text-white' : 'bg-info text-white' ?> "><?=$item["nama"] ?></a>
             <?php endforeach; ?>
         </div>
         <div style="font-size:1.3rem; margin-top: 1rem;">
             Status:
-            <a href="main?<?= $params ?>&status=lunas" class="badge bg-success text-white">Lunas</a>
-            <a href="main?<?= $params ?>&status=hutang" class="badge bg-danger text-white">Hutang</a>
+            <a href="main?url=penjualan&status=lunas" class="badge bg-success text-white">Lunas</a>
+            <a href="main?url=penjualan&status=hutang" class="badge bg-danger text-white">Hutang</a>
         </div>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <?php
@@ -72,7 +73,8 @@ $params = (!empty($_GET))? http_build_query($_GET) : "";
                 url: 'process/action?url=getpenjualan',
                 type: "POST",
                 data: {
-                    admin: <?= isset($_GET['admin'])? $_GET['admin'] : 0 ?>
+                    admin: <?= isset($_GET['admin'])? $_GET['admin'] : 0 ?>,
+                    status: "<?= isset($_GET['status'])? $_GET['status'] : '' ?>",
                 }
             },
             processing: true,
