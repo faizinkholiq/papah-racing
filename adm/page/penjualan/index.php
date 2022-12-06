@@ -49,6 +49,7 @@ $params = (!empty($_GET))? http_build_query($_GET) : "";
                     <th>Pelanggan</th>
                     <th>Type</th>
                     <th>Status</th>
+                    <th>Tipe Pembayaran</th>
                     <th>Total Transaksi</th>
                     <th>Total Bayar</th>
                     <th>Keterangan</th>
@@ -85,6 +86,7 @@ $params = (!empty($_GET))? http_build_query($_GET) : "";
                 { data: "pelanggan" },
                 { data: "type" },
                 { data: "status", className: "text-center", },
+                { data: "tipe_bayar", className: "text-center", },
                 { data: "total_transaksi" },
                 { data: "total_bayar" },
                 { data: "persetujuan", className: "text-center", },

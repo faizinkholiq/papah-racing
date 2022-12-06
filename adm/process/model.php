@@ -1063,7 +1063,7 @@ class con
 		
 		$q_src = "";
 		if(!empty($search["value"])){
-			$col = ["penjualan.no_faktur", "DATE_FORMAT(penjualan.tanggal, '%e %M %Y, %H:%i')",  "pelanggan.nama", "pelanggan.type", "penjualan.status", "penjualan.persetujuan", "user.nama"];
+			$col = ["penjualan.no_faktur", "DATE_FORMAT(penjualan.tanggal, '%e %M %Y, %H:%i')",  "pelanggan.nama", "pelanggan.type", "penjualan.status", "penjualan.persetujuan", "user.nama", "penjualan.tipe_bayar"];
 			$src = $search["value"];
 			$src_arr = explode(" ", $src);
 
@@ -1148,6 +1148,7 @@ class con
 				CONCAT(UCASE(LEFT(pelanggan.type, 1)), SUBSTRING(pelanggan.type, 2)) type,
 				DATE_FORMAT(penjualan.tanggal, '%e %M %Y, %H:%i') tanggal,
 				$badge_status status,
+				penjualan.tipe_bayar,
 				CONCAT('Rp', FORMAT(penjualan.total_transaksi, 0,'id_ID')) total_transaksi,
 				CONCAT('Rp', FORMAT(IF(penjualan.status = 'Lunas', penjualan.total_transaksi, penjualan.total_bayar), 0,'id_ID')) total_bayar,
 				$badge_approve persetujuan,
@@ -1167,6 +1168,7 @@ class con
 				CONCAT(UCASE(LEFT(pelanggan.type, 1)), SUBSTRING(pelanggan.type, 2)) type,
 				DATE_FORMAT(penjualan.tanggal, '%e %M %Y, %H:%i') tanggal,
 				$badge_status status,
+				penjualan.tipe_bayar,
 				CONCAT('Rp', FORMAT(penjualan.total_transaksi, 0,'id_ID')) total_transaksi,
 				CONCAT('Rp', FORMAT(IF(penjualan.status = 'Lunas', penjualan.total_transaksi, penjualan.total_bayar), 0,'id_ID')) total_bayar,
 				$badge_approve persetujuan,
