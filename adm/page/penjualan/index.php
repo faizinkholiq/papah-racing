@@ -1,7 +1,17 @@
 <?php
 $admins = mysqli_query($con, "SELECT * FROM user WHERE id_jabatan = 5");
-echo ($_GET["admin"]);
-$params = (!empty($_GET))? http_build_query($_GET) : "";
+$admin = isset($_GET['admin'])? $_GET['admin'] : '0';
+$status = isset($_GET['status'])? $_GET['status'] : '';
+$arr_params = ["url" => "penjualan"];
+if(isset($_GET['admin'])){
+    $arr_params["admin"] = $_GET["admin"];
+}
+
+if(isset($_GET['status'])){
+    $arr_params["status"] = $_GET["status"];
+}
+
+$params = (!empty($arr_params))? http_build_query($arr_params) : "";
 ?>
 <div class="row">
     <div class="col-8">
@@ -16,14 +26,26 @@ $params = (!empty($_GET))? http_build_query($_GET) : "";
         </button>
         <div style="font-size:1.3rem; margin-top: 1rem;">
             <a href="main?url=penjualan" class="badge bg-primary text-white">All Data</a>
-            <?php foreach($admins as $item): ?>
-            <a href="main?url=penjualan&admin=<?=$item["id_user"] ?>" class="badge <?=(isset($_GET["admin"]) && $_GET["admin"] == $item["id_user"])? 'bg-secondary text-white' : 'bg-info text-white' ?> "><?=$item["nama"] ?></a>
+            <?php 
+            foreach($admins as $item):
+            $arr_params["admin"] = $item["id_user"];
+            $params = (!empty($arr_params))? http_build_query($arr_params) : "";
+            ?>
+            <a href="main?<?=$params ?>" class="badge <?=($admin == $item["id_user"])? 'bg-secondary text-white' : 'bg-info text-white' ?> "><?=$item["nama"] ?></a>
             <?php endforeach; ?>
         </div>
         <div style="font-size:1.3rem; margin-top: 1rem;">
             Status:
-            <a href="main?url=penjualan&status=lunas" class="badge bg-success text-white">Lunas</a>
-            <a href="main?url=penjualan&status=hutang" class="badge bg-danger text-white">Hutang</a>
+            <?php 
+                $arr_params["status"] = "lunas";
+                $params = (!empty($arr_params))? http_build_query($arr_params) : "";   
+            ?>
+            <a href="main?<?=$params ?>" class="badge <?=($status == 'lunas')? 'bg-secondary' : 'bg-success' ?> text-white">Lunas</a>
+            <?php 
+                $arr_params["status"] = "hutang";
+                $params = (!empty($arr_params))? http_build_query($arr_params) : "";   
+            ?>
+            <a href="main?<?=$params ?>" class="badge <?=($status == 'hutang')? 'bg-secondary' : 'bg-danger' ?> text-white">Hutang</a>
         </div>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <?php
@@ -49,12 +71,12 @@ $params = (!empty($_GET))? http_build_query($_GET) : "";
                     <th>Pelanggan</th>
                     <th>Type</th>
                     <th>Status</th>
-                    <th>Tipe Pembayaran</th>
+                    <th>Tipe Bayar</th>
                     <th>Total Transaksi</th>
                     <th>Total Bayar</th>
                     <th>Keterangan</th>
                     <th>Dibuat Oleh</th>
-                    <th>Aksi</th>
+                    <th width="" >Aksi</th>
                 </tr>
             </thead>
             <tbody>
@@ -74,8 +96,8 @@ $params = (!empty($_GET))? http_build_query($_GET) : "";
                 url: 'process/action?url=getpenjualan',
                 type: "POST",
                 data: {
-                    admin: <?= isset($_GET['admin'])? $_GET['admin'] : 0 ?>,
-                    status: "<?= isset($_GET['status'])? $_GET['status'] : '' ?>",
+                    admin: <?= $admin ?>,
+                    status: "<?= $status ?>",
                 }
             },
             processing: true,

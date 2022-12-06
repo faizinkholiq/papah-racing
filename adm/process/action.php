@@ -139,7 +139,7 @@ if (empty($_GET['url'])) {
 	} else if ($to == 'getpenjualan') {
 		$nc->getpenjualan($con);
 	} else if ($to == 'tambahpenjualan') {
-		$nc->tambahpenjualan($con, $_POST['id_pelanggan'], $_POST['id_user'], $_POST['total_transaksi'], $_POST['total_bayar']);
+		$nc->tambahpenjualan($con, $_POST['id_pelanggan'], $_POST['id_user'], $_POST['total_transaksi'], $_POST['total_bayar'], $_POST['tipe_bayar']);
 	} else if ($to == 'cicilanpenjualan') {
 		$nc->cicilanpenjualan($con, $_POST['id_user'], $_POST['no_faktur'], $_POST['bayar']);
 	} else if ($to == 'hapuscicilanpenjualan') {

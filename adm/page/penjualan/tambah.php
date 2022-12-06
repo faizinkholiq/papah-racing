@@ -121,6 +121,16 @@
                         </div>
                     </div>
                 </div>
+                <div class="form-group row">
+                    <label for="id_pelanggan" class="col-sm-3 col-form-label">Tipe</label>
+                    <div class="col-sm-9">
+                        <select class="form-control" id="tipe_bayar" name="tipe_bayar" required>
+                            <option value="">-- Select --</option>
+                            <option value="Cash">Cash</option>
+                            <option value="Transfer">Transfer</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="form-row text-center">
                     <div class="col-12">
                         <?php

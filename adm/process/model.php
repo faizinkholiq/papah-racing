@@ -1126,18 +1126,18 @@ class con
 			$whereFilter2 .=  "AND CONCAT(status,persetujuan) != CONCAT('Lunas','Approved') ";
 		}else{
 			// $whereFilter1 .=  "AND penjualan.id_user='" . $_SESSION['id_user'] . "' AND DATEDIFF(NOW(), penjualan.tanggal) <= 90 AND penjualan.status = 'Lunas' AND penjualan.persetujuan = 'Approved'";
-			$whereFilter1 .=  "AND penjualan.id_user='" . $_SESSION['id_user'] . "' AND penjualan.status = 'Lunas' AND penjualan.persetujuan = 'Approved'";
+			$whereFilter1 .=  "AND penjualan.id_user='" . $_SESSION['id_user'] . "' AND penjualan.status = 'Lunas' AND penjualan.persetujuan = 'Approved' ";
 			$whereFilter2 .=  "AND CONCAT(penjualan.status, penjualan.persetujuan) != CONCAT('Lunas','Approved') ";
 		}
 		
 		if (isset($_POST["admin"]) && !empty($_POST["admin"])) {
-			$whereFilter1 .= "AND penjualan.id_user = ".$_POST["admin"];
-			$whereFilter2 .= "AND penjualan.id_user = ".$_POST["admin"];
+			$whereFilter1 .= "AND penjualan.id_user = ".$_POST["admin"]." ";
+			$whereFilter2 .= "AND penjualan.id_user = ".$_POST["admin"]." ";
 		}
 
 		if (isset($_POST["status"]) && !empty($_POST["status"])) {
-			$whereFilter1 .= "AND penjualan.status = '".$_POST["status"]."'";
-			$whereFilter2 .= "AND penjualan.status = '".$_POST["status"]."'";
+			$whereFilter1 .= "AND penjualan.status = '".$_POST["status"]."' ";
+			$whereFilter2 .= "AND penjualan.status = '".$_POST["status"]."' ";
 		}
 
 		$result = mysqli_query($con, "
@@ -1147,8 +1147,13 @@ class con
 				pelanggan.nama pelanggan,
 				CONCAT(UCASE(LEFT(pelanggan.type, 1)), SUBSTRING(pelanggan.type, 2)) type,
 				DATE_FORMAT(penjualan.tanggal, '%e %M %Y, %H:%i') tanggal,
+				penjualan.tanggal real_tanggal,
 				$badge_status status,
-				penjualan.tipe_bayar,
+				CASE 
+					WHEN penjualan.tipe_bayar = 'Cash' THEN 'C'
+					WHEN penjualan.tipe_bayar = 'Transfer' THEN 'T'
+					ELSE ''
+				END tipe_bayar,
 				CONCAT('Rp', FORMAT(penjualan.total_transaksi, 0,'id_ID')) total_transaksi,
 				CONCAT('Rp', FORMAT(IF(penjualan.status = 'Lunas', penjualan.total_transaksi, penjualan.total_bayar), 0,'id_ID')) total_bayar,
 				$badge_approve persetujuan,
@@ -1167,8 +1172,13 @@ class con
 				pelanggan.nama pelanggan,
 				CONCAT(UCASE(LEFT(pelanggan.type, 1)), SUBSTRING(pelanggan.type, 2)) type,
 				DATE_FORMAT(penjualan.tanggal, '%e %M %Y, %H:%i') tanggal,
+				penjualan.tanggal real_tanggal,
 				$badge_status status,
-				penjualan.tipe_bayar,
+				CASE 
+					WHEN penjualan.tipe_bayar = 'Cash' THEN 'C'
+					WHEN penjualan.tipe_bayar = 'Transfer' THEN 'T'
+					ELSE ''
+				END tipe_bayar,
 				CONCAT('Rp', FORMAT(penjualan.total_transaksi, 0,'id_ID')) total_transaksi,
 				CONCAT('Rp', FORMAT(IF(penjualan.status = 'Lunas', penjualan.total_transaksi, penjualan.total_bayar), 0,'id_ID')) total_bayar,
 				$badge_approve persetujuan,
@@ -1180,7 +1190,7 @@ class con
 			LEFT JOIN pelanggan ON pelanggan.id_pelanggan = penjualan.id_pelanggan
 			LEFT JOIN user ON user.id_user = penjualan.id_user
 			WHERE 1=1 $whereFilter2
-			ORDER BY tanggal ASC
+			ORDER BY real_tanggal DESC
 			LIMIT $limit OFFSET $offset
 		");
 		
@@ -1210,7 +1220,7 @@ class con
 		echo json_encode($data);
 	}
 
-	function tambahpenjualan($con, $id_pelanggan, $id_user, $total_transaksi, $total_bayar)
+	function tambahpenjualan($con, $id_pelanggan, $id_user, $total_transaksi, $total_bayar, $tipe_bayar)
 	{
 		// Kode Otomatis Barcode
 		$today = date('ymd');
@@ -1232,7 +1242,7 @@ class con
 			$status = "Lunas";
 		}
 
-		$query = mysqli_query($con, "INSERT INTO penjualan SET no_faktur='$no_faktur',id_pelanggan='$id_pelanggan',tanggal='$tanggal',status='$status',total_transaksi='$total_transaksi',total_bayar='$total_bayar',id_user='$id_user' ");
+		$query = mysqli_query($con, "INSERT INTO penjualan SET no_faktur='$no_faktur',id_pelanggan='$id_pelanggan',tanggal='$tanggal',status='$status',total_transaksi='$total_transaksi',total_bayar='$total_bayar',id_user='$id_user', tipe_bayar='$tipe_bayar' ");
 		// memasukkan history pembayaran jika hutang
 		if ($total_bayar < $total_transaksi) {
 			$query = mysqli_query($con, "INSERT INTO penjualan_debt SET no_faktur='$no_faktur',bayar='$total_bayar',keterangan='DP',id_user='$id_user' ");
