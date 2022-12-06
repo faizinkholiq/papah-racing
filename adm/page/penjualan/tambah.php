@@ -86,7 +86,7 @@
                             $query_pelanggan = mysqli_query($con, "SELECT * FROM pelanggan WHERE id_pelanggan != '2' AND type='" . $_GET['type'] . "'");
                             foreach ($query_pelanggan as $ql) :
                             ?>
-                                <option value="<?= $ql['id_pelanggan']; ?>"><?= $ql['nama']; ?></option>
+                                <option value="<?= $ql['id_pelanggan']; ?>">(<?= ucfirst(substr($ql['type'], 0 , 1)) ?>) <?= $ql['nama']; ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
