@@ -228,5 +228,9 @@ if (empty($_GET['url'])) {
 		
 		ob_end_clean();
 		echo json_encode($data);
+	} else if ($to == 'getlaporanharian') {
+		$nc->getlaporanharian($con);
+	} else if ($to == 'approveharian') {
+		$nc->approveharian($con);
 	}
 }

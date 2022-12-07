@@ -71,9 +71,9 @@ $params = (!empty($arr_params))? http_build_query($arr_params) : "";
                     <th>Pelanggan</th>
                     <th>Type</th>
                     <th>Status</th>
-                    <th>Tipe Bayar</th>
                     <th>Total Transaksi</th>
                     <th>Total Bayar</th>
+                    <th>Transfer / Cash</th>
                     <th>Keterangan</th>
                     <th>Dibuat Oleh</th>
                     <th width="" >Aksi</th>
@@ -108,9 +108,9 @@ $params = (!empty($arr_params))? http_build_query($arr_params) : "";
                 { data: "pelanggan" },
                 { data: "type" },
                 { data: "status", className: "text-center", },
-                { data: "tipe_bayar", className: "text-center", },
                 { data: "total_transaksi" },
                 { data: "total_bayar" },
+                { data: "tipe_bayar", className: "text-center", },
                 { data: "persetujuan", className: "text-center", },
                 { data: "user", className: "text-center", },
                 { data: "aksi", className: "text-center", },

@@ -1805,4 +1805,104 @@ class con
 			"data" => $rows
 		];
 	}
+
+	function getlaporanharian($con)
+	{	
+		$search = $_POST["search"];
+		
+		$q_src = "";
+		if(!empty($search["value"])){
+			$col = ["penjualan.no_faktur", "DATE_FORMAT(penjualan.tanggal, '%e %M %Y, %H:%i')",  "pelanggan.nama", "pelanggan.type", "penjualan.status", "penjualan.persetujuan", "user.nama", "penjualan.tipe_bayar"];
+			$src = $search["value"];
+			$src_arr = explode(" ", $src);
+
+			foreach($col as $key => $val){
+				if($key == 0) {
+					$q_src .= "(";
+					foreach($src_arr as $k => $v){
+						if($k == 0) {
+							$q_src .= "$val LIKE '%$v%'"; 
+						}else{
+							$q_src .= " AND $val LIKE '%$v%'";
+						}
+					}
+					$q_src .= ")";
+				}else{
+					$q_src .= " OR (";
+					foreach($src_arr as $k => $v){
+						if($k == 0) {
+							$q_src .= "$val LIKE '%$v%'"; 
+						}else{
+							$q_src .= " AND $val LIKE '%$v%'";
+						}
+					}
+					$q_src .= ")";
+				}
+			}
+		}
+
+		$whereFilter = "";
+		if(!empty($q_src)){
+			$whereFilter = "AND ($q_src) ";
+		}
+
+		$limit = $_POST["length"];
+		$offset = $_POST["start"];
+
+		$badge_status = "IF(penjualan.status = 'Lunas', CONCAT('<span class=\"badge badge-success\">', penjualan.status, '</span>'), CONCAT('<span class=\"badge badge-danger\">', penjualan.status, '</span>'))";
+		$badge_approve = "IF(penjualan.persetujuan = 'Approved', CONCAT('<span class=\"badge badge-primary\">', penjualan.persetujuan, '</span>'), CONCAT('<span class=\"badge badge-warning\">', penjualan.persetujuan, '</span>'))";
+
+		$result = mysqli_query($con, "
+			SELECT 
+				penjualan.no_faktur,
+				penjualan.id_pelanggan,
+				pelanggan.nama pelanggan,
+				CONCAT(UCASE(LEFT(pelanggan.type, 1)), SUBSTRING(pelanggan.type, 2)) type,
+				DATE_FORMAT(penjualan.tanggal, '%e %M %Y, %H:%i') tanggal,
+				penjualan.tanggal real_tanggal,
+				$badge_status status,
+				CASE 
+					WHEN penjualan.tipe_bayar = 'Cash' THEN 'C'
+					WHEN penjualan.tipe_bayar = 'Transfer' THEN 'T'
+					ELSE ''
+				END tipe_bayar,
+				CONCAT('Rp', FORMAT(penjualan.total_transaksi, 0,'id_ID')) total_transaksi,
+				CONCAT('Rp', FORMAT(IF(penjualan.status = 'Lunas', penjualan.total_transaksi, penjualan.total_bayar), 0,'id_ID')) total_bayar,
+				$badge_approve persetujuan,
+				penjualan.id_user,
+				user.nama user,
+				penjualan.updated
+			FROM penjualan 
+			LEFT JOIN pelanggan ON pelanggan.id_pelanggan = penjualan.id_pelanggan
+			LEFT JOIN user ON user.id_user = penjualan.id_user
+			WHERE DATE(penjualan.tanggal) = CURRENT_DATE AND penjualan.daily = false $whereFilter
+			ORDER BY penjualan.tanggal DESC
+			LIMIT $limit OFFSET $offset
+		");
+		
+		$data["data"] = [];
+		while($row = mysqli_fetch_assoc($result)){
+			$data["data"][] = $row;
+		}
+
+		$data["draw"] = intval($_POST["draw"]);
+
+		$result_all = mysqli_query($con, "
+			SELECT penjualan.no_faktur
+			FROM penjualan 
+			LEFT JOIN pelanggan ON pelanggan.id_pelanggan = penjualan.id_pelanggan
+			LEFT JOIN user ON user.id_user = penjualan.id_user
+			WHERE DATE(penjualan.tanggal) = CURRENT_DATE AND penjualan.daily = false $whereFilter");
+			
+		$data["recordsTotal"] = mysqli_num_rows($result_all);
+		$data["recordsFiltered"] = mysqli_num_rows($result_all);
+		
+		echo json_encode($data);
+	}
+
+	function approveharian($con)
+	{
+		$query = mysqli_query($con, "UPDATE `penjualan` SET daily = true WHERE DATE(tanggal) = CURRENT_DATE");
+		header('location:../main?url=laporan-harian');
+	}
 }
