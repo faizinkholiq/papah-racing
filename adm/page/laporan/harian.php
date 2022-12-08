@@ -1,5 +1,5 @@
 <?php 
-$data = mysqli_query($con, "SELECT * FROM penjualan WHERE DATE(tanggal) = CURRENT_DATE AND daily = false");
+$data = mysqli_query($con, "SELECT * FROM penjualan WHERE DATE(tanggal) = CURRENT_DATE AND (daily != true OR daily IS NULL)");
 $num_data = mysqli_num_rows($data);
 ?>
 <div class="row">
