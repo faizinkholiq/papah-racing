@@ -1875,7 +1875,7 @@ class con
 			FROM penjualan 
 			LEFT JOIN pelanggan ON pelanggan.id_pelanggan = penjualan.id_pelanggan
 			LEFT JOIN user ON user.id_user = penjualan.id_user
-			WHERE DATE(penjualan.tanggal) = CURRENT_DATE AND penjualan.daily = false $whereFilter
+			WHERE DATE(penjualan.tanggal) = CURRENT_DATE AND (penjualan.daily != true OR penjualan.daily IS NULL) $whereFilter
 			ORDER BY penjualan.tanggal DESC
 			LIMIT $limit OFFSET $offset
 		");
@@ -1892,7 +1892,7 @@ class con
 			FROM penjualan 
 			LEFT JOIN pelanggan ON pelanggan.id_pelanggan = penjualan.id_pelanggan
 			LEFT JOIN user ON user.id_user = penjualan.id_user
-			WHERE DATE(penjualan.tanggal) = CURRENT_DATE AND penjualan.daily = false $whereFilter");
+			WHERE DATE(penjualan.tanggal) = CURRENT_DATE AND (penjualan.daily != true OR penjualan.daily IS NULL) $whereFilter");
 			
 		$data["recordsTotal"] = mysqli_num_rows($result_all);
 		$data["recordsFiltered"] = mysqli_num_rows($result_all);
