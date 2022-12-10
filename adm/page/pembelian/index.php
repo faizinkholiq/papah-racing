@@ -52,5 +52,9 @@
             ],
             ordering: false
         });
+
+        // if(sess_data["id_jabatan"] == 5){
+        //     dt.columns([7]).visible(false);
+        // }
     });
 </script>

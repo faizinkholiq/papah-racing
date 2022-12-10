@@ -20,7 +20,8 @@ if ($_SESSION['id_jabatan'] == '1'||$_SESSION['id_jabatan'] == '2'||$_SESSION['i
 </div>
 <div class="wrapper">
     <form action="process/action?url=ubahbarang" enctype="multipart/form-data" method="post">
-        <input type="hidden" name="id_barang" value="<?= $id_barang; ?>">
+        <input type="hidden" name="id_barang" value="<?= $id_barang; ?>" />
+        <input type="hidden" name="page" value="<?=isset($_GET["page"])? (int)$_GET["page"] : 0 ?>" />
         <div class="form-group row">
             <label for="barcode" class="col-sm-2 col-form-label">Barcode</label>
             <div class="col-sm-10">

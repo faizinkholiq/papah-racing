@@ -669,7 +669,7 @@ class con
 	}
 
 	function ubahbarang($con, $post)
-	{
+	{	
 		session_start();
 		$id_barang = $post['id_barang'];
 		$barcode = !empty($post['barcode'])? htmlspecialchars(str_replace(' ', '', strtoupper($post['barcode']))) : null;
@@ -690,6 +690,7 @@ class con
 		$deskripsi = !empty($post['deskripsi'])? addslashes($post['deskripsi']) : null;
 		$berat = !empty($post['berat'])? $post['berat'] : null;
 		$updated = date("Y-m-d h:i:s");
+		$page = !empty($post['page'])? $post['page'] : 0;
 		$query = mysqli_query($con, "UPDATE barang SET  
 			barcode = '$barcode', 
 			nama = '$nama', 
@@ -760,7 +761,7 @@ class con
 		if($_SESSION['id_jabatan'] == "4"){
 			header('location:../main');
 		}else{
-			header('location:../main?url=barang');
+			header('location:../main?url=barang&page='.$page);
 		}
 	}
 
@@ -952,7 +953,7 @@ class con
 		$badge_status = "IF(pembelian.status = 'Lunas', CONCAT('<span class=\"badge badge-success\">', pembelian.status, '</span>'), CONCAT('<span class=\"badge badge-danger\">', pembelian.status, '</span>'))";
 
 		if ($_SESSION['id_jabatan'] != "1" && $_SESSION['id_jabatan'] != "2") {
-			$whereFilter .=  "AND pembelian.id_user='" . $_SESSION['id_user'];
+			$whereFilter .=  "AND pembelian.id_user=" . $_SESSION['id_user'];
 		}
 
 		$result = mysqli_query($con, "

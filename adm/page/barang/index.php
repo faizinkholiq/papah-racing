@@ -210,7 +210,9 @@ $aset = 0;
         }
 
         if(page != null && page != ""){
-            dt.page(page).draw(false);
+            setTimeout(() => {
+                dt.page(page).draw(false);
+            }, 10)
         }
     });
 
@@ -218,7 +220,5 @@ $aset = 0;
         let page_now = dt.page.info().page;
         window.open("main?url=ubah-barang&this="+id+"&page="+page_now, "_self")
     }
-
-
 
 </script>

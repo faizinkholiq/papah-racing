@@ -58,7 +58,7 @@ $id_user = $_SESSION['id_user'];
                         </div>
                     </li>
                 <?php } ?>
-                <?php if ($_SESSION['id_jabatan'] == '1' || $_SESSION['id_jabatan'] == '2') { ?>
+                <?php if ($_SESSION['id_jabatan'] == '1' || $_SESSION['id_jabatan'] == '2' || $_SESSION['id_jabatan'] == '5') { ?>
                     <li><a href="main?url=pembelian"><i class='fas fa-shopping-cart mr-2'></i>Pembelian</a></li>
                 <?php } ?>
                 <li><a href="main?url=penjualan"><i class='fas fa-cash-register mr-2'></i>Penjualan</a></li>
