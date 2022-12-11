@@ -1010,10 +1010,10 @@ class con
 		header('location:../main?url=pembelian');
 	}
 
-	function tambahbarangpenjualan($con, $type, $id_user, $barcode, $qty, $diskon)
+	function tambahbarangpenjualan($con, $type, $id_user, $id_barang, $qty, $diskon)
 	{
-		$query = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM barang WHERE barcode='$barcode'"));
-		if ($barcode != $query['barcode']) {
+		$query = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM barang WHERE id_barang=$id_barang"));
+		if ($id_barang != $query['id_barang']) {
 			echo "<script>alert('Maaf barang tidak ditemukan mungkin kode barcode salah.'); window.location='../main?url=tambah-penjualan&type=" . $type . "';</script>";
 		} else if ($query['stok'] == 0 || $qty > $query['stok']) {
 			echo "<script>alert('Maaf stok tidak mencukupi.'); window.location='../main?url=tambah-penjualan&type=" . $type . "';</script>";

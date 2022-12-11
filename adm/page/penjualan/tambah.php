@@ -1,3 +1,7 @@
+<?php 
+$query_pelanggan = mysqli_query($con, "SELECT * FROM pelanggan WHERE id_pelanggan != '2'");
+$data_pelanggan = [];
+?>
 <div class="row">
     <div class="col-8">
         <h3 class="font-weight-bolder"><i class='fas fa-cash-register'></i> Tambah Penjualan</h3>
@@ -11,14 +15,14 @@
         <div class="wrapper">
             <form action="process/action?url=tambahbarangpenjualan" method="post">
                 <input type="hidden" class="form-control" name="id_user" value="<?= $_SESSION['id_user'] ?>">
-                <input type="hidden" class="form-control" name="type" value="<?= $_GET['type'] ?>">
+                <input type="text" class="form-control" name="type" value="<?= isset($_GET['type'])? $_GET['type'] : '' ?>">
+                <input type="text" class="form-control" name="id_barang" value="" id="id_barang">
                 <input type="hidden" class="form-control" name="qty" value="1">
                 <input type="hidden" class="form-control" name="diskon" value="0">
                 <div class="row">
+                    <input type="text" class="form-control ml-2" id="barcode" name="barcode" autocomplete="off" placeholder="Scan Barcode" required>                    
                     <div class="col-9 col-lg-11">
-                        <div class="form-group row">
-                            <input type="text" class="form-control ml-2" id="barcode" name="barcode" autocomplete="off" placeholder="Scan Barcode" required>
-                        </div>
+                        <div class="form-group row"></div>
                     </div>
                     <div class="col-3 col-lg-1">
                         <a href="#" class="btn btn-primary" data-target="#barang" data-toggle="modal"><i class='fas fa-search'></i></a>
@@ -39,7 +43,6 @@
                             <th>Harga</th>
                             <th>Diskon/Pcs</th>
                             <th>Quantity</th>
-                            <th>Type</th>
                             <th>Total Harga</th>
                             <th>Aksi</th>
                         </tr>
@@ -55,7 +58,6 @@
                                 <td><?= rp($data['harga']); ?></td>
                                 <td><?= rp($data['diskon']); ?></td>
                                 <td><?= $data['qty']; ?></td>
-                                <td><?= ucwords($data['type']); ?></td>
                                 <td><?= rp($data['total_harga']); ?></td>
                                 <td>
                                     <a href="#" class="btn btn-primary btn-sm editbarang" data-target="#editbarangpenjualan" data-toggle="modal" data-id="<?= $data['id_barang']; ?>" data-barcode="<?= $data['barcode']; ?>" data-nama="<?= $data['nama']; ?>" data-harga="<?= $data['harga']; ?>" data-diskon="<?= $data['diskon']; ?>" data-qty="<?= $data['qty']; ?>"><i class='fas fa-edit'></i></a>
@@ -80,13 +82,13 @@
                 <div class="form-group row">
                     <label for="id_pelanggan" class="col-sm-3 col-form-label">Pelanggan</label>
                     <div class="col-sm-9">
-                        <select class="form-control" id="id_pelanggan" name="id_pelanggan" required>
+                        <select class="form-control selectpicker" id="id_pelanggan" name="id_pelanggan" data-live-search="true" data-size="10" required>
                             <option value="">-- Select --</option>
                             <?php
-                            $query_pelanggan = mysqli_query($con, "SELECT * FROM pelanggan WHERE id_pelanggan != '2' AND type='" . $_GET['type'] . "'");
                             foreach ($query_pelanggan as $ql) :
+                                $data_pelanggan[] = $ql;
                             ?>
-                                <option value="<?= $ql['id_pelanggan']; ?>">(<?= ucfirst(substr($ql['type'], 0 , 1)) ?>) <?= $ql['nama']; ?></option>
+                                <option data-type="<?= $ql['type']; ?>" value="<?= $ql['id_pelanggan']; ?>">(<?= ucfirst(substr($ql['type'], 0 , 1)) ?>) <?= $ql['nama']; ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
@@ -246,7 +248,7 @@
 
 <script>
     const sess_data = <?= json_encode($_SESSION) ?>;
-
+    const data_pelanggan = <?= json_encode($data_pelanggan) ?>;
     $(document).ready(function () {
         var dt = $('#barangTable').DataTable({
             dom: "Bfrtip",
@@ -263,6 +265,17 @@
                 { data: "aksi_pilih", className: "text-center", },
             ],
             ordering: false
+        });
+
+        $('#id_pelanggan').change(function(e) {
+            let id = $(e.currentTarget).val();
+            let filtered_pelanggan = data_pelanggan.filter((v) => v.id_pelanggan == id );
+            
+            if (filtered_pelanggan.length > 0) {
+                window.open("main?url=tambah-penjualan&type="+filtered_pelanggan[0].type, "_self")
+            }else{
+                alert("Pelanggan tersebut tidak ditemukan");
+            }
         });
     });
 </script>

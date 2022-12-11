@@ -107,15 +107,17 @@ if (empty($_GET['url'])) {
 		$no_po = $_GET['this'];
 		$nc->hapuspembelian($con, $no_po);
 	} else if ($to == 'tambahbarangpenjualan') {
-		$barcode = str_replace(' ', '', strtoupper($_POST['barcode']));
+		$id_barang = str_replace(' ', '', strtoupper($_POST['id_barang']));
+		print_r($id_barang);
+		exit;
 
-		$query = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM barang WHERE barcode='$barcode'"));
+		$query = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM barang WHERE id_barang=$id_barang"));
 		$cek_temp = mysqli_query($con, "SELECT * FROM penjualan_temp WHERE id_user='" . $_POST['id_user'] . "' AND id_barang='" . $query['id_barang'] . "'");
 		if (mysqli_fetch_assoc($cek_temp)) {
 			echo "<script>alert('Maaf barang sudah diinput.'); window.location='../main?url=tambah-penjualan&type=" . $_POST['type'] . "';</script>";
 			return false;
 		}
-		$nc->tambahbarangpenjualan($con, $_POST['type'], $_POST['id_user'], $barcode, $_POST['qty'], $_POST['diskon']);
+		$nc->tambahbarangpenjualan($con, $_POST['type'], $_POST['id_user'], $id_barang, $_POST['qty'], $_POST['diskon']);
 	} else if ($to == 'ubahbarangpenjualan') {
 		$id_user = $_POST['ubah_id_user'];
 		$id_barang = $_POST['ubah_id_barang'];

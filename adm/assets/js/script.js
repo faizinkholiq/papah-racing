@@ -9,10 +9,12 @@ $(document).ready(function() {
     $(document).on('click', '#pilihbarang', function() {
       // var id_barang = $(this).data('id');
       var barcode = $(this).data('barcode');
+      var id = $(this).data('id');
       // var nama = $(this).data('nama');
       // var stok = $(this).data('stok');
 
       $('#barcode').val(barcode);
+      $('#id_barang').val(id);
       $('#barang').modal('hide');
   });
   // mengambil nilai value untuk edit

@@ -21,9 +21,9 @@ $params = (!empty($arr_params))? http_build_query($arr_params) : "";
 </div>
 <div class="wrapper">
     <div class="dropdown">
-        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="text-white pl-2"><i class='fas fa-plus-circle mr-2'></i>Tambah Data</span>
-        </button>
+        <a href="main?url=tambah-penjualan" class="btn btn-primary" id="dropdownMenuButton">
+            <span class="text-white"><i class='fas fa-plus-circle mr-2'></i>Tambah Data</span>
+        </a>
         <div style="font-size:1.3rem; margin-top: 1rem;">
             <a href="main?url=penjualan" class="badge bg-primary text-white">All Data</a>
             <?php 
@@ -46,20 +46,6 @@ $params = (!empty($arr_params))? http_build_query($arr_params) : "";
                 $params = (!empty($arr_params))? http_build_query($arr_params) : "";   
             ?>
             <a href="main?<?=$params ?>" class="badge <?=($status == 'hutang')? 'bg-secondary' : 'bg-danger' ?> text-white">Hutang</a>
-        </div>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <?php
-                $query_type = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM penjualan_temp WHERE id_user='" . $_SESSION['id_user'] . "'"));
-                if (isset($query_type['id_user']) && $query_type['id_user'] != NULL):
-            ?>
-                <a class="dropdown-item text-center" href="main?url=tambah-penjualan&type=<?= isset($query_type['type'])? $query_type['type'] : ''  ?>"><?= isset($query_type['type'])? ucfirst($query_type['type']) : '' ?></a>
-            <?php else: ?>
-                <a class="dropdown-item text-center" href="main?url=tambah-penjualan&type=distributor">Distributor</a>
-                <a class="dropdown-item text-center" href="main?url=tambah-penjualan&type=reseller">Reseller</a>
-                <a class="dropdown-item text-center" href="main?url=tambah-penjualan&type=bengkel">Bengkel</a>
-                <a class="dropdown-item text-center" href="main?url=tambah-penjualan&type=admin">Admin</a>
-                <a class="dropdown-item text-center" href="main?url=tambah-penjualan&type=het">HET</a>
-            <?php endif; ?>
         </div>
     </div>
     <div class="table-responsive mt-3">
