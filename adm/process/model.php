@@ -1217,7 +1217,18 @@ class con
 			
 		$data["recordsTotal"] = mysqli_num_rows($result_all);
 		$data["recordsFiltered"] = mysqli_num_rows($result_all);
+
+		// Get total hutang
+		$result_hutang = mysqli_query($con, "
+			SELECT CONCAT('Rp', FORMAT(SUM(total_transaksi) - SUM(total_bayar), 0,'id_ID')) total_hutang 
+			FROM penjualan 
+			LEFT JOIN pelanggan ON pelanggan.id_pelanggan = penjualan.id_pelanggan
+			LEFT JOIN user ON user.id_user = penjualan.id_user
+			WHERE penjualan.status = 'Hutang' $whereFilter2");
 		
+		$data_hutang = mysqli_fetch_assoc($result_hutang);
+		$data["total_hutang"] = isset($data_hutang["total_hutang"]) && !empty($data_hutang["total_hutang"]) ? $data_hutang["total_hutang"] : 0 ;
+
 		echo json_encode($data);
 	}
 

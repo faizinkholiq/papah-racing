@@ -20,33 +20,47 @@ $params = (!empty($arr_params))? http_build_query($arr_params) : "";
     <div class="col-4"><a href="index.php" class="btn btn-danger float-right"><i class='fas fa-times-circle mr-2'></i>Back</a></div>
 </div>
 <div class="wrapper">
-    <div class="dropdown">
-        <a href="main?url=tambah-penjualan" class="btn btn-primary" id="dropdownMenuButton">
-            <span class="text-white"><i class='fas fa-plus-circle mr-2'></i>Tambah Data</span>
-        </a>
-        <div style="font-size:1.3rem; margin-top: 1rem;">
-            <a href="main?url=penjualan" class="badge bg-primary text-white">All Data</a>
-            <?php 
-            foreach($admins as $item):
-            $arr_params["admin"] = $item["id_user"];
-            $params = (!empty($arr_params))? http_build_query($arr_params) : "";
-            ?>
-            <a href="main?<?=$params ?>" class="badge <?=($admin == $item["id_user"])? 'bg-secondary text-white' : 'bg-info text-white' ?> "><?=$item["nama"] ?></a>
-            <?php endforeach; ?>
+    <div style="width:100%; display:flex;">
+        <div style="flex-grow: 1;">
+            <a href="main?url=tambah-penjualan" class="btn btn-primary">
+                <span class="text-white"><i class='fas fa-plus-circle mr-2'></i>Tambah Data</span>
+            </a>
         </div>
-        <div style="font-size:1.3rem; margin-top: 1rem;">
-            Status:
-            <?php 
-                $arr_params["status"] = "lunas";
-                $params = (!empty($arr_params))? http_build_query($arr_params) : "";   
-            ?>
-            <a href="main?<?=$params ?>" class="badge <?=($status == 'lunas')? 'bg-secondary' : 'bg-success' ?> text-white">Lunas</a>
-            <?php 
-                $arr_params["status"] = "hutang";
-                $params = (!empty($arr_params))? http_build_query($arr_params) : "";   
-            ?>
-            <a href="main?<?=$params ?>" class="badge <?=($status == 'hutang')? 'bg-secondary' : 'bg-danger' ?> text-white">Hutang</a>
-        </div>
+        <span class="font-weight-bold" style="font-size: 1.3rem; margin-right: 1rem;">
+            Total Hutang: <span class="text-danger" style="font-size: 1.5rem;" id="total_hutang"></span>
+        </span>
+    </div>
+    <div style="width:100%; font-size:1.3rem; margin-top: 1rem;">
+        <a href="main?url=penjualan" class="badge bg-primary text-white">All Data</a>
+        <?php 
+        foreach($admins as $item):
+        $arr_params["admin"] = $item["id_user"];
+        $params = (!empty($arr_params))? http_build_query($arr_params) : "";
+        ?>
+        <a href="main?<?=$params ?>" class="badge <?=($admin == $item["id_user"])? 'bg-secondary text-white' : 'bg-info text-white' ?> "><?=$item["nama"] ?></a>
+        <?php endforeach; ?>
+    </div>
+    <div style="width:100%; font-size:1.3rem; margin-top: 1rem;">
+        Status:
+        <?php 
+            $arr_params = ["url" => "penjualan"];
+            if(isset($_GET['admin'])){
+                $arr_params["admin"] = $_GET["admin"];
+            }
+            
+            if(isset($_GET['status'])){
+                $arr_params["status"] = $_GET["status"];
+            }
+
+            $arr_params["status"] = "lunas";
+            $params = (!empty($arr_params))? http_build_query($arr_params) : "";   
+        ?>
+        <a href="main?<?=$params ?>" class="badge <?=($status == 'lunas')? 'bg-secondary' : 'bg-success' ?> text-white">Lunas</a>
+        <?php 
+            $arr_params["status"] = "hutang";
+            $params = (!empty($arr_params))? http_build_query($arr_params) : "";   
+        ?>
+        <a href="main?<?=$params ?>" class="badge <?=($status == 'hutang')? 'bg-secondary' : 'bg-danger' ?> text-white">Hutang</a>
     </div>
     <div class="table-responsive mt-3">
         <table id="penjualanTable" class="table table-striped table-bordered" style="width:100%">
@@ -84,7 +98,10 @@ $params = (!empty($arr_params))? http_build_query($arr_params) : "";
                 data: {
                     admin: <?= $admin ?>,
                     status: "<?= $status ?>",
-                }
+                }, 
+            },
+            initComplete: function( settings, json){
+                $('#total_hutang').text(json.total_hutang)
             },
             processing: true,
             serverSide: true,
