@@ -1010,15 +1010,15 @@ class con
 		header('location:../main?url=pembelian');
 	}
 
-	function tambahbarangpenjualan($con, $type, $id_user, $id_barang, $qty, $diskon)
+	function tambahbarangpenjualan($con, $url, $type, $id_user, $id_barang, $qty, $diskon)
 	{
 		$query = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM barang WHERE id_barang=$id_barang"));
 		if ($id_barang != $query['id_barang']) {
-			echo "<script>alert('Maaf barang tidak ditemukan mungkin kode barcode salah.'); window.location='../main?url=tambah-penjualan&type=" . $type . "';</script>";
+			echo "<script>alert('Maaf barang tidak ditemukan mungkin kode barcode salah.'); window.location='$url';</script>";
 		} else if ($query['stok'] == 0 || $qty > $query['stok']) {
-			echo "<script>alert('Maaf stok tidak mencukupi.'); window.location='../main?url=tambah-penjualan&type=" . $type . "';</script>";
+			echo "<script>alert('Maaf stok tidak mencukupi.'); window.location='$url';</script>";
 		} else if ($diskon > $query['modal']) {
-			echo "<script>alert('Maaf diskon tidak bisa lebih dari harga modal nanti saya RUGI !!!.'); window.location='../main?url=tambah-penjualan&type=" . $type . "';</script>";
+			echo "<script>alert('Maaf diskon tidak bisa lebih dari harga modal nanti saya RUGI !!!.'); window.location='$url';</script>";
 		} else {
 			$id_barang = $query['id_barang'];
 			if ($type == 'distributor') {
@@ -1034,7 +1034,7 @@ class con
 			}
 			$total_harga = ($harga - $diskon) * $qty;
 			$query = mysqli_query($con, "INSERT INTO penjualan_temp SET id_barang='$id_barang',qty='$qty',diskon='$diskon',harga='$harga',type='$type',total_harga='$total_harga',id_user='$id_user' ");
-			header('location:../main?url=tambah-penjualan&type=' . $type . '');
+			header("location:$url");
 		}
 	}
 

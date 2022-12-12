@@ -15,22 +15,24 @@ $data_pelanggan = [];
         <div class="wrapper">
             <form action="process/action?url=tambahbarangpenjualan" method="post">
                 <input type="hidden" class="form-control" name="id_user" value="<?= $_SESSION['id_user'] ?>">
-                <input type="text" class="form-control" name="type" value="<?= isset($_GET['type'])? $_GET['type'] : '' ?>">
-                <input type="text" class="form-control" name="id_barang" value="" id="id_barang">
+                <input type="hidden" class="form-control" name="type" value="<?= isset($_GET['type'])? $_GET['type'] : '' ?>">
+                <input type="hidden" class="form-control" name="id_barang" value="" id="id_barang">
+                <input type="hidden" class="form-control" name="id_pelanggan" value="<?= isset($_GET['id_pelanggan'])? $_GET['id_pelanggan'] : '' ?>">
                 <input type="hidden" class="form-control" name="qty" value="1">
                 <input type="hidden" class="form-control" name="diskon" value="0">
                 <div class="row">
-                    <input type="text" class="form-control ml-2" id="barcode" name="barcode" autocomplete="off" placeholder="Scan Barcode" required>                    
                     <div class="col-9 col-lg-11">
-                        <div class="form-group row"></div>
+                        <div class="form-group row">
+                            <input type="text" class="form-control ml-2" id="barcode" name="barcode" autocomplete="off" placeholder="Scan Barcode" required readonly>                    
+                        </div>
                     </div>
                     <div class="col-3 col-lg-1">
-                        <a href="#" class="btn btn-primary" data-target="#barang" data-toggle="modal"><i class='fas fa-search'></i></a>
+                        <a href="#" class="btn btn-primary <?= !isset($_GET['type'])? 'disabled' : '' ?>" data-target="#barang" data-toggle="modal"><i class='fas fa-search'></i></a>
                     </div>
                 </div>
                 <div class="form-row text-center">
                     <div class="col-12">
-                        <button type="submit" class="btn btn-success"><i class='fas fa-plus-circle mr-2'></i>Tambah Barang</button>
+                        <button id="btnSubmitBarang" type="submit" class="btn btn-success"><i class='fas fa-plus-circle mr-2'></i>Tambah Barang</button>
                     </div>
                 </div>
             </form>
@@ -83,7 +85,6 @@ $data_pelanggan = [];
                     <label for="id_pelanggan" class="col-sm-3 col-form-label">Pelanggan</label>
                     <div class="col-sm-9">
                         <select class="form-control selectpicker" id="id_pelanggan" name="id_pelanggan" data-live-search="true" data-size="10" required>
-                            <option value="">-- Select --</option>
                             <?php
                             foreach ($query_pelanggan as $ql) :
                                 $data_pelanggan[] = $ql;
@@ -249,6 +250,8 @@ $data_pelanggan = [];
 <script>
     const sess_data = <?= json_encode($_SESSION) ?>;
     const data_pelanggan = <?= json_encode($data_pelanggan) ?>;
+    let id_pelanggan = <?= isset($_GET['id_pelanggan'])? $_GET['id_pelanggan'] : 0 ?>;
+
     $(document).ready(function () {
         var dt = $('#barangTable').DataTable({
             dom: "Bfrtip",
@@ -270,12 +273,14 @@ $data_pelanggan = [];
         $('#id_pelanggan').change(function(e) {
             let id = $(e.currentTarget).val();
             let filtered_pelanggan = data_pelanggan.filter((v) => v.id_pelanggan == id );
-            
+            console.log(filtered_pelanggan);
             if (filtered_pelanggan.length > 0) {
-                window.open("main?url=tambah-penjualan&type="+filtered_pelanggan[0].type, "_self")
+                window.open("main?url=tambah-penjualan&id_pelanggan="+ id + "&type="+filtered_pelanggan[0].type, "_self")
             }else{
-                alert("Pelanggan tersebut tidak ditemukan");
+                window.open("main?url=tambah-penjualan", "_self")
             }
         });
+
+        $('#id_pelanggan').val(id_pelanggan)
     });
 </script>
