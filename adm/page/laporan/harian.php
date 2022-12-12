@@ -23,7 +23,7 @@ $num_data = mysqli_num_rows($data);
                     <th>Status</th>
                     <th>Total Transaksi</th>
                     <th>Total Bayar</th>
-                    <th>Cash / Transfer</th>
+                    <th width="10">Tipe Bayar</th>
                     <th>Dibuat Oleh</th>
                 </tr>
             </thead>

@@ -59,7 +59,7 @@ $params = (!empty($arr_params))? http_build_query($arr_params) : "";
                     <th>Status</th>
                     <th>Total Transaksi</th>
                     <th>Total Bayar</th>
-                    <th>Transfer / Cash</th>
+                    <th width="10">Tipe Bayar</th>
                     <th>Keterangan</th>
                     <th>Dibuat Oleh</th>
                     <th width="" >Aksi</th>
