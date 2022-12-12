@@ -5,7 +5,7 @@
     <div class="col-4"><a href="index.php" class="btn btn-danger float-right"><i class='fas fa-times-circle mr-2'></i>Back</a></div>
 </div>
 <div class="wrapper">
-    <?php if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2") { ?>
+    <?php if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2" || $_SESSION["id_jabatan"] == "5") { ?>
         <a href="main?url=tambah-pelanggan" class="btn btn-primary"><i class='fas fa-plus-circle mr-2'></i>Tambah Data</a>
     <?php } ?>
     <div class="table-responsive mt-3">
@@ -42,18 +42,18 @@
             columns: [
                 { data: "row_no" },
                 { data: "nama" },
-                { data: "bulan_ini" },
-                { data: "bulan_lalu" },
+                { data: "bulan_ini", visible: false },
+                { data: "bulan_lalu", visible: false },
                 { data: "type" },
                 { data: "alamat" },
                 { data: "kontak" },
-                { data: "aksi" },
+                { data: "aksi", visible: false },
             ],
             ordering: false
         });
 
-        if (sess_data["id_jabatan"] != 1 && sess_data["id_jabatan"] != 2){
-            dt.columns([2,3,7]).visible(false);
+        if (sess_data["id_jabatan"] == 1 || sess_data["id_jabatan"] == 2 || sess_data["id_jabatan"] == 5){
+            dt.columns([2,3,7]).visible(true);
         }
     });
 </script>

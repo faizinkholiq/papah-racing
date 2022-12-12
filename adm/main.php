@@ -58,6 +58,9 @@ $id_user = $_SESSION['id_user'];
                         </div>
                     </li>
                 <?php } ?>
+                <?php if($_SESSION['id_jabatan'] == '5'){ ?>
+                    <li><a href="main?url=pelanggan"><i class='fas fa-handshake mr-2'></i>Data Pelanggan</a></li>
+                <?php } ?>
                 <?php if ($_SESSION['id_jabatan'] == '1' || $_SESSION['id_jabatan'] == '2' || $_SESSION['id_jabatan'] == '5') { ?>
                     <li><a href="main?url=pembelian"><i class='fas fa-shopping-cart mr-2'></i>Pembelian</a></li>
                 <?php } ?>
