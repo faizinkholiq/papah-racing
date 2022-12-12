@@ -131,7 +131,7 @@ $data_pelanggan = [];
                             <option value="">-- Select --</option>
                             <option value="Cash">Cash</option>
                             <option value="Transfer">Transfer</option>
-                            <option value="Market Place">Market Place</option>
+                            <option value="MarketPlace">MarketPlace</option>
                         </select>
                     </div>
                 </div>
