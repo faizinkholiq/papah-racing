@@ -273,15 +273,20 @@ $data_pelanggan = [];
 
         $('#id_pelanggan').change(function(e) {
             let id = $(e.currentTarget).val();
-            let filtered_pelanggan = data_pelanggan.filter((v) => v.id_pelanggan == id );
-            console.log(filtered_pelanggan);
-            if (filtered_pelanggan.length > 0) {
-                window.open("main?url=tambah-penjualan&id_pelanggan="+ id + "&type="+filtered_pelanggan[0].type, "_self")
-            }else{
-                window.open("main?url=tambah-penjualan", "_self")
+            if (id != id_pelanggan){
+                let filtered_pelanggan = data_pelanggan.filter((v) => v.id_pelanggan == id );
+                
+                if (filtered_pelanggan.length > 0) {
+                    window.open("main?url=tambah-penjualan&id_pelanggan="+ id + "&type="+filtered_pelanggan[0].type, "_self")
+                }else{
+                    window.open("main?url=tambah-penjualan", "_self")
+                }
             }
         });
 
-        $('#id_pelanggan').val(id_pelanggan)
+        setTimeout(() => {
+            $('#id_pelanggan').val(id_pelanggan)
+            $('#id_pelanggan').selectpicker('refresh')
+        }, 0);
     });
 </script>
