@@ -1908,6 +1908,22 @@ class con
 			
 		$data["recordsTotal"] = mysqli_num_rows($result_all);
 		$data["recordsFiltered"] = mysqli_num_rows($result_all);
+
+		// Get total hutang
+		$result_hutang = mysqli_query($con, "
+			SELECT 
+				CONCAT('Rp', FORMAT(SUM(CASE WHEN tipe_bayar = 'Cash' THEN total_transaksi ELSE 0 END), 0,'id_ID')) total_cash, 
+				CONCAT('Rp', FORMAT(SUM(CASE WHEN tipe_bayar = 'Transfer' THEN total_transaksi ELSE 0 END), 0,'id_ID')) total_transfer, 
+				CONCAT('Rp', FORMAT(SUM(CASE WHEN tipe_bayar = 'MarketPlace' THEN total_transaksi ELSE 0 END), 0,'id_ID')) total_marketplace 
+			FROM penjualan 
+			LEFT JOIN pelanggan ON pelanggan.id_pelanggan = penjualan.id_pelanggan
+			LEFT JOIN user ON user.id_user = penjualan.id_user
+			WHERE (penjualan.daily != true OR penjualan.daily IS NULL) $whereFilter");
+		
+		$data_hutang = mysqli_fetch_assoc($result_hutang);
+		$data["summary"]["cash"] = isset($data_hutang["total_cash"]) && !empty($data_hutang["total_cash"]) ? $data_hutang["total_cash"] : 0 ;
+		$data["summary"]["transfer"] = isset($data_hutang["total_transfer"]) && !empty($data_hutang["total_transfer"]) ? $data_hutang["total_transfer"] : 0 ;
+		$data["summary"]["marketplace"] = isset($data_hutang["total_marketplace"]) && !empty($data_hutang["total_marketplace"]) ? $data_hutang["total_marketplace"] : 0 ;
 		
 		echo json_encode($data);
 	}

@@ -15,7 +15,7 @@ $num_data = mysqli_num_rows($data);
                 <span class="text-white font-weight-bold"><i class='fas fa-check mr-2'></i>Approve</span>
             </a>
         </div>
-        <div class="col-lg-8">
+        <div class="col-lg-8 mb-4">
             <div class="row">
                 <div class="col-lg-4 font-weight-bold" style="border-right:2px solid #eee;">
                     <div style="font-size: 1.1rem;" class="text-center">Cash :</div>
@@ -65,9 +65,9 @@ $num_data = mysqli_num_rows($data);
                 type: "POST",
             },
             initComplete: function( settings, json){
-                $('#total_cash').text(json.total_cash)
-                $('#total_transfer').text(json.total_transfer)
-                $('#total_marketplace').text(json.total_marketplace)
+                $('#total_cash').text(json.summary.cash)
+                $('#total_transfer').text(json.summary.transfer)
+                $('#total_marketplace').text(json.summary.marketplace)
             },
             processing: true,
             serverSide: true,
