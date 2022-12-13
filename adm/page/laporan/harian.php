@@ -9,9 +9,29 @@ $num_data = mysqli_num_rows($data);
     <div class="col-4"><a href="index.php" class="btn btn-danger float-right"><i class='fas fa-times-circle mr-2'></i>Back</a></div>
 </div>
 <div class="wrapper">
-    <a href="process/action?url=approveharian" class="btn <?= ($num_data < 1)? 'disabled btn-secondary' : 'btn-success' ?>">
-        <span class="text-white font-weight-bold"><i class='fas fa-check mr-2'></i>Approve</span>
-    </a>
+    <div class="row">
+        <div class="col-lg-2">
+            <a href="process/action?url=approveharian" class="btn <?= ($num_data < 1)? 'disabled btn-secondary' : 'btn-success' ?>">
+                <span class="text-white font-weight-bold"><i class='fas fa-check mr-2'></i>Approve</span>
+            </a>
+        </div>
+        <div class="col-lg-8">
+            <div class="row">
+                <div class="col-lg-4 font-weight-bold" style="border-right:2px solid #eee;">
+                    <div style="font-size: 1.1rem;" class="text-center">Cash :</div>
+                    <div id="total_cash" style="font-size: 1.5rem;" class="text-center mt-2">-</div>
+                </div>
+                <div class="col-lg-4 font-weight-bold">
+                    <div style="font-size: 1.1rem;" class="text-center">Transfer :</div>
+                    <div id="total_transfer" style="font-size: 1.5rem;" class="text-center mt-2">-</div>
+                </div>
+                <div class="col-lg-4 font-weight-bold" style="border-left:2px solid #eee;">
+                    <div style="font-size: 1.1rem;" class="text-center">MarketPlace :</div>
+                    <div id="total_marketplace" style="font-size: 1.5rem;" class="text-center mt-2">-</div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="table-responsive mt-3">
         <table id="penjualanTable" class="table table-striped table-bordered" style="width:100%">
             <thead>
@@ -43,6 +63,11 @@ $num_data = mysqli_num_rows($data);
             ajax: {
                 url: 'process/action?url=getlaporanharian',
                 type: "POST",
+            },
+            initComplete: function( settings, json){
+                $('#total_cash').text(json.total_cash)
+                $('#total_transfer').text(json.total_transfer)
+                $('#total_marketplace').text(json.total_marketplace)
             },
             processing: true,
             serverSide: true,
