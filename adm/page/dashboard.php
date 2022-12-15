@@ -339,6 +339,42 @@ if ($_SESSION['id_jabatan'] == '8'||$_SESSION['id_jabatan'] == '7'||$_SESSION['i
                 </div>
             </div>
         </div>
+        <div class="col-md-6">
+            <div class="card bg-light mb-3">
+                <div class="card-header font-weight-bolder">Laporan Harian</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 mb-2">
+                            <div class="card pem-day">
+                                <div class="card-body bg-primary">
+                                    <div class="row">
+                                        <div class="icon text-primary m-auto col-4"><i class="fas fa-wallet"></i></div>
+                                        <div class="card-text text-white col-8">
+                                            <div class="row font-weight-bolder">
+                                                <div class="col-6">Cash</div>
+                                                <div class="col-6 text-right"><?php if ($pendapatan_penj == 0) {
+                                                                                    echo rp('0');
+                                                                                } else {
+                                                                                    echo rp($pendapatan_penj);
+                                                                                } ?></div>
+                                                <div class="col-6">Transfer</div>
+                                                <div class="col-6 text-right"><?php if ($jumlah_pengeluaran == 0) {
+                                                                                    echo rp('0');
+                                                                                } else {
+                                                                                    echo rp($jumlah_pengeluaran);
+                                                                                } ?></div>
+                                                <div class="col-6">MarketPlace</div>
+                                                <div class="col-6 text-right"><?= rp($pendapatan_penj - $jumlah_pengeluaran) ?></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- <div class="col-md-6 bg-light border-radius">
         <canvas id="myChart" width="400" height="400"></canvas>
     </div> -->
