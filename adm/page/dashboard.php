@@ -352,19 +352,25 @@ if ($_SESSION['id_jabatan'] == '8'||$_SESSION['id_jabatan'] == '7'||$_SESSION['i
                                         <div class="card-text text-white col-8">
                                             <div class="row font-weight-bolder">
                                                 <div class="col-6">Cash</div>
-                                                <div class="col-6 text-right"><?php if ($pendapatan_penj == 0) {
-                                                                                    echo rp('0');
-                                                                                } else {
-                                                                                    echo rp($pendapatan_penj);
-                                                                                } ?></div>
+                                                <div class="col-6 text-right">
+                                                    <?php if ($pendapatan_penj == 0) {
+                                                        echo rp('0');
+                                                    } else {
+                                                        echo rp($pendapatan_penj);
+                                                    } ?>
+                                                </div>
                                                 <div class="col-6">Transfer</div>
-                                                <div class="col-6 text-right"><?php if ($jumlah_pengeluaran == 0) {
-                                                                                    echo rp('0');
-                                                                                } else {
-                                                                                    echo rp($jumlah_pengeluaran);
-                                                                                } ?></div>
+                                                <div class="col-6 text-right">
+                                                    <?php if ($jumlah_pengeluaran == 0) {
+                                                        echo rp('0');
+                                                    } else {
+                                                        echo rp($jumlah_pengeluaran);
+                                                    } ?>
+                                                </div>
                                                 <div class="col-6">MarketPlace</div>
-                                                <div class="col-6 text-right"><?= rp($pendapatan_penj - $jumlah_pengeluaran) ?></div>
+                                                <div class="col-6 text-right">
+                                                    <?= rp($pendapatan_penj - $jumlah_pengeluaran) ?>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
