@@ -30,6 +30,22 @@ $qty_barang_penj = mysqli_fetch_assoc(mysqli_query($con, "SELECT sum(qty) AS tot
 // Pengeluaran Hari Ini
 $jumlah_pengeluaran = mysqli_fetch_assoc(mysqli_query($con, "SELECT sum(jumlah) AS total FROM pengeluaran WHERE DATE_FORMAT(tanggal, '%Y-%m-%d') BETWEEN '$date' AND '$date'"))["total"];
 
+// Laporan
+$result_transaksi = mysqli_query($con, "
+SELECT 
+    SUM(CASE WHEN tipe_bayar = 'Cash' THEN total_transaksi ELSE 0 END) total_cash, 
+    SUM(CASE WHEN tipe_bayar = 'Transfer' THEN total_transaksi ELSE 0 END) total_transfer, 
+    SUM(CASE WHEN tipe_bayar = 'MarketPlace' THEN total_transaksi ELSE 0 END) total_marketplace 
+FROM penjualan 
+LEFT JOIN pelanggan ON pelanggan.id_pelanggan = penjualan.id_pelanggan
+LEFT JOIN user ON user.id_user = penjualan.id_user
+WHERE (penjualan.daily != true OR penjualan.daily IS NULL) $whereFilter");
+
+$data_transaksi = mysqli_fetch_assoc($result_transaksi);
+$summary["cash"] = isset($data_transaksi["total_cash"]) && !empty($data_transaksi["total_cash"]) ? $data_transaksi["total_cash"] : 0 ;
+$summary["transfer"] = isset($data_transaksi["total_transfer"]) && !empty($data_transaksi["total_transfer"]) ? $data_transaksi["total_transfer"] : 0 ;
+$summary["marketplace"] = isset($data_transaksi["total_marketplace"]) && !empty($data_transaksi["total_marketplace"]) ? $data_transaksi["total_marketplace"] : 0 ;
+
 if ($_SESSION['id_jabatan'] == '8'||$_SESSION['id_jabatan'] == '7'||$_SESSION['id_jabatan'] == '6'||$_SESSION['id_jabatan'] == '4'){ 
 	$query = mysqli_query($con, "SELECT * FROM barang ORDER BY created DESC");
 	echo '<div class="wrapper">'.
@@ -345,35 +361,20 @@ if ($_SESSION['id_jabatan'] == '8'||$_SESSION['id_jabatan'] == '7'||$_SESSION['i
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12 mb-2">
-                            <div class="card pem-day">
-                                <div class="card-body bg-primary">
-                                    <div class="row">
-                                        <div class="icon text-primary m-auto col-4"><i class="fas fa-wallet"></i></div>
-                                        <div class="card-text text-white col-8">
-                                            <div class="row font-weight-bolder">
-                                                <div class="col-6">Cash</div>
-                                                <div class="col-6 text-right">
-                                                    <?php if ($pendapatan_penj == 0) {
-                                                        echo rp('0');
-                                                    } else {
-                                                        echo rp($pendapatan_penj);
-                                                    } ?>
-                                                </div>
-                                                <div class="col-6">Transfer</div>
-                                                <div class="col-6 text-right">
-                                                    <?php if ($jumlah_pengeluaran == 0) {
-                                                        echo rp('0');
-                                                    } else {
-                                                        echo rp($jumlah_pengeluaran);
-                                                    } ?>
-                                                </div>
-                                                <div class="col-6">MarketPlace</div>
-                                                <div class="col-6 text-right">
-                                                    <?= rp($pendapatan_penj - $jumlah_pengeluaran) ?>
-                                                </div>
-                                            </div>
+                            <div class="card pem-day" style="background: none; border: none">
+                                <div class="card-body">
+                                    <div class="icon text-white bg-secondary m-auto"><i class="fas fa-calendar-alt"></i></div>
+                                    <hr>
+                                    <span class="card-text">
+                                        <div class="row font-weight-bolder text-secondary">
+                                            <div class="col-6">Cash</div>
+                                            <div class="col-6 text-right"><?php if ($summary["cash"] == 0) { echo rp('0'); } else { echo rp($summary["cash"]);} ?></div>
+                                            <div class="col-6">Transfer</div>
+                                            <div class="col-6 text-right"><?php if ($summary["transfer"]== 0) { echo rp('0'); } else { echo rp($summary["transfer"]);} ?></div>
+                                            <div class="col-6">MarketPlace</div>
+                                            <div class="col-6 text-right"><?php if ($summary["marketplace"]== 0) { echo rp('0'); } else { echo rp($summary["marketplace"]);} ?></div>
                                         </div>
-                                    </div>
+                                    </span>
                                 </div>
                             </div>
                         </div>
