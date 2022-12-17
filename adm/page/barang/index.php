@@ -214,6 +214,14 @@ $aset = 0;
                 dt.page(page).draw(false);
             }, 10)
         }
+
+        $('#barangTable').on( 'page.dt', function () {
+            const info = dt.page.info();
+            const url = new URL(window.location);
+            
+            url.searchParams.set('page', info.page);
+            window.history.pushState({}, '', url);
+        });
     });
 
     function editBarang(id) {
