@@ -30,7 +30,7 @@ $qty_barang_penj = mysqli_fetch_assoc(mysqli_query($con, "SELECT sum(qty) AS tot
 // Pengeluaran Hari Ini
 $jumlah_pengeluaran = mysqli_fetch_assoc(mysqli_query($con, "SELECT sum(jumlah) AS total FROM pengeluaran WHERE DATE_FORMAT(tanggal, '%Y-%m-%d') BETWEEN '$date' AND '$date'"))["total"];
 
-// Laporan
+// Laporan Harian
 $result_transaksi = mysqli_query($con, "
 SELECT 
     SUM(CASE WHEN tipe_bayar = 'Cash' THEN total_transaksi ELSE 0 END) total_cash, 
@@ -39,7 +39,7 @@ SELECT
 FROM penjualan 
 LEFT JOIN pelanggan ON pelanggan.id_pelanggan = penjualan.id_pelanggan
 LEFT JOIN user ON user.id_user = penjualan.id_user
-WHERE (penjualan.daily != true OR penjualan.daily IS NULL) $whereFilter");
+WHERE (penjualan.daily != true OR penjualan.daily IS NULL)");
 
 $data_transaksi = mysqli_fetch_assoc($result_transaksi);
 $summary["cash"] = isset($data_transaksi["total_cash"]) && !empty($data_transaksi["total_cash"]) ? $data_transaksi["total_cash"] : 0 ;
