@@ -24,24 +24,39 @@
 </div>
 <script>
     const sess_data = <?= json_encode($_SESSION) ?>;
+    const page = <?=isset($_GET["page"])? (int)$_GET["page"] : 0 ?>;
+
+    let dt = $('#supplierTable').DataTable({
+        dom: "Bfrtip",
+        ajax: {
+            url: 'process/action?url=getsupplier',
+            type: "POST"
+        },
+        processing: true,
+        serverSide: true,
+        columns: [
+            { data: "row_no" },
+            { data: "nama" },
+            { data: "alamat" },
+            { data: "kontak" },
+            { data: "aksi", class:"text-center" },
+        ],
+        ordering: false
+    });
 
     $(document).ready(function () {
-        var dt = $('#supplierTable').DataTable({
-            dom: "Bfrtip",
-            ajax: {
-                url: 'process/action?url=getsupplier',
-                type: "POST"
-            },
-            processing: true,
-            serverSide: true,
-            columns: [
-                { data: "row_no" },
-                { data: "nama" },
-                { data: "alamat" },
-                { data: "kontak" },
-                { data: "aksi" },
-            ],
-            ordering: false
+        if(page != null && page != ""){
+            setTimeout(() => {
+                dt.page(page).draw(false);
+            }, 100)
+        }
+
+        $('#supplierTable').on( 'page.dt', function () {
+            const info = dt.page.info();
+            const url = new URL(window.location);
+            
+            url.searchParams.set('page', info.page);
+            window.history.pushState({}, '', url);
         });
     });
 </script>

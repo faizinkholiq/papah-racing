@@ -15,7 +15,7 @@ $query = mysqli_query($con, "SELECT * FROM pengeluaran_type ORDER BY id_pengelua
                 <tr class="text-center">
                     <th width="10">No.</th>
                     <th>Jenis</th>
-                    <th>Aksi</th>
+                    <th width="250">Aksi</th>
                 </tr>
             </thead>
             <tbody>
@@ -36,22 +36,37 @@ $query = mysqli_query($con, "SELECT * FROM pengeluaran_type ORDER BY id_pengelua
 </div>
 <script>
     const sess_data = <?= json_encode($_SESSION) ?>;
+    const page = <?=isset($_GET["page"])? (int)$_GET["page"] : 0 ?>;
+
+    let dt = $('#jenisPengeluaranTable').DataTable({
+        dom: "Bfrtip",
+        ajax: {
+            url: 'process/action?url=getjenispengeluaran',
+            type: "POST"
+        },
+        processing: true,
+        serverSide: true,
+        columns: [
+            { data: "row_no" },
+            { data: "jenis" },
+            { data: "aksi", class:"text-center" },
+        ],
+        ordering: false
+    });
 
     $(document).ready(function () {
-        var dt = $('#jenisPengeluaranTable').DataTable({
-            dom: "Bfrtip",
-            ajax: {
-                url: 'process/action?url=getjenispengeluaran',
-                type: "POST"
-            },
-            processing: true,
-            serverSide: true,
-            columns: [
-                { data: "row_no" },
-                { data: "jenis" },
-                { data: "aksi" },
-            ],
-            ordering: false
+        if(page != null && page != ""){
+            setTimeout(() => {
+                dt.page(page).draw(false);
+            }, 100)
+        }
+
+        $('#jenisPengeluaranTable').on( 'page.dt', function () {
+            const info = dt.page.info();
+            const url = new URL(window.location);
+            
+            url.searchParams.set('page', info.page);
+            window.history.pushState({}, '', url);
         });
     });
 </script>

@@ -36,34 +36,49 @@ $query = mysqli_query($con, "SELECT * FROM user WHERE id_jabatan!='1' ORDER BY i
 
 <script>
     const sess_data = <?= json_encode($_SESSION) ?>;
+    const page = <?=isset($_GET["page"])? (int)$_GET["page"] : 0 ?>;
+    
+    let dt = $('#userTable').DataTable({
+        dom: "Bfrtip",
+        ajax: {
+            url: 'process/action?url=getuser',
+            type: "POST"
+        },
+        processing: true,
+        serverSide: true,
+        columns: [
+            { data: "row_no" },
+            { data: "nama" },
+            { data: "bulan_ini", visible: false, },
+            { data: "bulan_lalu", visible: false, },
+            { data: "username" },
+            { data: "alamat" },
+            { data: "kontak" },
+            { data: "jabatan", className: "text-center", },
+            { data: "status", className: "text-center", },
+            { data: "last_login", visible: false, className: "text-center", },
+            { data: "aksi", visible: false, className: "text-center", },
+        ],
+        ordering: false
+    });
 
     $(document).ready(function () {
-        var dt = $('#userTable').DataTable({
-            dom: "Bfrtip",
-            ajax: {
-                url: 'process/action?url=getuser',
-                type: "POST"
-            },
-            processing: true,
-            serverSide: true,
-            columns: [
-                { data: "row_no" },
-                { data: "nama" },
-                { data: "bulan_ini", visible: false, },
-                { data: "bulan_lalu", visible: false, },
-                { data: "username" },
-                { data: "alamat" },
-                { data: "kontak" },
-                { data: "jabatan", className: "text-center", },
-                { data: "status", className: "text-center", },
-                { data: "last_login", visible: false, className: "text-center", },
-                { data: "aksi", visible: false, className: "text-center", },
-            ],
-            ordering: false
-        });
-
         if (sess_data["id_jabatan"] == 1 || sess_data["id_jabatan"] == 2){
             dt.columns([2,3,9,10]).visible(true);
         }
+
+        if(page != null && page != ""){
+            setTimeout(() => {
+                dt.page(page).draw(false);
+            }, 100)
+        }
+
+        $('#userTable').on( 'page.dt', function () {
+            const info = dt.page.info();
+            const url = new URL(window.location);
+            
+            url.searchParams.set('page', info.page);
+            window.history.pushState({}, '', url);
+        });
     });
 </script>

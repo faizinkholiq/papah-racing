@@ -143,7 +143,6 @@ $aset = 0;
 </div>
 
 <script>
-
     const sess_data = <?= json_encode($_SESSION) ?>;
     const page = <?=isset($_GET["page"])? (int)$_GET["page"] : 0 ?>;
 
@@ -178,14 +177,14 @@ $aset = 0;
             { data: "nama" },
             { data: "merk" },
             { data: "stok" },
-            { data: "modal", "visible": false },
+            { data: "modal", visible: false },
             { data: "distributor" },
             { data: "reseller" },
             { data: "bengkel" },
             { data: "admin" },
             { data: "het" },
-            { data: "aksi", "visible": false },
-            { data: "gambar", className:"text-center", "visible": false },
+            { data: "aksi", visible: false, class:"text-center" },
+            { data: "gambar", visible: false, class:"text-center"},
         ];
     }
 
@@ -212,7 +211,7 @@ $aset = 0;
         if(page != null && page != ""){
             setTimeout(() => {
                 dt.page(page).draw(false);
-            }, 10)
+            }, 100)
         }
 
         $('#barangTable').on( 'page.dt', function () {

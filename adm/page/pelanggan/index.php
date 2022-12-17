@@ -19,7 +19,7 @@
                     <th>Type</th>
                     <th>Alamat</th>
                     <th>Kontak</th>
-                    <th>Aksi</th>
+                    <th width="100">Aksi</th>
                 </tr>
             </thead>
             <tbody>
@@ -29,31 +29,47 @@
 </div>
 <script>
     const sess_data = <?= json_encode($_SESSION) ?>;
+    const page = <?=isset($_GET["page"])? (int)$_GET["page"] : 0 ?>;
+
+    let dt = $('#pelangganTable').DataTable({
+        dom: "Bfrtip",
+        ajax: {
+            url: 'process/action?url=getpelanggan',
+            type: "POST"
+        },
+        processing: true,
+        serverSide: true,
+        columns: [
+            { data: "row_no" },
+            { data: "nama" },
+            { data: "bulan_ini", visible: false, class:"text-center" },
+            { data: "bulan_lalu", visible: false, class:"text-center" },
+            { data: "type" },
+            { data: "alamat" },
+            { data: "kontak" },
+            { data: "aksi", visible: false, class:"text-center" },
+        ],
+        ordering: false
+    });
 
     $(document).ready(function () {
-        var dt = $('#pelangganTable').DataTable({
-            dom: "Bfrtip",
-            ajax: {
-                url: 'process/action?url=getpelanggan',
-                type: "POST"
-            },
-            processing: true,
-            serverSide: true,
-            columns: [
-                { data: "row_no" },
-                { data: "nama" },
-                { data: "bulan_ini", visible: false },
-                { data: "bulan_lalu", visible: false },
-                { data: "type" },
-                { data: "alamat" },
-                { data: "kontak" },
-                { data: "aksi", visible: false },
-            ],
-            ordering: false
-        });
-
         if (sess_data["id_jabatan"] == 1 || sess_data["id_jabatan"] == 2 || sess_data["id_jabatan"] == 5){
             dt.columns([2,3,7]).visible(true);
         }
+
+        console.log(page);
+        if(page != null && page != ""){
+            setTimeout(() => {
+                dt.page(page).draw(false);
+            }, 100)
+        }
+
+        $('#pelangganTable').on( 'page.dt', function () {
+            const info = dt.page.info();
+            const url = new URL(window.location);
+            
+            url.searchParams.set('page', info.page);
+            window.history.pushState({}, '', url);
+        });
     });
 </script>

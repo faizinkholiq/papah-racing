@@ -12,7 +12,7 @@
                 <tr class="text-center">
                     <th width="10">No.</th>
                     <th>Merk</th>
-                    <th>Aksi</th>
+                    <th width="200">Aksi</th>
                 </tr>
             </thead>
             <tbody>
@@ -22,22 +22,37 @@
 </div>
 <script>
     const sess_data = <?= json_encode($_SESSION) ?>;
+    const page = <?=isset($_GET["page"])? (int)$_GET["page"] : 0 ?>;
+
+    let dt = $('#merkTable').DataTable({
+        dom: "Bfrtip",
+        ajax: {
+            url: 'process/action?url=getmerk',
+            type: "POST"
+        },
+        processing: true,
+        serverSide: true,
+        columns: [
+            { data: "row_no" },
+            { data: "name" },
+            { data: "aksi", class:"text-center" },
+        ],
+        ordering: false
+    });
 
     $(document).ready(function () {
-        var dt = $('#merkTable').DataTable({
-            dom: "Bfrtip",
-            ajax: {
-                url: 'process/action?url=getmerk',
-                type: "POST"
-            },
-            processing: true,
-            serverSide: true,
-            columns: [
-                { data: "row_no" },
-                { data: "name" },
-                { data: "aksi" },
-            ],
-            ordering: false
+        if(page != null && page != ""){
+            setTimeout(() => {
+                dt.page(page).draw(false);
+            }, 100)
+        }
+
+        $('#merkTable').on( 'page.dt', function () {
+            const info = dt.page.info();
+            const url = new URL(window.location);
+            
+            url.searchParams.set('page', info.page);
+            window.history.pushState({}, '', url);
         });
     });
 </script>
