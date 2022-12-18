@@ -224,8 +224,9 @@ $aset = 0;
     });
 
     function editBarang(id) {
-        let page_now = dt.page.info().page;
-        window.open("main?url=ubah-barang&this="+id+"&page="+page_now, "_self")
+        const info = dt.page.info();
+        const url = "main?url=ubah-barang&this="+id+"&page="+info.page
+        window.open(url, "_self")
     }
 
 </script>

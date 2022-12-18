@@ -112,7 +112,7 @@ class con
 				class=\"btn ', IF(aktif = 1, 'btn-secondary', 'btn-info') , ' btn-sm\">
 				<i class=\"fas ', IF(aktif = 1, 'fa-eye-slash',  'fa-eye') , '\"></i>
 			</a>
-			<a title=\"Ubah User\" href=\"main?url=ubah-user&this=', user.id_user,'\" class=\"btn btn-primary btn-sm\"><i class=\"fas fa-edit\"></i></a>
+			<a title=\"Ubah User\" href=\"#!\" onclick=\"editUser(', user.id_user, ')\" class=\"btn btn-primary btn-sm\"><i class=\"fas fa-edit\"></i></a>
 			<a title=\"Reset Password\" href=\"main?url=reset-password-user&this=', user.id_user, '\" class=\"btn btn-warning btn-sm\"><i class=\"fas fa-key\"></i></a>
 			<a title=\"Hapus User\" href=\"process/action?url=hapususer&this=', user.id_user, '\" class=\"btn btn-danger btn-sm\" data-toggle=\"tooltip\" data-original-title=\"Hapus\" onclick=\"return confirm(`Anda yakin ingin hapus data ini?`)\"><i class=\"fas fa-trash-alt\"></i></a>'
 		)";
@@ -335,7 +335,7 @@ class con
 		$limit = $_POST["length"];
 		$offset = $_POST["start"];
 		$btn_aksi = "CONCAT(
-			'<a href=\"main?url=ubah-supplier&this=', id_supplier,'\" class=\"btn btn-primary btn-sm\"><i class=\"fas fa-edit\"></i></a>
+			'<a href=\"#!\" onclick=\"editSupplier(', id_supplier, ')\" class=\"btn btn-primary btn-sm\"><i class=\"fas fa-edit\"></i></a>
 			<a href=\"process/action?url=hapussupplier&this=', id_supplier, '\" class=\"btn btn-danger btn-sm\" data-toggle=\"tooltip\" data-original-title=\"Hapus\" onclick=\"return confirm(`Anda yakin ingin hapus data ini?`)\"><i class=\"fas fa-trash-alt\"></i></a>'
 		)";
 
@@ -437,7 +437,7 @@ class con
 		$limit = $_POST["length"];
 		$offset = $_POST["start"];
 		$btn_aksi = "CONCAT(
-			'<a href=\"main?url=ubah-pelanggan&this=', pelanggan.id_pelanggan,'\" class=\"btn btn-primary btn-sm\"><i class=\"fas fa-edit\"></i></a>
+			'<a href=\"#!\" onclick=\"editPelanggan(', pelanggan.id_pelanggan, ')\" class=\"btn btn-primary btn-sm\"><i class=\"fas fa-edit\"></i></a>
 			<a href=\"process/action?url=hapuspelanggan&this=', pelanggan.id_pelanggan, '\" class=\"btn btn-danger btn-sm\" data-toggle=\"tooltip\" data-original-title=\"Hapus\" onclick=\"return confirm(`Anda yakin ingin hapus data ini?`)\"><i class=\"fas fa-trash-alt\"></i></a>'
 		)";
 

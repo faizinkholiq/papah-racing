@@ -57,7 +57,6 @@
             dt.columns([2,3,7]).visible(true);
         }
 
-        console.log(page);
         if(page != null && page != ""){
             setTimeout(() => {
                 dt.page(page).draw(false);
@@ -72,4 +71,11 @@
             window.history.pushState({}, '', url);
         });
     });
+
+    function editPelanggan(id) {
+        const info = dt.page.info();
+        const url = "main?url=ubah-pelanggan&this="+id+"&page="+info.page
+        window.open(url, "_self")
+    }
+
 </script>
