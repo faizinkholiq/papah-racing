@@ -59,4 +59,10 @@
             window.history.pushState({}, '', url);
         });
     });
+
+    function editSupplier(id) {
+        const info = dt.page.info();
+        const url = "main?url=ubah-supplier&this="+id+"&page="+info.page
+        window.open(url, "_self")
+    }
 </script>
