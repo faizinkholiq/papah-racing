@@ -81,4 +81,32 @@ $query = mysqli_query($con, "SELECT * FROM user WHERE id_jabatan!='1' ORDER BY i
             window.history.pushState({}, '', url);
         });
     });
+
+    function editUser(id) {
+        const info = dt.page.info();
+        const url = "main?url=ubah-user&this="+id+"&page="+info.page
+        window.open(url, "_self")
+    }
+
+    function hapusUser(id) {
+        let ask = window.confirm("Anda yakin ingin hapus data ini?");
+        if (ask) {
+            const info = dt.page.info();
+            const url = "process/action?url=hapususer&this="+id+"&page="+info.page
+            window.open(url, "_self")
+        }
+    }
+
+    function setAktif(id, aktif) {
+        const info = dt.page.info();
+        const url = "process/action?url=setaktifuser&this="+id+"&aktif="+aktif+"&page="+info.page
+        window.open(url, "_self")
+    }
+
+    function resetPassword(id) {
+        const info = dt.page.info();
+        const url = "main?url=reset-password-user&this="+id+"&page="+info.page
+        window.open(url, "_self")
+    }
+
 </script>

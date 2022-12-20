@@ -108,13 +108,13 @@ class con
 
 		$btn_aksi = "CONCAT(
 			'<a title=\"Set Aktif\" 
-				href=\"process/action?url=setaktifuser&this=', user.id_user, '&aktif=', IF(aktif = 1, 0, 1), '\" 
+				href=\"#!\" onclick=\"setAktif(', user.id_user, ',', IF(aktif = 1, 0, 1), ')\" 
 				class=\"btn ', IF(aktif = 1, 'btn-secondary', 'btn-info') , ' btn-sm\">
 				<i class=\"fas ', IF(aktif = 1, 'fa-eye-slash',  'fa-eye') , '\"></i>
 			</a>
 			<a title=\"Ubah User\" href=\"#!\" onclick=\"editUser(', user.id_user, ')\" class=\"btn btn-primary btn-sm\"><i class=\"fas fa-edit\"></i></a>
-			<a title=\"Reset Password\" href=\"main?url=reset-password-user&this=', user.id_user, '\" class=\"btn btn-warning btn-sm\"><i class=\"fas fa-key\"></i></a>
-			<a title=\"Hapus User\" href=\"process/action?url=hapususer&this=', user.id_user, '\" class=\"btn btn-danger btn-sm\" data-toggle=\"tooltip\" data-original-title=\"Hapus\" onclick=\"return confirm(`Anda yakin ingin hapus data ini?`)\"><i class=\"fas fa-trash-alt\"></i></a>'
+			<a title=\"Reset Password\" href=\"#!\" onclick=\"resetPassword(', user.id_user, ')\"  class=\"btn btn-warning btn-sm\"><i class=\"fas fa-key\"></i></a>
+			<a title=\"Hapus User\" href=\"#!\"  onclick=\"hapusUser(', user.id_user, ')\"  class=\"btn btn-danger btn-sm\" data-toggle=\"tooltip\" data-original-title=\"Hapus\"><i class=\"fas fa-trash-alt\"></i></a>'
 		)";
 		
 		$badge_aktif = "IF(aktif = 1, '<span class=\"badge badge-success\">Aktif</span>', '<span class=\"badge badge-secondary\">Not Aktif</span>')";
@@ -236,28 +236,37 @@ class con
 
 	function tambahuser($con, $username, $password, $nama, $alamat, $kontak, $id_jabatan)
 	{
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+
 		$username = $username = htmlspecialchars(str_replace(' ', '', strtolower($username)));
 		$password = password_hash($password, PASSWORD_DEFAULT);
 		$nama = htmlspecialchars(ucwords($nama));
 		$alamat = htmlspecialchars(ucwords($alamat));
 		$query = mysqli_query($con, "INSERT INTO user SET username='$username',password='$password',nama='$nama',alamat='$alamat',kontak='$kontak',id_jabatan='$id_jabatan' ");
-		header('location:../main?url=user');
+
+		header('location:../main?url=user&page='.$page);
 	}
 
 	function ubahuser($con, $id_user, $username, $nama, $alamat, $kontak, $id_jabatan)
 	{
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+
 		$username = $username = htmlspecialchars(str_replace(' ', '', strtolower($username)));
 		$nama = htmlspecialchars(ucwords($nama));
 		$alamat = htmlspecialchars(ucwords($alamat));
 		$query = mysqli_query($con, "UPDATE user SET  username='$username',nama='$nama',alamat='$alamat',kontak='$kontak',id_jabatan='$id_jabatan' WHERE id_user='$id_user' ");
-		header('location:../main?url=user');
+		
+		header('location:../main?url=user&page='.$page);
 	}
 
 	function resetpassworduser($con, $id_user, $password, $password2)
 	{
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+
 		$password = password_hash($password, PASSWORD_DEFAULT);
 		$query = mysqli_query($con, "UPDATE user SET  password='$password' WHERE id_user='$id_user' ");
-		header('location:../main?url=user');
+		
+		header('location:../main?url=user&page='.$page);
 	}
 
 	function gantipassworduser($con, $id_user, $password, $password2)
@@ -269,12 +278,15 @@ class con
 
 	function hapususer($con, $id_user)
 	{
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+
 		$query = mysqli_query($con, "DELETE FROM user WHERE id_user='$id_user' ");
-		header('location:../main?url=user');
+		header('location:../main?url=user&page='.$page);
 	}
 
 	function setaktifuser($con, $id_user, $aktif)
-	{
+	{	
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
 		$user = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM user WHERE id_user='$id_user'"));
 
 		if($aktif == 1){
@@ -288,8 +300,10 @@ class con
 				} 
 			}
 		}
+
 		$query = mysqli_query($con, "UPDATE user SET aktif = $aktif, last_login = '".$user['last_login']."' WHERE id_user='$id_user' ");
-		header('location:../main?url=user');
+		
+		header('location:../main?url=user&page='.$page);
 	}
 
 	function getsupplier($con)
