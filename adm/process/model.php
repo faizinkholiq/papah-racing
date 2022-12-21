@@ -452,7 +452,7 @@ class con
 		$offset = $_POST["start"];
 		$btn_aksi = "CONCAT(
 			'<a href=\"#!\" onclick=\"editPelanggan(', pelanggan.id_pelanggan, ')\" class=\"btn btn-primary btn-sm\"><i class=\"fas fa-edit\"></i></a>
-			<a href=\"process/action?url=hapuspelanggan&this=', pelanggan.id_pelanggan, '\" class=\"btn btn-danger btn-sm\" data-toggle=\"tooltip\" data-original-title=\"Hapus\" onclick=\"return confirm(`Anda yakin ingin hapus data ini?`)\"><i class=\"fas fa-trash-alt\"></i></a>'
+			<a href=\#!\" onclick=\"hapusPelanggan(', pelanggan.id_pelanggan, ')\" class=\"btn btn-danger btn-sm\" data-toggle=\"tooltip\" data-original-title=\"Hapus\"><i class=\"fas fa-trash-alt\"></i></a>'
 		)";
 
 		$result = mysqli_query($con, "
@@ -505,25 +505,33 @@ class con
 
 	function tambahpelanggan($con, $nama, $type, $alamat, $kontak)
 	{
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+
 		$nama = htmlspecialchars(ucwords($nama));
 		$alamat = htmlspecialchars(ucwords($alamat));
 		$query = mysqli_query($con, "INSERT INTO pelanggan SET nama='$nama',type='$type',alamat='$alamat',kontak='$kontak' ");
-		header('location:../main?url=pelanggan');
+		
+		header('location:../main?url=pelanggan&page='.$page);
 	}
 
 	function ubahpelanggan($con, $id_pelanggan, $nama, $type, $alamat, $kontak)
 	{
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+
 		$nama = htmlspecialchars(ucwords($nama));
 		$alamat = htmlspecialchars(ucwords($alamat));
 		$updated = date("Y-m-d h:i:s");
 		$query = mysqli_query($con, "UPDATE pelanggan SET nama='$nama',type='$type',alamat='$alamat',kontak='$kontak',updated='$updated' WHERE id_pelanggan='$id_pelanggan' ");
-		header('location:../main?url=pelanggan');
+
+		header('location:../main?url=pelanggan&page='.$page);
 	}
 
 	function hapuspelanggan($con, $id_pelanggan)
 	{
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+
 		$query = mysqli_query($con, "DELETE FROM pelanggan WHERE id_pelanggan='$id_pelanggan' ");
-		header('location:../main?url=pelanggan');
+		header('location:../main?url=pelanggan&page='.$page);
 	}
 
 	function getbarang($con)
@@ -570,7 +578,7 @@ class con
 		$offset = $_POST["start"];
 		$btn_aksi = "CONCAT(
 			'<a href=\"#!\" onclick=\"editBarang(', id_barang, ')\" class=\"btn btn-primary btn-sm\"><i class=\"fas fa-edit\"></i></a>
-			<a href=\"process/action?url=hapusbarang&this=', id_barang, '\" class=\"btn btn-danger btn-sm\" data-toggle=\"tooltip\" data-original-title=\"Hapus\" onclick=\"return confirm(`Anda yakin ingin hapus data ini?`)\"><i class=\"fas fa-trash-alt\"></i></a>'
+			<a href=\"#!\" onclick=\"hapusBarang(', id_barang, ')\" class=\"btn btn-danger btn-sm\" data-toggle=\"tooltip\" data-original-title=\"Hapus\"><i class=\"fas fa-trash-alt\"></i></a>'
 		)";
 		$btn_gambar = "CONCAT('<a href=\"main?url=ubah-barang&this=', id_barang, '\" class=\"btn btn-primary btn-sm\"><i class=\"fas fa-photo-video\"></i></a>')";
 		$btn_pilih = "CONCAT('<button id=\"pilihbarang\" class=\"btn btn-sm btn-info\" data-id=\"', id_barang, '\" data-barcode=\"', barcode, '\" data-nama=\"', nama, '\" data-stok=\"', stok, '\">Pilih</button>')";
@@ -684,6 +692,8 @@ class con
 
 	function ubahbarang($con, $post)
 	{	
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+
 		session_start();
 		$id_barang = $post['id_barang'];
 		$barcode = !empty($post['barcode'])? htmlspecialchars(str_replace(' ', '', strtoupper($post['barcode']))) : null;
@@ -704,7 +714,6 @@ class con
 		$deskripsi = !empty($post['deskripsi'])? addslashes($post['deskripsi']) : null;
 		$berat = !empty($post['berat'])? $post['berat'] : null;
 		$updated = date("Y-m-d h:i:s");
-		$page = !empty($post['page'])? $post['page'] : 0;
 		$query = mysqli_query($con, "UPDATE barang SET  
 			barcode = '$barcode', 
 			nama = '$nama', 
@@ -760,7 +769,7 @@ class con
 					move_uploaded_file($tmp_file, $path.'/'.$nama_file);
 				} else {  
 					echo "Maaf, Ukuran gambar yang diupload tidak boleh lebih dari 4MB";    
-					echo "<br><a href='main?url=ubah-barang&this=".$id_barang."'>Kembali Ke Form</a><br>";  
+					echo "<br><a href='main?url=ubah-barang&this=".$id_barang."&page=".$page."'>Kembali Ke Form</a><br>";  
 				}
 			}
 
@@ -781,22 +790,27 @@ class con
 
 	function softhapusbarang($con, $id_barang)
 	{	
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+
 		$query = mysqli_query($con, "UPDATE barang SET deleted = 1 WHERE id_barang='$id_barang' ");
 		$path = str_replace('/adm/process','/p/'.trim($id_barang),dirname(__FILE__));
 		if(file_exists($path)){
 			$this->rrmdir($path);
 		}
-		header('location:../main?url=barang');
+		header('location:../main?url=barang&page='.$page);
 	}
 
 	function hapusbarang($con, $id_barang)
 	{	
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+		
 		$query = mysqli_query($con, "DELETE FROM barang WHERE id_barang='$id_barang' ");
 		$path = str_replace('/adm/process','/p/'.trim($id_barang),dirname(__FILE__));
 		if(file_exists($path)){
 			$this->rrmdir($path);
 		}
-		header('location:../main?url=barang');
+
+		header('location:../main?url=barang&page='.$page);
 	}
 
 	function rrmdir($dir) { 

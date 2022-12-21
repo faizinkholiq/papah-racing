@@ -229,4 +229,13 @@ $aset = 0;
         window.open(url, "_self")
     }
 
+    function hapusBarang(id) {
+        let ask = window.confirm("Anda yakin ingin hapus data ini?");
+        if (ask) {
+            const info = dt.page.info();
+            const url = "process/action?url=hapusbarang&this="+id+"&page="+info.page
+            window.open(url, "_self")
+        }
+    }
+
 </script>

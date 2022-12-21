@@ -78,4 +78,13 @@
         window.open(url, "_self")
     }
 
+    function hapusPelanggan(id) {
+        let ask = window.confirm("Anda yakin ingin hapus data ini?");
+        if (ask) {
+            const info = dt.page.info();
+            const url = "process/action?url=hapuspelanggan&this="+id+"&page="+info.page
+            window.open(url, "_self")
+        }
+    }
+
 </script>
