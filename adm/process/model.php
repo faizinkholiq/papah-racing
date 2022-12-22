@@ -1393,8 +1393,8 @@ class con
 		$limit = $_POST["length"];
 		$offset = $_POST["start"];
 		$btn_aksi = "CONCAT(
-			'<a href=\"main?url=ubahjenispengeluaran&this=', id_pengeluaran_type, '\" class=\"btn btn-primary btn-sm\"><i class=\"fas fa-edit\"></i></a>
-			<a href=\"process/action?url=hapusjenispengeluaran&this=', id_pengeluaran_type, '\" class=\"btn btn-danger btn-sm\" data-toggle=\"tooltip\" data-original-title=\"Hapus\" onclick=\"return confirm(`Anda yakin ingin hapus data ini?`)\"><i class=\"fas fa-trash-alt\"></i></a>'
+			'<a href=\"#!\" onclick=\"editJenisPengeluaran(', id_pengeluaran_type, ')\" class=\"btn btn-primary btn-sm\"><i class=\"fas fa-edit\"></i></a>
+			<a href=\"#!\" onclick=\"hapusJenisPengeluaran(', id_pengeluaran_type, ')\" class=\"btn btn-danger btn-sm\" data-toggle=\"tooltip\" data-original-title=\"Hapus\"><i class=\"fas fa-trash-alt\"></i></a>'
 		)";
 
 		$result = mysqli_query($con, "
@@ -1425,22 +1425,28 @@ class con
 
 	function tambahjenispengeluaran($con, $jenis)
 	{
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+
 		$jenis = htmlspecialchars(strtoupper($jenis));
 		$query = mysqli_query($con, "INSERT INTO pengeluaran_type SET jenis='$jenis' ");
-		header('location:../main?url=jenis-pengeluaran');
+		header('location:../main?url=jenis-pengeluaran&page='.$page);
 	}
 
 	function ubahjenispengeluaran($con, $id_pengeluaran_type, $jenis)
 	{
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+
 		$jenis = htmlspecialchars(strtoupper($jenis));
 		$query = mysqli_query($con, "UPDATE pengeluaran_type SET jenis='$jenis' WHERE id_pengeluaran_type='$id_pengeluaran_type' ");
-		header('location:../main?url=jenis-pengeluaran');
+		header('location:../main?url=jenis-pengeluaran&page='.$page);
 	}
 
 	function hapusjenispengeluaran($con, $id_pengeluaran_type)
 	{
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+
 		$query = mysqli_query($con, "DELETE FROM pengeluaran_type WHERE id_pengeluaran_type='$id_pengeluaran_type' ");
-		header('location:../main?url=pengeluaran');
+		header('location:../main?url=jenis-pengeluaran&page='.$page);
 	}
 
 	function getpengeluaran($con)

@@ -69,4 +69,20 @@ $query = mysqli_query($con, "SELECT * FROM pengeluaran_type ORDER BY id_pengelua
             window.history.pushState({}, '', url);
         });
     });
+
+    function editJenisPengeluaran(id) {
+        const info = dt.page.info();
+        const url = "main?url=ubah-jenis-pengeluaran&this="+id+"&page="+info.page
+        window.open(url, "_self")
+    }
+
+    function hapusJenisPengeluaran(id) {
+        let ask = window.confirm("Anda yakin ingin hapus data ini?");
+        if (ask) {
+            const info = dt.page.info();
+            const url = "process/action?url=hapusjenispengeluaran&this="+id+"&page="+info.page
+            window.open(url, "_self")
+        }
+    }
+
 </script>
