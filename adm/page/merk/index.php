@@ -55,4 +55,20 @@
             window.history.pushState({}, '', url);
         });
     });
+
+    function editMerk(id) {
+        const info = dt.page.info();
+        const url = "main?url=ubah-merk&this="+id+"&page="+info.page
+        window.open(url, "_self")
+    }
+
+    function hapusMerk(id) {
+        let ask = window.confirm("Anda yakin ingin hapus data ini?");
+        if (ask) {
+            const info = dt.page.info();
+            const url = "process/action?url=hapusmerk&this="+id+"&page="+info.page
+            window.open(url, "_self")
+        }
+    }
+
 </script>

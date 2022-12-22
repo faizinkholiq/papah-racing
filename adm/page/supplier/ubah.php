@@ -4,6 +4,7 @@ if (empty($_GET['url'])) {
 }
 $id_supplier = $_GET['this'];
 $data = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM supplier WHERE id_supplier='$id_supplier' "));
+$page = isset($_GET['page'])? $_GET['page'] : 0;
 ?>
 
 <div class="row">
@@ -13,7 +14,7 @@ $data = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM supplier WHERE id_s
     <div class="col-4"><a href="main?url=supplier" class="btn btn-danger float-right"><i class='fas fa-times-circle mr-2'></i>Back</a></div>
 </div>
 <div class="wrapper">
-    <form action="process/action?url=ubahsupplier" method="post">
+    <form action="process/action?url=ubahsupplier&page=<?= $page ?>" method="post">
         <input type="hidden" name="id_supplier" value="<?= $id_supplier; ?>">
         <div class="form-group row">
             <label for="nama" class="col-sm-2 col-form-label">Nama Supplier</label>

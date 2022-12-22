@@ -350,7 +350,7 @@ class con
 		$offset = $_POST["start"];
 		$btn_aksi = "CONCAT(
 			'<a href=\"#!\" onclick=\"editSupplier(', id_supplier, ')\" class=\"btn btn-primary btn-sm\"><i class=\"fas fa-edit\"></i></a>
-			<a href=\"process/action?url=hapussupplier&this=', id_supplier, '\" class=\"btn btn-danger btn-sm\" data-toggle=\"tooltip\" data-original-title=\"Hapus\" onclick=\"return confirm(`Anda yakin ingin hapus data ini?`)\"><i class=\"fas fa-trash-alt\"></i></a>'
+			<a href=\"#!\" onclick=\"hapusSupplier(', id_supplier, ')\" class=\"btn btn-danger btn-sm\" data-toggle=\"tooltip\" data-original-title=\"Hapus\"><i class=\"fas fa-trash-alt\"></i></a>'
 		)";
 
 		$result = mysqli_query($con, "
@@ -387,25 +387,34 @@ class con
 
 	function tambahsupplier($con, $nama, $alamat, $kontak)
 	{
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+
 		$nama = htmlspecialchars(ucwords($nama));
 		$alamat = htmlspecialchars(ucwords($alamat));
 		$query = mysqli_query($con, "INSERT INTO supplier SET nama='$nama',alamat='$alamat',kontak='$kontak' ");
-		header('location:../main?url=supplier');
+
+		header('location:../main?url=supplier&page='.$page);
 	}
 
 	function ubahsupplier($con, $id_supplier, $nama, $alamat, $kontak)
 	{
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+
 		$nama = htmlspecialchars(ucwords($nama));
 		$alamat = htmlspecialchars(ucwords($alamat));
 		$updated = date("Y-m-d h:i:s");
 		$query = mysqli_query($con, "UPDATE supplier SET nama='$nama',alamat='$alamat',kontak='$kontak',updated='$updated' WHERE id_supplier='$id_supplier' ");
-		header('location:../main?url=supplier');
+		
+		header('location:../main?url=supplier&page='.$page);
 	}
 
 	function hapussupplier($con, $id_supplier)
 	{
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+
 		$query = mysqli_query($con, "DELETE FROM supplier WHERE id_supplier='$id_supplier' ");
-		header('location:../main?url=supplier');
+		
+		header('location:../main?url=supplier&page='.$page);
 	}
 
 	function getpelanggan($con)
@@ -1646,8 +1655,8 @@ class con
 		$limit = $_POST["length"];
 		$offset = $_POST["start"];
 		$btn_aksi = "CONCAT(
-			'<a href=\"main?url=ubah-merk&this=', id, '\" class=\"btn btn-primary btn-sm\"><i class=\"fas fa-edit\"></i></a>
-			<a href=\"process/action?url=hapus-merk&this=', id, '\" class=\"btn btn-danger btn-sm\" data-toggle=\"tooltip\" data-original-title=\"Hapus\" onclick=\"return confirm(`Anda yakin ingin hapus data ini?`)\"><i class=\"fas fa-trash-alt\"></i></a>'
+			'<a href=\"#!\" onclick=\"editMerk(', id,')\" class=\"btn btn-primary btn-sm\"><i class=\"fas fa-edit\"></i></a>
+			<a href=\"#!\" onclick=\"hapusMerk(', id,')\" class=\"btn btn-danger btn-sm\" data-toggle=\"tooltip\" data-original-title=\"Hapus\"><i class=\"fas fa-trash-alt\"></i></a>'
 		)";
 
 		$result = mysqli_query($con, "
@@ -1678,20 +1687,29 @@ class con
 
 	function tambahmerk($con, $merk)
 	{
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+
 		$query = mysqli_query($con, "INSERT INTO merk SET name='$merk' ");
-		header('location:../main?url=merk');
+		
+		header('location:../main?url=merk&page='.$page);
 	}
 
 	function ubahmerk($con, $id, $merk)
 	{
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+		
 		$query = mysqli_query($con, "UPDATE merk SET name='$merk' WHERE id='$id' ");
-		header('location:../main?url=merk');
+		
+		header('location:../main?url=merk&page='.$page);
 	}
 
 	function hapusmerk($con, $id)
 	{
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+
 		$query = mysqli_query($con, "DELETE FROM merk WHERE id='$id' ");
-		header('location:../main?url=merk');
+		
+		header('location:../main?url=merk&page='.$page);
 	}
 
 

@@ -65,4 +65,14 @@
         const url = "main?url=ubah-supplier&this="+id+"&page="+info.page
         window.open(url, "_self")
     }
+
+    function hapusSupplier(id) {
+        let ask = window.confirm("Anda yakin ingin hapus data ini?");
+        if (ask) {
+            const info = dt.page.info();
+            const url = "process/action?url=hapussupplier&this="+id+"&page="+info.page
+            window.open(url, "_self")
+        }
+    }
+
 </script>
