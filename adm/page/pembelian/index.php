@@ -57,4 +57,26 @@
         //     dt.columns([7]).visible(false);
         // }
     });
+
+    function editPembelian(id) {
+        const info = dt.page.info();
+        const url = "main?url=ubah-pembelian&this="+id+"&page="+info.page
+        window.open(url, "_self")
+    }
+
+    function hapusPembelian(id) {
+        let ask = window.confirm("Anda yakin ingin hapus data ini?");
+        if (ask) {
+            const info = dt.page.info();
+            const url = "process/action?url=hapuspembelian&this="+id+"&page="+info.page
+            window.open(url, "_self")
+        }
+    }
+
+    function setAktif(id, aktif) {
+        const info = dt.page.info();
+        const url = "process/action?url=setaktifpembelian&this="+id+"&aktif="+aktif+"&page="+info.page
+        window.open(url, "_self")
+    }
+
 </script>
