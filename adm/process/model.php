@@ -839,34 +839,42 @@ class con
 
 	function tambahbarangpembelian($con, $id_user, $barcode, $qty)
 	{
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+
 		$query = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM barang WHERE barcode='$barcode'"));
 		if ($barcode != $query['barcode']) {
-			echo "<script>alert('Maaf barang tidak ditemukan mungkin kode barcode salah'); window.location='../main?url=tambah-pembelian';</script>";
+			echo "<script>alert('Maaf barang tidak ditemukan mungkin kode barcode salah'); window.location='../main?url=tambah-pembelian&page=".$page."';</script>";
 		} else {
 			$id_barang = $query['id_barang'];
 			$harga = $query['modal'];
 			$total_harga = $harga * $qty;
 			$query = mysqli_query($con, "INSERT INTO pembelian_temp SET id_barang='$id_barang',qty='$qty',total_harga='$total_harga',id_user='$id_user' ");
-			header('location:../main?url=tambah-pembelian');
+			header('location:../main?url=tambah-pembelian&page='.$page);
 		}
 	}
 
 	function ubahbarangpembelian($con, $id_user, $id_barang, $harga, $qty)
 	{
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+
 		$harga = str_replace('.', '', $harga);
 		$total_harga = $harga * $qty;
 		$query = mysqli_query($con, "UPDATE pembelian_temp SET qty='$qty',total_harga='$total_harga' WHERE id_barang='$id_barang' AND id_user='$id_user' ");
-		header('location:../main?url=tambah-pembelian');
+		header('location:../main?url=tambah-pembelian&page='.$page);
 	}
 
 	function hapusbarangpembelian($con, $id_barang, $id_user)
 	{
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+
 		$query = mysqli_query($con, "DELETE FROM pembelian_temp WHERE id_barang='$id_barang' AND id_user='$id_user' ");
-		header('location:../main?url=tambah-pembelian');
+		header('location:../main?url=tambah-pembelian&page='.$page);
 	}
 
 	function tambahpembelian($con, $id_supplier, $id_user, $total_transaksi, $total_bayar)
 	{
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+
 		// Kode Otomatis Barcode
 		$today = date('ymd');
 		$char = 'PO' . $today;
@@ -903,22 +911,27 @@ class con
 			$stock_in = mysqli_query($con, "UPDATE barang SET stok=stok+$qty WHERE id_barang='$id_barang'");
 		}
 		$del_pembelian_temp = mysqli_query($con, "DELETE FROM pembelian_temp WHERE id_user='$id_user' ");
-		header('location:../main?url=lihat-pembelian&this=' . $no_po . '');
+		header('location:../main?url=lihat-pembelian&this=' . $no_po . '&page='.$page);
 	}
 
 	function cicilanpembelian($con, $id_user, $no_po, $bayar)
 	{
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+
 		$query = mysqli_query($con, "INSERT INTO pembelian_debt SET no_po='$no_po',bayar='$bayar',keterangan='Cicilan',id_user='$id_user' ");
 		$update_pembayaran = mysqli_query($con, "UPDATE pembelian SET total_bayar=total_bayar+$bayar WHERE no_po='$no_po'");
 		$query_pembelian = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM pembelian WHERE no_po='$no_po'"));
 		if ($query_pembelian['total_bayar'] >= $query_pembelian['total_transaksi']) {
 			$update_status = mysqli_query($con, "UPDATE pembelian SET status='Lunas' WHERE no_po='$no_po'");
 		}
-		header('location:../main?url=lihat-pembelian&this=' . $no_po . '');
+
+		header('location:../main?url=lihat-pembelian&this=' . $no_po . '&page='.$page);
 	}
 
 	function hapuscicilanpembelian($con, $no_po, $id_pembelian_debt)
 	{
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+
 		$pembelian_det = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM pembelian_debt WHERE id_pembelian_debt='$id_pembelian_debt'"));
 		$bayar = $pembelian_det['bayar'];
 		$update_pembayaran = mysqli_query($con, "UPDATE pembelian SET total_bayar=total_bayar-$bayar WHERE no_po='$no_po'");
@@ -927,7 +940,8 @@ class con
 			$update_status = mysqli_query($con, "UPDATE pembelian SET status='Hutang' WHERE no_po='$no_po'");
 		}
 		$query = mysqli_query($con, "DELETE FROM pembelian_debt WHERE id_pembelian_debt='$id_pembelian_debt' ");
-		header('location:../main?url=lihat-pembelian&this=' . $no_po . '');
+		
+		header('location:../main?url=lihat-pembelian&this=' . $no_po . '&page='.$page);
 	}
 
 	function getpembelian($con)
@@ -975,15 +989,15 @@ class con
 
 		if ($_SESSION['id_jabatan'] == '1' || $_SESSION['id_jabatan'] == '2'){
 			$btn_aksi = "CONCAT(
-				'<a href=\"main?url=lihat-pembelian&this=', pembelian.no_po, '\" class=\"btn btn-info btn-sm\"><i class=\"fas fa-eye\"></i></a>
-				<a href=\"page/pembelian/cetak_det.php?this=', pembelian.no_po, '\" target=\"_blank\" class=\"btn btn-secondary btn-sm\"><i class=\"fas fa-print\"></i></a> ',
-				IF(pembelian.status = 'Hutang', CONCAT('<a href=\"main?url=cicilan-pembelian&this=', pembelian.no_po, '\" class=\"btn btn-success btn-sm\"><i class=\"fas fa-hand-holding-usd\"></i></a> '), ''),
-				'<a href=\"process/action?url=hapuspembelian&this=', pembelian.no_po, '\" class=\"btn btn-danger btn-sm\" data-toggle=\"tooltip\" data-original-title=\"Hapus\" onclick=\"return confirm(`Anda yakin ingin hapus data ini?`)\"><i class=\"fas fa-trash-alt\"></i></a>'
+				'<a href=\"#!\" onclick=\"lihatPembelian(\'', pembelian.no_po, '\')\" class=\"btn btn-info btn-sm\"><i class=\"fas fa-eye\"></i></a>
+				<a href=\"#!\" onclick=\"cetakPembelian(\'', pembelian.no_po, '\')\" class=\"btn btn-secondary btn-sm\"><i class=\"fas fa-print\"></i></a> ',
+				IF(pembelian.status = 'Hutang', CONCAT('<a href=\"#!\" onclick=\"cicilanPembelian(\'', pembelian.no_po, '\')\" class=\"btn btn-success btn-sm\"><i class=\"fas fa-hand-holding-usd\"></i></a> '), ''),
+				'<a href=\"#!\" onclick=\"hapusPembelian(\'', pembelian.no_po, '\')\" class=\"btn btn-danger btn-sm\" data-toggle=\"tooltip\" data-original-title=\"Hapus\"><i class=\"fas fa-trash-alt\"></i></a>'
 			)";
 		}else{
 			$btn_aksi = "CONCAT(
-				'<a href=\"main?url=lihat-pembelian&this=', pembelian.no_po, '\" class=\"btn btn-info btn-sm\"><i class=\"fas fa-eye\"></i></a>
-				<a href=\"page/pembelian/cetak_det.php?this=', pembelian.no_po, '\" target=\"_blank\" class=\"btn btn-secondary btn-sm\"><i class=\"fas fa-print\"></i></a>'
+				'<a href=\"#!\" onclick=\"lihatPembelian(\'', pembelian.no_po, '\')\"  class=\"btn btn-info btn-sm\"><i class=\"fas fa-eye\"></i></a>
+				<a href=\"#!\" onclick=\"cetakPembelian(\'', pembelian.no_po, '\')\" class=\"btn btn-secondary btn-sm\"><i class=\"fas fa-print\"></i></a>'
 			)";
 		}
 
@@ -1037,6 +1051,8 @@ class con
 
 	function hapuspembelian($con, $no_po)
 	{
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+
 		$pembelian_det = mysqli_query($con, "SELECT * FROM pembelian_det WHERE no_po='$no_po'");
 		foreach ($pembelian_det as $pd) {
 			$id_barang = $pd['id_barang'];
@@ -1044,7 +1060,7 @@ class con
 			$stock_out = mysqli_query($con, "UPDATE barang SET stok=stok-$qty WHERE id_barang='$id_barang'");
 		}
 		$query = mysqli_query($con, "DELETE FROM pembelian WHERE no_po='$no_po' ");
-		header('location:../main?url=pembelian');
+		header('location:../main?url=pembelian&page='.$page);
 	}
 
 	function tambahbarangpenjualan($con, $url, $type, $id_user, $id_barang, $qty, $diskon)
@@ -1077,19 +1093,23 @@ class con
 
 	function ubahbarangpenjualan($con, $id_user, $id_barang, $harga, $diskon, $qty, $type)
 	{
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+
 		$harga = str_replace('.', '', $harga);
 		$diskon = str_replace('.', '', $diskon);
 		$total_harga = ($harga - $diskon) * $qty;
 		$query = mysqli_query($con, "UPDATE penjualan_temp SET qty='$qty',diskon='$diskon',total_harga='$total_harga' WHERE id_barang='$id_barang' AND id_user='$id_user' ");
-		header('location:../main?url=tambah-penjualan&type=' . $type . '');
+		header('location:../main?url=tambah-penjualan&type=' . $type . '&page='.$page);
 	}
 
 	function hapusbarangpenjualan($con, $id_barang, $id_user)
 	{
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+
 		$query_type = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM penjualan_temp WHERE id_user='$id_user'"));
 		$query = mysqli_query($con, "DELETE FROM penjualan_temp WHERE id_barang='$id_barang' AND id_user='$id_user' ");
 		if ($query_type['id_user'] != NULL) {
-			header('location:../main?url=tambah-penjualan&type=' . $query_type['type'] . '');
+			header('location:../main?url=tambah-penjualan&type=' . $query_type['type'] . '&page='.$page);
 		} else {
 			header('location:../main?url=penjualan');
 		}
@@ -1271,6 +1291,8 @@ class con
 
 	function tambahpenjualan($con, $id_pelanggan, $id_user, $total_transaksi, $total_bayar, $tipe_bayar)
 	{
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+
 		// Kode Otomatis Barcode
 		$today = date('ymd');
 		$char = 'NO' . $today;
@@ -1310,22 +1332,28 @@ class con
 			$stock_out = mysqli_query($con, "UPDATE barang SET stok=stok-$qty WHERE id_barang='$id_barang'");
 		}
 		$del_penjualan_temp = mysqli_query($con, "DELETE FROM penjualan_temp WHERE id_user='$id_user' ");
-		header('location:../main?url=lihat-penjualan&this=' . $no_faktur . '');
+		
+		header('location:../main?url=lihat-penjualan&this=' . $no_faktur . '&page='.$page);
 	}
 
 	function cicilanpenjualan($con, $id_user, $no_faktur, $bayar)
 	{
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+
 		$query = mysqli_query($con, "INSERT INTO penjualan_debt SET no_faktur='$no_faktur',bayar='$bayar',keterangan='Cicilan',id_user='$id_user' ");
 		$update_pembayaran = mysqli_query($con, "UPDATE penjualan SET total_bayar=total_bayar+$bayar WHERE no_faktur='$no_faktur'");
 		$query_penjualan = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM penjualan WHERE no_faktur='$no_faktur'"));
 		if ($query_penjualan['total_bayar'] >= $query_penjualan['total_transaksi']) {
 			$update_status = mysqli_query($con, "UPDATE penjualan SET status='Lunas' WHERE no_faktur='$no_faktur'");
 		}
-		header('location:../main?url=lihat-penjualan&this=' . $no_faktur . '');
+
+		header('location:../main?url=lihat-penjualan&this=' . $no_faktur . '&page='.$page);
 	}
 
 	function hapuscicilanpenjualan($con, $no_faktur, $id_penjualan_debt)
 	{
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+
 		$penjualan_det = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM penjualan_debt WHERE id_penjualan_debt='$id_penjualan_debt'"));
 		$bayar = $penjualan_det['bayar'];
 		$update_pembayaran = mysqli_query($con, "UPDATE penjualan SET total_bayar=total_bayar-$bayar WHERE no_faktur='$no_faktur'");
@@ -1334,11 +1362,13 @@ class con
 			$update_status = mysqli_query($con, "UPDATE penjualan SET status='Hutang' WHERE no_faktur='$no_faktur'");
 		}
 		$query = mysqli_query($con, "DELETE FROM penjualan_debt WHERE id_penjualan_debt='$id_penjualan_debt' ");
-		header('location:../main?url=lihat-penjualan&this=' . $no_faktur . '');
+
+		header('location:../main?url=lihat-penjualan&this=' . $no_faktur . '&page='.$page);
 	}
 
 	function hapuspenjualan($con, $no_faktur)
 	{
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
 		// $penjualan_det = mysqli_query($con, "SELECT * FROM penjualan_det WHERE no_faktur='$no_faktur'");
 		// disable temporary
 		// foreach ($penjualan_det as $pd) {
@@ -1347,7 +1377,7 @@ class con
 			// $stock_in = mysqli_query($con, "UPDATE barang SET stok=stok+$qty WHERE id_barang='$id_barang'");
 		// }
 		$query = mysqli_query($con, "DELETE FROM penjualan WHERE no_faktur='$no_faktur' ");
-		header('location:../main?url=penjualan');
+		header('location:../main?url=penjualan&page='.$page);
 	}
 
 	function getjenispengeluaran($con)
@@ -1539,24 +1569,30 @@ class con
 
 	function tambahpengeluaran($con, $id_pengeluaran_type, $jumlah, $keterangan, $id_user)
 	{
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+
 		$keterangan = htmlspecialchars(ucwords($keterangan));
 		$query = mysqli_query($con, "INSERT INTO pengeluaran SET id_pengeluaran_type='$id_pengeluaran_type',jumlah='$jumlah',keterangan='$keterangan',id_user='$id_user' ");
-		header('location:../main?url=pengeluaran');
+		header('location:../main?url=pengeluaran&page='.$page);
 	}
 
 	function ubahpengeluaran($con, $id_pengeluaran,  $id_pengeluaran_type, $jumlah, $keterangan, $id_user)
 	{
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+		
 		$keterangan = htmlspecialchars(ucwords($keterangan));
 		var_dump($id_pengeluaran,  $id_pengeluaran_type, $jumlah, $keterangan);
 		$updated = date("Y-m-d h:i:s");
 		$query = mysqli_query($con, "UPDATE pengeluaran SET id_pengeluaran_type='$id_pengeluaran_type',jumlah='$jumlah',keterangan='$keterangan',id_user='$id_user',updated='$updated' WHERE id_pengeluaran='$id_pengeluaran' ");
-		header('location:../main?url=pengeluaran');
+		header('location:../main?url=pengeluaran&page='.$page);
 	}
 
 	function hapuspengeluaran($con, $id_pengeluaran)
 	{
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+
 		$query = mysqli_query($con, "DELETE FROM pengeluaran WHERE id_pengeluaran='$id_pengeluaran' ");
-		header('location:../main?url=pengeluaran');
+		header('location:../main?url=pengeluaran&page='.$page);
 	}
 
 	function ubahdatatoko($con, $id_toko, $nama_toko, $ket_toko, $alamat_toko, $kontak_toko)
@@ -1570,52 +1606,67 @@ class con
 
 	function approved($con, $no_faktur)
 	{
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+
 		$date = date('Y-m-d H:i:s');
 		$query = mysqli_query($con, "UPDATE penjualan SET persetujuan='Approved', updated='$date' WHERE no_faktur='$no_faktur' ");
-		header('location:../main?url=penjualan');
+		header('location:../main?url=penjualan&page='.$page);
 	}
 
 	function tambahsocmed($con, $tipe, $keterangan, $link)
 	{
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+
 		$query = mysqli_query($con, "INSERT INTO socmed SET keterangan='$keterangan',tipe='$tipe',link='$link' ");
-		header('location:../main?url=socmed');
+		header('location:../main?url=socmed&page='.$page);
 	}
 
 	function ubahsocmed($con, $id, $tipe, $keterangan, $link)
 	{
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+		
 		$query = mysqli_query($con, "UPDATE socmed SET keterangan='$keterangan',tipe='$tipe',link='$link' WHERE id='$id' ");
-
-		header('location:../main?url=socmed');
+		header('location:../main?url=socmed&page='.$page);
 	}
 
 	function hapussocmed($con, $id)
 	{
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+
 		$query = mysqli_query($con, "DELETE FROM socmed WHERE id='$id' ");
-		header('location:../main?url=socmed');
+		header('location:../main?url=socmed&page='.$page);
 	}
 
 	function tambahkontak($con, $keterangan, $kontak, $letak, $aktif)
 	{
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+
 		$query = mysqli_query($con, "INSERT INTO kontak SET keterangan='$keterangan', kontak='$kontak', letak='$letak', aktif='$aktif' ");
-		header('location:../main?url=kontak');
+		header('location:../main?url=kontak&page='.$page);
 	}
 
 	function ubahkontak($con, $id, $keterangan, $kontak, $letak, $aktif)
 	{
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+
 		$query = mysqli_query($con, "UPDATE kontak SET keterangan='$keterangan', kontak='$kontak', letak='$letak', aktif='$aktif' WHERE id='$id' ");
-		header('location:../main?url=kontak');
+		header('location:../main?url=kontak&page='.$page);
 	}
 
 	function setaktif($con, $id, $aktif)
 	{
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+
 		$query = mysqli_query($con, "UPDATE kontak SET aktif='$aktif' WHERE id='$id' ");
-		header('location:../main?url=kontak');
+		header('location:../main?url=kontak&page='.$page);
 	}
 
 	function hapuskontak($con, $id)
 	{
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+
 		$query = mysqli_query($con, "DELETE FROM kontak WHERE id='$id' ");
-		header('location:../main?url=kontak');
+		header('location:../main?url=kontak&page='.$page);
 	}
 
 	function getmerk($con)
@@ -1982,7 +2033,9 @@ class con
 
 	function approveharian($con)
 	{
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+
 		$query = mysqli_query($con, "UPDATE `penjualan` SET daily = true WHERE (daily != true OR daily IS NULL)");
-		header('location:../main?url=laporan-harian');
+		header('location:../main?url=laporan-harian&page='.$page);
 	}
 }

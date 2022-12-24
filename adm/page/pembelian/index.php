@@ -30,37 +30,64 @@
 
 <script>
     const sess_data = <?= json_encode($_SESSION) ?>;
+    const page = <?=isset($_GET["page"])? (int)$_GET["page"] : 0 ?>;
+
+    let dt = $('#pembelianTable').DataTable({
+        dom: "Bfrtip",
+        ajax: {
+            url: 'process/action?url=getpembelian',
+            type: "POST"
+        },
+        processing: true,
+        serverSide: true,
+        columns: [
+            { data: "no_po" },
+            { data: "tanggal" },
+            { data: "supplier" },
+            { data: "status", className: "text-center", },
+            { data: "total_transaksi" },
+            { data: "total_bayar" },
+            { data: "user", className: "text-center", },
+            { data: "aksi", className: "text-center", },
+        ],
+        ordering: false
+    });
 
     $(document).ready(function () {
-        var dt = $('#pembelianTable').DataTable({
-            dom: "Bfrtip",
-            ajax: {
-                url: 'process/action?url=getpembelian',
-                type: "POST"
-            },
-            processing: true,
-            serverSide: true,
-            columns: [
-                { data: "no_po" },
-                { data: "tanggal" },
-                { data: "supplier" },
-                { data: "status", className: "text-center", },
-                { data: "total_transaksi" },
-                { data: "total_bayar" },
-                { data: "user", className: "text-center", },
-                { data: "aksi", className: "text-center", },
-            ],
-            ordering: false
-        });
-
         // if(sess_data["id_jabatan"] == 5){
         //     dt.columns([7]).visible(false);
         // }
+
+        if(page != null && page != ""){
+            setTimeout(() => {
+                dt.page(page).draw(false);
+            }, 100)
+        }
+
+        $('#merkTable').on( 'page.dt', function () {
+            const info = dt.page.info();
+            const url = new URL(window.location);
+            
+            url.searchParams.set('page', info.page);
+            window.history.pushState({}, '', url);
+        });
     });
 
-    function editPembelian(id) {
+    function lihatPembelian(id) {
         const info = dt.page.info();
-        const url = "main?url=ubah-pembelian&this="+id+"&page="+info.page
+        const url = "main?url=lihat-pembelian&this="+id+"&page="+info.page
+        window.open(url, "_self")
+    }
+
+    function cetakPembelian(id) {
+        const info = dt.page.info();
+        const url = "page/pembelian/cetak_det.php?this="+id+"&page="+info.page
+        window.open(url, "_blank")
+    }
+
+    function cicilanPembelian(id) {
+        const info = dt.page.info();
+        const url = "main?url=cicilan-pembelian&this="+id+"&page="+info.page
         window.open(url, "_self")
     }
 
@@ -71,12 +98,6 @@
             const url = "process/action?url=hapuspembelian&this="+id+"&page="+info.page
             window.open(url, "_self")
         }
-    }
-
-    function setAktif(id, aktif) {
-        const info = dt.page.info();
-        const url = "process/action?url=setaktifpembelian&this="+id+"&aktif="+aktif+"&page="+info.page
-        window.open(url, "_self")
     }
 
 </script>
