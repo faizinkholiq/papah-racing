@@ -36,29 +36,59 @@ if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2") {
 
 <script>
     const sess_data = <?= json_encode($_SESSION) ?>;
+    const page = <?=isset($_GET["page"])? (int)$_GET["page"] : 0 ?>;
+
+    let dt = $('#pengeluaranTable').DataTable({
+        dom: "Bfrtip",
+        ajax: {
+            url: 'process/action?url=getpengeluaran',
+            type: "POST",
+            data: {
+                admin: <?= isset($_GET['admin'])? $_GET['admin'] : 0 ?>
+            }
+        },
+        processing: true,
+        serverSide: true,
+        columns: [
+            { data: "row_no" },
+            { data: "tanggal" },
+            { data: "jenis" },
+            { data: "jumlah" },
+            { data: "keterangan" },
+            { data: "user" },
+            { data: "aksi", className: "text-center", },
+        ],
+        ordering: false
+    });
 
     $(document).ready(function () {
-        var dt = $('#pengeluaranTable').DataTable({
-            dom: "Bfrtip",
-            ajax: {
-                url: 'process/action?url=getpengeluaran',
-                type: "POST",
-                data: {
-                    admin: <?= isset($_GET['admin'])? $_GET['admin'] : 0 ?>
-                }
-            },
-            processing: true,
-            serverSide: true,
-            columns: [
-                { data: "row_no" },
-                { data: "tanggal" },
-                { data: "jenis" },
-                { data: "jumlah" },
-                { data: "keterangan" },
-                { data: "user" },
-                { data: "aksi", className: "text-center", },
-            ],
-            ordering: false
+        if(page != null && page != ""){
+            setTimeout(() => {
+                dt.page(page).draw(false);
+            }, 100)
+        }
+
+        $('#pengeluaranTable').on( 'page.dt', function () {
+            const info = dt.page.info();
+            const url = new URL(window.location);
+            
+            url.searchParams.set('page', info.page);
+            window.history.pushState({}, '', url);
         });
     });
+
+    function editPengeluaran(id) {
+        const info = dt.page.info();
+        const url = "main?url=ubah-pengeluaran&this="+id+"&page="+info.page
+        window.open(url, "_self")
+    }
+
+    function hapusPengeluaran(id) {
+        let ask = window.confirm("Anda yakin ingin hapus data ini?");
+        if (ask) {
+            const info = dt.page.info();
+            const url = "process/action?url=hapuspengeluaran&this="+id+"&page="+info.page
+            window.open(url, "_self")
+        }
+    }
 </script>

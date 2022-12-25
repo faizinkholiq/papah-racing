@@ -88,37 +88,86 @@ $params = (!empty($arr_params))? http_build_query($arr_params) : "";
 
 <script>
     const sess_data = <?= json_encode($_SESSION) ?>;
+    const page = <?=isset($_GET["page"])? (int)$_GET["page"] : 0 ?>;
+    
+    let dt = $('#penjualanTable').DataTable({
+        dom: "Bfrtip",
+        ajax: {
+            url: 'process/action?url=getpenjualan',
+            type: "POST",
+            data: {
+                admin: <?= $admin ?>,
+                status: "<?= $status ?>",
+            }, 
+        },
+        initComplete: function( settings, json){
+            $('#total_hutang').text(json.total_hutang)
+        },
+        processing: true,
+        serverSide: true,
+        columns: [
+            { data: "no_faktur" },
+            { data: "tanggal" },
+            { data: "pelanggan" },
+            { data: "type" },
+            { data: "status", className: "text-center", },
+            { data: "total_transaksi" },
+            { data: "total_bayar" },
+            { data: "tipe_bayar", className: "text-center", },
+            { data: "persetujuan", className: "text-center", },
+            { data: "user", className: "text-center", },
+            { data: "aksi", className: "text-center", },
+        ],
+        ordering: false
+    });
 
     $(document).ready(function () {
-        var dt = $('#penjualanTable').DataTable({
-            dom: "Bfrtip",
-            ajax: {
-                url: 'process/action?url=getpenjualan',
-                type: "POST",
-                data: {
-                    admin: <?= $admin ?>,
-                    status: "<?= $status ?>",
-                }, 
-            },
-            initComplete: function( settings, json){
-                $('#total_hutang').text(json.total_hutang)
-            },
-            processing: true,
-            serverSide: true,
-            columns: [
-                { data: "no_faktur" },
-                { data: "tanggal" },
-                { data: "pelanggan" },
-                { data: "type" },
-                { data: "status", className: "text-center", },
-                { data: "total_transaksi" },
-                { data: "total_bayar" },
-                { data: "tipe_bayar", className: "text-center", },
-                { data: "persetujuan", className: "text-center", },
-                { data: "user", className: "text-center", },
-                { data: "aksi", className: "text-center", },
-            ],
-            ordering: false
+        if(page != null && page != ""){
+            setTimeout(() => {
+                dt.page(page).draw(false);
+            }, 100)
+        }
+
+        $('#penjualanTable').on( 'page.dt', function () {
+            const info = dt.page.info();
+            const url = new URL(window.location);
+            
+            url.searchParams.set('page', info.page);
+            window.history.pushState({}, '', url);
         });
     });
+
+    function lihatPenjualan(id) {
+        const info = dt.page.info();
+        const url = "main?url=lihat-penjualan&this="+id+"&page="+info.page
+        window.open(url, "_self")
+    }
+
+    function cetakPenjualan(id) {
+        const info = dt.page.info();
+        const url = "page/penjualan/cetak_det.php?this="+id+"&page="+info.page
+        window.open(url, "_blank")
+    }
+
+    function approvePenjualan(id) {
+        const info = dt.page.info();
+        const url = "process/action?url=approved&this="+id+"&page="+info.page
+        window.open(url, "_self")
+    }
+
+    function cicilanPenjualan(id) {
+        const info = dt.page.info();
+        const url = "main?url=cicilan-penjualan&this="+id+"&page="+info.page
+        window.open(url, "_self")
+    }
+
+    function hapusPenjualan(id) {
+        let ask = window.confirm("Anda yakin ingin hapus data ini?");
+        if (ask) {
+            const info = dt.page.info();
+            const url = "process/action?url=hapuspenjualan&this="+id+"&page="+info.page
+            window.open(url, "_self")
+        }
+    }
+
 </script>

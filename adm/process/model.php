@@ -1162,16 +1162,16 @@ class con
 
 		if ($_SESSION['id_jabatan'] == '1' || $_SESSION['id_jabatan'] == '2'){
 			$btn_aksi = "CONCAT(
-				'<a href=\"main?url=lihat-penjualan&this=', penjualan.no_faktur, '\" class=\"btn btn-info btn-sm\"><i class=\"fas fa-eye\"></i></a>
-				<a href=\"page/penjualan/cetak_det.php?this=', penjualan.no_faktur, '\" target=\"_blank\" class=\"btn btn-secondary btn-sm\"><i class=\"fas fa-print\"></i></a> ',
-				IF(penjualan.persetujuan = 'Pending', CONCAT('<a href=\"process/action?url=approved&this=', penjualan.no_faktur, '\" class=\"btn btn-primary btn-sm\"><i class=\"fas fa-check\"></i></a> '), ''),
-				IF(penjualan.status = 'Hutang', CONCAT('<a href=\"main?url=cicilan-penjualan&this=', penjualan.no_faktur, '\" class=\"btn btn-success btn-sm\"><i class=\"fas fa-hand-holding-usd\"></i></a> '), ''),
-				'<a href=\"process/action?url=hapuspenjualan&this=', penjualan.no_faktur, '\" class=\"btn btn-danger btn-sm\" data-toggle=\"tooltip\" data-original-title=\"Hapus\" onclick=\"return confirm(`Anda yakin ingin hapus data ini?`)\"><i class=\"fas fa-trash-alt\"></i></a>'
+				'<a href=\"#!\" onclick=\"lihatPenjualan(\'', penjualan.no_faktur, '\')\" class=\"btn btn-info btn-sm\"><i class=\"fas fa-eye\"></i></a>
+				<a href=\"#!\" onclick=\"cetakPenjualan(\'', penjualan.no_faktur, '\')\" class=\"btn btn-secondary btn-sm\"><i class=\"fas fa-print\"></i></a> ',
+				IF(penjualan.persetujuan = 'Pending', CONCAT('<a href=\"#!\" onclick=\"approvePenjualan(\'', penjualan.no_faktur, '\')\" class=\"btn btn-primary btn-sm\"><i class=\"fas fa-check\"></i></a> '), ''),
+				IF(penjualan.status = 'Hutang', CONCAT('<a href=\"#!\" onclick=\"cicilanPenjualan(\'', penjualan.no_faktur, '\')\" class=\"btn btn-success btn-sm\"><i class=\"fas fa-hand-holding-usd\"></i></a> '), ''),
+				'<a href=\"#!\" onclick=\"hapusPenjualan(\'', penjualan.no_faktur, '\')\" class=\"btn btn-danger btn-sm\" data-toggle=\"tooltip\" data-original-title=\"Hapus\"><i class=\"fas fa-trash-alt\"></i></a>'
 			)";
 		}else{
 			$btn_aksi = "CONCAT(
-				'<a href=\"main?url=lihat-penjualan&this=', penjualan.no_faktur, '\" class=\"btn btn-info btn-sm\"><i class=\"fas fa-eye\"></i></a>
-				<a href=\"page/penjualan/cetak_det.php?this=', penjualan.no_faktur, '\" target=\"_blank\" class=\"btn btn-secondary btn-sm\"><i class=\"fas fa-print\"></i></a>'
+				'<a href=\"#!\" onclick=\"lihatPenjualan(\'', penjualan.no_faktur, '\')\" class=\"btn btn-info btn-sm\"><i class=\"fas fa-eye\"></i></a>
+				<a href=\"#!\" onclick=\"cetakPenjualan(\'', penjualan.no_faktur, '\')\" class=\"btn btn-secondary btn-sm\"><i class=\"fas fa-print\"></i></a>'
 			)";
 		}
 
@@ -1526,8 +1526,8 @@ class con
 		$limit = $_POST["length"];
 		$offset = $_POST["start"];
 		$btn_aksi = "CONCAT(
-			'<a href=\"main?url=ubah-pengeluaran&this=', pengeluaran.id_pengeluaran, '\" class=\"btn btn-primary btn-sm\"><i class=\"fas fa-edit\"></i></a>
-			<a href=\"process/action?url=hapuspengeluaran&this=', pengeluaran.id_pengeluaran, '\" class=\"btn btn-danger btn-sm\" data-toggle=\"tooltip\" data-original-title=\"Hapus\" onclick=\"return confirm(`Anda yakin ingin hapus data ini?`)\"><i class=\"fas fa-trash-alt\"></i></a>'
+			'<a href=\"#!\" onclick=\"editPengeluaran(', pengeluaran.id_pengeluaran, ')\" class=\"btn btn-primary btn-sm\"><i class=\"fas fa-edit\"></i></a>
+			<a href=\"#!\" onclick=\"hapusPengeluaran(', pengeluaran.id_pengeluaran, ')\" class=\"btn btn-danger btn-sm\" data-toggle=\"tooltip\" data-original-title=\"Hapus\" onclick=\"return confirm(`Anda yakin ingin hapus data ini?`)\"><i class=\"fas fa-trash-alt\"></i></a>'
 		)";
 
 		$result = mysqli_query($con, "

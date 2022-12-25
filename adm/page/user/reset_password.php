@@ -11,7 +11,7 @@ $page = isset($_GET['page'])? $_GET['page'] : 0;
     <div class="col-8">
         <h3 class="font-weight-bolder"><i class='fas fa-user'></i> Reset Password User</h3>
     </div>
-    <div class="col-4"><a href="main?url=user" class="btn btn-danger float-right"><i class='fas fa-times-circle mr-2'></i>Back</a></div>
+    <div class="col-4"><a href="main?url=user&page=<?= $page ?>" class="btn btn-danger float-right"><i class='fas fa-times-circle mr-2'></i>Back</a></div>
 </div>
 <div class="wrapper">
     <form action="process/action?url=resetpassworduser&page=<?= $page ?>" method="post">

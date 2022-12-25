@@ -4,16 +4,17 @@ if (empty($_GET['url'])) {
 }
 $id_pengeluaran = $_GET['this'];
 $data = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM pengeluaran WHERE id_pengeluaran='$id_pengeluaran' "));
+$page = isset($_GET['page'])? $_GET['page'] : 0;
 ?>
 
 <div class="row">
     <div class="col-8">
         <h3 class="font-weight-bolder"><i class='fas fa-shopping-bag'></i> Ubah Pengeluaran</h3>
     </div>
-    <div class="col-4"><a href="main?url=pengeluaran" class="btn btn-danger float-right"><i class='fas fa-times-circle mr-2'></i>Back</a></div>
+    <div class="col-4"><a href="main?url=pengeluaran&page=<?= $page ?>" class="btn btn-danger float-right"><i class='fas fa-times-circle mr-2'></i>Back</a></div>
 </div>
 <div class="wrapper">
-    <form action="process/action?url=ubahpengeluaran" method="post">
+    <form action="process/action?url=ubahpengeluaran&page=<?= $page ?>" method="post">
         <input type="hidden" name="id_pengeluaran" value="<?= $id_pengeluaran; ?>">
         <input type="hidden" name="id_user" value="<?= $_SESSION['id_user']; ?>">
         <div class="form-group row">

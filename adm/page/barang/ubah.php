@@ -7,6 +7,7 @@ $path = str_replace('/adm/page/barang','/p/'.trim($id_barang),dirname(__FILE__))
 
 $data = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM barang WHERE id_barang='$id_barang' "));
 $selected_brg = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM foto_barang WHERE id_barang='$id_barang' "));
+$page = isset($_GET["page"])? (int)$_GET["page"] : 0 ;
 if ($_SESSION['id_jabatan'] == '1'||$_SESSION['id_jabatan'] == '2'||$_SESSION['id_jabatan'] == '3') {
 	echo '<!--';
 	print_r($data);
@@ -16,12 +17,12 @@ if ($_SESSION['id_jabatan'] == '1'||$_SESSION['id_jabatan'] == '2'||$_SESSION['i
     <div class="col-8">
         <h3 class="font-weight-bolder"><i class='fas fa-box'></i> Ubah Barang</h3>
     </div>
-    <div class="col-4"><a href="main?url=barang&page=<?=isset($_GET["page"])? (int)$_GET["page"] : 0 ?>" class="btn btn-danger float-right"><i class='fas fa-times-circle mr-2'></i>Back</a></div>
+    <div class="col-4"><a href="main?url=barang&page=<?= $page ?>" class="btn btn-danger float-right"><i class='fas fa-times-circle mr-2'></i>Back</a></div>
 </div>
 <div class="wrapper">
-    <form action="process/action?url=ubahbarang" enctype="multipart/form-data" method="post">
+    <form action="process/action?url=ubahbarang&page=<?= $page ?>" enctype="multipart/form-data" method="post">
         <input type="hidden" name="id_barang" value="<?= $id_barang; ?>" />
-        <input type="hidden" name="page" value="<?=isset($_GET["page"])? (int)$_GET["page"] : 0 ?>" />
+        <input type="hidden" name="page" value="<?= $page ?>" />
         <div class="form-group row">
             <label for="barcode" class="col-sm-2 col-form-label">Barcode</label>
             <div class="col-sm-10">

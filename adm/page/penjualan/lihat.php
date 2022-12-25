@@ -6,12 +6,13 @@ $no_faktur = $_GET['this'];
 $data = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM penjualan JOIN penjualan_det ON penjualan.no_faktur=penjualan_det.no_faktur JOIN user ON penjualan.id_user=user.id_user WHERE penjualan.no_faktur='$no_faktur' "));
 $query_debt = mysqli_query($con, "SELECT * FROM penjualan_debt WHERE no_faktur='$no_faktur'");
 $total_debt = mysqli_num_rows($query_debt);
+$page = isset($_GET['page'])? $_GET['page'] : 0;
 ?>
 <div class="row">
     <div class="col-8">
         <h3 class="font-weight-bolder"><i class='fas fa-cash-register'></i> Detail Penjualan</h3>
     </div>
-    <div class="col-4"><a href="main?url=penjualan" class="btn btn-danger float-right"><i class='fas fa-times-circle mr-2'></i>Back</a></div>
+    <div class="col-4"><a href="main?url=penjualan&page=<?= $page ?>" class="btn btn-danger float-right"><i class='fas fa-times-circle mr-2'></i>Back</a></div>
 </div>
 <div class="wrapper">
     <div class="row">
@@ -121,7 +122,7 @@ $total_debt = mysqli_num_rows($query_debt);
                             <?php if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2") { ?>
                                 <td>
                                     <?php if ($debt['keterangan'] != 'DP') { ?>
-                                        <a href="process/action?url=hapuscicilanpenjualan&no_faktur=<?= $no_faktur ?>&this=<?= $debt['id_penjualan_debt']; ?>" class="btn btn-danger btn-sm" data-toggle="tooltip" data-original-title="Hapus" onclick="return confirm('Anda yakin ingin hapus data ini?')"><i class='fas fa-trash-alt'></i></a>
+                                        <a href="process/action?url=hapuscicilanpenjualan&no_faktur=<?= $no_faktur ?>&this=<?= $debt['id_penjualan_debt']; ?>&page=<?= $page ?>" class="btn btn-danger btn-sm" data-toggle="tooltip" data-original-title="Hapus" onclick="return confirm('Anda yakin ingin hapus data ini?')"><i class='fas fa-trash-alt'></i></a>
                                     <?php } ?>
                                 </td>
                             <?php } ?>

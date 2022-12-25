@@ -4,16 +4,17 @@ if (empty($_GET['url'])) {
 }
 $id = $_GET['this'];
 $data = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM socmed WHERE id='$id' "));
+$page = isset($_GET['page'])? $_GET['page'] : 0;
 ?>
 
 <div class="row">
     <div class="col-8">
         <h3 class="font-weight-bolder"><i class='fas fa-share-alt'></i> Tambah Social Media</h3>
     </div>
-    <div class="col-4"><a href="main?url=socmed" class="btn btn-danger float-right"><i class='fas fa-times-circle mr-2'></i>Back</a></div>
+    <div class="col-4"><a href="main?url=socmed&page=<?= $page ?>" class="btn btn-danger float-right"><i class='fas fa-times-circle mr-2'></i>Back</a></div>
 </div>
 <div class="wrapper">
-    <form action="process/action?url=ubah-socmed" method="post">
+    <form action="process/action?url=ubah-socmed&page=<?= $page ?>" method="post">
         <input type="hidden" name="id" value="<?= $id; ?>">
         <div class="form-group row">
             <label for="tipe" class="col-sm-2 col-form-label">Tipe</label>

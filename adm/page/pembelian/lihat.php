@@ -6,12 +6,13 @@ $no_po = $_GET['this'];
 $data = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM pembelian JOIN pembelian_det ON pembelian.no_po=pembelian_det.no_po JOIN user ON pembelian.id_user=user.id_user WHERE pembelian.no_po='$no_po' "));
 $query_debt = mysqli_query($con, "SELECT * FROM pembelian_debt WHERE no_po='$no_po'");
 $total_debt = mysqli_num_rows($query_debt);
+$page = isset($_GET['page'])? $_GET['page'] : 0;
 ?>
 <div class="row">
     <div class="col-8">
         <h3 class="font-weight-bolder"><i class='fas fa-shopping-cart'></i> Detail Pembelian</h3>
     </div>
-    <div class="col-4"><a href="main?url=pembelian" class="btn btn-danger float-right"><i class='fas fa-times-circle mr-2'></i>Back</a></div>
+    <div class="col-4"><a href="main?url=pembelian&page=<?= $page ?>" class="btn btn-danger float-right"><i class='fas fa-times-circle mr-2'></i>Back</a></div>
 </div>
 <div class="wrapper">
     <div class="row">
@@ -112,7 +113,7 @@ $total_debt = mysqli_num_rows($query_debt);
                             <?php if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2") { ?>
                                 <td>
                                     <?php if ($debt['keterangan'] != 'DP') { ?>
-                                        <a href="process/action?url=hapuscicilanpembelian&no_po=<?= $no_po ?>&this=<?= $debt['id_pembelian_debt']; ?>" class="btn btn-danger btn-sm" data-toggle="tooltip" data-original-title="Hapus" onclick="return confirm('Anda yakin ingin hapus data ini?')"><i class='fas fa-trash-alt'></i></a>
+                                        <a href="process/action?url=hapuscicilanpembelian&no_po=<?= $no_po ?>&this=<?= $debt['id_pembelian_debt']; ?>&page=<?= $page ?>" class="btn btn-danger btn-sm" data-toggle="tooltip" data-original-title="Hapus" onclick="return confirm('Anda yakin ingin hapus data ini?')"><i class='fas fa-trash-alt'></i></a>
                                     <?php } ?>
                                 </td>
                             <?php } ?>
