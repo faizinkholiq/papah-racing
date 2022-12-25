@@ -5479,3 +5479,21 @@ footer.skin-dark-footer ul.footer-bottom-social li a:hover, footer.skin-dark-foo
     background-color: #d3d3d3;
     color: #3b5a9a;
 }
+
+.li-kontak {
+    display: flex;
+    box-shadow: 1px 1px 10px 1px #d5d5d5;
+    padding: 1rem 1.5rem;
+    border-radius: 0.5rem;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    transition: background 0.5s, box-shadow 0.5s;
+    font-weight: bold;
+    color: #555;
+}
+
+.li-kontak:hover {
+    background: #e4e4e4;
+    box-shadow: none;
+}

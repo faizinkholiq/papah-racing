@@ -1,5 +1,10 @@
 <?php
 head();
+$kontaks = mysqli_query($con, "SELECT * FROM kontak WHERE letak = 'order' AND aktif = 1 ORDER BY id ASC");
+$list_kontak = [];
+foreach($kontaks as $key => $value) {
+	$list_kontak[] = $value;
+}
 echo '<section class="py-2 br-bottom br-top" style="margin-top: 1rem;">
 		<div class="container">
 			<div class="row align-items-center justify-content-start">
@@ -96,7 +101,7 @@ foreach ($posts as $pos){
 			</div>'.
 			'<div class="bg-success d-flex align-items-center justify-content-center"> 
 				<div class="edlio">
-					<a href="'.$order.urlencode('Saya order '.$ptitle).'%0a'.urlencode($purl).'" class="btn text-white btn-block mb-1">
+					<a href="#!" onclick="pesanSekarang(`'.$ptitle.'`, `'.urlencode('Saya order '.$ptitle).'`, `'.urlencode($purl).'`)" class="btn text-white btn-block mb-1">
 						<i class="lni lni-shopping-basket mr-2"></i>Pesan Sekarang
 					</a>
 				</div> 
@@ -214,6 +219,49 @@ echo '</div></div>';
 endif;
 
 echo '</div></section>';
+echo '
+	<div class="modal fade" id="orderModal" tabindex="-1" role="dialog" aria-labelledby="ordermodalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg login-pop-form" role="document">
+			<div class="modal-content" id="ordermodalLabel" style="padding:1rem">
+				<div class="modal-headers"> 
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span class="ti-close"></span> </button> 
+				</div>
+				<div class="modal-body">
+					<div class="text-center mb-4" style="font-size: 1rem;">
+						<h3 class="m-0 ft-regular"><span id="kontakTitle"></span></h3><hr/>
+						Silahkan melakukan pemesanan dengan menghubungi salah satu kontak dibawah ini :
+						<div id="kontakList" class="mt-4" style="display: flex; gap: 1rem; flex-direction: column; padding: 0 5rem;">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+';
 echo $all;		
 foot();		
 ?>
+
+<script>
+	const list_kontak = <?= json_encode($list_kontak) ?>;
+	const order_url = '<?= $order ?>';
+
+	function pesanSekarang(title, text, target_url) {
+		$('#kontakTitle').text(title);
+		$('#kontakList').html('');
+		list_kontak.forEach((v) => {
+			$('#kontakList').append(`
+				<a href="https://wa.me/${v.kontak}?text=${text}%0a${target_url}" target="_blank">
+					<div class="li-kontak">
+						<div class="mini-wa mr-2" style="color: white; background:#46df1b;">
+							<i class="lni lni-whatsapp"></i>
+						</div>
+						${v.keterangan} (${v.kontak})
+					</div>
+				</a>
+			`)
+		});
+		$('#orderModal').modal('show');
+	}
+
+</script>
