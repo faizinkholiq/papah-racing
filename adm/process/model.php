@@ -460,8 +460,9 @@ class con
 		$limit = $_POST["length"];
 		$offset = $_POST["start"];
 		$btn_aksi = "CONCAT(
-			'<a href=\"#!\" onclick=\"editPelanggan(', pelanggan.id_pelanggan, ')\" class=\"btn btn-primary btn-sm\"><i class=\"fas fa-edit\"></i></a>
-			<a href=\#!\" onclick=\"hapusPelanggan(', pelanggan.id_pelanggan, ')\" class=\"btn btn-danger btn-sm\" data-toggle=\"tooltip\" data-original-title=\"Hapus\"><i class=\"fas fa-trash-alt\"></i></a>'
+			'<a href=\"#!\" onclick=\"historyPelanggan(', pelanggan.id_pelanggan, ')\" class=\"btn btn-warning btn-sm\" data-toggle=\"tooltip\" data-original-title=\"History Pembelian\"><i class=\"fas fa-history\"></i></a> ',
+			'<a href=\"#!\" onclick=\"editPelanggan(', pelanggan.id_pelanggan, ')\" class=\"btn btn-primary btn-sm\"><i class=\"fas fa-edit\"></i></a> ',
+			'<a href=\#!\" onclick=\"hapusPelanggan(', pelanggan.id_pelanggan, ')\" class=\"btn btn-danger btn-sm\" data-toggle=\"tooltip\" data-original-title=\"Hapus\"><i class=\"fas fa-trash-alt\"></i></a>'
 		)";
 
 		$result = mysqli_query($con, "
@@ -2037,5 +2038,104 @@ class con
 
 		$query = mysqli_query($con, "UPDATE `penjualan` SET daily = true WHERE (daily != true OR daily IS NULL)");
 		header('location:../main?url=laporan-harian&page='.$page);
+	}
+
+	function gethistorypembelian($con)
+	{	
+		$id_pelanggan = $_POST['id_pelanggan'];
+		$search = $_POST["search"];
+		
+		$q_src = "";
+		if(!empty($search["value"])){
+			$col = [
+				"penjualan.tanggal", 
+				"barang.nama",
+				"penjualan_det.qty",
+				"penjualan_det.total_harga"
+			];
+
+			$src = $search["value"];
+			$src_arr = explode(" ", $src);
+
+			foreach($col as $key => $val){
+				if($key == 0) {
+					$q_src .= "(";
+					foreach($src_arr as $k => $v){
+						if($k == 0) {
+							$q_src .= "$val LIKE '%$v%'"; 
+						}else{
+							$q_src .= " AND $val LIKE '%$v%'";
+						}
+					}
+					$q_src .= ")";
+				}else{
+					$q_src .= " OR (";
+					foreach($src_arr as $k => $v){
+						if($k == 0) {
+							$q_src .= "$val LIKE '%$v%'"; 
+						}else{
+							$q_src .= " AND $val LIKE '%$v%'";
+						}
+					}
+					$q_src .= ")";
+				}
+			}
+		}
+
+		$whereFilter = "";
+		if(!empty($q_src)){
+			$whereFilter = "AND ($q_src)";
+		}
+
+		$limit = $_POST["length"];
+		$offset = $_POST["start"];
+
+		$result = mysqli_query($con, "
+			SELECT 
+				penjualan.tanggal,
+				barang.nama,
+				penjualan_det.qty,
+				penjualan_det.total_harga
+			FROM penjualan_det
+			JOIN penjualan ON penjualan.no_faktur = penjualan_det.no_faktur
+			LEFT JOIN barang ON barang.id_barang = penjualan_det.id_barang
+			WHERE 
+				id_pelanggan = $id_pelanggan
+				$whereFilter
+			GROUP BY 
+				penjualan.no_faktur, 
+				penjualan_det.id_barang
+			ORDER BY 
+				penjualan.tanggal DESC,
+				penjualan_det.id_barang ASC
+			LIMIT $limit OFFSET $offset
+		");
+		
+		$data["data"] = [];
+		while($row = mysqli_fetch_assoc($result)){
+			$data["data"][] = $row;
+		}
+		$data["draw"] = intval($_POST["draw"]);
+
+		$result_all = mysqli_query($con, "
+			SELECT 
+				penjualan.tanggal,
+				barang.nama,
+				penjualan_det.qty,
+				penjualan_det.total_harga
+			FROM penjualan_det
+			JOIN penjualan ON penjualan.no_faktur = penjualan_det.no_faktur
+			LEFT JOIN barang ON barang.id_barang = penjualan_det.id_barang
+			WHERE 
+				id_pelanggan = $id_pelanggan
+				$whereFilter
+			GROUP BY 
+				penjualan.no_faktur, 
+				penjualan_det.id_barang
+		");
+		$data["recordsTotal"] = mysqli_num_rows($result_all);
+		$data["recordsFiltered"] = mysqli_num_rows($result_all);
+		
+		echo json_encode($data);
 	}
 }

@@ -27,6 +27,34 @@
         </table>
     </div>
 </div>
+
+<!-- Modal History Pembelian -->
+<div id="modalHistoryPembelian" class="modal" tabindex="-2" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">History Pembelian</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body table-responsive">
+                <div class="table-responsive mt-3">
+                    <table id="historyPembelianTable" class="table table-striped table-bordered" style="width:100%">
+                        <thead>
+                            <tr class="text-center">
+                                <th>Tanggal</th>
+                                <th>Nama Barang</th>
+                                <th>Qty</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     const sess_data = <?= json_encode($_SESSION) ?>;
     const page = <?=isset($_GET["page"])? (int)$_GET["page"] : 0 ?>;
@@ -85,6 +113,32 @@
             const url = "process/action?url=hapuspelanggan&this="+id+"&page="+info.page
             window.open(url, "_self")
         }
+    }
+
+    function historyPelanggan(id) {
+        $('#modalHistoryPembelian').modal('show');
+
+        $('#historyPembelianTable').DataTable().clear().destroy();
+        $('#historyPembelianTable').DataTable({
+            dom: "Bfrtip",
+            ajax: {
+                url: 'process/action?url=gethistorypembelian',
+                type: "POST",
+                data: {
+                    id_pelanggan: id,
+                }
+            },
+            processing: true,
+            serverSide: true,
+            columns: [
+                { data: "tanggal" },
+                { data: "nama" },
+                { data: "qty" },
+                { data: "total_harga" },
+            ],
+            ordering: false
+        });
+
     }
 
 </script>

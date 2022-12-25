@@ -2,42 +2,46 @@ $(document).ready(function() {
     $("table.display").DataTable({
       order: [],
     });
-    
+
+    $('[data-toggle="tooltip"]').tooltip();
+
     $( '.uang' ).mask('000.000.000.000', {reverse: true});
 
     // pilih barang dari pencarian
     $(document).on('click', '#pilihbarang', function() {
-      // var id_barang = $(this).data('id');
+        // var id_barang = $(this).data('id');
+        var barcode = $(this).data('barcode');
+        var id = $(this).data('id');
+        // var nama = $(this).data('nama');
+        // var stok = $(this).data('stok');
+
+        $('#barcode').val(barcode);
+        $('#id_barang').val(id);
+        $('#barang').modal('hide');
+    }); 
+
+    // mengambil nilai value untuk edit
+    $(document).on('click', '.editbarang', function() {
+      var id_barang = $(this).data('id');
       var barcode = $(this).data('barcode');
-      var id = $(this).data('id');
-      // var nama = $(this).data('nama');
-      // var stok = $(this).data('stok');
+      var nama = $(this).data('nama');
+      var harga = $(this).data('harga');
+      var diskon = $(this).data('diskon');
+      var qty = $(this).data('qty');
+      var reverse = harga.toString().split('').reverse().join(''),
+      harga_ribuan = reverse.match(/\d{1,3}/g);
+      harga_ribuan = harga_ribuan.join('.').split('').reverse().join('');
 
-      $('#barcode').val(barcode);
-      $('#id_barang').val(id);
-      $('#barang').modal('hide');
-  });
-  // mengambil nilai value untuk edit
-  $(document).on('click', '.editbarang', function() {
-    var id_barang = $(this).data('id');
-    var barcode = $(this).data('barcode');
-    var nama = $(this).data('nama');
-    var harga = $(this).data('harga');
-    var diskon = $(this).data('diskon');
-    var qty = $(this).data('qty');
-    var reverse = harga.toString().split('').reverse().join(''),
-    harga_ribuan = reverse.match(/\d{1,3}/g);
-    harga_ribuan = harga_ribuan.join('.').split('').reverse().join('');
+      $('#ubah_id_barang').val(id_barang);
+      $('#ubah_barcode').val(barcode);
+      $('#ubah_nama').val(nama);
+      $('#ubah_harga').val(harga_ribuan);
+      $('#ubah_diskon').val(diskon);
+      $('#ubah_qty').val(qty);
 
-    $('#ubah_id_barang').val(id_barang);
-    $('#ubah_barcode').val(barcode);
-    $('#ubah_nama').val(nama);
-    $('#ubah_harga').val(harga_ribuan);
-    $('#ubah_diskon').val(diskon);
-    $('#ubah_qty').val(qty);
+    });
 
-  });
-//     var ctx = document.getElementById('myChart').getContext('2d');
+// var ctx = document.getElementById('myChart').getContext('2d');
 // var myChart = new Chart(ctx, {
 //     type: 'bar',
 //     data: {
@@ -72,4 +76,5 @@ $(document).ready(function() {
 //         }
 //     }
 // });
+
 });

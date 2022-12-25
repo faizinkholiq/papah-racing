@@ -51,6 +51,8 @@ if (empty($_GET['url'])) {
 		$nc->hapussupplier($con, $id_supplier);
 	} else if ($to == 'getpelanggan') {
 		$nc->getpelanggan($con);
+	} else if ($to == 'gethistorypembelian') {
+		$nc->gethistorypembelian($con);
 	} else if ($to == 'tambahpelanggan') {
 		$nc->tambahpelanggan($con, $_POST['nama'], $_POST['type'], $_POST['alamat'], $_POST['kontak']);
 	} else if ($to == 'ubahpelanggan') {
