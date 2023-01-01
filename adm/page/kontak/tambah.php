@@ -37,6 +37,12 @@
                 </select>
             </div>
         </div>
+        <div class="form-group row">
+            <label for="order_no" class="col-sm-2 col-form-label">Order No.</label>
+            <div class="col-sm-4">
+                <input type="number" class="form-control" id="order_no" name="order_no">
+            </div>
+        </div>
         <div class="form-row text-center">
             <div class="col-12">
                 <button type="submit" class="btn btn-primary"><i class='fas fa-save mr-2'></i>Simpan</button>

@@ -217,10 +217,17 @@ if (empty($_GET['url'])) {
 	} else if ($to == 'hapus-socmed') {
 		$id = $_GET['this'];
 		$nc->hapussocmed($con, $id);
+	} else if ($to == 'tambah-marketplace') {
+		$nc->tambahmarketplace($con, $_POST['tipe'], $_POST['keterangan'], $_POST['link'], $_POST['order_no']);
+	} else if ($to == 'ubah-marketplace') {
+		$nc->ubahmarketplace($con, $_POST['id'], $_POST['tipe'], $_POST['keterangan'], $_POST['link'], $_POST['order_no']);
+	} else if ($to == 'hapus-marketplace') {
+		$id = $_GET['this'];
+		$nc->hapusmarketplace($con, $id);
 	} else if ($to == 'tambah-kontak') {
-		$nc->tambahkontak($con, $_POST['keterangan'], $_POST['kontak'], $_POST["letak"], $_POST["aktif"]);
+		$nc->tambahkontak($con, $_POST['keterangan'], $_POST['kontak'], $_POST["letak"], $_POST["aktif"], $_POST['order_no']);
 	} else if ($to == 'ubah-kontak') {
-		$nc->ubahkontak($con, $_POST['id'], $_POST['keterangan'], $_POST['kontak'], $_POST["letak"], $_POST["aktif"]);
+		$nc->ubahkontak($con, $_POST['id'], $_POST['keterangan'], $_POST['kontak'], $_POST["letak"], $_POST["aktif"], $_POST['order_no']);
 	} else if ($to == 'set-aktif') {
 		$nc->setaktif($con, $_GET['id'], $_GET["aktif"]);
 	} else if ($to == 'hapus-kontak') {

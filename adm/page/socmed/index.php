@@ -13,7 +13,7 @@ $query = mysqli_query($con, "SELECT * FROM socmed ORDER BY id");
         <table class="table table-striped table-bordered display" style="width:100%">
             <thead>
                 <tr class="text-center">
-                    <th>No.</th>
+                    <th width="10">No.</th>
                     <th>Keterangan</th>
                     <th>Tipe</th>
                     <th>Aksi</th>

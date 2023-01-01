@@ -40,7 +40,7 @@ $id_user = $_SESSION['id_user'];
         <!-- <header>Main Menu</header> -->
             <ul>
                 <li><a href="index.php"><i class='fas fa-tachometer-alt mr-2'></i>Menu Utama</a></li>
-                <?php if ($_SESSION['id_jabatan'] == '1' || $_SESSION['id_jabatan'] == '2' || $_SESSION['id_jabatan'] == '3') { ?>
+                <?php if ($_SESSION['id_jabatan'] == '1' || $_SESSION['id_jabatan'] == '2' || $_SESSION['id_jabatan'] == '3' || $_SESSION['id_jabatan'] == '5') { ?>
                     <li class="nav-item">
                         <a class="nav-link collapsed text-truncate" href="#submenu1" data-toggle="collapse" data-target="#submenu1"><i class="fas fa-folder-open mr-2"></i>Data Master</a>
                         <div class="collapse" id="submenu1" aria-expanded="false">
@@ -58,9 +58,9 @@ $id_user = $_SESSION['id_user'];
                         </div>
                     </li>
                 <?php } ?>
-                <?php if($_SESSION['id_jabatan'] == '5'){ ?>
+                <!-- <?php if($_SESSION['id_jabatan'] == '5'){ ?>
                     <li><a href="main?url=pelanggan"><i class='fas fa-handshake mr-2'></i>Data Pelanggan</a></li>
-                <?php } ?>
+                <?php } ?> -->
                 <?php if ($_SESSION['id_jabatan'] == '1' || $_SESSION['id_jabatan'] == '2' || $_SESSION['id_jabatan'] == '5') { ?>
                     <li><a href="main?url=pembelian"><i class='fas fa-shopping-cart mr-2'></i>Pembelian</a></li>
                 <?php } ?>
@@ -90,6 +90,7 @@ $id_user = $_SESSION['id_user'];
                             <li class="nav-item"><a class="nav-link" href="main?url=data-toko"><span class="ml-2"><i class='fas fa-store mr-2'></i>Data Toko</span></a></li>
                             <li class="nav-item"><a class="nav-link" href="main?url=socmed"><span class="ml-2"><i class='fas fa-share-alt mr-2'></i>Social Media</span></a></li>
                             <li class="nav-item"><a class="nav-link" href="main?url=kontak"><span class="ml-2"><i class='fas fa-phone mr-2'></i>Kontak</span></a></li>
+                            <li class="nav-item"><a class="nav-link" href="main?url=marketplace"><span class="ml-2"><i class='fas fa-shopping-basket mr-2'></i>Market Place</span></a></li>
                         </ul>
                     </div>
                 </li>
@@ -286,6 +287,12 @@ if ($_SESSION['id_jabatan'] == '8'||$_SESSION['id_jabatan'] == '7'||$_SESSION['i
 			require 'page/merk/tambah.php';
 		} else if ($act == 'banner') {
 			require 'page/banner/index.php';
+		} else if ($act == 'marketplace') {
+			require 'page/marketplace/index.php';
+		} else if ($act == 'ubah-marketplace') {
+			require 'page/marketplace/ubah.php';
+		} else if ($act == 'tambah-marketplace') {
+			require 'page/marketplace/tambah.php';
 		} else {
 			header("location: main");
 		}
@@ -309,7 +316,6 @@ echo '</div></section>';
 <?php ?>
     <script src="assets/js/jquery.mask.min.js"></script>
     <script src="assets/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- <script src="assets/js/chart.min.js"></script> -->
     <script src="assets/js/script.js?20221226"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
     <script type="text/javascript">

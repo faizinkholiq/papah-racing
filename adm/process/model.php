@@ -1638,19 +1638,43 @@ class con
 		header('location:../main?url=socmed&page='.$page);
 	}
 
-	function tambahkontak($con, $keterangan, $kontak, $letak, $aktif)
+	function tambahmarketplace($con, $tipe, $keterangan, $link, $order = 1)
 	{
 		$page = isset($_GET['page'])? $_GET['page'] : 0;
 
-		$query = mysqli_query($con, "INSERT INTO kontak SET keterangan='$keterangan', kontak='$kontak', letak='$letak', aktif='$aktif' ");
+		$query = mysqli_query($con, "INSERT INTO market_place SET keterangan='$keterangan',tipe='$tipe',link='$link',order_no='$order' ");
+		header('location:../main?url=marketplace&page='.$page);
+	}
+
+	function ubahmarketplace($con, $id, $tipe, $keterangan, $link, $order = 1)
+	{
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+		
+		$query = mysqli_query($con, "UPDATE market_place SET keterangan='$keterangan',tipe='$tipe',link='$link',order_no='$order' WHERE id='$id' ");
+		header('location:../main?url=marketplace&page='.$page);
+	}
+
+	function hapusmarketplace($con, $id)
+	{
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+
+		$query = mysqli_query($con, "DELETE FROM market_place WHERE id='$id' ");
+		header('location:../main?url=marketplace&page='.$page);
+	}
+
+	function tambahkontak($con, $keterangan, $kontak, $letak, $aktif, $order = 1)
+	{
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+
+		$query = mysqli_query($con, "INSERT INTO kontak SET keterangan='$keterangan', kontak='$kontak', letak='$letak', aktif='$aktif', order_no='$order' ");
 		header('location:../main?url=kontak&page='.$page);
 	}
 
-	function ubahkontak($con, $id, $keterangan, $kontak, $letak, $aktif)
+	function ubahkontak($con, $id, $keterangan, $kontak, $letak, $aktif, $order = 1)
 	{
 		$page = isset($_GET['page'])? $_GET['page'] : 0;
 
-		$query = mysqli_query($con, "UPDATE kontak SET keterangan='$keterangan', kontak='$kontak', letak='$letak', aktif='$aktif' WHERE id='$id' ");
+		$query = mysqli_query($con, "UPDATE kontak SET keterangan='$keterangan', kontak='$kontak', letak='$letak', aktif='$aktif', order_no='$order' WHERE id='$id' ");
 		header('location:../main?url=kontak&page='.$page);
 	}
 

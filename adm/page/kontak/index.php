@@ -1,5 +1,5 @@
 <?php
-$query = mysqli_query($con, "SELECT * FROM kontak ORDER BY id DESC");
+$query = mysqli_query($con, "SELECT * FROM kontak ORDER BY letak, order_no, id DESC");
 ?>
 <div class="row">
     <div class="col-8">
@@ -17,6 +17,7 @@ $query = mysqli_query($con, "SELECT * FROM kontak ORDER BY id DESC");
                     <th>Kontak</th>
                     <th>Letak</th>
                     <th>Status</th>
+                    <th>Order</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -28,6 +29,7 @@ $query = mysqli_query($con, "SELECT * FROM kontak ORDER BY id DESC");
                         <td class="text-left"><?= $data['keterangan']; ?> : <?= $data['kontak']; ?></td>
                         <td class="text-center"><?= $data['letak']; ?></td>
                         <td class="text-center"><?= ($data['aktif'])? "Aktif" : "Tidak Aktif"; ?></td>
+                        <td class="text-center"><?= $data['order_no']; ?></td>
                         <td>
                             <a href="process/action?url=set-aktif&id=<?= $data['id']; ?>&aktif=<?= (int)!$data["aktif"] ?>" title="<?= ($data["aktif"])? 'Set Active' : 'Set Inactive' ?>" class="btn <?= ($data["aktif"])? 'btn-secondary' : 'btn-warning' ?> btn-sm">
                                 <i class='fas <?= ($data["aktif"])? 'fa-eye-slash' : 'fa-eye' ?>'></i>

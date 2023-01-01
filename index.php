@@ -304,13 +304,19 @@ function foot(){
 	foreach ($socmed as $row){
 		echo '<div class="address mt-3"><i class="lni lni-'.strtolower($row['tipe']).'"></i> <a href="'.$row['link'].'">'.$row['keterangan'].'</a></div>';
 	}
-	
+
+	echo '<h5 class="mt-4" style="color: white;font-weight: bold;text-decoration: underline;">Market Place:</h5>';
+	$market_place = mysqli_query($con, "SELECT * FROM market_place ORDER BY order_no, id ASC");
+	foreach ($market_place as $row){
+		echo '<div class="address mt-3"><a href="'.$row['link'].'"><img width="7%" src="'.SITEURL.'/images/market-place/'.strtolower($row['tipe']).'.png"> '.$row['keterangan'].'</a></div>';
+	}
+
 	echo '</div>'.
 	'</div></div>'.
 	'<div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">';
 	echo '<div id="kontak" class="footer_widget"><h4 class="widget_title">KONTAK KAMI</h4><ul>';
 	
-	$kontak = mysqli_query($con, "SELECT * FROM kontak WHERE letak = 'footer' AND aktif = 1 ORDER BY id ASC");
+	$kontak = mysqli_query($con, "SELECT * FROM kontak WHERE letak = 'footer' AND aktif = 1 ORDER BY order_no, id ASC");
 	foreach ($kontak as $row){
 		echo "<li>".$row['keterangan']." : ".$row['kontak']."</li>";
 	}
