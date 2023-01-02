@@ -134,18 +134,18 @@ $ordermodal .= '<div class="prt_02 mb-2">
 			'</div>'.
 		'</div>
 	</div>
-	<div class="mt-2" style="font-size:1rem">
+	<div class="mt-4" style="font-size:1rem">
 	Silahkan melakukan pemesanan dengan menghubungi salah satu kontak dibawah ini :
-		<div class="mt-3" style="display: flex; gap: 1rem; flex-direction: column;">';
-			
+		<div class="mt-3" style="display: flex; gap: 1rem; flex-direction: column; padding: 0.5rem 1rem;">';
 		foreach($kontaks as $item) {
 			$ordermodal .= '<a href="https://wa.me/'.$item["kontak"].'?text='.urlencode('Saya order '.$ptitle).'%0a'.urlencode($plink).'" target="_blank">
-				<div style="display:flex">
-					<div class="mini-wa mr-1" style="color: white; background:#46df1b;">
-						<i class="lni lni-whatsapp"></i>
-					</div> '.$item["kontak"].'
-				</div>
-			</a>';
+					<div class="li-kontak">
+						<div class="mini-wa mr-2" style="color: white; background:#46df1b;">
+							<i class="lni lni-whatsapp"></i>
+						</div>
+						'.$item["kontak"].'
+					</div>
+				</a>';
 		}
 
 		$ordermodal .= '</div>

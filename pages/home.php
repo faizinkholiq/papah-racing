@@ -109,7 +109,26 @@ foreach ($posts as $pos){
 		</div>
 	</div>';
 
-	$all .= '<div class="modal fade lg-modal" id="quickview'.$id.'" tabindex="-1" role="dialog" aria-labelledby="quickviewmodal" aria-hidden="true">
+	$all .= '<div class="modal fade" id="orderModal" tabindex="-1" role="dialog" aria-labelledby="ordermodalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg login-pop-form" role="document">
+				<div class="modal-content" id="ordermodalLabel" style="padding:1rem">
+					<div class="modal-headers"> 
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span class="ti-close"></span> </button> 
+					</div>
+					<div class="modal-body">
+						<div class="text-center mb-4" style="font-size: 1rem;">
+							<h3 class="m-0 ft-regular"><span id="kontakTitle"></span></h3><hr/>
+							Silahkan melakukan pemesanan dengan menghubungi salah satu kontak dibawah ini :
+							<div id="kontakList" class="mt-4" style="display: flex; gap: 1rem; flex-direction: column; padding: 0 5rem;">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	';
+
+	$all .= '<div class="modal fade lg-modal quickviewmodal" id="quickview'.$id.'" tabindex="-1" role="dialog" aria-labelledby="quickviewmodal" aria-hidden="true">
 		<div class="modal-dialog modal-xl login-pop-form" role="document">
 			<div class="modal-content" id="quickviewmodal">
 				<div class="modal-headers"> 
@@ -148,7 +167,9 @@ foreach ($posts as $pos){
 	'<div class="prt_05 mb-4">
 		<div class="form-row mb-7">'.
 			'<div class="col-12 col-lg">
-				<a href="'.$order.urlencode('Saya order '.$ptitle).'%0a'.urlencode($purl).'" class="text-white btn btn-block custom-height bg-success mb-2">
+				<a href="#!" 
+					onclick="pesanSekarang(`'.$ptitle.'`, `'.urlencode('Saya order '.$ptitle).'`, `'.urlencode($purl).'`)" 
+					class="text-white btn btn-block custom-height bg-success mb-2">
 					<i class="lni lni-shopping-basket mr-2"></i>Pesan Sekarang</a>
 				</div>'.
 			'<div class="col-12 col-lg-auto">
@@ -219,25 +240,6 @@ echo '</div></div>';
 endif;
 
 echo '</div></section>';
-echo '
-	<div class="modal fade" id="orderModal" tabindex="-1" role="dialog" aria-labelledby="ordermodalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-lg login-pop-form" role="document">
-			<div class="modal-content" id="ordermodalLabel" style="padding:1rem">
-				<div class="modal-headers"> 
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span class="ti-close"></span> </button> 
-				</div>
-				<div class="modal-body">
-					<div class="text-center mb-4" style="font-size: 1rem;">
-						<h3 class="m-0 ft-regular"><span id="kontakTitle"></span></h3><hr/>
-						Silahkan melakukan pemesanan dengan menghubungi salah satu kontak dibawah ini :
-						<div id="kontakList" class="mt-4" style="display: flex; gap: 1rem; flex-direction: column; padding: 0 5rem;">
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-';
 echo $all;		
 foot();		
 ?>
@@ -247,6 +249,7 @@ foot();
 	const order_url = '<?= $order ?>';
 
 	function pesanSekarang(title, text, target_url) {
+		$('.quickviewmodal').modal('hide');
 		$('#kontakTitle').text(title);
 		$('#kontakList').html('');
 		list_kontak.forEach((v) => {
