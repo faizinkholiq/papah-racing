@@ -34,7 +34,7 @@ $id_user = $_SESSION['id_user'];
 </head>
 
 <body>
-<?php if ($_SESSION['id_jabatan'] == '8'||$_SESSION['id_jabatan'] == '7'||$_SESSION['id_jabatan'] == '6'||$_SESSION['id_jabatan'] == '4') {} else { ?>
+<?php if ($_SESSION['id_jabatan'] == '8'||$_SESSION['id_jabatan'] == '7'|| $_SESSION['id_jabatan'] == '6'||$_SESSION['id_jabatan'] == '4') {} else { ?>
     <input type="checkbox" id="check" checked="checked">
     <div class="sidebar bg-dark">
         <!-- <header>Main Menu</header> -->
@@ -51,9 +51,9 @@ $id_user = $_SESSION['id_user'];
                                     <li class="nav-item"><a class="nav-link" href="main?url=supplier"><span class="ml-2"><i class='fas fa-store mr-2'></i>Data Supplier</span></a></li>
                                     <li class="nav-item"><a class="nav-link" href="main?url=user"><span class="ml-2"><i class='fas fa-user mr-2'></i>Data User</span></a></li>
                                     <li class="nav-item"><a class="nav-link" href="main?url=merk"><span class="ml-2"><i class='fas fa-bookmark mr-2'></i>Data Merk</span></a></li>
+                                    <li class="nav-item"><a class="nav-link" href="main?url=jenis-pengeluaran"><span class="ml-2"><i class='fas fa-shopping-basket mr-2'></i>Jenis Pengeluaran</span></a></li>
+                                    <li class="nav-item"><a class="nav-link" href="main?url=banner"><span class="ml-2"><i class='fas fa-images mr-2'></i>Banner</span></a></li>
                                 <?php } ?>
-                                <li class="nav-item"><a class="nav-link" href="main?url=jenis-pengeluaran"><span class="ml-2"><i class='fas fa-shopping-basket mr-2'></i>Jenis Pengeluaran</span></a></li>
-                                <li class="nav-item"><a class="nav-link" href="main?url=banner"><span class="ml-2"><i class='fas fa-images mr-2'></i>Banner</span></a></li>
                             </ul>
                         </div>
                     </li>
@@ -77,8 +77,10 @@ $id_user = $_SESSION['id_user'];
                             <li class="nav-item"><a class="nav-link" href="main?url=laporan-pengeluaran"><span class="ml-2"><i class='fas fa-file-upload mr-2'></i>Pengeluaran</span></a></li>
                             <li class="nav-item"><a class="nav-link" href="main?url=laporan-barang-keluar"><span class="ml-2"><i class='fas fa-box mr-2'></i>Barang Keluar</span></a></li>
                             <li class="nav-item"><a class="nav-link" href="main?url=laporan-barang-masuk"><span class="ml-2"><i class='fas fa-box-open mr-2'></i>Barang Masuk</span></a></li>
-                            <li class="nav-item"><a class="nav-link" href="main?url=laporan-keuntungan"><span class="ml-2"><i class='fas fa-file-invoice-dollar mr-2'></i>Keuntungan</span></a></li>
-                            <li class="nav-item"><a class="nav-link" href="main?url=laporan-harian"><span class="ml-2"><i class='fas fa-calendar-alt mr-2'></i>Laporan Harian</span></a></li>
+                            <?php if ($_SESSION['id_jabatan'] == '1' || $_SESSION['id_jabatan'] == '2') { ?>
+                                <li class="nav-item"><a class="nav-link" href="main?url=laporan-keuntungan"><span class="ml-2"><i class='fas fa-file-invoice-dollar mr-2'></i>Keuntungan</span></a></li>
+                                <li class="nav-item"><a class="nav-link" href="main?url=laporan-harian"><span class="ml-2"><i class='fas fa-calendar-alt mr-2'></i>Laporan Harian</span></a></li>
+                            <?php } ?>
                         </ul>
                     </div>
                 </li>

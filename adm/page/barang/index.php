@@ -9,7 +9,7 @@ $aset = 0;
     <div class="col-4"><a href="index.php" class="btn btn-danger float-right"><i class='fas fa-times-circle mr-2'></i>Back</a></div>
 </div>
 <div class="wrapper">
-    <?php if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2"):
+    <?php if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2" || $_SESSION['id_jabatan'] == "5"):
         foreach ($query as $data){
             $aset += floatval($data['stok'])*floatval($data['modal']);
         }   
@@ -201,10 +201,10 @@ $aset = 0;
     });
 
     $(document).ready(()=>{
-        if (sess_data["id_jabatan"] == 1 || sess_data["id_jabatan"] == 2){
+        if (sess_data["id_jabatan"] == 1 || sess_data["id_jabatan"] == 2 || sess_data["id_jabatan"] == 5){
             dt.columns([11]).visible(true);
             dt.columns([5]).visible(true);
-        }else if(sess_data["id_jabatan"] == 5){
+        }else{
             dt.columns([12]).visible(true);
         }
 
