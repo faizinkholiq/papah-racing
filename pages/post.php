@@ -3,6 +3,12 @@ head();
 $i6 = '';
 $i9 = '';
 $im = '';
+$kontaks = mysqli_query($con, "SELECT * FROM kontak WHERE letak = 'order' AND aktif = 1 ORDER BY id ASC");
+$list_kontak = [];
+foreach($kontaks as $key => $value) {
+	$list_kontak[] = $value;
+}
+
 foreach ($posts as $r){
 	$id = $r['id_barang'];
 	$ptitle = $r['nama'];
@@ -224,7 +230,9 @@ foreach ($random as $pos){
 			</div>'.
 			'<div class="bg-success d-flex align-items-center justify-content-center"> 
 				<div class="edlio">
-					<a href="'.$order.urlencode('Saya order '.$ptitle).'%0a'.urlencode($purl).'" class="btn text-white btn-block mb-1">
+					<a href="#!" 
+						onclick="pesanSekarang(`'.$ptitle.'`, `'.urlencode('Saya order '.$ptitle).'`, `'.urlencode($purl).'`)" 
+						class="btn text-white btn-block mb-1">
 						<i class="lni lni-shopping-basket mr-2"></i>Pesan Sekarang
 					</a>
 				</div> 
@@ -232,33 +240,110 @@ foreach ($random as $pos){
 		'</div>
 	</div>';
 
-	$all .= '<div class="modal fade lg-modal" id="quickview'.$id.'" tabindex="-1" role="dialog" aria-labelledby="quickviewmodal" aria-hidden="true"><div class="modal-dialog modal-xl login-pop-form" role="document"><div class="modal-content" id="quickviewmodal"><div class="modal-headers"> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span class="ti-close"></span> </button> </div>'.
-	'<div class="modal-body"><div class="quick_view_wrap"><div class="quick_view_thmb"><div class="quick_view_slide">'.$i9.'</div></div>'.
-	'<div class="quick_view_capt"><div class="prd_details">';
-	if (!empty($kategori)){
-		$all .= '<div class="prt_01 mb-1"><span class="text-light bg-info rounded px-2 py-1"><a href="'.SITEURL.'/kategori/'.strtolower($kategori).'/">'.$kategori.'</a></span></div>';
-	} else {}
-	$all .= '<div class="prt_02 mb-2"><h2 class="ft-bold mb-1">'.$ptitle.'</h2><div class="text-left"><div class="elis_rty">'.
-	'<span class="ft-bold theme-cl fs-lg mr-2">'.rp($harga).',00</span>'.
-	'</div></div></div>'.
+	$all .= '<div class="modal fade lg-modal quickviewmodal" id="quickview'.$id.'" tabindex="-1" role="dialog" aria-labelledby="quickviewmodal" aria-hidden="true">
+		<div class="modal-dialog modal-xl login-pop-form" role="document">
+			<div class="modal-content" id="quickviewmodal">
+				<div class="modal-headers"> 
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"> 
+						<span class="ti-close"></span> 
+					</button> 
+				</div>
+				<div class="modal-body">
+					<div class="quick_view_wrap">
+						<div class="quick_view_thmb">
+							<div class="quick_view_slide">'.$i9.'</div>
+						</div>
+						<div class="quick_view_capt">
+							<div class="prd_details">';
+							if (!empty($kategori)){
+								$all .= '
+									<div class="prt_01 mb-1">
+										<span class="text-light bg-info rounded px-2 py-1">
+											<a href="'.SITEURL.'/kategori/'.strtolower($kategori).'/">'.$kategori.'</a>
+										</span>
+									</div>';
+							} else {}
+
+	$all .= '<div class="prt_02 mb-2 mt-4">
+		<h2 class="ft-bold mb-1">'.$ptitle.'</h2>
+		<div class="text-left">
+			<div class="elis_rty">'.
+				'<span class="ft-bold theme-cl fs-lg mr-2">'.rp($harga).',00</span>'.
+			'</div>
+		</div>
+	</div>'.
 	'<div class="prt_03 mb-3">'.
-	// '<p><span class="label">Kode</span> : '.$barcode.'</p>'.
-	'<p><span class="label">Merk</span> : '.$merk.'</p>'.
-	'<p><span class="label">Stok</span> : '.$stok.'</p>'.
-	'<p><span class="label">Kondisi</span> : '.$kondisi.'</p>'.
-	$kua2.
-	'<p><span class="label">Keterangan</span> : '.$tambahan.'</p>'.
+		'<p><span class="label">Merk</span> : '.$merk.'</p>'.
+		'<p><span class="label">Stok</span> : '.$stok.'</p>'.
+		'<p><span class="label">Kondisi</span> : '.$kondisi.'</p>'.
+		$kua2.
+		'<p><span class="label">Keterangan</span> : '.$tambahan.'</p>'.
+		'<p><span class="label">Deskripsi</span> : '.$deskripsi.'</p>'.
 	'</div>'.
-	'<div class="prt_05 mb-4"><div class="form-row mb-7">'.
-	'<div class="col-12 col-lg"><a href="'.$order.urlencode('Saya order '.$ptitle).'%0a'.urlencode($purl).'" class="text-white btn btn-block custom-height bg-success mb-2"><i class="lni lni-shopping-basket mr-2"></i>Pesan Sekarang</a></div>'.
-	'<div class="col-12 col-lg-auto"><a href="'.$purl.'" class="btn custom-height btn-default btn-block mb-2 text-dark"><i class="lni lni-eye mr-2"></i>View Details</a></div>'.
-	'</div></div>'.
-	'</div></div></div></div></div></div>';
+	'<div class="prt_05 mb-4">
+		<div class="form-row mb-7">'.
+			'<div class="col-12 col-lg">
+				<a href="#!" 
+					onclick="pesanSekarang(`'.$ptitle.'`, `'.urlencode('Saya order '.$ptitle).'`, `'.urlencode($purl).'`)" 
+					class="text-white btn btn-block custom-height bg-success mb-2">
+					<i class="lni lni-shopping-basket mr-2"></i>Pesan Sekarang</a>
+			</div>'.
+			'<div class="col-12 col-lg-auto">
+				<a href="'.$purl.'" class="btn custom-height btn-default btn-block mb-2 text-dark">
+					<i class="lni lni-eye mr-2"></i>View Details
+				</a>
+			</div>'.
+		'</div></div>'.
+	'</div></div></div></div></div></div></div>';
 }					
 
 echo '</div></div></div>';
 echo $ordermodal;
 echo $all;
+echo '
+<div class="modal fade" id="selectOrderModal" tabindex="-1" role="dialog" aria-labelledby="selectOrderModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg login-pop-form" role="document">
+		<div class="modal-content" id="selectOrderModalLabel" style="padding:1rem">
+			<div class="modal-headers"> 
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span class="ti-close"></span> </button> 
+			</div>
+			<div class="modal-body">
+				<div class="text-center mb-4" style="font-size: 1rem;">
+					<h3 class="m-0 ft-regular"><span id="kontakTitle"></span></h3><hr/>
+					Silahkan melakukan pemesanan dengan menghubungi salah satu kontak dibawah ini :
+					<div id="kontakList" class="mt-4" style="display: flex; gap: 1rem; flex-direction: column; padding: 0; justify-content: center; align-items: center;">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>';
+
 echo '</div></section>';
 foot();
 ?>
+
+<script>
+	const list_kontak = <?= json_encode($list_kontak) ?>;
+	const order_url = '<?= $order ?>';
+
+	function pesanSekarang(title, text, target_url) {
+		$('.quickviewmodal').modal('hide');
+		$('#kontakTitle').text(title);
+		$('#kontakList').html('');
+		list_kontak.forEach((v) => {
+			$('#kontakList').append(`
+				<a href="https://wa.me/${v.kontak}?text=${text}%0a${target_url}" target="_blank">
+					<div class="li-kontak">
+						<div class="mini-wa mr-2" style="color: white; background:#46df1b;">
+							<i class="lni lni-whatsapp"></i>
+						</div>
+						${v.keterangan} (${v.kontak})
+					</div>
+				</a>
+			`)
+		});
+		$('#selectOrderModal').modal('show');
+	}
+
+</script>
