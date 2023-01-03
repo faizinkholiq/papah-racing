@@ -202,8 +202,10 @@ $aset = 0;
 
     $(document).ready(()=>{
         if (sess_data["id_jabatan"] == 1 || sess_data["id_jabatan"] == 2 || sess_data["id_jabatan"] == 5){
+            if (sess_data["id_jabatan"] == 1 || sess_data["id_jabatan"] == 2) {
+                dt.columns([5]).visible(true);
+            }
             dt.columns([11]).visible(true);
-            dt.columns([5]).visible(true);
         }else{
             dt.columns([12]).visible(true);
         }
