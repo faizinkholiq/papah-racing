@@ -988,7 +988,7 @@ class con
 		$limit = $_POST["length"];
 		$offset = $_POST["start"];
 
-		if ($_SESSION['id_jabatan'] == '1' || $_SESSION['id_jabatan'] == '2'){
+		if ($_SESSION['id_jabatan'] == '1' || $_SESSION['id_jabatan'] == '2' || $_SESSION['id_jabatan'] == '5'){
 			$btn_aksi = "CONCAT(
 				'<a href=\"#!\" onclick=\"lihatPembelian(\'', pembelian.no_po, '\')\" class=\"btn btn-info btn-sm\"><i class=\"fas fa-eye\"></i></a>
 				<a href=\"#!\" onclick=\"cetakPembelian(\'', pembelian.no_po, '\')\" class=\"btn btn-secondary btn-sm\"><i class=\"fas fa-print\"></i></a> ',
@@ -1004,7 +1004,7 @@ class con
 
 		$badge_status = "IF(pembelian.status = 'Lunas', CONCAT('<span class=\"badge badge-success\">', pembelian.status, '</span>'), CONCAT('<span class=\"badge badge-danger\">', pembelian.status, '</span>'))";
 
-		if ($_SESSION['id_jabatan'] != "1" && $_SESSION['id_jabatan'] != "2") {
+		if ($_SESSION['id_jabatan'] != "1" && $_SESSION['id_jabatan'] != "2" && $_SESSION['id_jabatan'] != "5") {
 			$whereFilter .=  "AND pembelian.id_user=" . $_SESSION['id_user'];
 		}
 
