@@ -1370,13 +1370,13 @@ class con
 	function hapuspenjualan($con, $no_faktur)
 	{
 		$page = isset($_GET['page'])? $_GET['page'] : 0;
-		// $penjualan_det = mysqli_query($con, "SELECT * FROM penjualan_det WHERE no_faktur='$no_faktur'");
+		$penjualan_det = mysqli_query($con, "SELECT * FROM penjualan_det WHERE no_faktur='$no_faktur'");
 		// disable temporary
-		// foreach ($penjualan_det as $pd) {
-			// $id_barang = $pd['id_barang'];
-			// $qty = $pd['qty'];
-			// $stock_in = mysqli_query($con, "UPDATE barang SET stok=stok+$qty WHERE id_barang='$id_barang'");
-		// }
+		foreach ($penjualan_det as $pd) {
+			$id_barang = $pd['id_barang'];
+			$qty = $pd['qty'];
+			$stock_in = mysqli_query($con, "UPDATE barang SET stok=stok+$qty WHERE id_barang='$id_barang'");
+		}
 		$query = mysqli_query($con, "DELETE FROM penjualan WHERE no_faktur='$no_faktur' ");
 		header('location:../main?url=penjualan&page='.$page);
 	}

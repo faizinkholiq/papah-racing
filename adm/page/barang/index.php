@@ -9,7 +9,7 @@ $aset = 0;
     <div class="col-4"><a href="index.php" class="btn btn-danger float-right"><i class='fas fa-times-circle mr-2'></i>Back</a></div>
 </div>
 <div class="wrapper">
-    <?php if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2" || $_SESSION['id_jabatan'] == "5"):
+    <?php if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2" ):
         foreach ($query as $data){
             $aset += floatval($data['stok'])*floatval($data['modal']);
         }   
