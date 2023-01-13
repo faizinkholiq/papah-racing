@@ -2165,7 +2165,7 @@ class con
 
 	function tambahbarangtemp($con, $post)
 	{
-
+		session_start();
 		$barcode = htmlspecialchars(str_replace(' ', '', strtoupper($post['barcode'])));
 		$nama = htmlspecialchars(ucwords($post['nama']));
 		$merk = htmlspecialchars(strtoupper($post['merk']));
@@ -2183,8 +2183,33 @@ class con
 		$tambahan = str_replace("'", "''", htmlspecialchars(strtoupper($post['tambahan'])));
 		$berat = $post['berat'];
 		$deskripsi = str_replace("'", "''", $post['deskripsi']);
+		$updated_by = $_SESSION['id_user'];
+		$updated_at = date('Y-m-d h:i:s');
 
-		$query = mysqli_query($con, "INSERT INTO barang SET barcode='$barcode',nama='$nama',merk='$merk',stok='$stok',modal='$modal',distributor='$distributor',reseller='$reseller',bengkel='$bengkel',admin='$admin',het='$het',kondisi='$kondisi',kualitas='$kualitas',kategori='$kategori',tipe_pelanggan='$tipe_pelanggan',tambahan='$tambahan', deskripsi='$deskripsi', berat=$berat ");
+		$query = mysqli_query($con, "
+			INSERT INTO barang_temp SET 
+				barcode='$barcode',
+				nama='$nama',
+				merk='$merk',
+				stok='$stok',
+				modal='$modal',
+				distributor='$distributor',
+				reseller='$reseller',
+				bengkel='$bengkel',
+				admin='$admin',
+				het='$het',
+				kondisi='$kondisi',
+				kualitas='$kualitas',
+				kategori='$kategori',
+				tipe_pelanggan='$tipe_pelanggan',
+				tambahan='$tambahan', 
+				deskripsi='$deskripsi', 
+				berat=$berat,
+				action='create',
+				status='Pending',
+				updated_by=$updated_by,
+				updated_at='$updated_at',
+		");
 
 		// Upload
 		$id_barang = mysqli_insert_id($con);
@@ -2217,7 +2242,7 @@ class con
 			// Update selected
 			if (isset($post["selected_barang"])) {
 				$selected_barang = basename($post["selected_barang"]);
-				mysqli_query($con,"REPLACE INTO foto_barang (id_barang, name) VALUES ($id_barang, '$selected_barang')");
+				mysqli_query($con,"REPLACE INTO foto_barang_temp (id, name) VALUES ($id_barang, '$selected_barang')");
 			}
 
 			header('location:../main?url=barang');
@@ -2250,7 +2275,10 @@ class con
 		$deskripsi = !empty($post['deskripsi'])? addslashes($post['deskripsi']) : null;
 		$berat = !empty($post['berat'])? $post['berat'] : null;
 		$updated = date("Y-m-d h:i:s");
-		$query = mysqli_query($con, "UPDATE barang SET  
+		$updated_by = $_SESSION['id_user'];
+		$updated_at = date('Y-m-d h:i:s');
+
+		$query = mysqli_query($con, "UPDATE barang_temp SET  
 			barcode = '$barcode', 
 			nama = '$nama', 
 			merk = '$merk', 
@@ -2268,7 +2296,11 @@ class con
 			tambahan = '$tambahan',
 			deskripsi = '$deskripsi',
 			updated = '$updated',
-			berat = '$berat' 
+			berat = '$berat',
+			action = 'update',
+			status = 'Pending',
+			updated_by = $updated_by,
+			updated_at = '$updated_at'
 			WHERE id_barang = '$id_barang' ");
 
 		// Hapus barang
@@ -2314,7 +2346,7 @@ class con
 		// Update selected
 		if (isset($post["selected_barang"])) {
 			$selected_barang = basename($post["selected_barang"]);
-			mysqli_query($con,"REPLACE INTO foto_barang (id_barang, name) VALUES ($id_barang, '$selected_barang')");
+			mysqli_query($con,"REPLACE INTO foto_barang_temp (id_barang, name) VALUES ($id_barang, '$selected_barang')");
 		}
 
 		if($_SESSION['id_jabatan'] == "4"){
@@ -2324,27 +2356,38 @@ class con
 		}
 	}
 
-	function softhapusbarangtemp($con, $id_barang)
-	{	
-		$page = isset($_GET['page'])? $_GET['page'] : 0;
-
-		$query = mysqli_query($con, "UPDATE barang SET deleted = 1 WHERE id_barang='$id_barang' ");
-		$path = str_replace('/adm/process','/p/'.trim($id_barang),dirname(__FILE__));
-		if(file_exists($path)){
-			$this->rrmdir($path);
-		}
-		header('location:../main?url=barang&page='.$page);
-	}
-
 	function hapusbarangtemp($con, $id_barang)
 	{	
 		$page = isset($_GET['page'])? $_GET['page'] : 0;
 		
-		$query = mysqli_query($con, "DELETE FROM barang WHERE id_barang='$id_barang' ");
-		$path = str_replace('/adm/process','/p/'.trim($id_barang),dirname(__FILE__));
-		if(file_exists($path)){
-			$this->rrmdir($path);
-		}
+		$updated_by = $_SESSION['id_user'];
+		$updated_at = date('Y-m-d h:i:s');
+
+		session_start();
+		$query = mysqli_query($con, "
+		INSERT INTO barang_temp SET 
+			barcode='$barcode',
+			nama='$nama',
+			merk='$merk',
+			stok='$stok',
+			modal='$modal',
+			distributor='$distributor',
+			reseller='$reseller',
+			bengkel='$bengkel',
+			admin='$admin',
+			het='$het',
+			kondisi='$kondisi',
+			kualitas='$kualitas',
+			kategori='$kategori',
+			tipe_pelanggan='$tipe_pelanggan',
+			tambahan='$tambahan', 
+			deskripsi='$deskripsi', 
+			berat=$berat,
+			action='delete',
+			status='Pending',
+			updated_by=$updated_by,
+			updated_at='$updated_at',
+		");
 
 		header('location:../main?url=barang&page='.$page);
 	}

@@ -75,7 +75,7 @@ if (empty($_GET['url'])) {
 		$nc->ubahbarangtemp($con, $_POST);
 	} else if ($to == 'hapusbarangtemp') {
 		$id_barang = $_GET['this'];
-		$nc->softhapusbarangtemp($con, $id_barang);
+		$nc->hapusbarangtemp($con, $id_barang);
 	} else if ($to == 'tambahbarangpembelian') {
 		$barcode = str_replace(' ', '', strtoupper($_POST['barcode']));
 
