@@ -2546,15 +2546,14 @@ class con
 						tipe_pelanggan='".$barang_temp['tipe_pelanggan']."',
 						tambahan='".$barang_temp['tambahan']."', 
 						deskripsi='".$barang_temp['deskripsi']."', 
-						berat=".$barang_temp['berat'].",
+						berat='".$barang_temp['berat']."',
 						created='$date'
 				");
 
 				break;
 			case 'update':
 				$id_barang = $barang_temp["id_barang"];
-				print_r($barang_temp);
-				echo $id_barang;
+
 				if ($id_barang){
 					mysqli_query($con, "
 						UPDATE barang SET 
@@ -2574,32 +2573,12 @@ class con
 							tipe_pelanggan='".$barang_temp['tipe_pelanggan']."',
 							tambahan='".$barang_temp['tambahan']."', 
 							deskripsi='".$barang_temp['deskripsi']."', 
-							berat=".$barang_temp['berat'].",
+							berat='".$barang_temp['berat']."',
 							updated='$date'
 						WHERE id_barang = '$id_barang'
 					");
-					print_r("
-					UPDATE barang SET 
-							barcode='".$barang_temp['barcode']."',
-							nama='".$barang_temp['nama']."',
-							merk='".$barang_temp['merk']."',
-							stok='".$barang_temp['stok']."',
-							modal='".$barang_temp['modal']."',
-							distributor='".$barang_temp['distributor']."',
-							reseller='".$barang_temp['reseller']."',
-							bengkel='".$barang_temp['bengkel']."',
-							admin='".$barang_temp['admin']."',
-							het='".$barang_temp['het']."',
-							kondisi='".$barang_temp['kondisi']."',
-							kualitas='".$barang_temp['kualitas']."',
-							kategori='".$barang_temp['kategori']."',
-							tipe_pelanggan='".$barang_temp['tipe_pelanggan']."',
-							tambahan='".$barang_temp['tambahan']."', 
-							deskripsi='".$barang_temp['deskripsi']."', 
-							berat=".$barang_temp['berat'].",
-							updated='$date'
-						WHERE id_barang = '$id_barang'");
 				}
+
 				break;
 			case 'delete':
 				$id_barang = $barang_temp["id_barang"];
@@ -2614,8 +2593,6 @@ class con
 
 				break;
 		}
-
-		exit;
 
 		mysqli_query($con, "UPDATE barang_temp SET status='Approved' WHERE id = '$id'");
 
