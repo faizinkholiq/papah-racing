@@ -106,17 +106,45 @@ $params = (!empty($arr_params))? http_build_query($arr_params) : "";
                             btn = `<span class="badge bg-warning">Pending</span>`
                             break;
                         case 'Approved':
-                            btn = `<span class="badge bg-success">Disetujui</span>`
+                            btn = `<span class="badge bg-success text-white">Disetujui</span>`
                             break;
                         case 'Decline':
-                            btn = `<span class="badge bg-danger">Ditolak</span>`
+                            btn = `<span class="badge bg-danger text-white">Ditolak</span>`
                             break;
                     }
                     return btn;
                 }
             },
             { data: "type" },
-            { data: "aksi", class:"text-center" },
+            { 
+                data: "", 
+                class:"text-center",
+                render: function (data, type, row) {
+                    let btn = "-";
+
+                    if(row.status == 'Pending'){
+                        btn = `
+                            <a href="#!" 
+                            onclick="approveBarang(${row.id})" 
+                            class="btn btn-success btn-sm" 
+                            style="width:2rem;" 
+                            data-toggle="tooltip" 
+                            data-original-title="Setujui perubahan">
+                                <i class="fas fa-check"></i>
+                            </a>
+			                <a href="#!" 
+                            onclick="declineBarang(${row.id})" 
+                            class="btn btn-danger btn-sm" 
+                            style="width:2rem;" 
+                            data-toggle="tooltip" 
+                            data-original-title="Tolak perubahan">
+                                <i class="fas fa-times"></i>
+                            </a>`
+                    }
+                    
+                    return btn;
+                }
+            },
         ],
         ordering: false
     });
