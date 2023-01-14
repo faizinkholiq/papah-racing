@@ -586,10 +586,18 @@ class con
 
 		$limit = $_POST["length"];
 		$offset = $_POST["start"];
-		$btn_aksi = "CONCAT(
-			'<a href=\"#!\" onclick=\"editBarang(', id_barang, ')\" class=\"btn btn-primary btn-sm\"><i class=\"fas fa-edit\"></i></a>
-			<a href=\"#!\" onclick=\"hapusBarang(', id_barang, ')\" class=\"btn btn-danger btn-sm\" data-toggle=\"tooltip\" data-original-title=\"Hapus\"><i class=\"fas fa-trash-alt\"></i></a>'
-		)";
+
+		if($_SESSION["id_jabatan"] == 1 || $_SESSION["id_jabatan"] == 2){
+			$btn_aksi = "CONCAT(
+				'<a href=\"#!\" onclick=\"editBarang(', id_barang, ')\" class=\"btn btn-primary btn-sm\"><i class=\"fas fa-edit\"></i></a>
+				<a href=\"#!\" onclick=\"hapusBarang(', id_barang, ')\" class=\"btn btn-danger btn-sm\" data-toggle=\"tooltip\" data-original-title=\"Hapus\"><i class=\"fas fa-trash-alt\"></i></a>'
+			)";
+		}else{
+			$btn_aksi = "CONCAT(
+				'<a href=\"#!\" onclick=\"editBarang(', id_barang, ')\" class=\"btn btn-primary btn-sm\"><i class=\"fas fa-edit\"></i></a>'
+			)";
+		}
+
 		$btn_gambar = "CONCAT('<a href=\"main?url=ubah-barang&this=', id_barang, '\" class=\"btn btn-primary btn-sm\"><i class=\"fas fa-photo-video\"></i></a>')";
 		$btn_pilih = "CONCAT('<button id=\"pilihbarang\" class=\"btn btn-sm btn-info\" data-id=\"', id_barang, '\" data-barcode=\"', barcode, '\" data-nama=\"', nama, '\" data-stok=\"', stok, '\">Pilih</button>')";
 
@@ -2299,7 +2307,7 @@ class con
 		$updated_by = $_SESSION['id_user'];
 		$updated_at = date('Y-m-d h:i:s');
 
-		$query = mysqli_query($con, "UPDATE barang_temp SET  
+		$query = mysqli_query($con, "INSERT INTO barang_temp SET  
 			barcode = '$barcode', 
 			nama = '$nama', 
 			merk = '$merk', 
@@ -2320,8 +2328,8 @@ class con
 			action = 'update',
 			status = 'Pending',
 			updated_by = $updated_by,
-			updated_at = '$updated_at'
-			WHERE id_barang = '$id_barang' ");
+			updated_at = '$updated_at',
+			id_barang = '$id_barang' ");
 
 		// Hapus barang
 		if(!empty($post['hapus_barang'])) {
