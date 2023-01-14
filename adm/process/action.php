@@ -78,6 +78,12 @@ if (empty($_GET['url'])) {
 	} else if ($to == 'hapusbarangtemp') {
 		$id_barang = $_GET['this'];
 		$nc->hapusbarangtemp($con, $id_barang);
+	} else if ($to == 'approvebarangtemp') {
+		$id_barang = $_GET['this'];
+		$nc->approvebarangtemp($con, $id_barang);
+	} else if ($to == 'declinebarangtemp') {
+		$id_barang = $_GET['this'];
+		$nc->declinebarangtemp($con, $id_barang);
 	} else if ($to == 'tambahbarangpembelian') {
 		$barcode = str_replace(' ', '', strtoupper($_POST['barcode']));
 

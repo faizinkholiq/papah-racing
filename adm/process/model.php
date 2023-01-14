@@ -2420,6 +2420,15 @@ class con
 			'<a href=\"#!\" onclick=\"approveBarang(', barang_temp.id, ')\" class=\"btn btn-success btn-sm\" style=\"width:2rem;\" data-toggle=\"tooltip\" data-original-title=\"Setujui perubahan\"><i class=\"fas fa-check\"></i></a>
 			<a href=\"#!\" onclick=\"declineBarang(', barang_temp.id, ')\" class=\"btn btn-danger btn-sm\" style=\"width:2rem;\" data-toggle=\"tooltip\" data-original-title=\"Tolak perubahan\"><i class=\"fas fa-times\"></i></a>'
 		)";
+
+		if ($_SESSION['id_jabatan'] == 5) {
+			$whereFilter .= " AND barang_temp.updated_by = ".$_SESSION['id_user'];
+		}
+
+		if (isset($_POST["status"]) && !empty($_POST["status"])) {
+			$whereFilter .= " AND barang_temp.status = '".$_POST["status"]."' ";
+		}
+
 		
 		$result = mysqli_query($con, "
 			SELECT  
@@ -2446,7 +2455,7 @@ class con
 				$btn_aksi aksi
 			FROM barang_temp
 			LEFT JOIN barang ON barang.id_barang = barang_temp.id_barang 
-			$whereFilter
+			WHERE 1 = 1 $whereFilter
 			ORDER BY barang_temp.updated_at DESC
 			LIMIT $limit OFFSET $offset
 		");
@@ -2457,10 +2466,32 @@ class con
 		}
 		$data["draw"] = intval($_POST["draw"]);
 
-		$result_all = mysqli_query($con, "SELECT * FROM barang WHERE deleted = 0 $whereFilter");
+		$result_all = mysqli_query($con, "SELECT barang_temp.id FROM barang_temp LEFT JOIN barang ON barang.id_barang = barang_temp.id_barang WHERE 1=1 $whereFilter");
 		$data["recordsTotal"] = mysqli_num_rows($result_all);
 		$data["recordsFiltered"] = mysqli_num_rows($result_all);
 		
 		echo json_encode($data);
+	}
+
+	function approvebarangtemp($con, $id)
+	{	
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+		
+		$barang_temp = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM barang_temp WHERE id='$id'"));
+
+		mysqli_query($con, "UPDATE barang_temp SET status='Approved' WHERE id = '$id'");
+
+		header('location:../main?url=history-barang&page='.$page);
+	}
+
+	function declinebarangtemp($con, $id)
+	{	
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+		
+		$barang_temp = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM barang_temp WHERE id='$id'"));
+
+		mysqli_query($con, "UPDATE barang_temp SET status='Approved' WHERE id = '$id'");
+
+		header('location:../main?url=history-barang&page='.$page);
 	}
 }
