@@ -2553,7 +2553,8 @@ class con
 				break;
 			case 'update':
 				$id_barang = $barang_temp["id_barang"];
-
+				print_r($barang_temp);
+				echo $id_barang;
 				if ($id_barang){
 					mysqli_query($con, "
 						UPDATE barang SET 
@@ -2599,7 +2600,6 @@ class con
 							updated='$date'
 						WHERE id_barang = '$id_barang'");
 				}
-
 				break;
 			case 'delete':
 				$id_barang = $barang_temp["id_barang"];
@@ -2614,6 +2614,8 @@ class con
 
 				break;
 		}
+
+		exit;
 
 		mysqli_query($con, "UPDATE barang_temp SET status='Approved' WHERE id = '$id'");
 
