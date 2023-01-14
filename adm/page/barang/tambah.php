@@ -1,3 +1,6 @@
+<?php
+$url = ($_SESSION['id_jabatan'] == '1' || $_SESSION['id_jabatan'] == '2')? 'tambahbarang' : 'tambahbarangtemp'; 
+?>
 <div class="row">
     <div class="col-8">
         <h3 class="font-weight-bolder"><i class='fas fa-box'></i> Tambah Barang</h3>
@@ -9,7 +12,7 @@
     </div>
 </div>
 <div class="wrapper">
-    <form action="process/action?url=tambahbarang" enctype="multipart/form-data"  method="post">
+    <form action="process/action?url=<?= $url ?>" enctype="multipart/form-data"  method="post">
         <div class="form-group row">
             <label for="barcode" class="col-sm-2 col-form-label">Barcode</label>
             <div class="col-sm-10">

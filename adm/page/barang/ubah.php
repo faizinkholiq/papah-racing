@@ -3,15 +3,13 @@ if (empty($_GET['url'])) {
     header('location:../main');
 }
 $id_barang = $_GET['this'];
-$path = str_replace('/adm/page/barang','/p/'.trim($id_barang),dirname(__FILE__));
+$path = str_replace(['/adm/page/barang', '\adm\page\barang'],'/p/'.trim($id_barang),dirname(__FILE__));
 
 $data = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM barang WHERE id_barang='$id_barang' "));
 $selected_brg = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM foto_barang WHERE id_barang='$id_barang' "));
 $page = isset($_GET["page"])? (int)$_GET["page"] : 0 ;
-if ($_SESSION['id_jabatan'] == '1'||$_SESSION['id_jabatan'] == '2'||$_SESSION['id_jabatan'] == '3') {
-	echo '<!--';
-	print_r($data);
-	echo '--!>';
+if ($_SESSION['id_jabatan'] == '1'||$_SESSION['id_jabatan'] == '2'||$_SESSION['id_jabatan'] == '3' || $_SESSION['id_jabatan'] == '5') {
+$url = ($_SESSION['id_jabatan'] == '1' || $_SESSION['id_jabatan'] == '2')? 'ubahbarang' : 'ubahbarangtemp'; 
 ?>
 <div class="row">
     <div class="col-8">
@@ -20,7 +18,7 @@ if ($_SESSION['id_jabatan'] == '1'||$_SESSION['id_jabatan'] == '2'||$_SESSION['i
     <div class="col-4"><a href="main?url=barang&page=<?= $page ?>" class="btn btn-danger float-right"><i class='fas fa-times-circle mr-2'></i>Back</a></div>
 </div>
 <div class="wrapper">
-    <form action="process/action?url=ubahbarang&page=<?= $page ?>" enctype="multipart/form-data" method="post">
+    <form action="process/action?url=<?= $url ?>&page=<?= $page ?>" enctype="multipart/form-data" method="post">
         <input type="hidden" name="id_barang" value="<?= $id_barang; ?>" />
         <input type="hidden" name="page" value="<?= $page ?>" />
         <div class="form-group row">
@@ -213,18 +211,18 @@ if ($_SESSION['id_jabatan'] == '1'||$_SESSION['id_jabatan'] == '2'||$_SESSION['i
         <div class="card bg-light mb-3">
             <div class="card-header font-weight-bolder">Upload Gambar Maximum 5, Ukuran file Maximum 4 Mb</div><br>
             <input type="hidden" id="hapus_barang" name="hapus_barang" />
-            <?php $val_selected_brg = !empty($selected_brg['name'])? str_replace('/adm/page/barang','/p/'.trim($id_barang),dirname(__FILE__)).'/'.$selected_brg['name'] : '' ; ?>
+            <?php $val_selected_brg = !empty($selected_brg['name'])? $path.'/'.$selected_brg['name'] : '' ; ?>
             <input type="hidden" id="selected_barang" name="selected_barang" value="<?=$val_selected_brg?>"/>
             <div class="card-body" style="text-align: center">
             <input id="imgInp" type="file" name="gambar[]" accept="image/*" multiple>
                 <?php
                     if (file_exists($path)):
-                    $gl = glob($path.'/*');        
+                    $gl = glob($path.'/*');     
                 ?>
                 <div class="col-lg-12 mt-4 img-container">
                 <?php foreach ($gl as $l): ?>
                         <div onclick="selectImage('<?= $l ?>')" class="i6" data-id="<?= $l ?>">
-                            <div class="overlay" style="display:<?=($selected_brg['name'] == basename($l))? '' : 'none' ?>">
+                            <div class="overlay" style="display:<?=(isset($selected_brg['name']) && !empty($selected_brg['name']) && $selected_brg['name'] == basename($l))? '' : 'none' ?>">
                                 <i class="fa fa-check"></i>
                             </div>
                             <img src="<?= str_replace("admin.", "", SITEURL).'/p/'.trim($id_barang).'/'.basename($l) ?>">
@@ -304,7 +302,7 @@ if ($_SESSION['id_jabatan'] == '4'){
 }
 ?>
 
-<?php if($_SESSION['id_jabatan'] == '8'||$_SESSION['id_jabatan'] == '7'||$_SESSION['id_jabatan'] == '6'||$_SESSION['id_jabatan'] == '5') : ?>
+<?php if($_SESSION['id_jabatan'] == '8'||$_SESSION['id_jabatan'] == '7'||$_SESSION['id_jabatan'] == '6') : ?>
         <div class="row">
         <div class="col-md-12 mb-2">
             <div class="card bg-light mb-3">
@@ -312,7 +310,8 @@ if ($_SESSION['id_jabatan'] == '4'){
                 <div class="card-body">
                     <div style="text-align:center">
                         <div class="col-lg-12 mt-4 img-container">';
-                        <?php if (file_exists($path)){
+                        <?php 
+                        if (file_exists($path)){
                             $gl = glob($path.'/*');
                             if (count($gl)>0){
                                 foreach ($gl as $l): ?>
@@ -336,7 +335,7 @@ if ($_SESSION['id_jabatan'] == '4'){
 <?php endif; ?>
 
 
-<?php if($_SESSION['id_jabatan'] == '1'||$_SESSION['id_jabatan'] == '2'||$_SESSION['id_jabatan'] == '3'||$_SESSION['id_jabatan'] == '4') : ?>
+<?php if($_SESSION['id_jabatan'] == '1'||$_SESSION['id_jabatan'] == '2'||$_SESSION['id_jabatan'] == '3'||$_SESSION['id_jabatan'] == '4'||$_SESSION['id_jabatan'] == '5') : ?>
 <script>
     var photos = [];
     var deleted_photos = [];

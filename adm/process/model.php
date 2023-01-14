@@ -665,7 +665,7 @@ class con
 		
 		$f = $_FILES;
 		if(!empty($f)){
-			$path = str_replace('/adm/process','/p/'.trim($id_barang),dirname(__FILE__));
+			$path = str_replace(['/adm/process', 'adm\process'],'/p/'.trim($id_barang),dirname(__FILE__));
 			if(!file_exists($path)){
 				mkdir($path);
 			}
@@ -687,10 +687,11 @@ class con
 					echo "<br><a href='main?url=ubah-barang&this=".$id_barang."'>Kembali Ke Form</a><br>";  
 				}
 			}
-
+			
 			// Update selected
-			if (isset($post["selected_barang"])) {
-				$selected_barang = basename($post["selected_barang"]);
+			$selected_barang = isset($post["selected_barang"]) && !empty($post["selected_barang"])? $post["selected_barang"] :  $f['gambar']['name'][0];
+			if ($selected_barang) 
+			{
 				mysqli_query($con,"REPLACE INTO foto_barang (id_barang, name) VALUES ($id_barang, '$selected_barang')");
 			}
 
@@ -751,7 +752,7 @@ class con
 			if(count($hapus_barang) > 0){
 				foreach($hapus_barang as $item) {
 					$filename = basename($item);
-					$path = str_replace('/adm/process','/p/'.trim($id_barang),dirname(__FILE__));
+					$path = str_replace(['/adm/process', 'adm\process'],'/p/'.trim($id_barang),dirname(__FILE__));
 					$file = $path.'/'.$filename;
 
 					if(file_exists($file)){
@@ -764,7 +765,7 @@ class con
 		// Upload barang
 		$f = $_FILES;
 		if(!empty($f)){
-			$path = str_replace('/adm/process','/p/'.trim($id_barang),dirname(__FILE__));
+			$path = str_replace(['/adm/process', 'adm\process'],'/p/'.trim($id_barang),dirname(__FILE__));
 			if(!file_exists($path)){
 				mkdir($path);
 			}
@@ -786,7 +787,7 @@ class con
 		}
 
 		// Update selected
-		if (isset($post["selected_barang"])) {
+		if (isset($post["selected_barang"]) && !empty($post["selected_barang"])) {
 			$selected_barang = basename($post["selected_barang"]);
 			mysqli_query($con,"REPLACE INTO foto_barang (id_barang, name) VALUES ($id_barang, '$selected_barang')");
 		}
@@ -803,7 +804,7 @@ class con
 		$page = isset($_GET['page'])? $_GET['page'] : 0;
 
 		$query = mysqli_query($con, "UPDATE barang SET deleted = 1 WHERE id_barang='$id_barang' ");
-		$path = str_replace('/adm/process','/p/'.trim($id_barang),dirname(__FILE__));
+		$path = str_replace(['/adm/process', 'adm\process'],'/p/'.trim($id_barang),dirname(__FILE__));
 		if(file_exists($path)){
 			$this->rrmdir($path);
 		}
@@ -815,7 +816,7 @@ class con
 		$page = isset($_GET['page'])? $_GET['page'] : 0;
 		
 		$query = mysqli_query($con, "DELETE FROM barang WHERE id_barang='$id_barang' ");
-		$path = str_replace('/adm/process','/p/'.trim($id_barang),dirname(__FILE__));
+		$path = str_replace(['/adm/process', 'adm\process'],'/p/'.trim($id_barang),dirname(__FILE__));
 		if(file_exists($path)){
 			$this->rrmdir($path);
 		}
@@ -2165,7 +2166,7 @@ class con
 
 	function tambahbarangtemp($con, $post)
 	{
-		session_start();
+
 		$barcode = htmlspecialchars(str_replace(' ', '', strtoupper($post['barcode'])));
 		$nama = htmlspecialchars(ucwords($post['nama']));
 		$merk = htmlspecialchars(strtoupper($post['merk']));
@@ -2204,11 +2205,11 @@ class con
 				tipe_pelanggan='$tipe_pelanggan',
 				tambahan='$tambahan', 
 				deskripsi='$deskripsi', 
-				berat=$berat,
+				berat='$berat',
 				action='create',
 				status='Pending',
 				updated_by=$updated_by,
-				updated_at='$updated_at',
+				updated_at='$updated_at'
 		");
 
 		// Upload
@@ -2216,7 +2217,7 @@ class con
 		
 		$f = $_FILES;
 		if(!empty($f)){
-			$path = str_replace('/adm/process','/p/'.trim($id_barang),dirname(__FILE__));
+			$path = str_replace(['/adm/process', 'adm\process'],'/p/'.trim($id_barang),dirname(__FILE__));
 			if(!file_exists($path)){
 				mkdir($path);
 			}
@@ -2255,7 +2256,6 @@ class con
 	{	
 		$page = isset($_GET['page'])? $_GET['page'] : 0;
 
-		session_start();
 		$id_barang = $post['id_barang'];
 		$barcode = !empty($post['barcode'])? htmlspecialchars(str_replace(' ', '', strtoupper($post['barcode']))) : null;
 		$nama = !empty($post['nama'])? htmlspecialchars(ucwords(addslashes($post['nama']))) : null;
@@ -2295,7 +2295,6 @@ class con
 			tipe_pelanggan = '$tipe_pelanggan',
 			tambahan = '$tambahan',
 			deskripsi = '$deskripsi',
-			updated = '$updated',
 			berat = '$berat',
 			action = 'update',
 			status = 'Pending',
@@ -2309,7 +2308,7 @@ class con
 			if(count($hapus_barang) > 0){
 				foreach($hapus_barang as $item) {
 					$filename = basename($item);
-					$path = str_replace('/adm/process','/p/'.trim($id_barang),dirname(__FILE__));
+					$path = str_replace(['/adm/process', 'adm\process'],'/p/'.trim($id_barang),dirname(__FILE__));
 					$file = $path.'/'.$filename;
 
 					if(file_exists($file)){
@@ -2322,7 +2321,7 @@ class con
 		// Upload barang
 		$f = $_FILES;
 		if(!empty($f)){
-			$path = str_replace('/adm/process','/p/'.trim($id_barang),dirname(__FILE__));
+			$path = str_replace(['/adm/process', 'adm\process'],'/p/'.trim($id_barang),dirname(__FILE__));
 			if(!file_exists($path)){
 				mkdir($path);
 			}
@@ -2346,7 +2345,7 @@ class con
 		// Update selected
 		if (isset($post["selected_barang"])) {
 			$selected_barang = basename($post["selected_barang"]);
-			mysqli_query($con,"REPLACE INTO foto_barang_temp (id_barang, name) VALUES ($id_barang, '$selected_barang')");
+			mysqli_query($con,"REPLACE INTO foto_barang_temp (id, name) VALUES ($id_barang, '$selected_barang')");
 		}
 
 		if($_SESSION['id_jabatan'] == "4"){
@@ -2363,26 +2362,9 @@ class con
 		$updated_by = $_SESSION['id_user'];
 		$updated_at = date('Y-m-d h:i:s');
 
-		session_start();
 		$query = mysqli_query($con, "
-		INSERT INTO barang_temp SET 
-			barcode='$barcode',
-			nama='$nama',
-			merk='$merk',
-			stok='$stok',
-			modal='$modal',
-			distributor='$distributor',
-			reseller='$reseller',
-			bengkel='$bengkel',
-			admin='$admin',
-			het='$het',
-			kondisi='$kondisi',
-			kualitas='$kualitas',
-			kategori='$kategori',
-			tipe_pelanggan='$tipe_pelanggan',
-			tambahan='$tambahan', 
-			deskripsi='$deskripsi', 
-			berat=$berat,
+		INSERT INTO barang_temp SET
+			id_barang=$id_barang,
 			action='delete',
 			status='Pending',
 			updated_by=$updated_by,
