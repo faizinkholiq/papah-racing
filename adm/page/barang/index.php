@@ -238,7 +238,13 @@ $aset = 0;
         let ask = window.confirm("Anda yakin ingin hapus data ini?");
         if (ask) {
             const info = dt.page.info();
-            const url = "process/action?url=hapusbarang&this="+id+"&page="+info.page
+            
+            let url;
+            if (sess_data["id_jabatan"] == 5){
+                url = "process/action?url=hapusbarangtemp&this="+id+"&page="+info.page;
+            }else{
+                url = "process/action?url=hapusbarang&this="+id+"&page="+info.page;
+            }
             window.open(url, "_self")
         }
     }

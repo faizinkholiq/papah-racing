@@ -2389,7 +2389,7 @@ class con
 			action='delete',
 			status='Pending',
 			updated_by=$updated_by,
-			updated_at='$updated_at',
+			updated_at='$updated_at'
 		");
 
 		header('location:../main?url=barang&page='.$page);
@@ -2402,16 +2402,16 @@ class con
 		$q_src = "";
 		if(!empty($search["value"])){
 			$col = [
-				"COALESCE(barang_temp.barcode, barang.barcode)", 
-				"COALESCE(barang_temp.nama, barang.nama)", 
-				"COALESCE(barang_temp.merk, barang.merk)", 
-				"COALESCE(barang_temp.stok, barang.stok)", 
-				"CONCAT('RP', FORMAT(COALESCE(barang_temp.modal, barang.modal) , 0, 'id_ID'))", 
-				"CONCAT('RP', FORMAT(COALESCE(barang_temp.distributor, barang.distributor) , 0, 'id_ID'))", 
-				"CONCAT('RP', FORMAT(COALESCE(barang_temp.reseller, barang.reseller) , 0, 'id_ID'))", 
-				"CONCAT('RP', FORMAT(COALESCE(barang_temp.bengkel, barang.bengkel) , 0, 'id_ID'))", 
-				"CONCAT('RP', FORMAT(COALESCE(barang_temp.admin, barang.admin) , 0, 'id_ID'))", 
-				"CONCAT('RP', FORMAT(COALESCE(barang_temp.het, barang.het) , 0, 'id_ID'))",
+				"IF(barang_temp.barcode IS NOT NULL && barang_temp.barcode != '', barang_temp.barcode, barang.barcode)", 
+				"IF(barang_temp.nama IS NOT NULL && barang_temp.nama != '', barang_temp.nama, barang.nama)", 
+				"IF(barang_temp.merk IS NOT NULL && barang_temp.merk != '', barang_temp.merk, barang.merk)", 
+				"IF(barang_temp.stok IS NOT NULL && barang_temp.stok != '', barang_temp.stok, barang.stok)", 
+				"CONCAT('RP', FORMAT(IF(barang_temp.modal IS NOT NULL && barang_temp.modal != '', barang_temp.modal, barang.modal) , 0, 'id_ID'))", 
+				"CONCAT('RP', FORMAT(IF(barang_temp.distributor IS NOT NULL && barang_temp.distributor != '', barang_temp.distributor, barang.distributor) , 0, 'id_ID'))", 
+				"CONCAT('RP', FORMAT(IF(barang_temp.reseller IS NOT NULL && barang_temp.reseller != '', barang_temp.reseller, barang.reseller) , 0, 'id_ID'))", 
+				"CONCAT('RP', FORMAT(IF(barang_temp.bengkel IS NOT NULL && barang_temp.bengkel != '', barang_temp.bengkel, barang.bengkel) , 0, 'id_ID'))", 
+				"CONCAT('RP', FORMAT(IF(barang_temp.admin IS NOT NULL && barang_temp.admin != '', barang_temp.admin, barang.admin) , 0, 'id_ID'))", 
+				"CONCAT('RP', FORMAT(IF(barang_temp.het IS NOT NULL && barang_temp.het != '', barang_temp.het, barang.het) , 0, 'id_ID'))",
 				"barang_temp.status",
 				"CASE 
 					WHEN barang_temp.action = 'create'
@@ -2472,16 +2472,16 @@ class con
 			SELECT  
 				ROW_NUMBER() OVER(ORDER BY barang_temp.updated_at DESC) AS row_no,
 				barang_temp.id,
-				COALESCE(barang_temp.barcode, barang.barcode) barcode,
-				COALESCE(barang_temp.nama, barang.nama) nama,
-				COALESCE(barang_temp.merk, barang.merk) merk,
-				COALESCE(barang_temp.stok, barang.stok) stok,
-				CONCAT('RP', FORMAT(COALESCE(barang_temp.modal, barang.modal) , 0, 'id_ID')) modal,
-				CONCAT('RP', FORMAT(COALESCE(barang_temp.distributor, barang.distributor) , 0, 'id_ID')) distributor,
-				CONCAT('RP', FORMAT(COALESCE(barang_temp.reseller, barang.reseller) , 0, 'id_ID')) reseller,
-				CONCAT('RP', FORMAT(COALESCE(barang_temp.bengkel, barang.bengkel) , 0, 'id_ID')) bengkel,
-				CONCAT('RP', FORMAT(COALESCE(barang_temp.admin, barang.admin) , 0, 'id_ID')) admin,
-				CONCAT('RP', FORMAT(COALESCE(barang_temp.het, barang.het) , 0, 'id_ID')) het,
+				IF(barang_temp.barcode IS NOT NULL && barang_temp.barcode != '', barang_temp.barcode, barang.barcode) barcode,
+				IF(barang_temp.nama IS NOT NULL && barang_temp.nama != '', barang_temp.nama, barang.nama) nama,
+				IF(barang_temp.merk IS NOT NULL && barang_temp.merk != '', barang_temp.merk, barang.merk) merk,
+				IF(barang_temp.stok IS NOT NULL && barang_temp.stok != '', barang_temp.stok, barang.stok) stok,
+				CONCAT('RP', FORMAT(IF(barang_temp.modal IS NOT NULL && barang_temp.modal != '', barang_temp.modal, barang.modal) , 0, 'id_ID')) modal,
+				CONCAT('RP', FORMAT(IF(barang_temp.distributor IS NOT NULL && barang_temp.distributor != '', barang_temp.distributor, barang.distributor) , 0, 'id_ID')) distributor,
+				CONCAT('RP', FORMAT(IF(barang_temp.reseller IS NOT NULL && barang_temp.reseller != '', barang_temp.reseller, barang.reseller) , 0, 'id_ID')) reseller,
+				CONCAT('RP', FORMAT(IF(barang_temp.bengkel IS NOT NULL && barang_temp.bengkel != '', barang_temp.bengkel, barang.bengkel) , 0, 'id_ID')) bengkel,
+				CONCAT('RP', FORMAT(IF(barang_temp.admin IS NOT NULL && barang_temp.admin != '', barang_temp.admin, barang.admin) , 0, 'id_ID')) admin,
+				CONCAT('RP', FORMAT(IF(barang_temp.het IS NOT NULL && barang_temp.het != '', barang_temp.het, barang.het) , 0, 'id_ID')) het,
 				barang_temp.status,
 				CASE 
 					WHEN barang_temp.action = 'create'
