@@ -215,7 +215,9 @@ if ($_SESSION['id_jabatan'] == '8'||$_SESSION['id_jabatan'] == '7'||$_SESSION['i
 			require 'page/barang/upload.php';
 		} else if ($act == 'hapus-barang') {
 			require 'page/barang/hapus.php';
-		} else if ($act == 'user') {
+		}  else if ($act == 'history-barang') {
+			require 'page/barang/index_temp.php';
+		}  else if ($act == 'user') {
 			require 'page/user/index.php';
 		} else if ($act == 'tambah-user') {
 			require 'page/user/tambah.php';

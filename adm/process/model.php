@@ -2373,4 +2373,94 @@ class con
 
 		header('location:../main?url=barang&page='.$page);
 	}
+
+	function getbarangtemp($con)
+	{	
+		$search = $_POST["search"];
+		
+		$q_src = "";
+		if(!empty($search["value"])){
+			$col = ["barcode", "nama", "merk", "stok", "modal", "distributor", "reseller", "bengkel", "admin", "het"];
+			$src = $search["value"];
+			$src_arr = explode(" ", $src);
+
+			foreach($col as $key => $val){
+				if($key == 0) {
+					$q_src .= "(";
+					foreach($src_arr as $k => $v){
+						if($k == 0) {
+							$q_src .= "$val LIKE '%$v%'"; 
+						}else{
+							$q_src .= " AND $val LIKE '%$v%'";
+						}
+					}
+					$q_src .= ")";
+				}else{
+					$q_src .= " OR (";
+					foreach($src_arr as $k => $v){
+						if($k == 0) {
+							$q_src .= "$val LIKE '%$v%'"; 
+						}else{
+							$q_src .= " AND $val LIKE '%$v%'";
+						}
+					}
+					$q_src .= ")";
+				}
+			}
+		}
+
+		$whereFilter = "";
+		if(!empty($q_src)){
+			$whereFilter = "AND ($q_src)";
+		}
+
+		$limit = $_POST["length"];
+		$offset = $_POST["start"];
+		$btn_aksi = "CONCAT(
+			'<a href=\"#!\" onclick=\"approveBarang(', barang_temp.id, ')\" class=\"btn btn-success btn-sm\" style=\"width:2rem;\" data-toggle=\"tooltip\" data-original-title=\"Setujui perubahan\"><i class=\"fas fa-check\"></i></a>
+			<a href=\"#!\" onclick=\"declineBarang(', barang_temp.id, ')\" class=\"btn btn-danger btn-sm\" style=\"width:2rem;\" data-toggle=\"tooltip\" data-original-title=\"Tolak perubahan\"><i class=\"fas fa-times\"></i></a>'
+		)";
+		
+		$result = mysqli_query($con, "
+			SELECT  
+				ROW_NUMBER() OVER(ORDER BY barang_temp.updated_at DESC) AS row_no,
+				COALESCE(barang_temp.barcode, barang.barcode) barcode,
+				COALESCE(barang_temp.nama, barang.nama) nama,
+				COALESCE(barang_temp.merk, barang.merk) merk,
+				COALESCE(barang_temp.stok, barang.stok) stok,
+				CONCAT('RP', FORMAT(COALESCE(barang_temp.modal, barang.modal) , 0, 'id_ID')) modal,
+				CONCAT('RP', FORMAT(COALESCE(barang_temp.distributor, barang.distributor) , 0, 'id_ID')) distributor,
+				CONCAT('RP', FORMAT(COALESCE(barang_temp.reseller, barang.reseller) , 0, 'id_ID')) reseller,
+				CONCAT('RP', FORMAT(COALESCE(barang_temp.bengkel, barang.bengkel) , 0, 'id_ID')) bengkel,
+				CONCAT('RP', FORMAT(COALESCE(barang_temp.admin, barang.admin) , 0, 'id_ID')) admin,
+				CONCAT('RP', FORMAT(COALESCE(barang_temp.het, barang.het) , 0, 'id_ID')) het,
+				barang_temp.status,
+				CASE 
+					WHEN barang_temp.action = 'create'
+					THEN 'Tambah Data'
+					WHEN barang_temp.action = 'update'
+					THEN 'Ubah Data'
+					WHEN barang_temp.action = 'delete'
+					THEN 'Hapus Data'
+				END type,
+				$btn_aksi aksi
+			FROM barang_temp
+			LEFT JOIN barang ON barang.id_barang = barang_temp.id_barang 
+			$whereFilter
+			ORDER BY barang_temp.updated_at DESC
+			LIMIT $limit OFFSET $offset
+		");
+		
+		$data["data"] = [];
+		while($row = mysqli_fetch_assoc($result)){
+			$data["data"][] = $row;
+		}
+		$data["draw"] = intval($_POST["draw"]);
+
+		$result_all = mysqli_query($con, "SELECT * FROM barang WHERE deleted = 0 $whereFilter");
+		$data["recordsTotal"] = mysqli_num_rows($result_all);
+		$data["recordsFiltered"] = mysqli_num_rows($result_all);
+		
+		echo json_encode($data);
+	}
 }

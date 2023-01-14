@@ -69,6 +69,8 @@ if (empty($_GET['url'])) {
 	} else if ($to == 'hapusbarang') {
 		$id_barang = $_GET['this'];
 		$nc->softhapusbarang($con, $id_barang);
+	} else if ($to == 'getbarangtemp') {
+		$nc->getbarangtemp($con);
 	} else if ($to == 'tambahbarangtemp') {
 		$nc->tambahbarangtemp($con, $_POST);
 	} else if ($to == 'ubahbarangtemp') {

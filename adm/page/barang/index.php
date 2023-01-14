@@ -25,6 +25,9 @@ $aset = 0;
         <a href="page/barang/export_excel.php" target="_blank" class="btn btn-success mb-2"><i class='fas fa-file-excel mr-2'></i>Export Excel</a>
         <!-- <a href="page/barang/export_csv.php" target="_blank" class="btn btn-success"><i class='fas fa-file-csv mr-2'></i>Export CSV</a> -->
     <?php endif; ?>
+    <?php if ($_SESSION['id_jabatan'] == "5"): ?>
+        <a href="main?url=history-barang" class="btn btn-warning mb-2 ml-4"><i class='fas fa-history mr-2'></i>History Perubahan</a>
+    <?php endif; ?>
 
     <?php if ($_SESSION['id_jabatan'] == '6'): ?>
         <div class="table-responsive mt-3">
