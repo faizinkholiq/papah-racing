@@ -124,6 +124,7 @@ $url = ($_SESSION['id_jabatan'] == '1' || $_SESSION['id_jabatan'] == '2')? 'tamb
                 <input type="text" class="form-control" id="tambahan" name="tambahan" placeholder="Semisal ukuran / warna dengan pemisah coma">
             </div>
         </div>
+        <?php if ($_SESSION['id_jabatan'] == '1' || $_SESSION['id_jabatan'] == '2'): ?>
         <div class="form-group row">
             <label for="modal" class="col-sm-2 col-form-label">Harga Modal</label>
             <div class="col-sm-10">
@@ -135,6 +136,7 @@ $url = ($_SESSION['id_jabatan'] == '1' || $_SESSION['id_jabatan'] == '2')? 'tamb
                 </div>
             </div>
         </div>
+        <?php endif; ?>
         <div class="form-group row">
             <label for="distributor" class="col-sm-2 col-form-label">Harga Distributor</label>
             <div class="col-sm-10">
