@@ -72,6 +72,7 @@ $id_user = $_SESSION['id_user'];
                     <div class="collapse" id="submenu2" aria-expanded="false">
                         <ul class="flex-column nav bg-secondary">
                             <?php if ($_SESSION['id_jabatan'] == '1' || $_SESSION['id_jabatan'] == '2') { ?>
+                                <li class="nav-item"><a class="nav-link" href="main?url=history-pembelian"><span class="ml-2"><i class='fas fa-box mr-2'></i>History Pembelian</span></a></li>
                                 <li class="nav-item"><a class="nav-link" href="main?url=laporan-pembelian"><span class="ml-2"><i class='fas fa-file-invoice mr-2'></i>Pembelian</span></a></li>
                             <?php } ?>
                             <li class="nav-item"><a class="nav-link" href="main?url=laporan-penjualan"><span class="ml-2"><i class='fas fa-file-invoice-dollar mr-2'></i>Penjualan</span></a></li>
@@ -216,7 +217,7 @@ if ($_SESSION['id_jabatan'] == '8'||$_SESSION['id_jabatan'] == '7'||$_SESSION['i
 			require 'page/barang/upload.php';
 		} else if ($act == 'hapus-barang') {
 			require 'page/barang/hapus.php';
-		}  else if ($act == 'history-barang') {
+		} else if ($act == 'history-barang') {
 			require 'page/barang/index_temp.php';
 		}  else if ($act == 'user') {
 			require 'page/user/index.php';
@@ -230,6 +231,8 @@ if ($_SESSION['id_jabatan'] == '8'||$_SESSION['id_jabatan'] == '7'||$_SESSION['i
 			require 'page/user/ganti_password.php';
 		} else if ($act == 'pembelian') {
 			require 'page/pembelian/index.php';
+		} else if ($act == 'history-pembelian') {
+			require 'page/pembelian/index_temp.php';
 		} else if ($act == 'tambah-pembelian') {
 			require 'page/pembelian/tambah.php';
 		} else if ($act == 'lihat-pembelian') {
