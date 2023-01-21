@@ -63,6 +63,7 @@ $id_user = $_SESSION['id_user'];
                     <li><a href="main?url=pelanggan"><i class='fas fa-handshake mr-2'></i>Data Pelanggan</a></li>
                 <?php } ?> -->
                 <?php if ($_SESSION['id_jabatan'] == '1' || $_SESSION['id_jabatan'] == '2' || $_SESSION['id_jabatan'] == '5') { ?>
+                    <li class="nav-item"><a class="nav-link" href="main?url=history-pembelian"><i class='fas fa-box mr-2'></i>History Pembelian</a></li>
                     <li><a href="main?url=pembelian"><i class='fas fa-shopping-cart mr-2'></i>Pembelian</a></li>
                 <?php } ?>
                 <li><a href="main?url=penjualan"><i class='fas fa-cash-register mr-2'></i>Penjualan</a></li>
