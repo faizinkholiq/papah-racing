@@ -2610,7 +2610,7 @@ class con
 		
 		$q_src = "";
 		if(!empty($search["value"])){
-			$col = ["jenis"];
+			$col = ["user.nama", "user.username", "jabatan.nama", "gaji.pokok", "gaji.kehadiran", "gaji.prestasi", "gaji.bonus", "gaji.indisipliner", "gaji.jabatan"];
 			$src = $search["value"];
 			$src_arr = explode(" ", $src);
 
@@ -2683,7 +2683,12 @@ class con
 
 		$data["draw"] = intval($_POST["draw"]);
 
-		$result_all = mysqli_query($con, "SELECT * FROM user WHERE user.id_jabatan != '1' $whereFilter");
+		$result_all = mysqli_query($con, "
+			SELECT user.id_user 
+			FROM user 
+			LEFT JOIN gaji ON gaji.id_user = user.id_user
+			LEFT JOIN jabatan ON jabatan.id_jabatan = user.id_jabatan
+			WHERE user.id_jabatan != '1' $whereFilter");
 		$data["recordsTotal"] = mysqli_num_rows($result_all);
 		$data["recordsFiltered"] = mysqli_num_rows($result_all);
 		

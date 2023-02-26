@@ -34,6 +34,13 @@
     const sess_data = <?= json_encode($_SESSION) ?>;
     const page = <?=isset($_GET["page"])? (int)$_GET["page"] : 0 ?>;
 
+    const rupiah = (number)=>{
+        return new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR"
+        }).format(number);
+    }
+
     let dt = $('#gajiTable').DataTable({
         dom: "Bfrtip",
         ajax: {
@@ -47,13 +54,48 @@
             { data: "nama" },
             { data: "username" },
             { data: "jabatan" },
-            { data: "pokok" },
-            { data: "kehadiran" },
-            { data: "prestasi" },
-            { data: "bonus" },
-            { data: "indisipliner" },
-            { data: "tunjangan_jabatan" },
-            { data: "total" },
+            { 
+                data: "pokok",
+                render: function (data, type, row) {
+                    return rupiah(data)
+                }
+            },
+            { 
+                data: "kehadiran",
+                render: function (data, type, row) {
+                    return rupiah(data)
+                }
+            },
+            { 
+                data: "prestasi",
+                render: function (data, type, row) {
+                    return rupiah(data)
+                } 
+            },
+            { 
+                data: "bonus",
+                render: function (data, type, row) {
+                    return rupiah(data)
+                } 
+            },
+            { 
+                data: "indisipliner", 
+                render: function (data, type, row) {
+                    return rupiah(data)
+                }
+            },
+            { 
+                data: "tunjangan_jabatan",
+                render: function (data, type, row) {
+                    return rupiah(data)
+                } 
+            },
+            { 
+                data: "total",
+                render: function (data, type, row) {
+                    return rupiah(data)
+                }
+            },
             { 
                 class: "text-center",
                 render: function (data, type, row) {
