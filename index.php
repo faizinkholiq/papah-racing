@@ -78,7 +78,7 @@ if (empty($xp[1]) OR (!empty($_GET["kategori"]) || !empty($_GET["merk"]) || !emp
 
 		$src = $_GET["merk"];
 
-		$posts = mysqli_query($con, "SELECT * FROM barang WHERE deleted = 0 AND merk = '$src' ORDER BY created" );
+		$posts = mysqli_query($con, "SELECT * FROM barang WHERE deleted = 0 AND merk = '$src' ORDER BY rand()" );
 		
 		$nvurl = SITEURL."?merk=".$_GET["merk"];
 		
@@ -95,7 +95,7 @@ if (empty($xp[1]) OR (!empty($_GET["kategori"]) || !empty($_GET["merk"]) || !emp
 		$src = $_GET["cari"];
 		$multi_src = str_replace(' ', '%', $src);
 		
-		$posts = mysqli_query($con, "SELECT * FROM barang WHERE deleted = 0 AND nama LIKE '%$src%' OR nama LIKE '%$multi_src%' OR nama SOUNDS LIKE '$src' ORDER BY created");
+		$posts = mysqli_query($con, "SELECT * FROM barang WHERE deleted = 0 AND nama LIKE '%$src%' OR nama LIKE '%$multi_src%' OR nama SOUNDS LIKE '$src' ORDER BY rand()");
 		
 		$nvurl = SITEURL."?cari=".$_GET["cari"];
 	
@@ -119,7 +119,7 @@ if (empty($xp[1]) OR (!empty($_GET["kategori"]) || !empty($_GET["merk"]) || !emp
 		$total_page = ceil($total_data / $limit);
 		
 		// Limited Data
-		$posts = mysqli_query($con, "SELECT * FROM barang WHERE deleted = 0 ORDER BY created DESC LIMIT $first_page, $limit");
+		$posts = mysqli_query($con, "SELECT * FROM barang WHERE deleted = 0 ORDER BY rand() DESC LIMIT $first_page, $limit");
 
 		$nvurl = SITEURL;
 
