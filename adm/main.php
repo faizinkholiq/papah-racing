@@ -99,8 +99,8 @@ $id_user = $_SESSION['id_user'];
                         </ul>
                     </div>
                 </li>
-                <!-- <li><a href="main?url=data-toko"><i class='fas fa-cog mr-2'></i>Pengaturan</a></li> -->
                 <?php // } ?>
+                <li><a href="main?url=gaji"><i class='fas fa-money-check-alt mr-2'></i>Gaji</a></li>
             </ul>
      
     </div>
@@ -302,7 +302,11 @@ if ($_SESSION['id_jabatan'] == '8'||$_SESSION['id_jabatan'] == '7'||$_SESSION['i
 			require 'page/marketplace/ubah.php';
 		} else if ($act == 'tambah-marketplace') {
 			require 'page/marketplace/tambah.php';
-		} else {
+		} else if ($act == 'gaji') {
+			require 'page/gaji/index.php';
+		} else if ($act == 'ubah-gaji') {
+			require 'page/gaji/ubah.php';
+		}  else {
 			header("location: main");
 		}
 	}

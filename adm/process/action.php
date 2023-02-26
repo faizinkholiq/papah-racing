@@ -270,5 +270,9 @@ if (empty($_GET['url'])) {
 		$nc->getlaporanharian($con);
 	} else if ($to == 'approveharian') {
 		$nc->approveharian($con);
+	} else if ($to == 'getgaji') {
+		$nc->getgaji($con);
+	} else if ($to == 'ubahgaji') {
+		$nc->ubahgaji($con, $_POST['id_user'], $_POST['pokok'], $_POST['kehadiran'], $_POST['prestasi'], $_POST['bonus'], $_POST['indisipliner'], $_POST['tunjangan_jabatan']);
 	}
 }

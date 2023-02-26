@@ -24,3 +24,6 @@ CREATE TABLE IF NOT EXISTS  `foto_barang_temp` (`id` INT NOT NULL , `name` VARCH
 ALTER TABLE `barang_temp` ADD `status` ENUM('Pending','Decline','Approved') NOT NULL AFTER `action`;
 
 ALTER TABLE `barang_temp` CHANGE `update_at` `updated_at` DATETIME NOT NULL;
+
+-- 2023-02-27
+CREATE TABLE `gaji` (`id` INT NOT NULL AUTO_INCREMENT , `id_user` INT(11) NOT NULL , `pokok` FLOAT NOT NULL , `kehadiran` FLOAT NOT NULL , `prestasi` FLOAT NOT NULL , `bonus` FLOAT NOT NULL , `indisipliner` FLOAT NOT NULL , `jabatan` FLOAT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;

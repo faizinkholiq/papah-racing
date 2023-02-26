@@ -2603,4 +2603,105 @@ class con
 
 		header('location:../main?url=history-barang&page='.$page);
 	}
+
+	function getgaji($con)
+	{	
+		$search = $_POST["search"];
+		
+		$q_src = "";
+		if(!empty($search["value"])){
+			$col = ["jenis"];
+			$src = $search["value"];
+			$src_arr = explode(" ", $src);
+
+			foreach($col as $key => $val){
+				if($key == 0) {
+					$q_src .= "(";
+					foreach($src_arr as $k => $v){
+						if($k == 0) {
+							$q_src .= "$val LIKE '%$v%'"; 
+						}else{
+							$q_src .= " AND $val LIKE '%$v%'";
+						}
+					}
+					$q_src .= ")";
+				}else{
+					$q_src .= " OR (";
+					foreach($src_arr as $k => $v){
+						if($k == 0) {
+							$q_src .= "$val LIKE '%$v%'"; 
+						}else{
+							$q_src .= " AND $val LIKE '%$v%'";
+						}
+					}
+					$q_src .= ")";
+				}
+			}
+		}
+
+		$whereFilter = "";
+		if(!empty($q_src)){
+			$whereFilter = "AND ($q_src)";
+		}
+
+		$limit = $_POST["length"];
+		$offset = $_POST["start"];
+
+		$result = mysqli_query($con, "
+			SELECT 
+				ROW_NUMBER() OVER(ORDER BY user.id_jabatan ASC) AS row_no,
+				user.id_user,
+				user.nama,
+				user.username,
+				jabatan.nama jabatan,
+				COALESCE(gaji.pokok, 0) pokok,
+				COALESCE(gaji.kehadiran, 0) kehadiran,
+				COALESCE(gaji.prestasi, 0) prestasi,
+				COALESCE(gaji.bonus, 0) bonus,
+				COALESCE(gaji.indisipliner, 0) indisipliner,
+				COALESCE(gaji.jabatan, 0) tunjangan_jabatan,
+				COALESCE(
+					gaji.pokok + 
+					gaji.kehadiran +
+					gaji.prestasi +
+					gaji.bonus +
+					gaji.indisipliner +
+					gaji.jabatan
+				, 0) total
+			FROM user
+			LEFT JOIN gaji ON gaji.id_user = user.id_user
+			LEFT JOIN jabatan ON jabatan.id_jabatan = user.id_jabatan
+			WHERE user.id_jabatan != '1' $whereFilter
+			ORDER BY user.id_jabatan ASC
+			LIMIT $limit OFFSET $offset
+		");
+		
+		$data["data"] = [];
+		while($row = mysqli_fetch_assoc($result)){
+			$data["data"][] = $row;
+		}
+
+		$data["draw"] = intval($_POST["draw"]);
+
+		$result_all = mysqli_query($con, "SELECT * FROM user WHERE user.id_jabatan != '1' $whereFilter");
+		$data["recordsTotal"] = mysqli_num_rows($result_all);
+		$data["recordsFiltered"] = mysqli_num_rows($result_all);
+		
+		echo json_encode($data);
+	}
+
+	function ubahgaji($con, $id_user, $pokok, $kehadiran, $prestasi, $bonus, $indisipliner, $tunjangan_jabatan)
+	{
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+		
+		$detail = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM gaji WHERE id_user='$id_user' "));
+
+		if($detail) {
+			mysqli_query($con, "UPDATE gaji SET pokok='$pokok', kehadiran='$kehadiran', prestasi='$prestasi', bonus='$bonus', indisipliner='$indisipliner', jabatan='$tunjangan_jabatan' WHERE id_user='$id_user' ");
+		}else{
+			mysqli_query($con, "INSERT INTO gaji SET id_user='$id_user', pokok='$pokok', kehadiran='$kehadiran', prestasi='$prestasi', bonus='$bonus', indisipliner='$indisipliner', jabatan='$tunjangan_jabatan'");
+		}
+		
+		header('location:../main?url=gaji&page='.$page);
+	}
 }
