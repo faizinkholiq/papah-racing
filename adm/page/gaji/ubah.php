@@ -12,13 +12,26 @@ $data = mysqli_fetch_array(mysqli_query($con, "
         COALESCE(gaji.pokok, 0) pokok,
         COALESCE(gaji.kehadiran, 0) kehadiran,
         COALESCE(gaji.prestasi, 0) prestasi,
-        COALESCE(gaji.bonus, 0) bonus,
+        COALESCE((penjualan.total_het * 2) / 100, 0) bonus,
         COALESCE(gaji.indisipliner, 0) indisipliner,
         COALESCE(gaji.jabatan, 0) tunjangan_jabatan
     FROM user
     LEFT JOIN gaji ON gaji.id_user = user.id_user
     LEFT JOIN jabatan ON jabatan.id_jabatan = user.id_jabatan
+    LEFT JOIN (
+        SELECT
+            penjualan.id_user,
+            penjualan.tanggal,
+            SUM(barang.het) total_het
+        FROM penjualan
+        LEFT JOIN penjualan_det ON penjualan_det.no_faktur = penjualan.no_faktur
+        LEFT JOIN barang ON barang.id_barang = penjualan_det.id_barang
+        WHERE YEAR(penjualan.tanggal) = YEAR(NOW())
+            AND MONTH(penjualan.tanggal) = MONTH(NOW())
+        GROUP BY penjualan.id_user
+    ) penjualan ON penjualan.id_user = user.id_user 
     WHERE user.id_user='$id_user' 
+    GROUP BY user.id_user
 "));
 $page = isset($_GET['page'])? $_GET['page'] : 0;
 ?>
@@ -49,37 +62,37 @@ $page = isset($_GET['page'])? $_GET['page'] : 0;
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Pokok</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" name="pokok" value="<?= $data['pokok']; ?>" required>
+                <input type="text" class="form-control" name="pokok" value="<?= (float)$data['pokok']; ?>" required>
             </div>
         </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Kehadiran</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" name="kehadiran" value="<?= $data['kehadiran']; ?>" required>
+                <input type="text" class="form-control" name="kehadiran" value="<?= (float)$data['kehadiran']; ?>" required>
             </div>
         </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Prestasi</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" name="prestasi" value="<?= $data['prestasi']; ?>" required>
+                <input type="text" class="form-control" name="prestasi" value="<?= (float)$data['prestasi']; ?>" required>
             </div>
         </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Bonus</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" name="bonus" value="<?= $data['bonus']; ?>" required>
+                <input type="text" class="form-control" name="bonus" value="<?= (float)$data['bonus']; ?>" required>
             </div>
         </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Indisipliner</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" name="indisipliner" value="<?= $data['indisipliner']; ?>" required>
+                <input type="text" class="form-control" name="indisipliner" value="<?= (float)$data['indisipliner']; ?>" required>
             </div>
         </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Tunjangan Jabatan</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" name="tunjangan_jabatan" value="<?= $data['tunjangan_jabatan']; ?>" required>
+                <input type="text" class="form-control" name="tunjangan_jabatan" value="<?= (float)$data['tunjangan_jabatan']; ?>" required>
             </div>
         </div>
         <br/>

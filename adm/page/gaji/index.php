@@ -81,7 +81,7 @@
             { 
                 data: "indisipliner", 
                 render: function (data, type, row) {
-                    return rupiah(data)
+                    return (data != 0)? '-' + rupiah(data) : rupiah(data);
                 }
             },
             { 

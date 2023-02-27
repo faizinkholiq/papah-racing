@@ -2649,7 +2649,7 @@ class con
 
 		$result = mysqli_query($con, "
 			SELECT 
-				ROW_NUMBER() OVER(ORDER BY user.id_jabatan ASC) AS row_no,
+				ROW_NUMBER() OVER(ORDER BY user.id_user ASC) AS row_no,
 				user.id_user,
 				user.nama,
 				user.username,
@@ -2657,22 +2657,35 @@ class con
 				COALESCE(gaji.pokok, 0) pokok,
 				COALESCE(gaji.kehadiran, 0) kehadiran,
 				COALESCE(gaji.prestasi, 0) prestasi,
-				COALESCE(gaji.bonus, 0) bonus,
+				COALESCE((penjualan.total_het * 2) / 100, 0) bonus,
 				COALESCE(gaji.indisipliner, 0) indisipliner,
 				COALESCE(gaji.jabatan, 0) tunjangan_jabatan,
 				COALESCE(
-					gaji.pokok + 
-					gaji.kehadiran +
-					gaji.prestasi +
-					gaji.bonus +
-					gaji.indisipliner +
-					gaji.jabatan
+					COALESCE(gaji.pokok, 0) + 
+					COALESCE(gaji.kehadiran, 0) +
+					COALESCE(gaji.prestasi, 0) +
+					COALESCE((penjualan.total_het * 2) / 100, 0) -
+					COALESCE(gaji.indisipliner, 0) +
+					COALESCE(gaji.jabatan, 0)
 				, 0) total
 			FROM user
 			LEFT JOIN gaji ON gaji.id_user = user.id_user
 			LEFT JOIN jabatan ON jabatan.id_jabatan = user.id_jabatan
-			WHERE user.id_jabatan != '1' $whereFilter
-			ORDER BY user.id_jabatan ASC
+			LEFT JOIN (
+            	SELECT
+                	penjualan.id_user,
+                	penjualan.tanggal,
+                	SUM(barang.het) total_het
+                FROM penjualan
+                LEFT JOIN penjualan_det ON penjualan_det.no_faktur = penjualan.no_faktur
+            	LEFT JOIN barang ON barang.id_barang = penjualan_det.id_barang
+				WHERE YEAR(penjualan.tanggal) = YEAR(NOW())
+                	AND MONTH(penjualan.tanggal) = MONTH(NOW())
+                GROUP BY penjualan.id_user
+            ) penjualan ON penjualan.id_user = user.id_user 
+            WHERE user.id_jabatan = 5 $whereFilter
+			GROUP BY user.id_user
+			ORDER BY user.id_user ASC
 			LIMIT $limit OFFSET $offset
 		");
 		
