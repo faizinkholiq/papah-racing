@@ -30,6 +30,32 @@
         </table>
     </div>
 </div>
+
+<!-- Modal History -->
+<div id="historyModal" class="modal" tabindex="-2" role="dialog" aria-labelledby="historyModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">History Penjualan</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body table-responsive">
+                <table style="width:100%" id="historyTable" class="table table-bordered table-striped table-hover text-center mt-3">
+                    <thead>
+                        <tr>
+                            <th>No. Faktur</th>
+                            <th>Barcode</th>
+                            <th>Nama</th>
+                            <th>Harga (Het)</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     const sess_data = <?= json_encode($_SESSION) ?>;
     const page = <?=isset($_GET["page"])? (int)$_GET["page"] : 0 ?>;
@@ -101,6 +127,7 @@
                 render: function (data, type, row) {
                     return `
                         <button type="button" onclick='doEdit(${row.id_user})' class="btn btn-sm btn-primary" style="width: 2rem;"><i class="fas fa-edit"></i></button>
+                        <button type="button" onclick='showHistory(${row.id_user})' class="btn btn-sm btn-warning" style="width: 2rem;"><i class="fas fa-file-alt"></i></button>
                     `;
                 }
             },
@@ -137,6 +164,36 @@
             const url = "process/action?url=hapusgaji&this="+id+"&page="+info.page
             window.open(url, "_self")
         }
+    }
+
+    function showHistory(id) {
+        $('#historyModal').modal('show');
+
+        $('#historyTable').DataTable().clear().destroy();
+        $('#historyTable').DataTable({
+            dom: "Bfrtip",
+            ajax: {
+                url: 'process/action?url=gethistorypenjualan',
+                type: "POST",
+                data: {
+                    id_user: id
+                }
+            },
+            processing: true,
+            serverSide: true,
+            columns: [
+                { data: "no_faktur" },
+                { data: "barcode" },
+                { data: "nama" },
+                { 
+                    data: "het",
+                    render: function (data, type, row) {
+                        return rupiah(data)
+                    }
+                },
+            ],
+            ordering: false
+        });
     }
 
 </script>

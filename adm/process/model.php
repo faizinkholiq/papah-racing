@@ -2679,7 +2679,8 @@ class con
                 FROM penjualan
                 LEFT JOIN penjualan_det ON penjualan_det.no_faktur = penjualan.no_faktur
             	LEFT JOIN barang ON barang.id_barang = penjualan_det.id_barang
-				WHERE YEAR(penjualan.tanggal) = YEAR(NOW())
+				WHERE penjualan.persetujuan = 'Approved'
+					AND YEAR(penjualan.tanggal) = YEAR(NOW())
                 	AND MONTH(penjualan.tanggal) = MONTH(NOW())
                 GROUP BY penjualan.id_user
             ) penjualan ON penjualan.id_user = user.id_user 
@@ -2701,7 +2702,22 @@ class con
 			FROM user 
 			LEFT JOIN gaji ON gaji.id_user = user.id_user
 			LEFT JOIN jabatan ON jabatan.id_jabatan = user.id_jabatan
-			WHERE user.id_jabatan != '1' $whereFilter");
+			LEFT JOIN (
+            	SELECT
+                	penjualan.id_user,
+                	penjualan.tanggal,
+                	SUM(barang.het) total_het
+                FROM penjualan
+                LEFT JOIN penjualan_det ON penjualan_det.no_faktur = penjualan.no_faktur
+            	LEFT JOIN barang ON barang.id_barang = penjualan_det.id_barang
+				WHERE penjualan.persetujuan = 'Approved'
+					AND YEAR(penjualan.tanggal) = YEAR(NOW())
+                	AND MONTH(penjualan.tanggal) = MONTH(NOW())
+                GROUP BY penjualan.id_user
+            ) penjualan ON penjualan.id_user = user.id_user 
+			WHERE user.id_jabatan = 5 $whereFilter
+			GROUP BY user.id_user
+		");
 		$data["recordsTotal"] = mysqli_num_rows($result_all);
 		$data["recordsFiltered"] = mysqli_num_rows($result_all);
 		
@@ -2721,5 +2737,95 @@ class con
 		}
 		
 		header('location:../main?url=gaji&page='.$page);
+	}
+
+	function gethistorypenjualan($con)
+	{	
+		$user = $_POST["id_user"];
+		$search = $_POST["search"];
+		
+		$q_src = "";
+		if(!empty($search["value"])){
+			$col = ["penjualan.no_faktur", "barang.barcode", "barang.nama", "barang.het"];
+			$src = $search["value"];
+			$src_arr = explode(" ", $src);
+
+			foreach($col as $key => $val){
+				if($key == 0) {
+					$q_src .= "(";
+					foreach($src_arr as $k => $v){
+						if($k == 0) {
+							$q_src .= "$val LIKE '%$v%'"; 
+						}else{
+							$q_src .= " AND $val LIKE '%$v%'";
+						}
+					}
+					$q_src .= ")";
+				}else{
+					$q_src .= " OR (";
+					foreach($src_arr as $k => $v){
+						if($k == 0) {
+							$q_src .= "$val LIKE '%$v%'"; 
+						}else{
+							$q_src .= " AND $val LIKE '%$v%'";
+						}
+					}
+					$q_src .= ")";
+				}
+			}
+		}
+
+		$whereFilter = "";
+		if(!empty($q_src)){
+			$whereFilter = "AND ($q_src)";
+		}
+
+		$limit = $_POST["length"];
+		$offset = $_POST["start"];
+
+		$result = mysqli_query($con, "
+			SELECT 
+				ROW_NUMBER() OVER(ORDER BY penjualan.tanggal DESC, penjualan_det.id_barang ASC) AS row_no,
+				penjualan.no_faktur,
+				barang.barcode,
+				barang.nama,
+				barang.het
+			FROM penjualan
+			LEFT JOIN penjualan_det ON penjualan_det.no_faktur = penjualan.no_faktur
+			LEFT JOIN barang ON barang.id_barang = penjualan_det.id_barang
+			WHERE penjualan.id_user = $user
+				AND penjualan.persetujuan = 'Approved'
+				AND YEAR(penjualan.tanggal) = YEAR(NOW())
+				AND MONTH(penjualan.tanggal) = MONTH(NOW())
+            	$whereFilter
+			GROUP BY penjualan.no_faktur, penjualan_det.id_barang
+			ORDER BY penjualan.tanggal DESC, penjualan_det.id_barang ASC
+			LIMIT $limit OFFSET $offset
+		");
+		
+		$data["data"] = [];
+		while($row = mysqli_fetch_assoc($result)){
+			$data["data"][] = $row;
+		}
+
+		$data["draw"] = intval($_POST["draw"]);
+
+		$result_all = mysqli_query($con, "
+			SELECT 
+				penjualan.no_faktur,
+				penjualan_det.id_barang
+			FROM penjualan
+			LEFT JOIN penjualan_det ON penjualan_det.no_faktur = penjualan.no_faktur
+			LEFT JOIN barang ON barang.id_barang = penjualan_det.id_barang
+			WHERE penjualan.id_user = $user
+				AND penjualan.persetujuan = 'Approved'
+				AND YEAR(penjualan.tanggal) = YEAR(NOW())
+				AND MONTH(penjualan.tanggal) = MONTH(NOW())
+            	$whereFilter
+			GROUP BY penjualan.no_faktur, penjualan_det.id_barang");
+		$data["recordsTotal"] = mysqli_num_rows($result_all);
+		$data["recordsFiltered"] = mysqli_num_rows($result_all);
+		
+		echo json_encode($data);
 	}
 }

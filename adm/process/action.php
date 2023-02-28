@@ -274,5 +274,7 @@ if (empty($_GET['url'])) {
 		$nc->getgaji($con);
 	} else if ($to == 'ubahgaji') {
 		$nc->ubahgaji($con, $_POST['id_user'], $_POST['pokok'], $_POST['kehadiran'], $_POST['prestasi'], $_POST['bonus'], $_POST['indisipliner'], $_POST['tunjangan_jabatan']);
-	}
+	}  else if ($to == 'gethistorypenjualan') {
+		$nc->gethistorypenjualan($con);
+	} 
 }
