@@ -26,7 +26,8 @@ $data = mysqli_fetch_array(mysqli_query($con, "
         FROM penjualan
         LEFT JOIN penjualan_det ON penjualan_det.no_faktur = penjualan.no_faktur
         LEFT JOIN barang ON barang.id_barang = penjualan_det.id_barang
-        WHERE YEAR(penjualan.tanggal) = YEAR(NOW())
+        WHERE penjualan.persetujuan = 'Approved'
+            AND YEAR(penjualan.tanggal) = YEAR(NOW())
             AND MONTH(penjualan.tanggal) = MONTH(NOW())
         GROUP BY penjualan.id_user
     ) penjualan ON penjualan.id_user = user.id_user 
