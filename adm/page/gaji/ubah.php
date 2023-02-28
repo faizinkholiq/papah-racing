@@ -81,7 +81,7 @@ $page = isset($_GET['page'])? $_GET['page'] : 0;
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Bonus</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" name="bonus" value="<?= (float)$data['bonus']; ?>" required>
+                <input type="text" class="form-control" name="bonus" value="<?= (float)$data['bonus']; ?>" required disabled>
             </div>
         </div>
         <div class="form-group row">
