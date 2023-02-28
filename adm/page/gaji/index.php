@@ -33,20 +33,22 @@
 
 <!-- Modal History -->
 <div id="historyModal" class="modal" tabindex="-2" role="dialog" aria-labelledby="historyModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="myModalLabel">History Penjualan</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
             <div class="modal-body table-responsive">
-                <table style="width:100%" id="historyTable" class="table table-bordered table-striped table-hover text-center mt-3">
+                <table style="width:100%" id="historyTable" class="table table-bordered table-striped table-hover mt-3">
                     <thead>
                         <tr>
-                            <th>No. Faktur</th>
-                            <th>Barcode</th>
-                            <th>Nama</th>
-                            <th>Harga (Het)</th>
+                            <th class="text-center" width="100">No. Faktur</th>
+                            <th class="text-center" width="120">Tanggal</th>
+                            <th class="text-center" width="100">Barcode</th>
+                            <th class="text-center">Nama</th>
+                            <th class="text-center" width="100">Pelanggan</th>
+                            <th class="text-center" width="150">Harga (Het)</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -195,8 +197,10 @@
             serverSide: true,
             columns: [
                 { data: "no_faktur" },
+                { data: "tanggal" },
                 { data: "barcode" },
                 { data: "nama" },
+                { data: "pelanggan" },
                 { 
                     data: "het",
                     render: function (data, type, row) {

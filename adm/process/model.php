@@ -2746,7 +2746,7 @@ class con
 		
 		$q_src = "";
 		if(!empty($search["value"])){
-			$col = ["penjualan.no_faktur", "barang.barcode", "barang.nama", "barang.het"];
+			$col = ["penjualan.no_faktur", "barang.barcode", "barang.nama", "barang.het", "pelanggan.nama", "DATE_FORMAT(penjualan.tanggal, '%e %M %Y, %H:%i')"];
 			$src = $search["value"];
 			$src_arr = explode(" ", $src);
 
@@ -2788,15 +2788,18 @@ class con
 				ROW_NUMBER() OVER(ORDER BY penjualan.tanggal DESC, penjualan_det.id_barang ASC) AS row_no,
 				penjualan.no_faktur,
 				barang.barcode,
+				DATE_FORMAT(penjualan.tanggal, '%e %M %Y, %H:%i') tanggal,
+                pelanggan.nama pelanggan,
 				barang.nama,
 				barang.het
 			FROM penjualan
 			LEFT JOIN penjualan_det ON penjualan_det.no_faktur = penjualan.no_faktur
 			LEFT JOIN barang ON barang.id_barang = penjualan_det.id_barang
+			LEFT JOIN pelanggan ON pelanggan.id_pelanggan = penjualan.id_pelanggan
 			WHERE penjualan.id_user = $user
 				AND penjualan.persetujuan = 'Approved'
-				AND YEAR(penjualan.tanggal) = YEAR(NOW())
-				AND MONTH(penjualan.tanggal) = MONTH(NOW())
+				-- AND YEAR(penjualan.tanggal) = YEAR(NOW())
+				-- AND MONTH(penjualan.tanggal) = MONTH(NOW())
             	$whereFilter
 			GROUP BY penjualan.no_faktur, penjualan_det.id_barang
 			ORDER BY penjualan.tanggal DESC, penjualan_det.id_barang ASC
@@ -2817,10 +2820,11 @@ class con
 			FROM penjualan
 			LEFT JOIN penjualan_det ON penjualan_det.no_faktur = penjualan.no_faktur
 			LEFT JOIN barang ON barang.id_barang = penjualan_det.id_barang
+			LEFT JOIN pelanggan ON pelanggan.id_pelanggan = penjualan.id_pelanggan
 			WHERE penjualan.id_user = $user
 				AND penjualan.persetujuan = 'Approved'
-				AND YEAR(penjualan.tanggal) = YEAR(NOW())
-				AND MONTH(penjualan.tanggal) = MONTH(NOW())
+				-- AND YEAR(penjualan.tanggal) = YEAR(NOW())
+				-- AND MONTH(penjualan.tanggal) = MONTH(NOW())
             	$whereFilter
 			GROUP BY penjualan.no_faktur, penjualan_det.id_barang");
 		$data["recordsTotal"] = mysqli_num_rows($result_all);
