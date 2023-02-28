@@ -125,10 +125,18 @@
             { 
                 class: "text-center",
                 render: function (data, type, row) {
-                    return `
-                        <button type="button" onclick='doEdit(${row.id_user})' class="btn btn-sm btn-primary" style="width: 2rem;"><i class="fas fa-edit"></i></button>
-                        <button type="button" onclick='showHistory(${row.id_user})' class="btn btn-sm btn-warning" style="width: 2rem;"><i class="fas fa-file-alt"></i></button>
-                    `;
+                    if (sess_data["id_jabatan"] == 1 || sess_data["id_jabatan"] == 2) {
+                        return `
+                            <button type="button" onclick='doEdit(${row.id_user})' class="btn btn-sm btn-primary" style="width: 2rem;"><i class="fas fa-edit"></i></button>
+                            <button type="button" onclick='showHistory(${row.id_user})' class="btn btn-sm btn-warning" style="width: 2rem;"><i class="fas fa-file-alt"></i></button>
+                        `;
+                    }else if (sess_data["id_jabatan"] == 5) {
+                        return `
+                            <button type="button" onclick='showHistory(${row.id_user})' class="btn btn-sm btn-warning" style="width: 2rem;"><i class="fas fa-file-alt"></i></button>
+                        `;
+                    }else{
+                        return '-';
+                    }
                 }
             },
         ],
@@ -149,6 +157,10 @@
             url.searchParams.set('page', info.page);
             window.history.pushState({}, '', url);
         });
+
+        if (sess_data["id_jabatan"] != 1 && sess_data["id_jabatan"] != 2 && sess_data["id_jabatan"] != 5) {
+            dt.columns([11]).visible(false);
+        }
     });
 
     function doEdit(id) {
