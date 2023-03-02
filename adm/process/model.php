@@ -2798,8 +2798,8 @@ class con
 			LEFT JOIN pelanggan ON pelanggan.id_pelanggan = penjualan.id_pelanggan
 			WHERE penjualan.id_user = $user
 				AND penjualan.persetujuan = 'Approved'
-				-- AND YEAR(penjualan.tanggal) = YEAR(NOW())
-				-- AND MONTH(penjualan.tanggal) = MONTH(NOW())
+				AND YEAR(penjualan.tanggal) = YEAR(NOW())
+				AND MONTH(penjualan.tanggal) = MONTH(NOW())
             	$whereFilter
 			GROUP BY penjualan.no_faktur, penjualan_det.id_barang
 			ORDER BY penjualan.tanggal DESC, penjualan_det.id_barang ASC
@@ -2823,13 +2823,28 @@ class con
 			LEFT JOIN pelanggan ON pelanggan.id_pelanggan = penjualan.id_pelanggan
 			WHERE penjualan.id_user = $user
 				AND penjualan.persetujuan = 'Approved'
-				-- AND YEAR(penjualan.tanggal) = YEAR(NOW())
-				-- AND MONTH(penjualan.tanggal) = MONTH(NOW())
+				AND YEAR(penjualan.tanggal) = YEAR(NOW())
+				AND MONTH(penjualan.tanggal) = MONTH(NOW())
             	$whereFilter
 			GROUP BY penjualan.no_faktur, penjualan_det.id_barang");
 		$data["recordsTotal"] = mysqli_num_rows($result_all);
 		$data["recordsFiltered"] = mysqli_num_rows($result_all);
 		
 		echo json_encode($data);
+	}
+
+	function processgaji($con, $id_user)
+	{
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+		
+		$detail = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM gaji WHERE id_user='$id_user' "));
+
+		if($detail) {
+			mysqli_query($con, "UPDATE gaji SET pokok='0', kehadiran='0', prestasi='0', bonus='0', indisipliner='0', jabatan='0' WHERE id_user='$id_user' ");
+		}else{
+			mysqli_query($con, "INSERT INTO gaji SET id_user='$id_user', pokok='0', kehadiran='0', prestasi='0', bonus='0', indisipliner='0', jabatan='0'");
+		}
+		
+		header('location:../main?url=gaji&page='.$page);
 	}
 }

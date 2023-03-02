@@ -15,7 +15,7 @@
                     <th class="align-middle" rowspan="2">Jabatan</th>
                     <th colspan="6">Gaji</th>
                     <th class="align-middle" rowspan="2" width="100">Total</th>
-                    <th class="align-middle" rowspan="2" width="60">Aksi</th>
+                    <th class="align-middle" rowspan="2" width="80">Aksi</th>
                 </tr>
                 <tr>
                     <th width="100" class="text-center align-middle">Pokok</th>
@@ -129,8 +129,9 @@
                 render: function (data, type, row) {
                     if (sess_data["id_jabatan"] == 1 || sess_data["id_jabatan"] == 2) {
                         return `
-                            <button type="button" onclick='doEdit(${row.id_user})' class="btn btn-sm btn-primary" style="width: 2rem;"><i class="fas fa-edit"></i></button>
-                            <button type="button" onclick='showHistory(${row.id_user})' class="btn btn-sm btn-warning" style="width: 2rem;"><i class="fas fa-file-alt"></i></button>
+                            <button type="button" onclick='doEdit(${row.id_user})' class="mr-2 mt-2 btn btn-sm btn-primary" style="width: 2rem;"><i class="fas fa-edit"></i></button>
+                            <button type="button" onclick='showHistory(${row.id_user})' class="mr-2 mt-2 btn btn-sm btn-warning" style="width: 2rem;"><i class="fas fa-file-alt"></i></button>
+                            <button type="button" onclick='processGaji(${row.id_user})' class="mr-2 mt-2 btn btn-sm btn-success" style="width: 2rem;"><i class="fas fa-hand-holding-usd"></i></button>
                         `;
                     }else if (sess_data["id_jabatan"] == 5) {
                         return `
@@ -160,24 +161,24 @@
             window.history.pushState({}, '', url);
         });
 
-        if (sess_data["id_jabatan"] != 1 && sess_data["id_jabatan"] != 2 && sess_data["id_jabatan"] != 5) {
+        if (sess_data["id_jabatan"] != 1 && sess_data["id_jabatan"] != 2 && sss_data["id_jabatan"] != 5) {
             dt.columns([11]).visible(false);
         }
     });
+
+    function processGaji(id) {
+        let ask = window.confirm("Anda yakin ingin memproses data ini?");
+        if (ask) {
+            const info = dt.page.info();
+            const url = "process/action?url=processgaji&this="+id+"&page="+info.page
+            window.open(url, "_self")
+        }
+    }
 
     function doEdit(id) {
         const info = dt.page.info();
         const url = "main?url=ubah-gaji&this="+id+"&page="+info.page
         window.open(url, "_self")
-    }
-
-    function doDelete(id) {
-        let ask = window.confirm("Anda yakin ingin hapus data ini?");
-        if (ask) {
-            const info = dt.page.info();
-            const url = "process/action?url=hapusgaji&this="+id+"&page="+info.page
-            window.open(url, "_self")
-        }
     }
 
     function showHistory(id) {
