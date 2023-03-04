@@ -1,5 +1,22 @@
 <?php
-$query = mysqli_query($con, "SELECT * FROM barang WHERE deleted = 0 ORDER BY created DESC");
+$query = mysqli_query($con, "
+    SELECT 
+        barang.modal,
+        COALESCE(barang.stok, 0) - COALESCE(history_pembelian.qty, 0) stok
+    FROM barang 
+    LEFT JOIN (
+        SELECT
+            pembelian_det.id_barang id,
+            SUM(pembelian_det.qty) qty
+        FROM pembelian_det
+        JOIN pembelian ON pembelian.no_po = pembelian_det.no_po
+        WHERE pembelian.temp = 1
+        GROUP BY pembelian.no_po, pembelian_det.id_barang
+    ) history_pembelian ON barang.id_barang = history_pembelian.id
+    WHERE deleted = 0
+    GROUP BY barang.id_barang 
+    ORDER BY created DESC
+");
 $aset = 0;
 ?>
 <div class="row">
@@ -26,7 +43,7 @@ $aset = 0;
         <!-- <a href="page/barang/export_csv.php" target="_blank" class="btn btn-success"><i class='fas fa-file-csv mr-2'></i>Export CSV</a> -->
     <?php endif; ?>
     <?php if ($_SESSION['id_jabatan'] == "5"): ?>
-        <a href="main?url=history-barang" class="btn btn-warning mb-2 ml-4"><i class='fas fa-history mr-2'></i>History Perubahan</a>
+        <!-- <a href="masin?url=history-barang" class="btn btn-warning mb-2 ml-4"><i class='fas fa-history mr-2'></i>History Perubahan</a> -->
     <?php endif; ?>
 
     <?php if ($_SESSION['id_jabatan'] == '6'): ?>
