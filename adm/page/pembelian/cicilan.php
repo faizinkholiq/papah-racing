@@ -3,7 +3,7 @@ if (empty($_GET['url'])) {
     header('location:../main');
 }
 $no_po = $_GET['this'];
-$data = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM pembelian WHERE no_po='$no_po' "));
+$data = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM pembelian WHERE no_po='$no_po' AND pembelian.temp = 0"));
 $kekurangan = $data['total_transaksi'] - $data['total_bayar'];
 $page = isset($_GET['page'])? $_GET['page'] : 0;
 ?>

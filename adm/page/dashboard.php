@@ -8,14 +8,14 @@ $total_supplier = $t_supplier - 1;
 $t_pelanggan = mysqli_fetch_assoc(mysqli_query($con, "SELECT count(id_pelanggan) AS total FROM pelanggan"))["total"];
 $total_pelanggan = $t_pelanggan - 2;
 // Pembelian Hari Ini
-$transaksi_pem = mysqli_fetch_assoc(mysqli_query($con, "SELECT sum(total_transaksi) AS total FROM pembelian WHERE DATE_FORMAT(tanggal, '%Y-%m-%d') BETWEEN '$date' AND '$date'"))["total"];
-$lunas_pem = mysqli_fetch_assoc(mysqli_query($con, "SELECT sum(total_transaksi) AS total FROM pembelian WHERE status='Lunas' AND DATE_FORMAT(tanggal, '%Y-%m-%d') BETWEEN '$date' AND '$date'"))["total"];
-$hutang_pem = mysqli_fetch_assoc(mysqli_query($con, "SELECT sum(total_bayar) AS total FROM pembelian WHERE status='Hutang' AND DATE_FORMAT(tanggal, '%Y-%m-%d') BETWEEN '$date' AND '$date'"))["total"];
+$transaksi_pem = mysqli_fetch_assoc(mysqli_query($con, "SELECT sum(total_transaksi) AS total FROM pembelian WHERE pembelian.temp = 0 AND DATE_FORMAT(tanggal, '%Y-%m-%d') BETWEEN '$date' AND '$date'"))["total"];
+$lunas_pem = mysqli_fetch_assoc(mysqli_query($con, "SELECT sum(total_transaksi) AS total FROM pembelian WHERE pembelian.temp = 0 AND status='Lunas' AND DATE_FORMAT(tanggal, '%Y-%m-%d') BETWEEN '$date' AND '$date'"))["total"];
+$hutang_pem = mysqli_fetch_assoc(mysqli_query($con, "SELECT sum(total_bayar) AS total FROM pembelian WHERE pembelian.temp = 0 AND status='Hutang' AND DATE_FORMAT(tanggal, '%Y-%m-%d') BETWEEN '$date' AND '$date'"))["total"];
 $pendapatan_pem = $lunas_pem + $hutang_pem;
 $kekurangan_pem = $transaksi_pem - $pendapatan_pem;
-$jum_transaksi_pem = mysqli_fetch_assoc(mysqli_query($con, "SELECT count(no_po) AS total FROM pembelian WHERE DATE_FORMAT(tanggal, '%Y-%m-%d') BETWEEN '$date' AND '$date'"))["total"];
-$jum_barang_pem = mysqli_fetch_assoc(mysqli_query($con, "SELECT count(id_barang) AS total FROM pembelian JOIN pembelian_det ON pembelian.no_po=pembelian_det.no_po WHERE DATE_FORMAT(tanggal, '%Y-%m-%d') BETWEEN '$date' AND '$date'"))["total"];
-$qty_barang_pem = mysqli_fetch_assoc(mysqli_query($con, "SELECT sum(qty) AS total FROM pembelian JOIN pembelian_det ON pembelian.no_po=pembelian_det.no_po WHERE DATE_FORMAT(tanggal, '%Y-%m-%d') BETWEEN '$date' AND '$date'"))["total"];
+$jum_transaksi_pem = mysqli_fetch_assoc(mysqli_query($con, "SELECT count(no_po) AS total FROM pembelian WHERE pembelian.temp = 0 AND DATE_FORMAT(tanggal, '%Y-%m-%d') BETWEEN '$date' AND '$date'"))["total"];
+$jum_barang_pem = mysqli_fetch_assoc(mysqli_query($con, "SELECT count(id_barang) AS total FROM pembelian JOIN pembelian_det ON pembelian.no_po=pembelian_det.no_po WHERE pembelian.temp = 0 AND DATE_FORMAT(tanggal, '%Y-%m-%d') BETWEEN '$date' AND '$date'"))["total"];
+$qty_barang_pem = mysqli_fetch_assoc(mysqli_query($con, "SELECT sum(qty) AS total FROM pembelian JOIN pembelian_det ON pembelian.no_po=pembelian_det.no_po WHERE pembelian.temp = 0 AND DATE_FORMAT(tanggal, '%Y-%m-%d') BETWEEN '$date' AND '$date'"))["total"];
 
 // Penjualan Hari Ini
 $transaksi_penj = mysqli_fetch_assoc(mysqli_query($con, "SELECT sum(total_transaksi) AS total FROM penjualan WHERE DATE_FORMAT(tanggal, '%Y-%m-%d') BETWEEN '$date' AND '$date'"))["total"];

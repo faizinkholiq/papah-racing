@@ -2,20 +2,20 @@
 if (isset($_POST['prosess'])) {
     $tgl1 = $_POST['tgl1'];
     $tgl2 = $_POST['tgl2'];
-    $total_qty_barang = mysqli_fetch_assoc(mysqli_query($con, "SELECT sum(qty) AS total FROM pembelian JOIN pembelian_det ON pembelian.no_po=pembelian_det.no_po WHERE DATE_FORMAT(tanggal, '%Y-%m-%d') BETWEEN '$tgl1' AND '$tgl2'"))["total"];
-    $total_harga_barang = mysqli_fetch_assoc(mysqli_query($con, "SELECT sum(total_harga) AS total FROM pembelian JOIN pembelian_det ON pembelian.no_po=pembelian_det.no_po WHERE DATE_FORMAT(tanggal, '%Y-%m-%d') BETWEEN '$tgl1' AND '$tgl2'"))["total"];
-    $total_harga_modal = mysqli_fetch_assoc(mysqli_query($con, "SELECT sum(modal) AS total FROM pembelian JOIN pembelian_det ON pembelian.no_po=pembelian_det.no_po JOIN barang ON pembelian_det.id_barang=barang.id_barang WHERE DATE_FORMAT(tanggal, '%Y-%m-%d') BETWEEN '$tgl1' AND '$tgl2'"))["total"];
+    $total_qty_barang = mysqli_fetch_assoc(mysqli_query($con, "SELECT sum(qty) AS total FROM pembelian JOIN pembelian_det ON pembelian.no_po=pembelian_det.no_po WHERE pembelian.temp = 0 AND DATE_FORMAT(tanggal, '%Y-%m-%d') BETWEEN '$tgl1' AND '$tgl2'"))["total"];
+    $total_harga_barang = mysqli_fetch_assoc(mysqli_query($con, "SELECT sum(total_harga) AS total FROM pembelian JOIN pembelian_det ON pembelian.no_po=pembelian_det.no_po WHERE pembelian.temp = 0 AND DATE_FORMAT(tanggal, '%Y-%m-%d') BETWEEN '$tgl1' AND '$tgl2'"))["total"];
+    $total_harga_modal = mysqli_fetch_assoc(mysqli_query($con, "SELECT sum(modal) AS total FROM pembelian JOIN pembelian_det ON pembelian.no_po=pembelian_det.no_po JOIN barang ON pembelian_det.id_barang=barang.id_barang WHERE pembelian.temp = 0 AND DATE_FORMAT(tanggal, '%Y-%m-%d') BETWEEN '$tgl1' AND '$tgl2'"))["total"];
 
     $no = 1;
-    $query_pembelian = mysqli_query($con, "SELECT * FROM pembelian JOIN pembelian_det ON pembelian.no_po=pembelian_det.no_po JOIN barang ON pembelian_det.id_barang=barang.id_barang WHERE DATE_FORMAT(tanggal, '%Y-%m-%d') BETWEEN '$tgl1' AND '$tgl2'");
+    $query_pembelian = mysqli_query($con, "SELECT * FROM pembelian JOIN pembelian_det ON pembelian.no_po=pembelian_det.no_po JOIN barang ON pembelian_det.id_barang=barang.id_barang WHERE pembelian.temp = 0 AND DATE_FORMAT(tanggal, '%Y-%m-%d') BETWEEN '$tgl1' AND '$tgl2'");
     $hitung = mysqli_num_rows($query_pembelian);
 } else if (isset($_POST['semua'])) {
-    $total_qty_barang = mysqli_fetch_assoc(mysqli_query($con, "SELECT sum(qty) AS total FROM pembelian JOIN pembelian_det ON pembelian.no_po=pembelian_det.no_po"))["total"];
-    $total_harga_barang = mysqli_fetch_assoc(mysqli_query($con, "SELECT sum(total_harga) AS total FROM pembelian JOIN pembelian_det ON pembelian.no_po=pembelian_det.no_po"))["total"];
-    $total_harga_modal = mysqli_fetch_assoc(mysqli_query($con, "SELECT sum(modal) AS total FROM pembelian JOIN pembelian_det ON pembelian.no_po=pembelian_det.no_po JOIN barang ON pembelian_det.id_barang=barang.id_barang"))["total"];
+    $total_qty_barang = mysqli_fetch_assoc(mysqli_query($con, "SELECT sum(qty) AS total FROM pembelian JOIN pembelian_det ON pembelian.no_po=pembelian_det.no_po WHERE pembelian.temp = 0"))["total"];
+    $total_harga_barang = mysqli_fetch_assoc(mysqli_query($con, "SELECT sum(total_harga) AS total FROM pembelian JOIN pembelian_det ON pembelian.no_po=pembelian_det.no_po WHERE pembelian.temp = 0"))["total"];
+    $total_harga_modal = mysqli_fetch_assoc(mysqli_query($con, "SELECT sum(modal) AS total FROM pembelian JOIN pembelian_det ON pembelian.no_po=pembelian_det.no_po JOIN barang ON pembelian_det.id_barang=barang.id_barang WHERE pembelian.temp = 0"))["total"];
 
     $no = 1;
-    $query_pembelian = mysqli_query($con, "SELECT * FROM pembelian JOIN pembelian_det ON pembelian.no_po=pembelian_det.no_po JOIN barang ON pembelian_det.id_barang=barang.id_barang");
+    $query_pembelian = mysqli_query($con, "SELECT * FROM pembelian JOIN pembelian_det ON pembelian.no_po=pembelian_det.no_po JOIN barang ON pembelian_det.id_barang=barang.id_barang WHERE pembelian.temp = 0");
     $hitung = mysqli_num_rows($query_pembelian);
 }
 ?>
