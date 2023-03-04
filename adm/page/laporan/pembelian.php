@@ -18,14 +18,14 @@ if (isset($_POST['prosess'])) {
     } else if (!empty($id_supplier)) {
         $arguments2 = "AND id_supplier='$id_supplier'";
     }
-    $total_transaksi = mysqli_fetch_assoc(mysqli_query($con, "SELECT sum(total_transaksi) AS total FROM pembelian WHERE $arguments DATE_FORMAT(tanggal, '%Y-%m-%d') BETWEEN '$tgl1' AND '$tgl2'"))["total"];
-    $total_lunas = mysqli_fetch_assoc(mysqli_query($con, "SELECT sum(total_transaksi) AS total FROM pembelian WHERE status='Lunas' $arguments2 AND DATE_FORMAT(tanggal, '%Y-%m-%d') BETWEEN '$tgl1' AND '$tgl2'"))["total"];
-    $total_hutang = mysqli_fetch_assoc(mysqli_query($con, "SELECT sum(total_bayar) AS total FROM pembelian WHERE status='Hutang' $arguments2 AND DATE_FORMAT(tanggal, '%Y-%m-%d') BETWEEN '$tgl1' AND '$tgl2'"))["total"];
+    $total_transaksi = mysqli_fetch_assoc(mysqli_query($con, "SELECT sum(total_transaksi) AS total FROM pembelian WHERE pembelian.temp = 0 $arguments DATE_FORMAT(tanggal, '%Y-%m-%d') BETWEEN '$tgl1' AND '$tgl2'"))["total"];
+    $total_lunas = mysqli_fetch_assoc(mysqli_query($con, "SELECT sum(total_transaksi) AS total FROM pembelian WHERE pembelian.temp = 0 AND status='Lunas' $arguments2 AND DATE_FORMAT(tanggal, '%Y-%m-%d') BETWEEN '$tgl1' AND '$tgl2'"))["total"];
+    $total_hutang = mysqli_fetch_assoc(mysqli_query($con, "SELECT sum(total_bayar) AS total FROM pembelian WHERE pembelian.temp = 0 AND status='Hutang' $arguments2 AND DATE_FORMAT(tanggal, '%Y-%m-%d') BETWEEN '$tgl1' AND '$tgl2'"))["total"];
     $total_pendapatan = $total_lunas + $total_hutang;
     $total_kekurangan = $total_transaksi - $total_pendapatan;
 
     $no = 1;
-    $query_pembelian = mysqli_query($con, "SELECT * FROM pembelian WHERE $arguments DATE_FORMAT(tanggal, '%Y-%m-%d') BETWEEN '$tgl1' AND '$tgl2' ORDER BY tanggal DESC");
+    $query_pembelian = mysqli_query($con, "SELECT * FROM pembelian WHERE pembelian.temp = 0 AND $arguments DATE_FORMAT(tanggal, '%Y-%m-%d') BETWEEN '$tgl1' AND '$tgl2' ORDER BY tanggal DESC");
     $hitung = mysqli_num_rows($query_pembelian);
 } else if (isset($_POST['semua'])) {
     $status = $_POST['status'];
@@ -33,25 +33,25 @@ if (isset($_POST['prosess'])) {
     if (empty($status) && empty($id_supplier)) {
         $arguments = "";
     } else if (!empty($status) && empty($id_supplier)) {
-        $arguments = "WHERE status='$status'";
+        $arguments = "AND status='$status'";
     } else if (empty($status) && !empty($id_supplier)) {
-        $arguments = "WHERE id_supplier='$id_supplier'";
+        $arguments = "AND id_supplier='$id_supplier'";
     } else if (!empty($status) && !empty($id_supplier)) {
-        $arguments = "WHERE status='$status' AND id_supplier='$id_supplier'";
+        $arguments = "AND status='$status' AND id_supplier='$id_supplier'";
     }
     if (empty($id_supplier)) {
         $arguments2 = "";
     } else if (!empty($id_supplier)) {
         $arguments2 = "AND id_supplier='$id_supplier'";
     }
-    $total_transaksi = mysqli_fetch_assoc(mysqli_query($con, "SELECT sum(total_transaksi) AS total FROM pembelian $arguments"))["total"];
-    $total_lunas = mysqli_fetch_assoc(mysqli_query($con, "SELECT sum(total_transaksi) AS total FROM pembelian WHERE status='Lunas' $arguments2"))["total"];
-    $total_hutang = mysqli_fetch_assoc(mysqli_query($con, "SELECT sum(total_bayar) AS total FROM pembelian WHERE status='Hutang' $arguments2"))["total"];
+    $total_transaksi = mysqli_fetch_assoc(mysqli_query($con, "SELECT sum(total_transaksi) AS total FROM pembelian WHERE pembelian.temp = 0  $arguments"))["total"];
+    $total_lunas = mysqli_fetch_assoc(mysqli_query($con, "SELECT sum(total_transaksi) AS total FROM pembelian WHERE pembelian.temp = 0 AND  status='Lunas' $arguments2"))["total"];
+    $total_hutang = mysqli_fetch_assoc(mysqli_query($con, "SELECT sum(total_bayar) AS total FROM pembelian WHERE pembelian.temp = 0 AND  status='Hutang' $arguments2"))["total"];
     $total_pendapatan = $total_lunas + $total_hutang;
     $total_kekurangan = $total_transaksi - $total_pendapatan;
 
     $no = 1;
-    $query_pembelian = mysqli_query($con, "SELECT * FROM pembelian $arguments ORDER BY tanggal DESC");
+    $query_pembelian = mysqli_query($con, "SELECT * FROM pembelian WHERE pembelian.temp = 0 $arguments ORDER BY tanggal DESC");
     $hitung = mysqli_num_rows($query_pembelian);
 }
 ?>

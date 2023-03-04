@@ -65,6 +65,7 @@
     <div class="col-md-4">
         <div class="wrapper">
             <form action="process/action?url=tambahpembelian" method="post">
+                <input type="hidden" name="temp" value = "<?= ($_SESSION['id_jabatan'] == '5')? 1 : 0 ?>">
                 <div class="form-group row">
                     <label for="tanggal" class="col-sm-2 col-form-label">Tanggal</label>
                     <div class="col-sm-10">

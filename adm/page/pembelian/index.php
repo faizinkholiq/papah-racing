@@ -5,7 +5,7 @@
     <div class="col-4"><a href="index.php" class="btn btn-danger float-right"><i class='fas fa-times-circle mr-2'></i>Back</a></div>
 </div>
 <div class="wrapper">
-    <?php if ($_SESSION['id_jabatan'] == '1' || $_SESSION['id_jabatan'] == '2') { ?>
+    <?php if ($_SESSION['id_jabatan'] == '1' || $_SESSION['id_jabatan'] == '2' ||  $_SESSION['id_jabatan'] == '5') { ?>
         <a href="main?url=tambah-pembelian" class="btn btn-primary"><i class='fas fa-plus-circle mr-2'></i>Tambah Data</a>
     <?php } ?>
     <div class="table-responsive mt-3">

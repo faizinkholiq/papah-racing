@@ -1,5 +1,6 @@
 <?php
-$url = ($_SESSION['id_jabatan'] == '1' || $_SESSION['id_jabatan'] == '2')? 'tambahbarang' : 'tambahbarangtemp'; 
+// $url = ($_SESSION['id_jabatan'] == '1' || $_SESSION['id_jabatan'] == '2')? 'tambahbarang' : 'tambahbarangtemp'; 
+$url = 'tambahbarang'; 
 ?>
 <div class="row">
     <div class="col-8">

@@ -27,3 +27,11 @@ ALTER TABLE `barang_temp` CHANGE `update_at` `updated_at` DATETIME NOT NULL;
 
 -- 2023-02-27
 CREATE TABLE `gaji` (`id` INT NOT NULL AUTO_INCREMENT , `id_user` INT(11) NOT NULL , `pokok` FLOAT NOT NULL , `kehadiran` FLOAT NOT NULL , `prestasi` FLOAT NOT NULL , `bonus` FLOAT NOT NULL , `indisipliner` FLOAT NOT NULL , `jabatan` FLOAT NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+
+-- 2023-03-05
+ALTER TABLE `barang_temp` DROP `action`;
+ALTER TABLE `barang_temp` RENAME TO `history_pembelian`;
+ALTER TABLE `pembelian` ADD `temp` BOOLEAN NOT NULL DEFAULT FALSE AFTER `updated`;
+
+ALTER TABLE `pembelian` ADD `temp_status` ENUM('Pending','Approved','Decline') DEFAULT NULL AFTER `temp`, ADD `temp_reason` TEXT DEFAULT NULL AFTER `temp_status`;

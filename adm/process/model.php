@@ -607,7 +607,7 @@ class con
 				barcode,
 				nama,
 				merk,
-				stok,
+				COALESCE(barang.stok, 0) - COALESCE(history_pembelian.qty, 0) stok,
 				CONCAT('RP', FORMAT(modal, 0, 'id_ID')) modal,
 				CONCAT('RP', FORMAT(distributor, 0, 'id_ID')) distributor,
 				CONCAT('RP', FORMAT(reseller, 0, 'id_ID')) reseller,
@@ -618,8 +618,18 @@ class con
 				$btn_gambar gambar,
 				$btn_pilih aksi_pilih
 			FROM barang 
+			LEFT JOIN (
+				SELECT
+					pembelian_det.id_barang id,
+					SUM(pembelian_det.qty) qty
+				FROM pembelian_det
+				JOIN pembelian ON pembelian.no_po = pembelian_det.no_po
+				WHERE pembelian.temp = 1
+				GROUP BY pembelian.no_po, pembelian_det.id_barang
+			) history_pembelian ON barang.id_barang = history_pembelian.id
 			WHERE deleted = 0 
 			$whereFilter
+			GROUP BY barang.id_barang
 			ORDER BY created DESC
 			LIMIT $limit OFFSET $offset
 		");
@@ -902,7 +912,7 @@ class con
 		header('location:../main?url=tambah-pembelian&page='.$page);
 	}
 
-	function tambahpembelian($con, $id_supplier, $id_user, $total_transaksi, $total_bayar)
+	function tambahpembelian($con, $id_supplier, $id_user, $total_transaksi, $total_bayar, $temp)
 	{
 		$page = isset($_GET['page'])? $_GET['page'] : 0;
 
@@ -926,7 +936,7 @@ class con
 			$status = "Lunas";
 		}
 
-		$query = mysqli_query($con, "INSERT INTO pembelian SET no_po='$no_po',id_supplier='$id_supplier',tanggal='$tanggal',status='$status',total_transaksi='$total_transaksi',total_bayar='$total_bayar',id_user='$id_user' ");
+		$query = mysqli_query($con, "INSERT INTO pembelian SET no_po='$no_po',id_supplier='$id_supplier',tanggal='$tanggal',status='$status',total_transaksi='$total_transaksi',total_bayar='$total_bayar',id_user='$id_user',temp='$temp',temp_status='Pending' ");
 		// memasukkan history pembayaran jika hutang
 		if ($total_bayar < $total_transaksi) {
 			$query = mysqli_query($con, "INSERT INTO pembelian_debt SET no_po='$no_po',bayar='$total_bayar',keterangan='DP',id_user='$id_user' ");
@@ -1055,7 +1065,7 @@ class con
 			FROM pembelian
 			LEFT JOIN supplier ON supplier.id_supplier = pembelian.id_supplier
 			LEFT JOIN user ON user.id_user = pembelian.id_user
-			WHERE 1=1 $whereFilter
+			WHERE pembelian.temp = 0 $whereFilter
 			ORDER BY pembelian.tanggal DESC
 			LIMIT $limit OFFSET $offset
 		");
@@ -1072,7 +1082,7 @@ class con
 			FROM pembelian 
 			LEFT JOIN supplier ON supplier.id_supplier = pembelian.id_supplier
 			LEFT JOIN user ON user.id_user = pembelian.id_user
-			WHERE 1=1 $whereFilter");
+			WHERE pembelian.temp = 0 $whereFilter");
 		$data["recordsTotal"] = mysqli_num_rows($result_all);
 		$data["recordsFiltered"] = mysqli_num_rows($result_all);
 		
@@ -2193,417 +2203,6 @@ class con
 		echo json_encode($data);
 	}
 
-	function tambahbarangtemp($con, $post)
-	{
-
-		$barcode = htmlspecialchars(str_replace(' ', '', strtoupper($post['barcode'])));
-		$nama = htmlspecialchars(ucwords($post['nama']));
-		$merk = htmlspecialchars(strtoupper($post['merk']));
-		$stok = $post['stok'];
-		$modal = str_replace('.', '', $post['modal']);
-		$distributor = str_replace('.', '', $post['distributor']);
-		$reseller = str_replace('.', '', $post['reseller']);
-		$bengkel = str_replace('.', '', $post['bengkel']);
-		$admin = str_replace('.', '', $post['admin']);
-		$het = str_replace('.', '', $post['het']);
-		$kondisi = htmlspecialchars(strtoupper($post['kondisi']));
-		$kualitas = htmlspecialchars(strtoupper($post['kualitas']));
-		$kategori = join(',', $post['kategori']);
-		$tipe_pelanggan = $post['tipe_pelanggan'];
-		$tambahan = str_replace("'", "''", htmlspecialchars(strtoupper($post['tambahan'])));
-		$berat = $post['berat'];
-		$deskripsi = str_replace("'", "''", $post['deskripsi']);
-		$updated_by = $_SESSION['id_user'];
-		$updated_at = date('Y-m-d h:i:s');
-
-		$query = mysqli_query($con, "
-			INSERT INTO barang_temp SET 
-				barcode='$barcode',
-				nama='$nama',
-				merk='$merk',
-				stok='$stok',
-				distributor='$distributor',
-				reseller='$reseller',
-				bengkel='$bengkel',
-				admin='$admin',
-				het='$het',
-				kondisi='$kondisi',
-				kualitas='$kualitas',
-				kategori='$kategori',
-				tipe_pelanggan='$tipe_pelanggan',
-				tambahan='$tambahan', 
-				deskripsi='$deskripsi', 
-				berat='$berat',
-				action='create',
-				status='Pending',
-				updated_by=$updated_by,
-				updated_at='$updated_at'
-		");
-
-		// Upload
-		$id_barang = mysqli_insert_id($con);
-		
-		$f = $_FILES;
-		if(!empty($f)){
-			$path = str_replace(['/adm/process', 'adm\process'],'/p/'.trim($id_barang),dirname(__FILE__));
-			if(!file_exists($path)){
-				mkdir($path);
-			}
-
-			$jum = count($f['gambar']['name']);
-			for ($i = 0; $i < $jum; $i++) {
-				$nama_file = $f['gambar']['name'][$i];
-				$ukuran_file = $f['gambar']['size'][$i];
-				$tipe_file = $f['gambar']['type'][$i];
-				$tmp_file = $f['gambar']['tmp_name'][$i];
-				if($ukuran_file <= 4000000){  
-					if(move_uploaded_file($tmp_file, $path.'/'.$nama_file)){
-					} else {       
-						echo "Maaf, Terjadi kesalahan.";
-						echo "<br><a href='main?url=ubah-barang&this=".$id_barang."'>Kembali Ke Form</a><br>";      
-					}
-				} else {  
-					echo "Maaf, Ukuran gambar yang diupload tidak boleh lebih dari 4MB";    
-					echo "<br><a href='main?url=ubah-barang&this=".$id_barang."'>Kembali Ke Form</a><br>";  
-				}
-			}
-
-			// Update selected
-			if (isset($post["selected_barang"])) {
-				$selected_barang = basename($post["selected_barang"]);
-				mysqli_query($con,"REPLACE INTO foto_barang_temp (id, name) VALUES ($id_barang, '$selected_barang')");
-			}
-
-			header('location:../main?url=barang');
-		}else{
-			header('location:../main?url=barang');
-		}
-	}
-
-	function ubahbarangtemp($con, $post)
-	{	
-		$page = isset($_GET['page'])? $_GET['page'] : 0;
-
-		$id_barang = $post['id_barang'];
-		$barcode = !empty($post['barcode'])? htmlspecialchars(str_replace(' ', '', strtoupper($post['barcode']))) : null;
-		$nama = !empty($post['nama'])? htmlspecialchars(ucwords(addslashes($post['nama']))) : null;
-		$merk = !empty($post['merk'])? htmlspecialchars(strtoupper($post['merk'])) : null;
-		$stok = !empty($post['stok'])? $post['stok'] : null;
-		$modal = !empty($post['modal'])? str_replace('.', '', $post['modal']) : null;
-		$distributor = !empty($post['distributor'])? str_replace('.', '', $post['distributor']) : null;
-		$reseller = !empty($post['reseller'])? str_replace('.', '', $post['reseller']) : null;
-		$bengkel = !empty($post['bengkel'])? str_replace('.', '', $post['bengkel']) : null;
-		$admin = !empty($post['admin'])? str_replace('.', '', $post['admin']) : null;
-		$het = !empty($post['het'])? str_replace('.', '', $post['het']) : null;
-		$kondisi = !empty($post['kondisi'])? htmlspecialchars(strtoupper($post['kondisi'])) : null;
-		$kualitas = !empty($post['kualitas'])? htmlspecialchars(strtoupper($post['kualitas'])) : null;
-		$kategori = !empty($post['kategori'])? join(',', $post['kategori']) : null;
-		$tipe_pelanggan = !empty($post['tipe_pelanggan'])? $post['tipe_pelanggan'] : null;
-		$tambahan = !empty($post['tambahan'])? htmlspecialchars(strtoupper(addslashes($post['tambahan']))) : null;
-		$deskripsi = !empty($post['deskripsi'])? addslashes($post['deskripsi']) : null;
-		$berat = !empty($post['berat'])? $post['berat'] : null;
-		$updated = date("Y-m-d h:i:s");
-		$updated_by = $_SESSION['id_user'];
-		$updated_at = date('Y-m-d h:i:s');
-
-		$query = mysqli_query($con, "INSERT INTO barang_temp SET  
-			barcode = '$barcode', 
-			nama = '$nama', 
-			merk = '$merk', 
-			stok = '$stok', 
-			distributor = '$distributor', 
-			reseller = '$reseller', 
-			bengkel = '$bengkel', 
-			admin = '$admin', 
-			het = '$het',
-			kondisi = '$kondisi',
-			kualitas = '$kualitas',
-			kategori = '$kategori',
-			tipe_pelanggan = '$tipe_pelanggan',
-			tambahan = '$tambahan',
-			deskripsi = '$deskripsi',
-			berat = '$berat',
-			action = 'update',
-			status = 'Pending',
-			updated_by = $updated_by,
-			updated_at = '$updated_at',
-			id_barang = '$id_barang' ");
-
-		// Hapus barang
-		if(!empty($post['hapus_barang'])) {
-			$hapus_barang = explode(',', $post['hapus_barang']);
-			if(count($hapus_barang) > 0){
-				foreach($hapus_barang as $item) {
-					$filename = basename($item);
-					$path = str_replace(['/adm/process', 'adm\process'],'/p/'.trim($id_barang),dirname(__FILE__));
-					$file = $path.'/'.$filename;
-
-					if(file_exists($file)){
-						$x = unlink($file);
-					}
-				}
-			}
-		}
-
-		// Upload barang
-		$f = $_FILES;
-		if(!empty($f)){
-			$path = str_replace(['/adm/process', 'adm\process'],'/p/'.trim($id_barang),dirname(__FILE__));
-			if(!file_exists($path)){
-				mkdir($path);
-			}
-
-			$jum = count($f['gambar']['name']);
-			for ($i = 0; $i < $jum; $i++) {
-				$nama_file = $f['gambar']['name'][$i];
-				$ukuran_file = $f['gambar']['size'][$i];
-				$tipe_file = $f['gambar']['type'][$i];
-				$tmp_file = $f['gambar']['tmp_name'][$i];
-				if($ukuran_file <= 4000000){  
-					move_uploaded_file($tmp_file, $path.'/'.$nama_file);
-				} else {  
-					echo "Maaf, Ukuran gambar yang diupload tidak boleh lebih dari 4MB";    
-					echo "<br><a href='main?url=ubah-barang&this=".$id_barang."&page=".$page."'>Kembali Ke Form</a><br>";  
-				}
-			}
-
-		}
-
-		// Update selected
-		if (isset($post["selected_barang"])) {
-			$selected_barang = basename($post["selected_barang"]);
-			mysqli_query($con,"REPLACE INTO foto_barang_temp (id, name) VALUES ($id_barang, '$selected_barang')");
-		}
-
-		if($_SESSION['id_jabatan'] == "4"){
-			header('location:../main');
-		}else{
-			header('location:../main?url=barang&page='.$page);
-		}
-	}
-
-	function hapusbarangtemp($con, $id_barang)
-	{	
-		$page = isset($_GET['page'])? $_GET['page'] : 0;
-		
-		$updated_by = $_SESSION['id_user'];
-		$updated_at = date('Y-m-d h:i:s');
-
-		$query = mysqli_query($con, "
-		INSERT INTO barang_temp SET
-			id_barang=$id_barang,
-			action='delete',
-			status='Pending',
-			updated_by=$updated_by,
-			updated_at='$updated_at'
-		");
-
-		header('location:../main?url=barang&page='.$page);
-	}
-
-	function getbarangtemp($con)
-	{	
-		$search = $_POST["search"];
-		
-		$q_src = "";
-		if(!empty($search["value"])){
-			$col = [
-				"IF(barang_temp.barcode IS NOT NULL && barang_temp.barcode != '', barang_temp.barcode, barang.barcode)", 
-				"IF(barang_temp.nama IS NOT NULL && barang_temp.nama != '', barang_temp.nama, barang.nama)", 
-				"IF(barang_temp.merk IS NOT NULL && barang_temp.merk != '', barang_temp.merk, barang.merk)", 
-				"IF(barang_temp.stok IS NOT NULL && barang_temp.stok != '', barang_temp.stok, barang.stok)", 
-				"CONCAT('RP', FORMAT(IF(barang_temp.modal IS NOT NULL && barang_temp.modal != '', barang_temp.modal, barang.modal) , 0, 'id_ID'))", 
-				"CONCAT('RP', FORMAT(IF(barang_temp.distributor IS NOT NULL && barang_temp.distributor != '', barang_temp.distributor, barang.distributor) , 0, 'id_ID'))", 
-				"CONCAT('RP', FORMAT(IF(barang_temp.reseller IS NOT NULL && barang_temp.reseller != '', barang_temp.reseller, barang.reseller) , 0, 'id_ID'))", 
-				"CONCAT('RP', FORMAT(IF(barang_temp.bengkel IS NOT NULL && barang_temp.bengkel != '', barang_temp.bengkel, barang.bengkel) , 0, 'id_ID'))", 
-				"CONCAT('RP', FORMAT(IF(barang_temp.admin IS NOT NULL && barang_temp.admin != '', barang_temp.admin, barang.admin) , 0, 'id_ID'))", 
-				"CONCAT('RP', FORMAT(IF(barang_temp.het IS NOT NULL && barang_temp.het != '', barang_temp.het, barang.het) , 0, 'id_ID'))",
-				"barang_temp.status",
-				"CASE 
-					WHEN barang_temp.action = 'create'
-					THEN 'Tambah Data'
-					WHEN barang_temp.action = 'update'
-					THEN 'Ubah Data'
-					WHEN barang_temp.action = 'delete'
-					THEN 'Hapus Data'
-				END",
-			];
-
-			$src = $search["value"];
-			$src_arr = explode(" ", $src);
-
-			foreach($col as $key => $val){
-				if($key == 0) {
-					$q_src .= "(";
-					foreach($src_arr as $k => $v){
-						if($k == 0) {
-							$q_src .= "$val LIKE '%$v%'"; 
-						}else{
-							$q_src .= " AND $val LIKE '%$v%'";
-						}
-					}
-					$q_src .= ")";
-				}else{
-					$q_src .= " OR (";
-					foreach($src_arr as $k => $v){
-						if($k == 0) {
-							$q_src .= "$val LIKE '%$v%'"; 
-						}else{
-							$q_src .= " AND $val LIKE '%$v%'";
-						}
-					}
-					$q_src .= ")";
-				}
-			}
-		}
-
-		$whereFilter = "";
-		if(!empty($q_src)){
-			$whereFilter = "AND ($q_src)";
-		}
-
-		$limit = $_POST["length"];
-		$offset = $_POST["start"];
-
-		if ($_SESSION['id_jabatan'] == 5) {
-			$whereFilter .= " AND barang_temp.updated_by = ".$_SESSION['id_user'];
-		}
-
-		if (isset($_POST["status"]) && !empty($_POST["status"])) {
-			$whereFilter .= " AND barang_temp.status = '".$_POST["status"]."' ";
-		}
-
-		
-		$result = mysqli_query($con, "
-			SELECT  
-				ROW_NUMBER() OVER(ORDER BY barang_temp.updated_at DESC) AS row_no,
-				barang_temp.id,
-				IF(barang_temp.barcode IS NOT NULL && barang_temp.barcode != '', barang_temp.barcode, barang.barcode) barcode,
-				IF(barang_temp.nama IS NOT NULL && barang_temp.nama != '', barang_temp.nama, barang.nama) nama,
-				IF(barang_temp.merk IS NOT NULL && barang_temp.merk != '', barang_temp.merk, barang.merk) merk,
-				IF(barang_temp.stok IS NOT NULL && barang_temp.stok != '', barang_temp.stok, barang.stok) stok,
-				CONCAT('RP', FORMAT(IF(barang_temp.modal IS NOT NULL && barang_temp.modal != '', barang_temp.modal, barang.modal) , 0, 'id_ID')) modal,
-				CONCAT('RP', FORMAT(IF(barang_temp.distributor IS NOT NULL && barang_temp.distributor != '', barang_temp.distributor, barang.distributor) , 0, 'id_ID')) distributor,
-				CONCAT('RP', FORMAT(IF(barang_temp.reseller IS NOT NULL && barang_temp.reseller != '', barang_temp.reseller, barang.reseller) , 0, 'id_ID')) reseller,
-				CONCAT('RP', FORMAT(IF(barang_temp.bengkel IS NOT NULL && barang_temp.bengkel != '', barang_temp.bengkel, barang.bengkel) , 0, 'id_ID')) bengkel,
-				CONCAT('RP', FORMAT(IF(barang_temp.admin IS NOT NULL && barang_temp.admin != '', barang_temp.admin, barang.admin) , 0, 'id_ID')) admin,
-				CONCAT('RP', FORMAT(IF(barang_temp.het IS NOT NULL && barang_temp.het != '', barang_temp.het, barang.het) , 0, 'id_ID')) het,
-				barang_temp.status,
-				CASE 
-					WHEN barang_temp.action = 'create'
-					THEN 'Tambah Data'
-					WHEN barang_temp.action = 'update'
-					THEN 'Ubah Data'
-					WHEN barang_temp.action = 'delete'
-					THEN 'Hapus Data'
-				END type
-			FROM barang_temp
-			LEFT JOIN barang ON barang.id_barang = barang_temp.id_barang 
-			WHERE 1 = 1 $whereFilter
-			ORDER BY barang_temp.updated_at DESC
-			LIMIT $limit OFFSET $offset
-		");
-		
-		$data["data"] = [];
-		while($row = mysqli_fetch_assoc($result)){
-			$data["data"][] = $row;
-		}
-		$data["draw"] = intval($_POST["draw"]);
-
-		$result_all = mysqli_query($con, "SELECT barang_temp.id FROM barang_temp LEFT JOIN barang ON barang.id_barang = barang_temp.id_barang WHERE 1=1 $whereFilter");
-		$data["recordsTotal"] = mysqli_num_rows($result_all);
-		$data["recordsFiltered"] = mysqli_num_rows($result_all);
-		
-		echo json_encode($data);
-	}
-
-	function approvebarangtemp($con, $id)
-	{	
-		$page = isset($_GET['page'])? $_GET['page'] : 0;
-		
-		$barang_temp = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM barang_temp WHERE id='$id'"));
-		$date = date("Y-m-d H:i:s");
-
-		switch($barang_temp['action']){
-			case 'create':
-				mysqli_query($con, "
-					INSERT INTO barang SET 
-						barcode='".$barang_temp['barcode']."',
-						nama='".$barang_temp['nama']."',
-						merk='".$barang_temp['merk']."',
-						stok='".$barang_temp['stok']."',
-						distributor='".$barang_temp['distributor']."',
-						reseller='".$barang_temp['reseller']."',
-						bengkel='".$barang_temp['bengkel']."',
-						admin='".$barang_temp['admin']."',
-						het='".$barang_temp['het']."',
-						kondisi='".$barang_temp['kondisi']."',
-						kualitas='".$barang_temp['kualitas']."',
-						kategori='".$barang_temp['kategori']."',
-						tipe_pelanggan='".$barang_temp['tipe_pelanggan']."',
-						tambahan='".$barang_temp['tambahan']."', 
-						deskripsi='".$barang_temp['deskripsi']."', 
-						berat='".$barang_temp['berat']."',
-						created='$date'
-				");
-
-				break;
-			case 'update':
-				$id_barang = $barang_temp["id_barang"];
-
-				if ($id_barang){
-					mysqli_query($con, "
-						UPDATE barang SET 
-							barcode='".$barang_temp['barcode']."',
-							nama='".$barang_temp['nama']."',
-							merk='".$barang_temp['merk']."',
-							stok='".$barang_temp['stok']."',
-							distributor='".$barang_temp['distributor']."',
-							reseller='".$barang_temp['reseller']."',
-							bengkel='".$barang_temp['bengkel']."',
-							admin='".$barang_temp['admin']."',
-							het='".$barang_temp['het']."',
-							kondisi='".$barang_temp['kondisi']."',
-							kualitas='".$barang_temp['kualitas']."',
-							kategori='".$barang_temp['kategori']."',
-							tipe_pelanggan='".$barang_temp['tipe_pelanggan']."',
-							tambahan='".$barang_temp['tambahan']."', 
-							deskripsi='".$barang_temp['deskripsi']."', 
-							berat='".$barang_temp['berat']."',
-							updated='$date'
-						WHERE id_barang = '$id_barang'
-					");
-				}
-
-				break;
-			case 'delete':
-				$id_barang = $barang_temp["id_barang"];
-
-				if ($id_barang){
-					mysqli_query($con, "UPDATE barang SET deleted = 1 WHERE id_barang='$id_barang' ");
-					$path = str_replace(['/adm/process', 'adm\process'],'/p/'.trim($id_barang),dirname(__FILE__));
-					if(file_exists($path)){
-						$this->rrmdir($path);
-					}
-				}
-
-				break;
-		}
-
-		mysqli_query($con, "UPDATE barang_temp SET status='Approved' WHERE id = '$id'");
-
-		header('location:../main?url=history-barang&page='.$page);
-	}
-
-	function declinebarangtemp($con, $id)
-	{	
-		$page = isset($_GET['page'])? $_GET['page'] : 0;
-
-		mysqli_query($con, "UPDATE barang_temp SET status='Decline' WHERE id = '$id'");
-
-		header('location:../main?url=history-barang&page='.$page);
-	}
-
 	function getgaji($con)
 	{	
 		$search = $_POST["search"];
@@ -2846,5 +2445,218 @@ class con
 		}
 		
 		header('location:../main?url=gaji&page='.$page);
+	}
+
+	function gethistorypembeliantemp($con)
+	{	
+		$search = $_POST["search"];
+		
+		$q_src = "";
+		if(!empty($search["value"])){
+			$col = [
+				"pembelian.no_po", 
+				"supplier.nama", 
+				"DATE_FORMAT(pembelian.tanggal, '%e %M %Y')", 
+				"supplier.nama", 
+				"pembelian.status", 
+				"user.nama"
+			];
+
+			$src = $search["value"];
+			$src_arr = explode(" ", $src);
+
+			foreach($col as $key => $val){
+				if($key == 0) {
+					$q_src .= "(";
+					foreach($src_arr as $k => $v){
+						if($k == 0) {
+							$q_src .= "$val LIKE '%$v%'"; 
+						}else{
+							$q_src .= " AND $val LIKE '%$v%'";
+						}
+					}
+					$q_src .= ")";
+				}else{
+					$q_src .= " OR (";
+					foreach($src_arr as $k => $v){
+						if($k == 0) {
+							$q_src .= "$val LIKE '%$v%'"; 
+						}else{
+							$q_src .= " AND $val LIKE '%$v%'";
+						}
+					}
+					$q_src .= ")";
+				}
+			}
+		}
+
+		$whereFilter = "";
+		if(!empty($q_src)){
+			$whereFilter = "AND ($q_src)";
+		}
+
+		$limit = $_POST["length"];
+		$offset = $_POST["start"];
+
+		if ($_SESSION['id_jabatan'] == 5) {
+			$whereFilter .= " AND pembelian.id_user = ".$_SESSION['id_user'];
+		}
+
+		if (isset($_POST["status"]) && !empty($_POST["status"])) {
+			$whereFilter .= " AND pembelian.temp_status = '".$_POST["status"]."' ";
+		}
+
+		$badge_status = "IF(pembelian.status = 'Lunas', CONCAT('<span class=\"badge badge-success\">', pembelian.status, '</span>'), CONCAT('<span class=\"badge badge-danger\">', pembelian.status, '</span>'))";
+		
+		$result = mysqli_query($con, "
+			SELECT  
+				ROW_NUMBER() OVER(ORDER BY pembelian.tanggal DESC) AS row_no,
+				pembelian.no_po,
+				pembelian.id_supplier,
+				supplier.nama supplier,
+				DATE_FORMAT(pembelian.tanggal, '%e %M %Y') tanggal,
+				$badge_status status,
+				CONCAT('Rp', FORMAT(pembelian.total_transaksi, 0,'id_ID')) total_transaksi,
+				CONCAT('Rp', FORMAT(IF(pembelian.status = 'Lunas', pembelian.total_transaksi, pembelian.total_bayar), 0,'id_ID')) total_bayar,
+				pembelian.id_user,
+				user.nama user,
+				pembelian.updated,
+				pembelian.temp_status,
+				pembelian.temp_reason
+			FROM pembelian
+			LEFT JOIN supplier ON supplier.id_supplier = pembelian.id_supplier
+			LEFT JOIN user ON user.id_user = pembelian.id_user
+			WHERE (pembelian.temp = 1 OR pembelian.temp_status = 'Approved') $whereFilter
+			ORDER BY pembelian.tanggal DESC
+			LIMIT $limit OFFSET $offset
+		");
+
+		$data["data"] = [];
+		while($row = mysqli_fetch_assoc($result)){
+			$data["data"][] = $row;
+		}
+		$data["draw"] = intval($_POST["draw"]);
+
+		$result_all = mysqli_query($con, "
+			SELECT pembelian.no_po
+			FROM pembelian 
+			LEFT JOIN supplier ON supplier.id_supplier = pembelian.id_supplier
+			LEFT JOIN user ON user.id_user = pembelian.id_user
+			WHERE (pembelian.temp = 1 OR pembelian.temp_status = 'Approved') $whereFilter
+		");
+		$data["recordsTotal"] = mysqli_num_rows($result_all);
+		$data["recordsFiltered"] = mysqli_num_rows($result_all);
+		
+		echo json_encode($data);
+	}
+
+	function approvehistorypembelian($con, $id)
+	{	
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+		
+		mysqli_query($con, "UPDATE pembelian SET temp='0', temp_status='Approved' WHERE no_po = '$id'");
+
+		header('location:../main?url=history-pembelian&page='.$page);
+	}
+
+	function declinehistorypembelian($con, $id)
+	{	
+		$page = isset($_GET['page'])? $_GET['page'] : 0;
+
+		mysqli_query($con, "UPDATE pembelian SET temp_status='Decline' WHERE no_po = '$id'");
+
+		header('location:../main?url=history-pembelian&page='.$page);
+	}
+
+	function getlistbaranghistory($con)
+	{	
+		$search = $_POST["search"];
+		$no_po = $_POST["no_po"];
+		
+		$q_src = "";
+		if(!empty($search["value"])){
+			$col = [];
+			$src = $search["value"];
+			$src_arr = explode(" ", $src);
+
+			foreach($col as $key => $val){
+				if($key == 0) {
+					$q_src .= "(";
+					foreach($src_arr as $k => $v){
+						if($k == 0) {
+							$q_src .= "$val LIKE '%$v%'"; 
+						}else{
+							$q_src .= " AND $val LIKE '%$v%'";
+						}
+					}
+					$q_src .= ")";
+				}else{
+					$q_src .= " OR (";
+					foreach($src_arr as $k => $v){
+						if($k == 0) {
+							$q_src .= "$val LIKE '%$v%'"; 
+						}else{
+							$q_src .= " AND $val LIKE '%$v%'";
+						}
+					}
+					$q_src .= ")";
+				}
+			}
+		}
+
+		$whereFilter = "";
+		if(!empty($q_src)){
+			$whereFilter = "AND ($q_src)";
+		}
+
+		// if ($_SESSION['id_jabatan'] == 5) {
+		// 	$whereFilter .= " AND pembelian.id_user = ".$_SESSION['id_user'];
+		// }
+
+		$limit = $_POST["length"];
+		$offset = $_POST["start"];
+
+		$result = mysqli_query($con, "
+			SELECT
+				barang.barcode,
+				barang.nama,
+				barang.modal harga,
+				pembelian_det.qty,
+				pembelian_det.total_harga total
+			FROM pembelian_det 
+			JOIN pembelian ON pembelian.no_po = pembelian_det.no_po
+			JOIN barang ON pembelian_det.id_barang=barang.id_barang 
+			WHERE pembelian.no_po = '$no_po' $whereFilter
+			GROUP BY pembelian_det.no_po, pembelian_det.id_barang
+			ORDER BY pembelian_det.id_barang ASC
+			LIMIT $limit OFFSET $offset
+		");
+		
+		$data["data"] = [];
+		while($row = mysqli_fetch_assoc($result)){
+			$data["data"][] = $row;
+		}
+
+		$data["draw"] = intval($_POST["draw"]);
+
+		$result_all = mysqli_query($con, "
+			SELECT
+				barang.barcode,
+				barang.nama,
+				barang.modal harga,
+				pembelian_det.qty,
+				pembelian_det.total_harga total
+			FROM pembelian_det 
+			JOIN pembelian ON pembelian.no_po = pembelian_det.no_po
+			JOIN barang ON pembelian_det.id_barang=barang.id_barang 
+			WHERE pembelian.no_po = '$no_po' $whereFilter
+			GROUP BY pembelian_det.no_po, pembelian_det.id_barang
+			ORDER BY pembelian_det.id_barang ASC
+			LIMIT $limit OFFSET $offset
+		");
+		$data["recordsTotal"] = mysqli_num_rows($result_all);
+		$data["recordsFiltered"] = mysqli_num_rows($result_all);
+		
+		echo json_encode($data);
 	}
 }

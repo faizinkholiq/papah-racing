@@ -69,21 +69,6 @@ if (empty($_GET['url'])) {
 	} else if ($to == 'hapusbarang') {
 		$id_barang = $_GET['this'];
 		$nc->softhapusbarang($con, $id_barang);
-	} else if ($to == 'getbarangtemp') {
-		$nc->getbarangtemp($con);
-	} else if ($to == 'tambahbarangtemp') {
-		$nc->tambahbarangtemp($con, $_POST);
-	} else if ($to == 'ubahbarangtemp') {
-		$nc->ubahbarangtemp($con, $_POST);
-	} else if ($to == 'hapusbarangtemp') {
-		$id_barang = $_GET['this'];
-		$nc->hapusbarangtemp($con, $id_barang);
-	} else if ($to == 'approvebarangtemp') {
-		$id_barang = $_GET['this'];
-		$nc->approvebarangtemp($con, $id_barang);
-	} else if ($to == 'declinebarangtemp') {
-		$id_barang = $_GET['this'];
-		$nc->declinebarangtemp($con, $id_barang);
 	} else if ($to == 'tambahbarangpembelian') {
 		$barcode = str_replace(' ', '', strtoupper($_POST['barcode']));
 
@@ -111,7 +96,7 @@ if (empty($_GET['url'])) {
 		$id_barang = $_GET['this'];
 		$nc->hapusbarangpembelian($con, $id_barang, $id_user);
 	} else if ($to == 'tambahpembelian') {
-		$nc->tambahpembelian($con, $_POST['id_supplier'], $_POST['id_user'], $_POST['total_transaksi'], $_POST['total_bayar']);
+		$nc->tambahpembelian($con, $_POST['id_supplier'], $_POST['id_user'], $_POST['total_transaksi'], $_POST['total_bayar'], $_POST['temp']);
 	} else if ($to == 'cicilanpembelian') {
 		$nc->cicilanpembelian($con, $_POST['id_user'], $_POST['no_po'], $_POST['bayar']);
 	} else if ($to == 'hapuscicilanpembelian') {
@@ -279,5 +264,15 @@ if (empty($_GET['url'])) {
 		$nc->processgaji($con, $id);
 	} else if ($to == 'gethistorypenjualan') {
 		$nc->gethistorypenjualan($con);
+	} else if ($to == 'gethistorypembeliantemp') {
+		$nc->gethistorypembeliantemp($con);
+	} else if ($to == 'approvehistorypembelian') {
+		$id_barang = $_GET['this'];
+		$nc->approvehistorypembelian($con, $id_barang);
+	} else if ($to == 'declinehistorypembelian') {
+		$id_barang = $_GET['this'];
+		$nc->declinehistorypembelian($con, $id_barang);
+	} else if ($to == 'getlistbaranghistory') {
+		$nc->getlistbaranghistory($con);
 	} 
 }

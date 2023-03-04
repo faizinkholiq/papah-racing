@@ -9,7 +9,8 @@ $data = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM barang WHERE id_bar
 $selected_brg = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM foto_barang WHERE id_barang='$id_barang' "));
 $page = isset($_GET["page"])? (int)$_GET["page"] : 0 ;
 if ($_SESSION['id_jabatan'] == '1'||$_SESSION['id_jabatan'] == '2'||$_SESSION['id_jabatan'] == '3' || $_SESSION['id_jabatan'] == '5') {
-$url = ($_SESSION['id_jabatan'] == '1' || $_SESSION['id_jabatan'] == '2')? 'ubahbarang' : 'ubahbarangtemp'; 
+// $url = ($_SESSION['id_jabatan'] == '1' || $_SESSION['id_jabatan'] == '2')? 'ubahbarang' : 'ubahbarangtemp'; 
+$url = 'ubahbarang'; 
 ?>
 <div class="row">
     <div class="col-8">

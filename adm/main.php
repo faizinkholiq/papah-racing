@@ -48,7 +48,6 @@ $id_user = $_SESSION['id_user'];
                                 <li class="nav-item"><a class="nav-link" href="main?url=pelanggan"><span class="ml-2"><i class='fas fa-handshake mr-2'></i>Data Pelanggan</span></a></li>
                                 <li class="nav-item"><a class="nav-link" href="main?url=barang"><span class="ml-2"><i class='fas fa-box mr-2'></i>Data Barang</span></a></li>
                                 <?php if ($_SESSION['id_jabatan'] == '1' || $_SESSION['id_jabatan'] == '2') { ?>
-                                    <!-- <li class="nav-item"><a class="nav-link" href="main?url=history-barang"><span class="ml-2"><i class='fas fa-box mr-2'></i>History Barang</span></a></li> -->
                                     <li class="nav-item"><a class="nav-link" href="main?url=supplier"><span class="ml-2"><i class='fas fa-store mr-2'></i>Data Supplier</span></a></li>
                                     <li class="nav-item"><a class="nav-link" href="main?url=user"><span class="ml-2"><i class='fas fa-user mr-2'></i>Data User</span></a></li>
                                     <li class="nav-item"><a class="nav-link" href="main?url=merk"><span class="ml-2"><i class='fas fa-bookmark mr-2'></i>Data Merk</span></a></li>
@@ -306,7 +305,9 @@ if ($_SESSION['id_jabatan'] == '8'||$_SESSION['id_jabatan'] == '7'||$_SESSION['i
 			require 'page/gaji/index.php';
 		} else if ($act == 'ubah-gaji') {
 			require 'page/gaji/ubah.php';
-		}  else {
+		}  else if ($act == 'tambah-history-pembelian') {
+			require 'page/pembelian/tambah.php';
+		} else {
 			header("location: main");
 		}
 	}
