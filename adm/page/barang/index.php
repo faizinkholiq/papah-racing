@@ -34,7 +34,7 @@ $aset = 0;
         echo '<h3 style="color:red;">Total Aset : '.rp($aset).'</h3>';
 		?>
     <?php endif; ?>
-    <?php if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2" || $_SESSION['id_jabatan'] == "5"): ?>
+    <?php if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2"): ?>
         <a href="main?url=tambah-barang" class="btn btn-primary mb-2"><i class='fas fa-plus-circle mr-2'></i>Tambah Data</a>
     <?php endif; ?>
     <?php if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2" || $_SESSION['id_jabatan'] == "3" || $_SESSION['id_jabatan'] == "5"): ?>
@@ -227,7 +227,7 @@ $aset = 0;
             dt.columns([5]).visible(true);
             dt.columns([11]).visible(true);
         }else if(sess_data["id_jabatan"] == 5){
-            dt.columns([11]).visible(true);
+            dt.columns([11]).visible(false);
         }else{
             dt.columns([12]).visible(true);
         }
