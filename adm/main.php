@@ -72,7 +72,7 @@ $id_user = $_SESSION['id_user'];
                     <div class="collapse" id="submenu2" aria-expanded="false">
                         <ul class="flex-column nav bg-secondary">
                             <?php if ($_SESSION['id_jabatan'] == '1' || $_SESSION['id_jabatan'] == '2') { ?>
-                                <li class="nav-item"><a class="nav-link" href="main?url=history-pembelian"><span class="ml-2"><i class='fas fa-box mr-2'></i>History Pembelian</span></a></li>
+                                <!-- <li class="nav-item"><a class="nav-link" href="main?url=history-pembelian"><span class="ml-2"><i class='fas fa-box mr-2'></i>History Pembelian</span></a></li> -->
                                 <li class="nav-item"><a class="nav-link" href="main?url=laporan-pembelian"><span class="ml-2"><i class='fas fa-file-invoice mr-2'></i>Pembelian</span></a></li>
                             <?php } ?>
                             <li class="nav-item"><a class="nav-link" href="main?url=laporan-penjualan"><span class="ml-2"><i class='fas fa-file-invoice-dollar mr-2'></i>Penjualan</span></a></li>
