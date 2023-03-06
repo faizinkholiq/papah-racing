@@ -3,7 +3,7 @@ if (empty($_GET['url'])) {
     header('location:../main');
 }
 $no_po = $_GET['this'];
-$data = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM pembelian JOIN pembelian_det ON pembelian.no_po=pembelian_det.no_po JOIN user ON pembelian.id_user=user.id_user WHERE pembelian.no_po='$no_po' AND pembelian.temp = 0"));
+$data = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM pembelian JOIN pembelian_det ON pembelian.no_po=pembelian_det.no_po JOIN user ON pembelian.id_user=user.id_user WHERE pembelian.no_po='$no_po'"));
 $query_debt = mysqli_query($con, "SELECT * FROM pembelian_debt WHERE no_po='$no_po'");
 $total_debt = mysqli_num_rows($query_debt);
 $page = isset($_GET['page'])? $_GET['page'] : 0;
