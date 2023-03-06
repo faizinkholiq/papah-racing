@@ -30,8 +30,6 @@ CREATE TABLE `gaji` (`id` INT NOT NULL AUTO_INCREMENT , `id_user` INT(11) NOT NU
 
 
 -- 2023-03-05
-ALTER TABLE `barang_temp` DROP `action`;
-ALTER TABLE `barang_temp` RENAME TO `history_pembelian`;
 ALTER TABLE `pembelian` ADD `temp` BOOLEAN NOT NULL DEFAULT FALSE AFTER `updated`;
 
 ALTER TABLE `pembelian` ADD `temp_status` ENUM('Pending','Approved','Decline') DEFAULT NULL AFTER `temp`, ADD `temp_reason` TEXT DEFAULT NULL AFTER `temp_status`;

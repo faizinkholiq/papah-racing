@@ -146,7 +146,7 @@ $params = (!empty($arr_params))? http_build_query($arr_params) : "";
                                     <i class="fas fa-check"></i>
                                 </a>
                                 <a href="#!" 
-                                onclick="declineBarang(${row.no_po})" 
+                                onclick="declineBarang('${row.no_po}')" 
                                 class="btn btn-danger btn-sm" 
                                 style="width:2rem;" 
                                 data-toggle="tooltip" 
