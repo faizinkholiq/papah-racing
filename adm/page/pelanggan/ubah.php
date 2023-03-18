@@ -5,6 +5,7 @@ if (empty($_GET['url'])) {
 $id_pelanggan = $_GET['this'];
 $data = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM pelanggan WHERE id_pelanggan='$id_pelanggan' "));
 $page = isset($_GET['page'])? $_GET['page'] : 0;
+$admins = mysqli_query($con, "SELECT * FROM user WHERE id_jabatan = 5");
 ?>
 
 <div class="row">
@@ -54,6 +55,17 @@ $page = isset($_GET['page'])? $_GET['page'] : 0;
             <label for="kontak" class="col-sm-2 col-form-label">Kontak</label>
             <div class="col-sm-10">
                 <input type="number" min="0" class="form-control" id="kontak" name="kontak" value="<?= $data['kontak']; ?>" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="type" class="col-sm-2 col-form-label">Admin</label>
+            <div class="col-sm-10">
+                <select class="form-control" id="admin" name="admin">
+                    <option value="">- Pilih salah satu-</option>
+                    <?php foreach($admins as $item): ?>
+                    <option <?= ($data['admin'] == $item['id_user'])? 'selected' : '' ?> value="<?= $item['id_user'] ?>"><?= $item['nama'] ?></option>
+                    <?php endforeach; ?>
+                </select>
             </div>
         </div>
         <div class="form-row text-center">

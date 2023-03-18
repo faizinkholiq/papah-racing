@@ -132,7 +132,7 @@ if (empty($xp[1]) OR (!empty($_GET["kategori"]) || !empty($_GET["merk"]) || !emp
 
 	if(mysqli_num_rows($posts) > 0){
 		$row = mysqli_fetch_assoc($posts);
-		$random = mysqli_query($con, "SELECT * FROM barang WHERE deleted = 0 AND nama SOUNDS LIKE '".$row['nama']."' OR kategori = '".$row['kategori']."' ORDER BY rand() LIMIT 8");
+		$random = mysqli_query($con, "SELECT * FROM barang WHERE deleted = 0 AND nama SOUNDS LIKE '".$row['nama']."' OR kategori = '".$row['kategori']."' ORDER BY rand() LIMIT 20");
 	
 		include('pages/post.php');
 	}else{

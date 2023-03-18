@@ -19,6 +19,7 @@
                     <th>Type</th>
                     <th>Alamat</th>
                     <th>Kontak</th>
+                    <th>Admin</th>
                     <th width="100">Aksi</th>
                 </tr>
             </thead>
@@ -60,29 +61,34 @@
     const page = <?=isset($_GET["page"])? (int)$_GET["page"] : 0 ?>;
 
     let dt = $('#pelangganTable').DataTable({
-        dom: "Bfrtip",
+        dom: "ZBlrtip",
         ajax: {
             url: 'process/action?url=getpelanggan',
             type: "POST"
         },
-        processing: true,
         serverSide: true,
         columns: [
-            { data: "row_no" },
-            { data: "nama" },
-            { data: "bulan_ini", visible: false, class:"text-center" },
-            { data: "bulan_lalu", visible: false, class:"text-center" },
-            { data: "type" },
-            { data: "alamat" },
-            { data: "kontak" },
-            { data: "aksi", visible: false, class:"text-center" },
+            { data: "row_no", orderable: false, },
+            { data: "nama"},
+            { data: "bulan_ini", visible: false, class:"text-center", },
+            { data: "bulan_lalu", visible: false, class:"text-center", },
+            { data: "type", },
+            { data: "alamat", },
+            { data: "kontak", },
+            { data: "admin", },
+            { data: "aksi", visible: false, class:"text-center", orderable:false },
         ],
-        ordering: false
+        ordering: true,
+        order: [],
+        bLengthChange: true,
+        paging: true,
+        lengthMenu: [[5, 10, 20, 50, 100, -1], [5, 10, 20, 50, 100, "All"]],
+        pageLength: 10,
     });
 
     $(document).ready(function () {
         if (sess_data["id_jabatan"] == 1 || sess_data["id_jabatan"] == 2 || sess_data["id_jabatan"] == 5){
-            dt.columns([2,3,7]).visible(true);
+            dt.columns([2,3,8]).visible(true);
         }
 
         if(page != null && page != ""){

@@ -163,7 +163,7 @@ echo '<section class="middle pt-0"><div class="container">'.
 '<div class="row justify-content-center"> <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12"> 
 	<h3 class="mb-4">Produk Terkait</h3>
 	</div> </div>'.
-'<div class="row"><div class="col-xl-12 col-lg-12 col-md-12 col-sm-12"><div class="slide_items">';
+'<div class="row"><div class="col-xl-12 col-lg-12 col-md-12 col-sm-12"><div class="row">';
 $all = '';
 foreach ($random as $pos){
 	$id = $pos['id_barang'];
@@ -198,7 +198,7 @@ foreach ($random as $pos){
 	if (empty($tambahan)){$tambahan='-';}
 
 	// bg-info NEW,bg-warning HOT, bg-danger HOT
-	echo '<div class="col-xl-2 col-lg-3 col-md-4 col-sm-12">
+	echo '<div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
 		<div class="product_grid card">'.
 			'<div class="badge bg-danger text-white position-absolute ft-regular ab-left text-upper">Stok : '.$stok.'</div>'.
 			'<div class="badge bg-warning text-white position-absolute ft-regular ab-right text-upper">'.$kondisi.$kua1.'</div>'.

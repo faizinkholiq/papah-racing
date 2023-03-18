@@ -423,7 +423,7 @@ class con
 		
 		$q_src = "";
 		if(!empty($search["value"])){
-			$col = ["nama", "type", "alamat", "kontak"];
+			$col = ["pelanggan.nama", "type", "pelanggan.alamat", "pelanggan.kontak", "admin.nama"];
 			$src = $search["value"];
 			$src_arr = explode(" ", $src);
 
@@ -469,11 +469,12 @@ class con
 			SELECT 
 				pelanggan.id_pelanggan,
 				CONCAT(UCASE(LEFT(type, 1)), LCASE(SUBSTRING(type, 2))) type,
-				nama,
+				pelanggan.nama,
 				COUNT(this_month.no_faktur) bulan_ini,
 				COUNT(prev_month.no_faktur) bulan_lalu,
-				alamat,
-				kontak,
+				pelanggan.alamat,
+				pelanggan.kontak,
+				admin.nama admin,
 				$btn_aksi aksi,
 				pelanggan.created,
 				pelanggan.updated,
@@ -485,6 +486,7 @@ class con
 			LEFT JOIN penjualan prev_month ON prev_month.id_pelanggan = pelanggan.id_pelanggan 
 				AND YEAR(prev_month.tanggal) = YEAR(CURRENT_DATE - INTERVAL 1 MONTH)
 				AND MONTH(prev_month.tanggal) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH)
+			LEFT JOIN user admin ON admin.id_user = pelanggan.admin
 			WHERE pelanggan.id_pelanggan!='1' 
 			AND pelanggan.id_pelanggan!='2' 
 			$whereFilter
@@ -500,7 +502,7 @@ class con
 		$data["draw"] = intval($_POST["draw"]);
 
 		$result_all = mysqli_query($con, "
-			SELECT * 
+			SELECT pelanggan.id_pelanggan
 			FROM pelanggan 
 			WHERE id_pelanggan!='1' 
 			AND id_pelanggan!='2' 
@@ -513,25 +515,25 @@ class con
 		echo json_encode($data);
 	}
 
-	function tambahpelanggan($con, $nama, $type, $alamat, $kontak)
+	function tambahpelanggan($con, $nama, $type, $alamat, $kontak, $admin = null)
 	{
 		$page = isset($_GET['page'])? $_GET['page'] : 0;
 
 		$nama = htmlspecialchars(ucwords($nama));
 		$alamat = htmlspecialchars(ucwords($alamat));
-		$query = mysqli_query($con, "INSERT INTO pelanggan SET nama='$nama',type='$type',alamat='$alamat',kontak='$kontak' ");
+		$query = mysqli_query($con, "INSERT INTO pelanggan SET nama='$nama',type='$type',alamat='$alamat',kontak='$kontak',admin=$admin ");
 		
 		header('location:../main?url=pelanggan&page='.$page);
 	}
 
-	function ubahpelanggan($con, $id_pelanggan, $nama, $type, $alamat, $kontak)
+	function ubahpelanggan($con, $id_pelanggan, $nama, $type, $alamat, $kontak, $admin)
 	{
 		$page = isset($_GET['page'])? $_GET['page'] : 0;
 
 		$nama = htmlspecialchars(ucwords($nama));
 		$alamat = htmlspecialchars(ucwords($alamat));
 		$updated = date("Y-m-d h:i:s");
-		$query = mysqli_query($con, "UPDATE pelanggan SET nama='$nama',type='$type',alamat='$alamat',kontak='$kontak',updated='$updated' WHERE id_pelanggan='$id_pelanggan' ");
+		$query = mysqli_query($con, "UPDATE pelanggan SET nama='$nama',type='$type',alamat='$alamat',kontak='$kontak',updated='$updated',admin=$admin WHERE id_pelanggan='$id_pelanggan' ");
 
 		header('location:../main?url=pelanggan&page='.$page);
 	}

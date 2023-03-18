@@ -54,9 +54,9 @@ if (empty($_GET['url'])) {
 	} else if ($to == 'gethistorypembelian') {
 		$nc->gethistorypembelian($con);
 	} else if ($to == 'tambahpelanggan') {
-		$nc->tambahpelanggan($con, $_POST['nama'], $_POST['type'], $_POST['alamat'], $_POST['kontak']);
+		$nc->tambahpelanggan($con, $_POST['nama'], $_POST['type'], $_POST['alamat'], $_POST['kontak'], $_POST['admin']);
 	} else if ($to == 'ubahpelanggan') {
-		$nc->ubahpelanggan($con, $_POST['id_pelanggan'], $_POST['nama'], $_POST['type'], $_POST['alamat'], $_POST['kontak']);
+		$nc->ubahpelanggan($con, $_POST['id_pelanggan'], $_POST['nama'], $_POST['type'], $_POST['alamat'], $_POST['kontak'], $_POST['admin']);
 	} else if ($to == 'hapuspelanggan') {
 		$id_pelanggan = $_GET['this'];
 		$nc->hapuspelanggan($con, $id_pelanggan);

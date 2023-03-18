@@ -33,3 +33,5 @@ CREATE TABLE `gaji` (`id` INT NOT NULL AUTO_INCREMENT , `id_user` INT(11) NOT NU
 ALTER TABLE `pembelian` ADD `temp` BOOLEAN NOT NULL DEFAULT FALSE AFTER `updated`;
 
 ALTER TABLE `pembelian` ADD `temp_status` ENUM('Pending','Approved','Decline') DEFAULT NULL AFTER `temp`, ADD `temp_reason` TEXT DEFAULT NULL AFTER `temp_status`;
+
+ALTER TABLE `pelanggan` ADD `admin` SMALLINT NULL AFTER `updated`;

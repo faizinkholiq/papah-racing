@@ -1,3 +1,6 @@
+<?php
+$admins = mysqli_query($con, "SELECT * FROM user WHERE id_jabatan = 5");
+?>
 <div class="row">
     <div class="col-8">
         <h3 class="font-weight-bolder"><i class='fas fa-handshake'></i> Tambah Pelanggan</h3>
@@ -34,6 +37,17 @@
             <label for="kontak" class="col-sm-2 col-form-label">Kontak</label>
             <div class="col-sm-10">
                 <input type="number" min="0" class="form-control" id="kontak" name="kontak" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="type" class="col-sm-2 col-form-label">Admin</label>
+            <div class="col-sm-10">
+                <select class="form-control" id="admin" name="admin">
+                    <option value="">- Pilih salah satu-</option>
+                    <?php foreach($admins as $item): ?>
+                    <option value="<?= $item['id_user'] ?>"><?= $item['nama'] ?></option>
+                    <?php endforeach; ?>
+                </select>
             </div>
         </div>
         <div class="form-row text-center">
