@@ -457,6 +457,11 @@ class con
 			$whereFilter = "AND ($q_src)";
 		}
 
+		$orderBy = "pelanggan.id_pelanggan DESC";
+		if(!empty($_POST["order"])){
+			$orderBy = $_POST["columns"][$_POST["order"][0]["column"]]["data"]." ".$_POST["order"][0]["dir"];
+		}
+
 		$limit = $_POST["length"];
 		$offset = $_POST["start"];
 		$btn_aksi = "CONCAT(
@@ -491,7 +496,7 @@ class con
 			AND pelanggan.id_pelanggan!='2' 
 			$whereFilter
 			GROUP BY pelanggan.id_pelanggan
-			ORDER BY pelanggan.id_pelanggan DESC
+			ORDER BY $orderBy
 			LIMIT $limit OFFSET $offset
 		");
 		

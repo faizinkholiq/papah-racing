@@ -12,7 +12,7 @@
         <table id="pelangganTable" class="table table-striped table-bordered" style="width:100%">
             <thead>
                 <tr class="text-center">
-                    <th>No.</th>
+                    <th width="10">No.</th>
                     <th>Nama</th>
                     <th>Bulan Ini</th>
                     <th>Bulan Lalu</th>
@@ -68,7 +68,7 @@
         },
         serverSide: true,
         columns: [
-            { data: "row_no", orderable: false, },
+            { data: "row_no", orderable: false },
             { data: "nama"},
             { data: "bulan_ini", visible: false, class:"text-center", },
             { data: "bulan_lalu", visible: false, class:"text-center", },
@@ -88,7 +88,7 @@
 
     $(document).ready(function () {
         if (sess_data["id_jabatan"] == 1 || sess_data["id_jabatan"] == 2 || sess_data["id_jabatan"] == 5){
-            dt.columns([2,3,8]).visible(true);
+            dt.columns([1,2,8]).visible(true);
         }
 
         if(page != null && page != ""){
@@ -104,7 +104,18 @@
             url.searchParams.set('page', info.page);
             window.history.pushState({}, '', url);
         });
+        
+        dt.on( 'draw', function () {
+          rewriteColNumbers()
+        } );
+
     });
+
+    function rewriteColNumbers() {
+      $('#pelangganTable tbody tr').each(function( index ) {
+        $('td', this ).first().html(index + 1);
+      } );
+    }
 
     function editPelanggan(id) {
         const info = dt.page.info();
