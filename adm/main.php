@@ -99,7 +99,13 @@ $id_user = $_SESSION['id_user'];
                     </div>
                 </li>
                 <?php // } ?>
+                <?php if ($_SESSION['id_jabatan'] == '1' || $_SESSION['id_jabatan'] == '2' || $_SESSION['id_jabatan'] == '5'): ?>
                 <li><a href="main?url=gaji"><i class='fas fa-money-check-alt mr-2'></i>Gaji</a></li>
+                <?php endif; ?>
+
+                <?php if ($_SESSION['id_jabatan'] == '1' || $_SESSION['id_jabatan'] == '2' || $_SESSION['id_jabatan'] == '5'): ?>
+                <li><a href="main?url=seo"><i class='fas fa-globe mr-2'></i>SEO</a></li>
+                <?php endif; ?>
             </ul>
      
     </div>
@@ -305,8 +311,10 @@ if ($_SESSION['id_jabatan'] == '8'||$_SESSION['id_jabatan'] == '7'||$_SESSION['i
 			require 'page/gaji/index.php';
 		} else if ($act == 'ubah-gaji') {
 			require 'page/gaji/ubah.php';
-		}  else if ($act == 'tambah-history-pembelian') {
+		} else if ($act == 'tambah-history-pembelian') {
 			require 'page/pembelian/tambah.php';
+		} else if ($act == 'seo') {
+			require 'page/seo.php';
 		} else {
 			header("location: main");
 		}

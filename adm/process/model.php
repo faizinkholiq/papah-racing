@@ -168,7 +168,7 @@ class con
 		
 		$data["data"] = [];
 		while($row = mysqli_fetch_assoc($result)){
-			$row["last_login"] = $this->time_ago(substr($row['last_login'],0,-3));
+			// $row["last_login"] = $this->time_ago(substr($row['last_login'],0,-3));
 			$data["data"][] = $row;
 		}
 		$data["draw"] = intval($_POST["draw"]);
