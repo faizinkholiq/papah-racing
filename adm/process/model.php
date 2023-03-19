@@ -1049,6 +1049,11 @@ class con
 			$whereFilter = "AND ($q_src) ";
 		}
 
+		$orderBy = "pembelian.tanggal DESC";
+		if(!empty($_POST["order"])){
+			$orderBy = $_POST["columns"][$_POST["order"][0]["column"]]["data"]." ".$_POST["order"][0]["dir"];
+		}
+
 		$limit = $_POST["length"];
 		$offset = $_POST["start"];
 
@@ -1090,7 +1095,7 @@ class con
 			LEFT JOIN supplier ON supplier.id_supplier = pembelian.id_supplier
 			LEFT JOIN user ON user.id_user = pembelian.id_user
 			WHERE pembelian.temp = 0 $whereFilter
-			ORDER BY pembelian.tanggal DESC
+			ORDER BY $orderBy
 			LIMIT $limit OFFSET $offset
 		");
 		
@@ -1222,6 +1227,11 @@ class con
 			$whereFilter2 = "AND ($q_src) ";
 		}
 
+		$orderBy = "real_tanggal DESC";
+		if(!empty($_POST["order"])){
+			$orderBy = $_POST["columns"][$_POST["order"][0]["column"]]["data"]." ".$_POST["order"][0]["dir"];
+		}
+
 		$limit = $_POST["length"];
 		$offset = $_POST["start"];
 
@@ -1313,7 +1323,7 @@ class con
 			LEFT JOIN pelanggan ON pelanggan.id_pelanggan = penjualan.id_pelanggan
 			LEFT JOIN user ON user.id_user = penjualan.id_user
 			WHERE 1=1 $whereFilter2
-			ORDER BY real_tanggal DESC
+			ORDER BY $orderBy
 			LIMIT $limit OFFSET $offset
 		");
 		
@@ -1593,6 +1603,11 @@ class con
 			$whereFilter .= "AND user.id_user='" . $_SESSION['id_user'] . "' ";
 		}
 
+		$orderBy = "pengeluaran.tanggal DESC";
+		if(!empty($_POST["order"])){
+			$orderBy = $_POST["columns"][$_POST["order"][0]["column"]]["data"]." ".$_POST["order"][0]["dir"];
+		}
+
 		$limit = $_POST["length"];
 		$offset = $_POST["start"];
 		$btn_aksi = "CONCAT(
@@ -1614,7 +1629,7 @@ class con
 			JOIN pengeluaran_type ON pengeluaran.id_pengeluaran_type = pengeluaran_type.id_pengeluaran_type 
 			JOIN user ON pengeluaran.id_user = user.id_user
 			WHERE 1=1 $whereFilter
-			ORDER BY pengeluaran.tanggal DESC
+			ORDER BY $orderBy
 			LIMIT $limit OFFSET $offset
 		");
 		
@@ -2185,6 +2200,11 @@ class con
 			$whereFilter = "AND ($q_src)";
 		}
 
+		$orderBy = "penjualan.tanggal DESC, penjualan_det.id_barang ASC";
+		if(!empty($_POST["order"])){
+			$orderBy = $_POST["columns"][$_POST["order"][0]["column"]]["data"]." ".$_POST["order"][0]["dir"];
+		}
+
 		$limit = $_POST["length"];
 		$offset = $_POST["start"];
 
@@ -2203,9 +2223,7 @@ class con
 			GROUP BY 
 				penjualan.no_faktur, 
 				penjualan_det.id_barang
-			ORDER BY 
-				penjualan.tanggal DESC,
-				penjualan_det.id_barang ASC
+			ORDER BY $orderBy
 			LIMIT $limit OFFSET $offset
 		");
 		
@@ -2277,6 +2295,11 @@ class con
 			$whereFilter = "AND ($q_src)";
 		}
 
+		$orderBy = "user.id_user ASC";
+		if(!empty($_POST["order"])){
+			$orderBy = $_POST["columns"][$_POST["order"][0]["column"]]["data"]." ".$_POST["order"][0]["dir"];
+		}
+
 		$limit = $_POST["length"];
 		$offset = $_POST["start"];
 
@@ -2319,7 +2342,7 @@ class con
             ) penjualan ON penjualan.id_user = user.id_user 
             WHERE user.id_jabatan = 5 $whereFilter
 			GROUP BY user.id_user
-			ORDER BY user.id_user ASC
+			ORDER BY $orderBy
 			LIMIT $limit OFFSET $offset
 		");
 		
