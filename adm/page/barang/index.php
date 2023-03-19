@@ -211,7 +211,7 @@ $aset = 0;
     }
 
     let dt = $('#barangTable').DataTable({
-        dom: "ZBlrtip",
+        dom: "zBflrtip",
         ajax: {
             url: 'process/action?url=getbarang',
             type: "POST"
