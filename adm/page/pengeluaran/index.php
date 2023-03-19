@@ -39,7 +39,7 @@ if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2") {
     const page = <?=isset($_GET["page"])? (int)$_GET["page"] : 0 ?>;
 
     let dt = $('#pengeluaranTable').DataTable({
-        dom: "Bfrtip",
+        dom: "ZBflrtip",
         ajax: {
             url: 'process/action?url=getpengeluaran',
             type: "POST",
@@ -50,15 +50,20 @@ if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2") {
         processing: true,
         serverSide: true,
         columns: [
-            { data: "row_no" },
+            { data: "row_no", orderable: false },
             { data: "tanggal" },
             { data: "jenis" },
             { data: "jumlah" },
             { data: "keterangan" },
             { data: "user" },
-            { data: "aksi", className: "text-center", },
+            { data: "aksi", className: "text-center", orderable: false },
         ],
-        ordering: false
+        ordering: true,
+        order: [],
+        bLengthChange: true,
+        paging: true,
+        lengthMenu: [[5, 10, 20, 50, 100, -1], [5, 10, 20, 50, 100, "All"]],
+        pageLength: 10,
     });
 
     $(document).ready(function () {
@@ -75,7 +80,18 @@ if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2") {
             url.searchParams.set('page', info.page);
             window.history.pushState({}, '', url);
         });
+
+        dt.on( 'draw', function () {
+          rewriteColNumbers()
+        } );
+
     });
+
+    function rewriteColNumbers() {
+      $('#pengeluaranTable tbody tr').each(function( index ) {
+        $('td', this ).first().html(index + 1);
+      } );
+    }
 
     function editPengeluaran(id) {
         const info = dt.page.info();
