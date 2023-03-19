@@ -92,7 +92,7 @@ $query = mysqli_query($con, "SELECT * FROM user WHERE id_jabatan!='1' ORDER BY i
     });
 
     function rewriteColNumbers() {
-      $('#pelangganTable tbody tr').each(function( index ) {
+      $('#userTable tbody tr').each(function( index ) {
         $('td', this ).first().html(index + 1);
       } );
     }

@@ -103,6 +103,12 @@ class con
 			$whereFilter = "AND ($q_src)";
 		}
 
+		
+		$orderBy = "user.id_jabatan ASC";
+		if(!empty($_POST["order"])){
+			$orderBy = $_POST["columns"][$_POST["order"][0]["column"]]["data"]." ".$_POST["order"][0]["dir"];
+		}
+
 		$limit = $_POST["length"];
 		$offset = $_POST["start"];
 
@@ -156,7 +162,7 @@ class con
 			WHERE user.id_jabatan!='1'
 			$whereFilter
 			GROUP BY user.id_user
-			ORDER BY user.id_jabatan ASC
+			ORDER BY $orderBy
 			LIMIT $limit OFFSET $offset
 		");
 		
@@ -1479,6 +1485,11 @@ class con
 			$whereFilter = "AND ($q_src)";
 		}
 
+		$orderBy = "id_pengeluaran_type DESC";
+		if(!empty($_POST["order"])){
+			$orderBy = $_POST["columns"][$_POST["order"][0]["column"]]["data"]." ".$_POST["order"][0]["dir"];
+		}
+
 		$limit = $_POST["length"];
 		$offset = $_POST["start"];
 		$btn_aksi = "CONCAT(
@@ -1494,7 +1505,7 @@ class con
 				$btn_aksi aksi
 			FROM pengeluaran_type
 			WHERE 1=1 $whereFilter
-			ORDER BY id_pengeluaran_type DESC
+			ORDER BY $orderBy
 			LIMIT $limit OFFSET $offset
 		");
 		
@@ -1792,6 +1803,11 @@ class con
 			$whereFilter = "AND ($q_src)";
 		}
 
+		$orderBy = "name ASC";
+		if(!empty($_POST["order"])){
+			$orderBy = $_POST["columns"][$_POST["order"][0]["column"]]["data"]." ".$_POST["order"][0]["dir"];
+		}
+
 		$limit = $_POST["length"];
 		$offset = $_POST["start"];
 		$btn_aksi = "CONCAT(
@@ -1807,7 +1823,7 @@ class con
 				$btn_aksi aksi
 			FROM merk
 			WHERE 1=1 $whereFilter
-			ORDER BY name ASC
+			ORDER BY $orderBy
 			LIMIT $limit OFFSET $offset
 		");
 		
