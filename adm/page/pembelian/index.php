@@ -33,7 +33,7 @@
     const page = <?=isset($_GET["page"])? (int)$_GET["page"] : 0 ?>;
 
     let dt = $('#pembelianTable').DataTable({
-        dom: "Bfrtip",
+        dom: "ZBflrtip",
         ajax: {
             url: 'process/action?url=getpembelian',
             type: "POST"
@@ -50,7 +50,12 @@
             { data: "user", className: "text-center", },
             { data: "aksi", className: "text-center", },
         ],
-        ordering: false
+        ordering: true,
+        order: [],
+        bLengthChange: true,
+        paging: true,
+        lengthMenu: [[5, 10, 20, 50, 100, -1], [5, 10, 20, 50, 100, "All"]],
+        pageLength: 10,
     });
 
     $(document).ready(function () {
@@ -64,7 +69,7 @@
             }, 100)
         }
 
-        $('#merkTable').on( 'page.dt', function () {
+        $('#pembelianTable').on( 'page.dt', function () {
             const info = dt.page.info();
             const url = new URL(window.location);
             
