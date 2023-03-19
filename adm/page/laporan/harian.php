@@ -59,7 +59,7 @@ $num_data = mysqli_num_rows($data);
 
     $(document).ready(function () {
         var dt = $('#penjualanTable').DataTable({
-            dom: "Bfrtip",
+            dom: "ZBflrtip",
             ajax: {
                 url: 'process/action?url=getlaporanharian',
                 type: "POST",
@@ -82,7 +82,12 @@ $num_data = mysqli_num_rows($data);
                 { data: "tipe_bayar", className: "text-center", },
                 { data: "user", className: "text-center", },
             ],
-            ordering: false
+            ordering: true,
+            order: [],
+            bLengthChange: true,
+            paging: true,
+            lengthMenu: [[5, 10, 20, 50, 100, -1], [5, 10, 20, 50, 100, "All"]],
+            pageLength: 10,
         });
     });
 </script>

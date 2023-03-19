@@ -2076,6 +2076,11 @@ class con
 			$whereFilter = "AND ($q_src) ";
 		}
 
+		$orderBy = "penjualan.tanggal DESC";
+		if(!empty($_POST["order"])){
+			$orderBy = $_POST["columns"][$_POST["order"][0]["column"]]["data"]." ".$_POST["order"][0]["dir"];
+		}
+
 		$limit = $_POST["length"];
 		$offset = $_POST["start"];
 
@@ -2106,7 +2111,7 @@ class con
 			LEFT JOIN pelanggan ON pelanggan.id_pelanggan = penjualan.id_pelanggan
 			LEFT JOIN user ON user.id_user = penjualan.id_user
 			WHERE (penjualan.daily != true OR penjualan.daily IS NULL) $whereFilter
-			ORDER BY penjualan.tanggal DESC
+			ORDER BY $orderBy
 			LIMIT $limit OFFSET $offset
 		");
 		
