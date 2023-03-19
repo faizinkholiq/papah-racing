@@ -346,8 +346,14 @@ class con
 			$whereFilter = "AND ($q_src)";
 		}
 
+		$orderBy = "id_supplier DESC";
+		if(!empty($_POST["order"])){
+			$orderBy = $_POST["columns"][$_POST["order"][0]["column"]]["data"]." ".$_POST["order"][0]["dir"];
+		}
+
 		$limit = $_POST["length"];
 		$offset = $_POST["start"];
+
 		$btn_aksi = "CONCAT(
 			'<a href=\"#!\" onclick=\"editSupplier(', id_supplier, ')\" class=\"btn btn-primary btn-sm\"><i class=\"fas fa-edit\"></i></a>
 			<a href=\"#!\" onclick=\"hapusSupplier(', id_supplier, ')\" class=\"btn btn-danger btn-sm\" data-toggle=\"tooltip\" data-original-title=\"Hapus\"><i class=\"fas fa-trash-alt\"></i></a>'
@@ -364,7 +370,7 @@ class con
 			FROM supplier
 			WHERE id_supplier!='1'
 			$whereFilter
-			ORDER BY id_supplier DESC
+			ORDER BY $orderBy
 			LIMIT $limit OFFSET $offset
 		");
 			
@@ -591,6 +597,11 @@ class con
 			$whereFilter = "AND ($q_src)";
 		}
 
+		$orderBy = "created DESC";
+		if(!empty($_POST["order"])){
+			$orderBy = $_POST["columns"][$_POST["order"][0]["column"]]["data"]." ".$_POST["order"][0]["dir"];
+		}
+
 		$limit = $_POST["length"];
 		$offset = $_POST["start"];
 
@@ -637,7 +648,7 @@ class con
 			WHERE deleted = 0 
 			$whereFilter
 			GROUP BY barang.id_barang
-			ORDER BY created DESC
+			ORDER BY $orderBy
 			LIMIT $limit OFFSET $offset
 		");
 		

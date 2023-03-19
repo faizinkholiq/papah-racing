@@ -39,7 +39,7 @@ $query = mysqli_query($con, "SELECT * FROM user WHERE id_jabatan!='1' ORDER BY i
     const page = <?=isset($_GET["page"])? (int)$_GET["page"] : 0 ?>;
     
     let dt = $('#userTable').DataTable({
-        dom: "Bfrtip",
+        dom: "ZBlrtip",
         ajax: {
             url: 'process/action?url=getuser',
             type: "POST"
@@ -47,7 +47,7 @@ $query = mysqli_query($con, "SELECT * FROM user WHERE id_jabatan!='1' ORDER BY i
         processing: true,
         serverSide: true,
         columns: [
-            { data: "row_no" },
+            { data: "row_no", orderable: false },
             { data: "nama" },
             { data: "bulan_ini", visible: false, },
             { data: "bulan_lalu", visible: false, },
@@ -57,9 +57,14 @@ $query = mysqli_query($con, "SELECT * FROM user WHERE id_jabatan!='1' ORDER BY i
             { data: "jabatan", className: "text-center", },
             { data: "status", className: "text-center", },
             { data: "last_login", visible: false, className: "text-center", },
-            { data: "aksi", visible: false, className: "text-center", },
+            { data: "aksi", visible: false, className: "text-center", orderable: false },
         ],
-        ordering: false
+        ordering: true,
+        order: [],
+        bLengthChange: true,
+        paging: true,
+        lengthMenu: [[5, 10, 20, 50, 100, -1], [5, 10, 20, 50, 100, "All"]],
+        pageLength: 10,
     });
 
     $(document).ready(function () {
@@ -80,7 +85,17 @@ $query = mysqli_query($con, "SELECT * FROM user WHERE id_jabatan!='1' ORDER BY i
             url.searchParams.set('page', info.page);
             window.history.pushState({}, '', url);
         });
+
+        dt.on( 'draw', function () {
+          rewriteColNumbers()
+        } );
     });
+
+    function rewriteColNumbers() {
+      $('#pelangganTable tbody tr').each(function( index ) {
+        $('td', this ).first().html(index + 1);
+      } );
+    }
 
     function editUser(id) {
         const info = dt.page.info();

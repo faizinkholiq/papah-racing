@@ -173,7 +173,7 @@ $aset = 0;
 
     if (sess_data["id_jabatan"] == 6) {
         columns = [
-            { data: "row_no" },
+            { data: "row_no", orderable: false },
             { data: "barcode" },
             { data: "nama" },
             { data: "merk" },
@@ -183,7 +183,7 @@ $aset = 0;
         ];
     } else if (sess_data["id_jabatan"] == 7) {
         columns = [
-            { data: "row_no" },
+            { data: "row_no", orderable: false },
             { data: "barcode" },
             { data: "nama" },
             { data: "merk" },
@@ -194,7 +194,7 @@ $aset = 0;
         ];
     }else {
         columns = [
-            { data: "row_no" },
+            { data: "row_no", orderable: false },
             { data: "barcode" },
             { data: "nama" },
             { data: "merk" },
@@ -205,13 +205,13 @@ $aset = 0;
             { data: "bengkel" },
             { data: "admin" },
             { data: "het" },
-            { data: "aksi", visible: false, class:"text-center" },
-            { data: "gambar", visible: false, class:"text-center"},
+            { data: "aksi", visible: false, class:"text-center", orderable: false },
+            { data: "gambar", visible: false, class:"text-center", orderable: false },
         ];
     }
 
     let dt = $('#barangTable').DataTable({
-        dom: "Bfrtip",
+        dom: "ZBlrtip",
         ajax: {
             url: 'process/action?url=getbarang',
             type: "POST"
@@ -219,7 +219,12 @@ $aset = 0;
         processing: true,
         serverSide: true,
         columns: columns,
-        ordering: false
+        ordering: true,
+        order: [],
+        bLengthChange: true,
+        paging: true,
+        lengthMenu: [[5, 10, 20, 50, 100, -1], [5, 10, 20, 50, 100, "All"]],
+        pageLength: 10,
     });
 
     $(document).ready(()=>{
@@ -245,7 +250,17 @@ $aset = 0;
             url.searchParams.set('page', info.page);
             window.history.pushState({}, '', url);
         });
+
+        dt.on( 'draw', function () {
+          rewriteColNumbers()
+        } );
     });
+
+    function rewriteColNumbers() {
+      $('#barangTable tbody tr').each(function( index ) {
+        $('td', this ).first().html(index + 1);
+      } );
+    }
 
     function editBarang(id) {
         const info = dt.page.info();

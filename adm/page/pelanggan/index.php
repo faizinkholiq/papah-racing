@@ -66,6 +66,7 @@
             url: 'process/action?url=getpelanggan',
             type: "POST"
         },
+        processing: true,
         serverSide: true,
         columns: [
             { data: "row_no", orderable: false },

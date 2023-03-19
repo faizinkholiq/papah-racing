@@ -17,8 +17,7 @@
                     <th>Aksi</th>
                 </tr>
             </thead>
-            <tbody>
-            </tbody>
+            <tbody></tbody>
         </table>
     </div>
 </div>
@@ -27,7 +26,7 @@
     const page = <?=isset($_GET["page"])? (int)$_GET["page"] : 0 ?>;
 
     let dt = $('#supplierTable').DataTable({
-        dom: "Bfrtip",
+        dom: "ZBlrtip",
         ajax: {
             url: 'process/action?url=getsupplier',
             type: "POST"
@@ -35,13 +34,18 @@
         processing: true,
         serverSide: true,
         columns: [
-            { data: "row_no" },
+            { data: "row_no", orderable: false },
             { data: "nama" },
             { data: "alamat" },
             { data: "kontak" },
-            { data: "aksi", class:"text-center" },
+            { data: "aksi", class:"text-center", orderable: false },
         ],
-        ordering: false
+        ordering: true,
+        order: [],
+        bLengthChange: true,
+        paging: true,
+        lengthMenu: [[5, 10, 20, 50, 100, -1], [5, 10, 20, 50, 100, "All"]],
+        pageLength: 10,
     });
 
     $(document).ready(function () {
@@ -58,7 +62,17 @@
             url.searchParams.set('page', info.page);
             window.history.pushState({}, '', url);
         });
+
+        dt.on( 'draw', function () {
+          rewriteColNumbers()
+        } );
     });
+
+    function rewriteColNumbers() {
+      $('#supplierTable tbody tr').each(function( index ) {
+        $('td', this ).first().html(index + 1);
+      } );
+    }
 
     function editSupplier(id) {
         const info = dt.page.info();
