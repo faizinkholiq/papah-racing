@@ -70,7 +70,7 @@
     }
 
     let dt = $('#gajiTable').DataTable({
-        dom: "Bfrtip",
+        dom: "ZBflrtip",
         ajax: {
             url: 'process/action?url=getgaji',
             type: "POST"
@@ -78,7 +78,7 @@
         processing: true,
         serverSide: true,
         columns: [
-            { data: "row_no" },
+            { data: "row_no", orderable: false },
             { data: "nama" },
             { data: "username" },
             { data: "jabatan" },
@@ -126,6 +126,7 @@
             },
             { 
                 class: "text-center",
+                orderable: false,
                 render: function (data, type, row) {
                     if (sess_data["id_jabatan"] == 1 || sess_data["id_jabatan"] == 2) {
                         return `
@@ -143,7 +144,12 @@
                 }
             },
         ],
-        ordering: false
+        ordering: true,
+        order: [],
+        bLengthChange: true,
+        paging: true,
+        lengthMenu: [[5, 10, 20, 50, 100, -1], [5, 10, 20, 50, 100, "All"]],
+        pageLength: 10,
     });
 
     $(document).ready(function () {
@@ -164,7 +170,17 @@
         if (sess_data["id_jabatan"] != 1 && sess_data["id_jabatan"] != 2 && sss_data["id_jabatan"] != 5) {
             dt.columns([11]).visible(false);
         }
+
+        dt.on( 'draw', function () {
+          rewriteColNumbers()
+        } );
     });
+
+    function rewriteColNumbers() {
+      $('#gajiTable tbody tr').each(function( index ) {
+        $('td', this ).first().html(index + 1);
+      } );
+    }
 
     function processGaji(id) {
         let ask = window.confirm("Anda yakin ingin memproses data ini?");
