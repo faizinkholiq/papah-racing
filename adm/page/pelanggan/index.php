@@ -61,7 +61,7 @@
     const page = <?=isset($_GET["page"])? (int)$_GET["page"] : 0 ?>;
 
     let dt = $('#pelangganTable').DataTable({
-        dom: "ZBlrtip",
+        dom: "zBflrtip",
         ajax: {
             url: 'process/action?url=getpelanggan',
             type: "POST"

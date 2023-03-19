@@ -25,7 +25,7 @@
     const page = <?=isset($_GET["page"])? (int)$_GET["page"] : 0 ?>;
 
     let dt = $('#merkTable').DataTable({
-        dom: "Bfrtip",
+        dom: "zBflrtip",
         ajax: {
             url: 'process/action?url=getmerk',
             type: "POST"
@@ -33,11 +33,16 @@
         processing: true,
         serverSide: true,
         columns: [
-            { data: "row_no" },
+            { data: "row_no", orderable: false },
             { data: "name" },
-            { data: "aksi", class:"text-center" },
+            { data: "aksi", class:"text-center", orderable: false },
         ],
-        ordering: false
+        ordering: true,
+        order: [],
+        bLengthChange: true,
+        paging: true,
+        lengthMenu: [[5, 10, 20, 50, 100, -1], [5, 10, 20, 50, 100, "All"]],
+        pageLength: 10,
     });
 
     $(document).ready(function () {
@@ -54,7 +59,18 @@
             url.searchParams.set('page', info.page);
             window.history.pushState({}, '', url);
         });
+
+        dt.on( 'draw', function () {
+          rewriteColNumbers()
+        } );
+        
     });
+
+    function rewriteColNumbers() {
+      $('#merkTable tbody tr').each(function( index ) {
+        $('td', this ).first().html(index + 1);
+      } );
+    }
 
     function editMerk(id) {
         const info = dt.page.info();
