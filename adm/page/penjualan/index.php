@@ -91,7 +91,7 @@ $params = (!empty($arr_params))? http_build_query($arr_params) : "";
     const page = <?=isset($_GET["page"])? (int)$_GET["page"] : 0 ?>;
     
     let dt = $('#penjualanTable').DataTable({
-        dom: "Bfrtip",
+        dom: "ZBflrtip",
         ajax: {
             url: 'process/action?url=getpenjualan',
             type: "POST",
@@ -116,9 +116,14 @@ $params = (!empty($arr_params))? http_build_query($arr_params) : "";
             { data: "tipe_bayar", className: "text-center", },
             { data: "persetujuan", className: "text-center", },
             { data: "user", className: "text-center", },
-            { data: "aksi", className: "text-center", },
+            { data: "aksi", className: "text-center", orderable: false },
         ],
-        ordering: false
+        ordering: true,
+        order: [],
+        bLengthChange: true,
+        paging: true,
+        lengthMenu: [[5, 10, 20, 50, 100, -1], [5, 10, 20, 50, 100, "All"]],
+        pageLength: 10,
     });
 
     $(document).ready(function () {
