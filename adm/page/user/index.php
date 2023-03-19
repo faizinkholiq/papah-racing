@@ -39,7 +39,7 @@ $query = mysqli_query($con, "SELECT * FROM user WHERE id_jabatan!='1' ORDER BY i
     const page = <?=isset($_GET["page"])? (int)$_GET["page"] : 0 ?>;
     
     let dt = $('#userTable').DataTable({
-        dom: "ZBlrtip",
+        dom: "zBflrtip",
         ajax: {
             url: 'process/action?url=getuser',
             type: "POST"

@@ -521,6 +521,7 @@ class con
 		$result_all = mysqli_query($con, "
 			SELECT pelanggan.id_pelanggan
 			FROM pelanggan 
+			LEFT JOIN user admin ON admin.id_user = pelanggan.admin
 			WHERE id_pelanggan!='1' 
 			AND id_pelanggan!='2' 
 			$whereFilter
