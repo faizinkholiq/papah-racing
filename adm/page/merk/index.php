@@ -25,7 +25,7 @@
     const page = <?=isset($_GET["page"])? (int)$_GET["page"] : 0 ?>;
 
     let dt = $('#merkTable').DataTable({
-        dom: "zBflrtip",
+        dom: "ZBflrtip",
         ajax: {
             url: 'process/action?url=getmerk',
             type: "POST"

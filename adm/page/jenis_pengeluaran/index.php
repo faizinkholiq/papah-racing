@@ -39,7 +39,7 @@ $query = mysqli_query($con, "SELECT * FROM pengeluaran_type ORDER BY id_pengelua
     const page = <?=isset($_GET["page"])? (int)$_GET["page"] : 0 ?>;
 
     let dt = $('#jenisPengeluaranTable').DataTable({
-        dom: "Bfrtip",
+        dom: "ZBflrtip",
         ajax: {
             url: 'process/action?url=getjenispengeluaran',
             type: "POST"
@@ -47,11 +47,16 @@ $query = mysqli_query($con, "SELECT * FROM pengeluaran_type ORDER BY id_pengelua
         processing: true,
         serverSide: true,
         columns: [
-            { data: "row_no" },
+            { data: "row_no", orderable: false },
             { data: "jenis" },
-            { data: "aksi", class:"text-center" },
+            { data: "aksi", class:"text-center", orderable: false },
         ],
-        ordering: false
+        ordering: true,
+        order: [],
+        bLengthChange: true,
+        paging: true,
+        lengthMenu: [[5, 10, 20, 50, 100, -1], [5, 10, 20, 50, 100, "All"]],
+        pageLength: 10,
     });
 
     $(document).ready(function () {
@@ -68,7 +73,17 @@ $query = mysqli_query($con, "SELECT * FROM pengeluaran_type ORDER BY id_pengelua
             url.searchParams.set('page', info.page);
             window.history.pushState({}, '', url);
         });
+
+        dt.on( 'draw', function () {
+          rewriteColNumbers()
+        } );
     });
+
+    function rewriteColNumbers() {
+      $('#merkTable tbody tr').each(function( index ) {
+        $('td', this ).first().html(index + 1);
+      } );
+    }
 
     function editJenisPengeluaran(id) {
         const info = dt.page.info();

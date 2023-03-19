@@ -26,7 +26,7 @@
     const page = <?=isset($_GET["page"])? (int)$_GET["page"] : 0 ?>;
 
     let dt = $('#supplierTable').DataTable({
-        dom: "ZBlrtip",
+        dom: "ZBflrtip",
         ajax: {
             url: 'process/action?url=getsupplier',
             type: "POST"

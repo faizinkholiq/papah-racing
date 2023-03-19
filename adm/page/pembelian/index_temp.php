@@ -40,7 +40,7 @@ $params = (!empty($arr_params))? http_build_query($arr_params) : "";
         ?>
         <a href="main?<?=$params ?>" class="badge <?=($status == 'Decline')? 'bg-secondary' : 'bg-danger' ?> text-white">Ditolak</a>
     </div>
-    <div class="table-responsive mt-3">
+    <div class="table-responsive mt-3" style="min-height: 50vh;">
         <table id="barangTable" class="table table-striped table-bordered " style="width:100%">
             <thead>
                 <tr class="text-center">
@@ -101,7 +101,7 @@ $params = (!empty($arr_params))? http_build_query($arr_params) : "";
     let columnDefs = [];
 
     let dt = $('#barangTable').DataTable({
-        dom: "Bfrtip",
+        dom: "ZBflrtip",
         ajax: {
             url: 'process/action?url=gethistorypembeliantemp',
             type: "POST",
@@ -170,7 +170,12 @@ $params = (!empty($arr_params))? http_build_query($arr_params) : "";
                 }
             },
         ],
-        ordering: false
+        ordering: true,
+        order: [],
+        bLengthChange: true,
+        paging: true,
+        lengthMenu: [[5, 10, 20, 50, 100, -1], [5, 10, 20, 50, 100, "All"]],
+        pageLength: 10,
     });
 
     $(document).ready(()=>{
@@ -192,7 +197,18 @@ $params = (!empty($arr_params))? http_build_query($arr_params) : "";
             url.searchParams.set('page', info.page);
             window.history.pushState({}, '', url);
         });
+
+        dt.on( 'draw', function () {
+          rewriteColNumbers()
+        } );
+
     });
+
+    function rewriteColNumbers() {
+      $('#merkTable tbody tr').each(function( index ) {
+        $('td', this ).first().html(index + 1);
+      } );
+    }
 
     function approveBarang(id) {
         let ask = window.confirm("Anda yakin ingin menyetujui perubahan data ini?");
