@@ -59,7 +59,7 @@ $get_pelanggan = mysqli_query($con, "
             <tbody>
                 <?php $no = 1;
                 foreach ($get_barang as $data) : ?>
-                    <tr class="text-center">
+                    <tr>
                         <td><?= $no++; ?></td>
                         <td class="text-left"><?= $data['barcode']; ?></td>
                         <td><?= $data['nama']; ?></td>
@@ -85,10 +85,10 @@ $get_pelanggan = mysqli_query($con, "
             <tbody>
                 <?php $no = 1;
                 foreach ($get_pelanggan as $data) : ?>
-                    <tr class="text-center">
+                    <tr>
                         <td><?= $no++; ?></td>
-                        <td class="text-left"><?= $data['nama']; ?> : <?= $data['kontak']; ?></td>
-                        <td class="text-center"><?= $data['total_penjualan']; ?></td>
+                        <td class="text-left"><?= $data['nama']; ?></td>
+                        <td><?= $data['total_penjualan']; ?></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
