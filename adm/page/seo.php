@@ -37,13 +37,14 @@ $get_pelanggan = mysqli_query($con, "
     <div class="col-4"><a href="main?url=supplier" class="btn btn-danger float-right"><i class='fas fa-times-circle mr-2'></i>Back</a></div>
 </div>
 <div class="wrapper">
-    <div class="form-group row">
-        <label for="nama_toko" class="col-sm-2 col-form-label">Total Visitor</label>
+    <div class="row">
+        <div class="col-sm-2"><i class="fas fa-users mr-2"></i>Total Visitor</div>
         <div class="col-sm-10"><?= isset($data['visitor'])? $data['visitor'] : 0; ?></div>
     </div>
 </div>
 
 <div class="wrapper">
+    <h4>Barang Paling Banyak Dibeli</h4>
     <div class="table-responsive mt-3">
         <table class="table table-striped table-bordered display" style="width:100%">
             <thead>
@@ -70,6 +71,7 @@ $get_pelanggan = mysqli_query($con, "
 </div>
 
 <div class="wrapper">
+    <h4>Pelanggan Paling Banyak melakukan Pembelian</h4>
     <div class="table-responsive mt-3">
         <table class="table table-striped table-bordered display" style="width:100%">
             <thead>
@@ -81,7 +83,7 @@ $get_pelanggan = mysqli_query($con, "
             </thead>
             <tbody>
                 <?php $no = 1;
-                foreach ($query as $data) : ?>
+                foreach ($get_pelanggan as $data) : ?>
                     <tr class="text-center">
                         <td><?= $no++; ?></td>
                         <td class="text-left"><?= $data['nama']; ?> : <?= $data['kontak']; ?></td>
