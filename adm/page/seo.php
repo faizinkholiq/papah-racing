@@ -2,7 +2,32 @@
 if (empty($_GET['url'])) {
     header('location:../main');
 }
-$data = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM seo"));
+$data = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM seo WHERE id = 1"));
+
+$get_barang = mysqli_query($con, "
+    SELECT
+        barang.id_barang,
+        barang.barcode,
+        barang.nama,
+        COUNT(penjualan_det.id_barang) total_penjualan
+    FROM barang
+    LEFT JOIN penjualan_det ON penjualan_det.id_barang = barang.id_barang
+    GROUP BY barang.id_barang
+    ORDER BY COUNT(penjualan_det.id_barang) DESC
+    LIMIT 5");
+
+$get_pelanggan = mysqli_query($con, "
+    SELECT
+        pelanggan.id_pelanggan,
+        pelanggan.nama,
+        COUNT(penjualan.no_faktur) total_penjualan
+    FROM pelanggan
+    LEFT JOIN penjualan ON penjualan.id_pelanggan = pelanggan.id_pelanggan
+    GROUP BY pelanggan.id_pelanggan
+    ORDER BY COUNT(penjualan.no_faktur) DESC
+    LIMIT 5
+");
+
 ?>
 
 <div class="row">
@@ -16,41 +41,54 @@ $data = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM seo"));
         <label for="nama_toko" class="col-sm-2 col-form-label">Total Visitor</label>
         <div class="col-sm-10"><?= isset($data['visitor'])? $data['visitor'] : 0; ?></div>
     </div>
-    <div class="form-group row">
-        <label for="alamat_toko" class="col-sm-2 col-form-label">Barang Paling Banyak Terjual</label>
-        <div class="col-sm-10">
-        </div>
-    </div>
-    <div class="form-group row">
-        <label for="kontak_toko" class="col-sm-2 col-form-label">Pelanggan dengan Pembelian Tertinggi</label>
-        <div class="col-sm-10">
-        </div>
+</div>
+
+<div class="wrapper">
+    <div class="table-responsive mt-3">
+        <table class="table table-striped table-bordered display" style="width:100%">
+            <thead>
+                <tr class="text-center">
+                    <th>No.</th>
+                    <th>Barcode</th>
+                    <th>Barang</th>
+                    <th>Total Penjualan</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php $no = 1;
+                foreach ($get_barang as $data) : ?>
+                    <tr class="text-center">
+                        <td><?= $no++; ?></td>
+                        <td class="text-left"><?= $data['barcode']; ?></td>
+                        <td><?= $data['nama']; ?></td>
+                        <td><?= $data['total_penjualan']; ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
     </div>
 </div>
 
-<script>
-// $(document).ready(function(){
-//     if(navigator.geolocation){
-//         navigator.geolocation.getCurrentPosition(showLocation);
-//     }else{ 
-//         $('#location').html('Geolocation is not supported by this browser.');
-//     }
-// });
-
-// function showLocation(position){
-//     var latitude = position.coords.latitude;
-//     var longitude = position.coords.longitude;
-//     $.ajax({
-//         type:'POST',
-//         url:'process/action?url=getlocation',
-//         data:'latitude='+latitude+'&longitude='+longitude,
-//         success:function(msg){
-//             if(msg){
-//                $("#location").html(msg);
-//             }else{
-//                 $("#location").html('Not Available');
-//             }
-//         }
-//     });
-// }
-</script>
+<div class="wrapper">
+    <div class="table-responsive mt-3">
+        <table class="table table-striped table-bordered display" style="width:100%">
+            <thead>
+                <tr class="text-center">
+                    <th>No.</th>
+                    <th>Nama</th>
+                    <th>Total Pembelian</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php $no = 1;
+                foreach ($query as $data) : ?>
+                    <tr class="text-center">
+                        <td><?= $no++; ?></td>
+                        <td class="text-left"><?= $data['nama']; ?> : <?= $data['kontak']; ?></td>
+                        <td class="text-center"><?= $data['total_penjualan']; ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+</div>

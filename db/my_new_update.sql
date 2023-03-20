@@ -36,4 +36,6 @@ ALTER TABLE `pembelian` ADD `temp_status` ENUM('Pending','Approved','Decline') D
 
 ALTER TABLE `pelanggan` ADD `admin` SMALLINT NULL AFTER `updated`;
 
-CREATE TABLE `papah_racing`.`seo` (`visitor` BIGINT NOT NULL DEFAULT '0' ) ENGINE = InnoDB;
+CREATE TABLE `seo` (id SMALLINT AUTO_INCREMENT PRIMARY KEY, `visitor` BIGINT NOT NULL DEFAULT '0' ) ENGINE = InnoDB;
+
+INSERT INTO `seo` (`id`, `visitor`) VALUES ('1', '0');

@@ -4,6 +4,8 @@ require 'adm/config/function.php';
 
 date_default_timezone_set('Asia/Jakarta');
 
+mysqli_query($con, "UPDATE seo SET visitor = (SELECT visitor FROM seo WHERE id = 1) + 1 WHERE id = 1");
+
 // Data Toko
 $tokos = mysqli_query($con, "SELECT * FROM toko WHERE id_toko = '1' LIMIT 1");
 foreach ($tokos as $to){
