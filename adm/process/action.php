@@ -274,5 +274,7 @@ if (empty($_GET['url'])) {
 		$nc->declinehistorypembelian($con, $id_barang);
 	} else if ($to == 'getlistbaranghistory') {
 		$nc->getlistbaranghistory($con);
+	} else if ($to == 'getlocation') {
+		$nc->getlocation($con);
 	} 
 }
