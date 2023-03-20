@@ -37,15 +37,15 @@ $get_pelanggan = mysqli_query($con, "
     <div class="col-4"><a href="main?url=supplier" class="btn btn-danger float-right"><i class='fas fa-times-circle mr-2'></i>Back</a></div>
 </div>
 
-<div class="wrapper mt-2">
+<div class="wrapper mt-4">
     <div class="row" style="font-size: 1.3rem;">
         <div class="col-sm-2"><i class="fas fa-users mr-2"></i>Total Visitor</div>
         <div class="col-sm-10"><?= isset($data['visitor'])? $data['visitor'] : 0; ?></div>
     </div>
 </div>
 
-<div class="wrapper mt-2">
-    <h4>Barang Paling Banyak Dibeli</h4>
+<div class="wrapper mt-4">
+    <h4><i class='fas fa-box mr-2'> Barang Paling Banyak Dibeli</h4>
     <div class="table-responsive mt-3">
         <table class="table table-striped table-bordered display" style="width:100%">
             <thead>
@@ -71,8 +71,8 @@ $get_pelanggan = mysqli_query($con, "
     </div>
 </div>
 
-<div class="wrapper mt-2">
-    <h4>Pelanggan Paling Banyak melakukan Pembelian</h4>
+<div class="wrapper mt-4">
+    <h4><i class='fas fa-handshake mr-2'> Pelanggan Paling Banyak melakukan Pembelian</h4>
     <div class="table-responsive mt-3">
         <table class="table table-striped table-bordered display" style="width:100%">
             <thead>
