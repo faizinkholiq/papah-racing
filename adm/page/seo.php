@@ -21,9 +21,20 @@ $data = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM seo WHERE id = 1"))
 </div>
 
 <div class="wrapper mt-4">
-    <h4><i class='fas fa-box mr-2'></i> Barang Paling Banyak Dibeli</h4>
+    <h4><i class='fas fa-box mr-2'></i> Barang Paling Banyak Dibeli</h4><hr/>
     <div class="table-responsive mt-3">
-        <table id="barangTable" class="table table-striped table-bordered" style="width:100%">
+        <div class="mb-2 mt-4" style="display: flex; flex-direction: row; gap: 2rem;">
+            <div class="form-group" style="display: flex; gap: 1rem;">
+                <label class="col-form-label">Dari :</label>
+                <input type="date" class="form-control" id="barangFrom" name="from" required style="width: 12rem;">
+            </div>
+            <div class="form-group" style="display: flex; gap: 1rem;">
+                <label class="col-form-label">Sampai :</label>
+                <input type="date" class="form-control" id="barangTo" name="to" required style="width: 12rem;">
+            </div>
+            <button onclick="doFilter('barang')" type="button" class="btn btn-primary" style="height: fit-content;"><i class='fas fa-search mr-2'></i>Cari</button>
+        </div>
+        <table id="barangTable" class="table table-striped table-bordered mt-2" style="width:100%">
             <thead>
                 <tr class="text-center">
                     <th>No.</th>
@@ -38,9 +49,20 @@ $data = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM seo WHERE id = 1"))
 </div>
 
 <div class="wrapper mt-4">
-    <h4><i class='fas fa-handshake mr-2'></i> Pelanggan Paling Banyak melakukan Pembelian</h4>
+    <h4><i class='fas fa-handshake mr-2'></i> Pelanggan Paling Banyak melakukan Pembelian</h4><hr/>
     <div class="table-responsive mt-3">
-        <table id="pelangganTable" class="table table-striped table-bordered" style="width:100%">
+        <div class="mb-2 mt-4" style="display: flex; flex-direction: row; gap: 2rem;">
+            <div class="form-group" style="display: flex; gap: 1rem;">
+                <label class="col-form-label">Dari :</label>
+                <input type="date" class="form-control" id="pelangganFrom" name="from" required style="width: 12rem;">
+            </div>
+            <div class="form-group" style="display: flex; gap: 1rem;">
+                <label class="col-form-label">Sampai :</label>
+                <input type="date" class="form-control" id="pelangganTo" name="to" required style="width: 12rem;">
+            </div>
+            <button onclick="doFilter('pelanggan')" type="button" class="btn btn-primary" style="height: fit-content;"><i class='fas fa-search mr-2'></i>Cari</button>
+        </div>
+        <table id="pelangganTable" class="table table-striped table-bordered mt-2" style="width:100%">
             <thead>
                 <tr class="text-center">
                     <th>No.</th>
@@ -54,12 +76,25 @@ $data = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM seo WHERE id = 1"))
 </div>
 
 <script>
-    
+    let dt_barang_params = {
+        from: null,
+        to: null,
+    }
+
+    let dt_pelanggan_params = {
+        from: null,
+        to: null,
+    }
+
     let dt_barang = $('#barangTable').DataTable({
         dom: "ZBflrtip",
         ajax: {
             url: 'process/action?url=getmaxbarang',
-            type: "POST"
+            type: "POST",
+            data: {
+                from: () => dt_barang_params.from,
+                to: () => dt_barang_params.to
+            },
         },
         processing: true,
         serverSide: true,
@@ -81,7 +116,11 @@ $data = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM seo WHERE id = 1"))
         dom: "ZBflrtip",
         ajax: {
             url: 'process/action?url=getmaxpelanggan',
-            type: "POST"
+            type: "POST",
+            data: {
+                from: () => dt_pelanggan_params.from,
+                to: () => dt_pelanggan_params.to
+            },
         },
         processing: true,
         serverSide: true,
@@ -114,6 +153,41 @@ $data = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM seo WHERE id = 1"))
       $(table + ' tbody tr').each(function( index ) {
         $('td', this ).first().html(index + 1);
       } );
+    }
+
+    function doFilter(type) {
+        switch(type){
+            case 'barang':
+                dt_barang_params.from = $('#barangFrom').val();
+                dt_barang_params.to = $('#barangTo').val();
+                
+                if(dt_barang_params.from.length > 0 && dt_barang_params.to.length > 0) {
+                    if(dt_barang_params.from <= dt_barang_params.to){
+                        dt_barang.ajax.reload();
+                    }else{
+                        alert("Tanggal sampai harus lebih besar");
+                    }
+                }else{
+                    alert("Tanggal Dari & Sampai harus diisi");
+                }
+
+                break;
+            case 'pelanggan':
+                dt_pelanggan_params.from = $('#pelangganFrom').val();
+                dt_pelanggan_params.to = $('#pelangganTo').val();
+                
+                if(dt_barang_params.from.length > 0 && dt_barang_params.to.length > 0) {
+                    if(dt_pelanggan_params.from <= dt_pelanggan_params.to){
+                        dt_pelanggan.ajax.reload();
+                    }else{
+                        alert("Tanggal sampai harus lebih besar");
+                    }
+                }else{
+                    alert("Tanggal Dari & Sampai harus diisi"); 
+                }
+
+                break;
+        }
     }
 
 </script>

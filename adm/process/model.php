@@ -2789,6 +2789,10 @@ class con
 		$limit = $_POST["length"];
 		$offset = $_POST["start"];
 
+		if(!empty($_POST["from"]) && !empty($_POST["to"])){
+			$whereFilter .= " AND ";
+		}
+
 		$result = mysqli_query($con, "
 			SELECT
 				barang.id_barang,
