@@ -2745,4 +2745,159 @@ class con
 			echo $location;
 		}
 	}
+
+	function getmaxbarang($con)
+	{	
+		$search = $_POST["search"];
+		
+		$q_src = "";
+		if(!empty($search["value"])){
+			$col = ["barang.id_barang", "barang.barcode", "barang.nama"];
+			$src = $search["value"];
+			$src_arr = explode(" ", $src);
+
+			foreach($col as $key => $val){
+				if($key == 0) {
+					$q_src .= "(";
+					foreach($src_arr as $k => $v){
+						if($k == 0) {
+							$q_src .= "$val LIKE '%$v%'"; 
+						}else{
+							$q_src .= " AND $val LIKE '%$v%'";
+						}
+					}
+					$q_src .= ")";
+				}else{
+					$q_src .= " OR (";
+					foreach($src_arr as $k => $v){
+						if($k == 0) {
+							$q_src .= "$val LIKE '%$v%'"; 
+						}else{
+							$q_src .= " AND $val LIKE '%$v%'";
+						}
+					}
+					$q_src .= ")";
+				}
+			}
+		}
+
+		$whereFilter = "";
+		if(!empty($q_src)){
+			$whereFilter = "AND ($q_src)";
+		}
+
+		$limit = $_POST["length"];
+		$offset = $_POST["start"];
+
+		$result = mysqli_query($con, "
+			SELECT
+				barang.id_barang,
+				barang.barcode,
+				barang.nama,
+				COUNT(penjualan_det.id_barang) total_penjualan
+			FROM barang
+			LEFT JOIN penjualan_det ON penjualan_det.id_barang = barang.id_barang
+            WHERE 1=1 $whereFilter
+			GROUP BY barang.id_barang
+			ORDER BY COUNT(penjualan_det.id_barang) DESC, barang.id_barang
+			LIMIT $limit OFFSET $offset
+		");
+		
+		$data["data"] = [];
+		while($row = mysqli_fetch_assoc($result)){
+			$data["data"][] = $row;
+		}
+
+		$data["draw"] = intval($_POST["draw"]);
+
+		$result_all = mysqli_query($con, "
+			SELECT
+				barang.id_barang
+			FROM barang
+			LEFT JOIN penjualan_det ON penjualan_det.id_barang = barang.id_barang
+            WHERE 1=1 $whereFilter
+			GROUP BY barang.id_barang
+		");
+		$data["recordsTotal"] = mysqli_num_rows($result_all);
+		$data["recordsFiltered"] = mysqli_num_rows($result_all);
+		
+		echo json_encode($data);
+	}
+
+	function getmaxpelanggan($con)
+	{	
+		$search = $_POST["search"];
+		
+		$q_src = "";
+		if(!empty($search["value"])){
+			$col = ["pelanggan.id_pelanggan", "pelanggan.nama"];
+			$src = $search["value"];
+			$src_arr = explode(" ", $src);
+
+			foreach($col as $key => $val){
+				if($key == 0) {
+					$q_src .= "(";
+					foreach($src_arr as $k => $v){
+						if($k == 0) {
+							$q_src .= "$val LIKE '%$v%'"; 
+						}else{
+							$q_src .= " AND $val LIKE '%$v%'";
+						}
+					}
+					$q_src .= ")";
+				}else{
+					$q_src .= " OR (";
+					foreach($src_arr as $k => $v){
+						if($k == 0) {
+							$q_src .= "$val LIKE '%$v%'"; 
+						}else{
+							$q_src .= " AND $val LIKE '%$v%'";
+						}
+					}
+					$q_src .= ")";
+				}
+			}
+		}
+
+		$whereFilter = "";
+		if(!empty($q_src)){
+			$whereFilter = "AND ($q_src)";
+		}
+
+		$limit = $_POST["length"];
+		$offset = $_POST["start"];
+
+		$result = mysqli_query($con, "
+			SELECT
+				pelanggan.id_pelanggan,
+				pelanggan.nama,
+				COUNT(penjualan.no_faktur) total_penjualan
+			FROM pelanggan
+			LEFT JOIN penjualan ON penjualan.id_pelanggan = pelanggan.id_pelanggan
+			WHERE 1=1 $whereFilter
+            GROUP BY pelanggan.id_pelanggan
+    		ORDER BY COUNT(penjualan.no_faktur) DESC, pelanggan.id_pelanggan
+			LIMIT $limit OFFSET $offset
+		");
+		
+		$data["data"] = [];
+		while($row = mysqli_fetch_assoc($result)){
+			$data["data"][] = $row;
+		}
+
+		$data["draw"] = intval($_POST["draw"]);
+
+		$result_all = mysqli_query($con, "
+			SELECT
+				pelanggan.id_pelanggan
+			FROM pelanggan
+			LEFT JOIN penjualan ON penjualan.id_pelanggan = pelanggan.id_pelanggan
+			WHERE 1=1 $whereFilter
+            GROUP BY pelanggan.id_pelanggan
+		");
+		$data["recordsTotal"] = mysqli_num_rows($result_all);
+		$data["recordsFiltered"] = mysqli_num_rows($result_all);
+		
+		echo json_encode($data);
+	}
 }

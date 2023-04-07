@@ -276,5 +276,9 @@ if (empty($_GET['url'])) {
 		$nc->getlistbaranghistory($con);
 	} else if ($to == 'getlocation') {
 		$nc->getlocation($con);
-	} 
+	} else if ($to == 'getmaxbarang') {
+		$nc->getmaxbarang($con);
+	} else if ($to == 'getmaxpelanggan') {
+		$nc->getmaxpelanggan($con);
+	}
 }

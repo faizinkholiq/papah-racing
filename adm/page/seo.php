@@ -4,30 +4,6 @@ if (empty($_GET['url'])) {
 }
 $data = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM seo WHERE id = 1"));
 
-$get_barang = mysqli_query($con, "
-    SELECT
-        barang.id_barang,
-        barang.barcode,
-        barang.nama,
-        COUNT(penjualan_det.id_barang) total_penjualan
-    FROM barang
-    LEFT JOIN penjualan_det ON penjualan_det.id_barang = barang.id_barang
-    GROUP BY barang.id_barang
-    ORDER BY COUNT(penjualan_det.id_barang) DESC
-    LIMIT 5");
-
-$get_pelanggan = mysqli_query($con, "
-    SELECT
-        pelanggan.id_pelanggan,
-        pelanggan.nama,
-        COUNT(penjualan.no_faktur) total_penjualan
-    FROM pelanggan
-    LEFT JOIN penjualan ON penjualan.id_pelanggan = pelanggan.id_pelanggan
-    GROUP BY pelanggan.id_pelanggan
-    ORDER BY COUNT(penjualan.no_faktur) DESC
-    LIMIT 5
-");
-
 ?>
 
 <div class="row">
@@ -47,7 +23,7 @@ $get_pelanggan = mysqli_query($con, "
 <div class="wrapper mt-4">
     <h4><i class='fas fa-box mr-2'></i> Barang Paling Banyak Dibeli</h4>
     <div class="table-responsive mt-3">
-        <table class="table table-striped table-bordered display" style="width:100%">
+        <table id="barangTable" class="table table-striped table-bordered" style="width:100%">
             <thead>
                 <tr class="text-center">
                     <th>No.</th>
@@ -56,17 +32,7 @@ $get_pelanggan = mysqli_query($con, "
                     <th>Total Penjualan</th>
                 </tr>
             </thead>
-            <tbody>
-                <?php $no = 1;
-                foreach ($get_barang as $data) : ?>
-                    <tr>
-                        <td><?= $no++; ?></td>
-                        <td class="text-left"><?= $data['barcode']; ?></td>
-                        <td><?= $data['nama']; ?></td>
-                        <td><?= $data['total_penjualan']; ?></td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
+            <tbody></tbody>
         </table>
     </div>
 </div>
@@ -74,7 +40,7 @@ $get_pelanggan = mysqli_query($con, "
 <div class="wrapper mt-4">
     <h4><i class='fas fa-handshake mr-2'></i> Pelanggan Paling Banyak melakukan Pembelian</h4>
     <div class="table-responsive mt-3">
-        <table class="table table-striped table-bordered display" style="width:100%">
+        <table id="pelangganTable" class="table table-striped table-bordered" style="width:100%">
             <thead>
                 <tr class="text-center">
                     <th>No.</th>
@@ -82,16 +48,72 @@ $get_pelanggan = mysqli_query($con, "
                     <th>Total Pembelian</th>
                 </tr>
             </thead>
-            <tbody>
-                <?php $no = 1;
-                foreach ($get_pelanggan as $data) : ?>
-                    <tr>
-                        <td><?= $no++; ?></td>
-                        <td class="text-left"><?= $data['nama']; ?></td>
-                        <td><?= $data['total_penjualan']; ?></td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
+            <tbody></tbody>
         </table>
     </div>
 </div>
+
+<script>
+    
+    let dt_barang = $('#barangTable').DataTable({
+        dom: "ZBflrtip",
+        ajax: {
+            url: 'process/action?url=getmaxbarang',
+            type: "POST"
+        },
+        processing: true,
+        serverSide: true,
+        columns: [
+            { data: "id_barang" },
+            { data: "barcode" },
+            { data: "nama" },
+            { data: "total_penjualan" },
+        ],
+        ordering: false,
+        order: [],
+        bLengthChange: true,
+        paging: true,
+        lengthMenu: [[5, 10, 20, 50, 100, -1], [5, 10, 20, 50, 100, "All"]],
+        pageLength: 10,
+    });
+
+    let dt_pelanggan = $('#pelangganTable').DataTable({
+        dom: "ZBflrtip",
+        ajax: {
+            url: 'process/action?url=getmaxpelanggan',
+            type: "POST"
+        },
+        processing: true,
+        serverSide: true,
+        columns: [
+            { data: "id_pelanggan" },
+            { data: "nama" },
+            { data: "total_penjualan" },
+        ],
+        ordering: false,
+        order: [],
+        bLengthChange: true,
+        paging: true,
+        lengthMenu: [[5, 10, 20, 50, 100, -1], [5, 10, 20, 50, 100, "All"]],
+        pageLength: 10,
+    });
+
+    $(document).ready(function () {
+
+        dt_barang.on( 'draw', function () {
+          rewriteColNumbers('#barangTable')
+        } );
+
+        dt_pelanggan.on( 'draw', function () {
+          rewriteColNumbers('#pelangganTable')
+        } );
+
+    });
+
+    function rewriteColNumbers(table) {
+      $(table + ' tbody tr').each(function( index ) {
+        $('td', this ).first().html(index + 1);
+      } );
+    }
+
+</script>
