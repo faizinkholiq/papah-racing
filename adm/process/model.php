@@ -2788,9 +2788,9 @@ class con
 
 		$limit = $_POST["length"];
 		$offset = $_POST["start"];
-
-		if(!empty($_POST["from"]) && !empty($_POST["to"])){
-			$whereFilter .= " AND ";
+		
+		if(!empty($_POST["from"]) && !empty($_POST["to"])){	
+			$whereFilter .= " AND penjualan.tanggal BETWEEN '".$_POST["from"]."' AND '".$_POST["to"]."'";
 		}
 
 		$result = mysqli_query($con, "
@@ -2798,12 +2798,16 @@ class con
 				barang.id_barang,
 				barang.barcode,
 				barang.nama,
-				COUNT(penjualan_det.id_barang) total_penjualan
+				COUNT(penjualan.id_barang) total_penjualan
 			FROM barang
-			LEFT JOIN penjualan_det ON penjualan_det.id_barang = barang.id_barang
-            WHERE 1=1 $whereFilter
+			LEFT JOIN (
+				SELECT penjualan_det.*, penjualan.tanggal
+				FROM penjualan_det
+				JOIN penjualan ON penjualan.no_faktur = penjualan_det.no_faktur
+			) penjualan ON penjualan.id_barang = barang.id_barang
+			WHERE 1=1 $whereFilter
 			GROUP BY barang.id_barang
-			ORDER BY COUNT(penjualan_det.id_barang) DESC, barang.id_barang
+			ORDER BY COUNT(penjualan.id_barang) DESC, barang.id_barang
 			LIMIT $limit OFFSET $offset
 		");
 		
@@ -2818,7 +2822,11 @@ class con
 			SELECT
 				barang.id_barang
 			FROM barang
-			LEFT JOIN penjualan_det ON penjualan_det.id_barang = barang.id_barang
+			LEFT JOIN (
+				SELECT penjualan_det.*, penjualan.tanggal
+				FROM penjualan_det
+				JOIN penjualan ON penjualan.no_faktur = penjualan_det.no_faktur
+			) penjualan ON penjualan.id_barang = barang.id_barang
             WHERE 1=1 $whereFilter
 			GROUP BY barang.id_barang
 		");
@@ -2871,13 +2879,18 @@ class con
 		$limit = $_POST["length"];
 		$offset = $_POST["start"];
 
+		$whereJoin = "";
+		if(!empty($_POST["from"]) && !empty($_POST["to"])){	
+			$whereJoin .= " AND penjualan.tanggal BETWEEN '".$_POST["from"]."' AND '".$_POST["to"]."'";
+		}
+
 		$result = mysqli_query($con, "
 			SELECT
 				pelanggan.id_pelanggan,
 				pelanggan.nama,
 				COUNT(penjualan.no_faktur) total_penjualan
 			FROM pelanggan
-			LEFT JOIN penjualan ON penjualan.id_pelanggan = pelanggan.id_pelanggan
+			LEFT JOIN penjualan ON penjualan.id_pelanggan = pelanggan.id_pelanggan $whereJoin
 			WHERE 1=1 $whereFilter
             GROUP BY pelanggan.id_pelanggan
     		ORDER BY COUNT(penjualan.no_faktur) DESC, pelanggan.id_pelanggan
@@ -2895,7 +2908,7 @@ class con
 			SELECT
 				pelanggan.id_pelanggan
 			FROM pelanggan
-			LEFT JOIN penjualan ON penjualan.id_pelanggan = pelanggan.id_pelanggan
+			LEFT JOIN penjualan ON penjualan.id_pelanggan = pelanggan.id_pelanggan $whereJoin
 			WHERE 1=1 $whereFilter
             GROUP BY pelanggan.id_pelanggan
 		");

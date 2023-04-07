@@ -77,13 +77,13 @@ $data = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM seo WHERE id = 1"))
 
 <script>
     let dt_barang_params = {
-        from: null,
-        to: null,
+        from: "",
+        to: "",
     }
 
     let dt_pelanggan_params = {
-        from: null,
-        to: null,
+        from: "",
+        to: "",
     }
 
     let dt_barang = $('#barangTable').DataTable({
@@ -139,8 +139,9 @@ $data = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM seo WHERE id = 1"))
 
     $(document).ready(function () {
 
-        dt_barang.on( 'draw', function () {
+        dt_barang.on( 'draw', function (a) {
           rewriteColNumbers('#barangTable')
+          console.log(a);
         } );
 
         dt_pelanggan.on( 'draw', function () {
@@ -176,7 +177,7 @@ $data = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM seo WHERE id = 1"))
                 dt_pelanggan_params.from = $('#pelangganFrom').val();
                 dt_pelanggan_params.to = $('#pelangganTo').val();
                 
-                if(dt_barang_params.from.length > 0 && dt_barang_params.to.length > 0) {
+                if(dt_pelanggan_params.from.length > 0 && dt_pelanggan_params.to.length > 0) {
                     if(dt_pelanggan_params.from <= dt_pelanggan_params.to){
                         dt_pelanggan.ajax.reload();
                     }else{
