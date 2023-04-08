@@ -25,6 +25,8 @@ if(isset($px) && ($px == "cari" || $px == "kategori" || $px == "merk")) {
 
 $all = '';$j = 1;
 foreach ($posts as $pos){
+	if(empty($pos['nama'])) continue;
+	
 	$id = $pos['id_barang'];
 	$purl = SITEURL.'/produk/'.$id.'/';
 	$ptitle = $pos['nama'];

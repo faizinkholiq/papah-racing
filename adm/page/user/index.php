@@ -93,7 +93,10 @@ $query = mysqli_query($con, "SELECT * FROM user WHERE id_jabatan!='1' ORDER BY i
 
     function rewriteColNumbers() {
       $('#userTable tbody tr').each(function( index ) {
-        $('td', this ).first().html(index + 1);
+        let val = $('td', this ).first().text();
+        if (val != "No data available in table") {
+            $('td', this ).first().html(index + 1);
+        }
       } );
     }
 

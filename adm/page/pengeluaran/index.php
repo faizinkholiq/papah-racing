@@ -89,7 +89,10 @@ if ($_SESSION['id_jabatan'] == "1" || $_SESSION['id_jabatan'] == "2") {
 
     function rewriteColNumbers() {
       $('#pengeluaranTable tbody tr').each(function( index ) {
-        $('td', this ).first().html(index + 1);
+        let val = $('td', this ).first().text();
+        if (val != "No data available in table") {
+            $('td', this ).first().html(index + 1);
+        }
       } );
     }
 

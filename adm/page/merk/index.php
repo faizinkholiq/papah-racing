@@ -68,7 +68,10 @@
 
     function rewriteColNumbers() {
       $('#merkTable tbody tr').each(function( index ) {
-        $('td', this ).first().html(index + 1);
+        let val = $('td', this ).first().text();
+        if (val != "No data available in table") {
+            $('td', this ).first().html(index + 1);
+        }
       } );
     }
 
