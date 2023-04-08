@@ -48,7 +48,41 @@ $summary["marketplace"] = isset($data_transaksi["total_marketplace"]) && !empty(
 
 if ($_SESSION['id_jabatan'] == '8'||$_SESSION['id_jabatan'] == '7'||$_SESSION['id_jabatan'] == '6'||$_SESSION['id_jabatan'] == '4'){ 
 	$query = mysqli_query($con, "SELECT * FROM barang ORDER BY created DESC");
-	echo '<div class="wrapper">'.
+
+    if($_SESSION['id_jabatan'] == '7'){
+        $banners = mysqli_query($con, "SELECT * FROM banner ORDER BY order_no ASC LIMIT 5");
+        echo '
+        <div class="row mb-4">
+            <div class="col-lg-12">
+                <div id="carouselBanners" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">';
+                        foreach ($banners as $key => $ban){
+                        $active = ($key==0)? 'active' : '';
+                            echo '<li data-target="#carouselBanners" data-slide-to="'.$key.'" class="'.$active.'"></li>';
+                        }
+                    echo'</ol>
+                    <div class="carousel-inner">';
+                    foreach ($banners as $key => $ban){
+                        $active = ($key==0)? 'active' : '';
+                        echo '<div class="carousel-item '.$active .'">
+                            <img style="height: 55vh; object-fit: contain;" class="d-block w-100" src="'.SITEURL.'/banner/'.$ban["photo"].'" alt="Image '. ($key+1) .'">
+                        </div>';
+                    }
+                    echo '</div>
+                    <a class="carousel-control-prev" href="#carouselBanners" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselBanners" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+            </div>
+        </div>';
+    }
+    
+    echo '<div class="wrapper">'.
 	'<div class="table-responsive mt-3">'.
 	'<table class="table table-striped table-bordered display" style="width:100%">'.
 	'<thead>'.
