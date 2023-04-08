@@ -33,11 +33,13 @@ $data = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM seo WHERE id = 1"))
                 <input type="date" class="form-control" id="barangTo" name="to" required style="width: 12rem;">
             </div>
             <button onclick="doFilter('barang')" type="button" class="btn btn-primary" style="height: fit-content;"><i class='fas fa-search mr-2'></i>Cari</button>
+            <div style="border-right: 1px solid #cccccc; margin-bottom: 1rem;"></div>
+            <button onclick="resetFilter('barang')" type="button" class="btn btn-secondary" style="height: fit-content;"><i class='fas fa-redo mr-2'></i>Reload Data</button>
         </div>
         <table id="barangTable" class="table table-striped table-bordered mt-2" style="width:100%">
             <thead>
                 <tr class="text-center">
-                    <th>No.</th>
+                    <th width="10">No.</th>
                     <th>Barcode</th>
                     <th>Barang</th>
                     <th>Total Penjualan</th>
@@ -61,11 +63,13 @@ $data = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM seo WHERE id = 1"))
                 <input type="date" class="form-control" id="pelangganTo" name="to" required style="width: 12rem;">
             </div>
             <button onclick="doFilter('pelanggan')" type="button" class="btn btn-primary" style="height: fit-content;"><i class='fas fa-search mr-2'></i>Cari</button>
+            <div style="border-right: 1px solid #cccccc; margin-bottom: 1rem;"></div>
+            <button onclick="resetFilter('pelanggan')" type="button" class="btn btn-secondary" style="height: fit-content;"><i class='fas fa-redo mr-2'></i>Reload Data</button>
         </div>
         <table id="pelangganTable" class="table table-striped table-bordered mt-2" style="width:100%">
             <thead>
                 <tr class="text-center">
-                    <th>No.</th>
+                    <th width="10">No.</th>
                     <th>Nama</th>
                     <th>Total Pembelian</th>
                 </tr>
@@ -152,9 +156,32 @@ $data = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM seo WHERE id = 1"))
 
     function rewriteColNumbers(table) {
       $(table + ' tbody tr').each(function( index ) {
-        $('td', this ).first().html(index + 1);
+        let val = $('td', this ).first().text();
+        if (val != "No data available in table") {
+            $('td', this ).first().html(index + 1);
+        } 
       } );
     }
+
+    function resetFilter(type) {
+        switch(type){
+            case 'barang':
+                $('#barangFrom').val("");
+                $('#barangTo').val("");
+                dt_barang_params.from = "";
+                dt_barang_params.to = "";
+                dt_barang.ajax.reload();
+                break;
+            case 'pelanggan':
+                $('#pelangganFrom').val("");
+                $('#pelangganTo').val("");
+                dt_pelanggan_params.from = "";
+                dt_pelanggan_params.to = "";
+                dt_pelanggan.ajax.reload();
+                break;
+        }
+    }
+
 
     function doFilter(type) {
         switch(type){
