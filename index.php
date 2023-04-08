@@ -97,7 +97,7 @@ if (empty($xp[1]) OR (!empty($_GET["kategori"]) || !empty($_GET["merk"]) || !emp
 		$src = $_GET["cari"];
 		$multi_src = str_replace(' ', '%', $src);
 		
-		$posts = mysqli_query($con, "SELECT * FROM barang WHERE deleted = 0 AND nama LIKE '%$src%' OR nama LIKE '%$multi_src%' OR nama SOUNDS LIKE '$src' ORDER BY rand()");
+		$posts = mysqli_query($con, "SELECT * FROM barang WHERE deleted = 0 AND (nama LIKE '%$src%' OR nama LIKE '%$multi_src%' OR nama SOUNDS LIKE '$src') ORDER BY rand()");
 		
 		$nvurl = SITEURL."?cari=".$_GET["cari"];
 	
@@ -116,7 +116,7 @@ if (empty($xp[1]) OR (!empty($_GET["kategori"]) || !empty($_GET["merk"]) || !emp
 		$first_page = ($page>1) ? ($page * $limit) - $limit : 0;
 
 		// All Data
-		$all_data = mysqli_query($con,"SELECT * FROM barang");
+		$all_data = mysqli_query($con,"SELECT * FROM barang WHERE deleted = 0");
 		$total_data = mysqli_num_rows($all_data);
 		$total_page = ceil($total_data / $limit);
 		
@@ -134,7 +134,7 @@ if (empty($xp[1]) OR (!empty($_GET["kategori"]) || !empty($_GET["merk"]) || !emp
 
 	if(mysqli_num_rows($posts) > 0){
 		$row = mysqli_fetch_assoc($posts);
-		$random = mysqli_query($con, "SELECT * FROM barang WHERE deleted = 0 AND nama SOUNDS LIKE '".$row['nama']."' OR kategori = '".$row['kategori']."' ORDER BY rand() LIMIT 20");
+		$random = mysqli_query($con, "SELECT * FROM barang WHERE deleted = 0 AND (nama SOUNDS LIKE '".$row['nama']."' OR kategori = '".$row['kategori']."') ORDER BY rand() LIMIT 20");
 	
 		include('pages/post.php');
 	}else{
