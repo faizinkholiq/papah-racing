@@ -52,7 +52,7 @@ if ($_SESSION['id_jabatan'] == '8'||$_SESSION['id_jabatan'] == '7'||$_SESSION['i
     if($_SESSION['id_jabatan'] == '7'){
         $banners = mysqli_query($con, "SELECT * FROM banner ORDER BY order_no ASC LIMIT 5");
         echo '
-        <div class="row mb-4">
+        <div class="row mb-2">
             <div class="col-lg-12">
                 <div id="carouselBanners" class="carousel slide" data-ride="carousel">
                     <ol class="carousel-indicators">';
@@ -65,7 +65,7 @@ if ($_SESSION['id_jabatan'] == '8'||$_SESSION['id_jabatan'] == '7'||$_SESSION['i
                     foreach ($banners as $key => $ban){
                         $active = ($key==0)? 'active' : '';
                         echo '<div class="carousel-item '.$active .'">
-                            <img style="height: 55vh; object-fit: contain;" class="d-block w-100" src="'.SITEURL.'/banner/'.$ban["photo"].'" alt="Image '. ($key+1) .'">
+                            <img style="height: 27vw; width: 100%; object-fit: contain;" class="d-block w-100" src="'.SITEURL.'/banner/'.$ban["photo"].'" alt="Image '. ($key+1) .'">
                         </div>';
                     }
                     echo '</div>
