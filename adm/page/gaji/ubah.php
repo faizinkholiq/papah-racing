@@ -19,18 +19,21 @@ $data = mysqli_fetch_array(mysqli_query($con, "
     LEFT JOIN gaji ON gaji.id_user = user.id_user
     LEFT JOIN jabatan ON jabatan.id_jabatan = user.id_jabatan
     LEFT JOIN (
-        SELECT
-            penjualan.id_user,
+        SELECT 
+            pelanggan.admin,
             penjualan.tanggal,
             SUM(barang.het) total_het
-        FROM penjualan
+        FROM pelanggan
+        JOIN penjualan ON penjualan.id_pelanggan = pelanggan.id_pelanggan
         LEFT JOIN penjualan_det ON penjualan_det.no_faktur = penjualan.no_faktur
         LEFT JOIN barang ON barang.id_barang = penjualan_det.id_barang
-        WHERE penjualan.persetujuan = 'Approved'
+        WHERE 
+            pelanggan.type = 'admin'
+            AND penjualan.persetujuan = 'Approved'
             AND YEAR(penjualan.tanggal) = YEAR(NOW())
             AND MONTH(penjualan.tanggal) = MONTH(NOW())
-        GROUP BY penjualan.id_user
-    ) penjualan ON penjualan.id_user = user.id_user 
+        GROUP BY pelanggan.admin
+    ) penjualan ON penjualan.admin = user.id_user 
     WHERE user.id_user='$id_user' 
     GROUP BY user.id_user
 "));
