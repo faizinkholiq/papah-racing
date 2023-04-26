@@ -2267,7 +2267,7 @@ class con
 		
 		$q_src = "";
 		if(!empty($search["value"])){
-			$col = ["user.nama", "user.username", "jabatan.nama", "gaji.pokok", "gaji.kehadiran", "gaji.prestasi", "gaji.bonus", "gaji.indisipliner", "gaji.jabatan"];
+			$col = ["pelanggan.nama", "gaji.pokok", "gaji.kehadiran", "gaji.prestasi", "gaji.bonus", "gaji.indisipliner", "gaji.jabatan"];
 			$src = $search["value"];
 			$src_arr = explode(" ", $src);
 
@@ -2301,7 +2301,7 @@ class con
 			$whereFilter = "AND ($q_src)";
 		}
 
-		$orderBy = "user.id_user ASC";
+		$orderBy = "pelanggan.id_pelanggan ASC";
 		if(!empty($_POST["order"])){
 			$orderBy = $_POST["columns"][$_POST["order"][0]["column"]]["data"]." ".$_POST["order"][0]["dir"];
 		}
@@ -2311,11 +2311,9 @@ class con
 
 		$result = mysqli_query($con, "
 			SELECT 
-				ROW_NUMBER() OVER(ORDER BY user.id_user ASC) AS row_no,
-				user.id_user,
-				user.nama,
-				user.username,
-				jabatan.nama jabatan,
+				ROW_NUMBER() OVER(ORDER BY pelanggan.id_pelanggan ASC) AS row_no,
+				pelanggan.id_pelanggan,
+				pelanggan.nama,
 				COALESCE(gaji.pokok, 0) pokok,
 				COALESCE(gaji.kehadiran, 0) kehadiran,
 				COALESCE(gaji.prestasi, 0) prestasi,
@@ -2330,12 +2328,11 @@ class con
 					COALESCE(gaji.indisipliner, 0) +
 					COALESCE(gaji.jabatan, 0)
 				, 0) total
-			FROM user
-			LEFT JOIN gaji ON gaji.id_user = user.id_user
-			LEFT JOIN jabatan ON jabatan.id_jabatan = user.id_jabatan
+			FROM pelanggan
+			LEFT JOIN gaji ON gaji.id_user = pelanggan.id_pelanggan
 			LEFT JOIN (
             	SELECT
-                	penjualan.id_user,
+                	penjualan.id_pelanggan,
                 	penjualan.tanggal,
                 	SUM(barang.het) total_het
                 FROM penjualan
@@ -2344,10 +2341,10 @@ class con
 				WHERE penjualan.persetujuan = 'Approved'
 					AND YEAR(penjualan.tanggal) = YEAR(NOW())
                 	AND MONTH(penjualan.tanggal) = MONTH(NOW())
-                GROUP BY penjualan.id_user
-            ) penjualan ON penjualan.id_user = user.id_user 
-            WHERE user.id_jabatan = 5 $whereFilter
-			GROUP BY user.id_user
+                GROUP BY penjualan.id_pelanggan
+            ) penjualan ON penjualan.id_pelanggan = pelanggan.id_pelanggan
+            WHERE pelanggan.type = 'admin' $whereFilter
+			GROUP BY pelanggan.id_pelanggan
 			ORDER BY $orderBy
 			LIMIT $limit OFFSET $offset
 		");
@@ -2360,13 +2357,12 @@ class con
 		$data["draw"] = intval($_POST["draw"]);
 
 		$result_all = mysqli_query($con, "
-			SELECT user.id_user 
-			FROM user 
-			LEFT JOIN gaji ON gaji.id_user = user.id_user
-			LEFT JOIN jabatan ON jabatan.id_jabatan = user.id_jabatan
+			SELECT pelanggan.id_pelanggan 
+			FROM pelanggan 
+			LEFT JOIN gaji ON gaji.id_user = pelanggan.id_pelanggan
 			LEFT JOIN (
             	SELECT
-                	penjualan.id_user,
+                	penjualan.id_pelanggan,
                 	penjualan.tanggal,
                 	SUM(barang.het) total_het
                 FROM penjualan
@@ -2375,10 +2371,10 @@ class con
 				WHERE penjualan.persetujuan = 'Approved'
 					AND YEAR(penjualan.tanggal) = YEAR(NOW())
                 	AND MONTH(penjualan.tanggal) = MONTH(NOW())
-                GROUP BY penjualan.id_user
-            ) penjualan ON penjualan.id_user = user.id_user 
-			WHERE user.id_jabatan = 5 $whereFilter
-			GROUP BY user.id_user
+                GROUP BY penjualan.id_pelanggan
+            ) penjualan ON penjualan.id_pelanggan = pelanggan.id_pelanggan 
+			WHERE pelanggan.type = 'admin' $whereFilter
+			GROUP BY pelanggan.id_pelanggan
 		");
 		$data["recordsTotal"] = mysqli_num_rows($result_all);
 		$data["recordsFiltered"] = mysqli_num_rows($result_all);

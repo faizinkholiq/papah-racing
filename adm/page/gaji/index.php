@@ -11,8 +11,6 @@
                 <tr class="text-center">
                     <th class="align-middle" rowspan="2" width="10">No.</th>
                     <th class="align-middle" rowspan="2">Nama</th>
-                    <th class="align-middle" rowspan="2">Username</th>
-                    <th class="align-middle" rowspan="2">Jabatan</th>
                     <th colspan="6">Gaji</th>
                     <th class="align-middle" rowspan="2" width="100">Total</th>
                     <th class="align-middle" rowspan="2" width="80">Aksi</th>
@@ -80,8 +78,6 @@
         columns: [
             { data: "row_no", orderable: false },
             { data: "nama" },
-            { data: "username" },
-            { data: "jabatan" },
             { 
                 data: "pokok",
                 render: function (data, type, row) {
