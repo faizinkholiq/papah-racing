@@ -235,6 +235,9 @@ if (empty($_GET['url'])) {
 		$nc->hapuskontak($con, $id);
 	} else if ($to == 'upload-banner') {
 		$nc->upload_banner($con);
+	} else if ($to == 'hapus-banner') {
+		$id = $_GET['this'];
+		$nc->hapus_banner($con, $id);
 	} else if ($to == 'update-order') {
 		$nc->update_banner_order($con);
 	} else if ($to == 'getmerk') {

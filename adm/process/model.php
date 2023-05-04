@@ -1889,7 +1889,7 @@ class con
 	{
 		$err = "";
 		if (!empty($_FILES['files'])){
-			$path = str_replace('/adm/process','/banner/',dirname(__FILE__));
+			$path = str_replace(['/adm/process', 'adm\process'],'/banner/',dirname(__FILE__));
 			if(!file_exists($path)){
 				mkdir($path);
 			}
@@ -1923,8 +1923,9 @@ class con
 					if($cn_banner > 0) {
 						$count = $cn_banner;
 					}
+					$type = $_POST['type'];
 					foreach($prepareName as $name){
-						mysqli_query($con, "INSERT INTO banner SET photo = '$name', order_no = $count");
+						mysqli_query($con, "INSERT INTO banner SET photo = '$name', type = '$type', order_no = $count");
 						$count++;
 					}
 				}
@@ -1947,6 +1948,17 @@ class con
 				"err" => null,
 			]);
 		}
+	}
+
+	function hapus_banner($con, $id)
+	{
+		$query = mysqli_query($con, "DELETE FROM banner WHERE id='$id' ");
+		
+		ob_end_clean();
+		echo json_encode([
+			"success" => 1,
+			"message" => "Success update"
+		]);
 	}
 
 	function update_banner_order($con)
