@@ -13,7 +13,7 @@
                     <th class="align-middle" rowspan="2">Nama</th>
                     <th colspan="6">Gaji</th>
                     <th class="align-middle" rowspan="2" width="100">Total</th>
-                    <th class="align-middle" rowspan="2" width="80">Aksi</th>
+                    <th class="align-middle" rowspan="2" width="120">Aksi</th>
                 </tr>
                 <tr>
                     <th width="100" class="text-center align-middle">Pokok</th>
@@ -126,13 +126,13 @@
                 render: function (data, type, row) {
                     if (sess_data["id_jabatan"] == 1 || sess_data["id_jabatan"] == 2) {
                         return `
-                            <button type="button" onclick='doEdit(${row.id_user})' class="mr-2 mt-2 btn btn-sm btn-primary" style="width: 2rem;"><i class="fas fa-edit"></i></button>
-                            <button type="button" onclick='showHistory(${row.id_user})' class="mr-2 mt-2 btn btn-sm btn-warning" style="width: 2rem;"><i class="fas fa-file-alt"></i></button>
-                            <button type="button" onclick='processGaji(${row.id_user})' class="mr-2 mt-2 btn btn-sm btn-success" style="width: 2rem;"><i class="fas fa-hand-holding-usd"></i></button>
+                            <button type="button" onclick='doEdit(${row.id_pelanggan})' class="mr-1 mt-2 btn btn-sm btn-primary" style="width: 2rem;"><i class="fas fa-edit"></i></button>
+                            <button type="button" onclick='showHistory(${row.id_pelanggan})' class="mr-1 mt-2 btn btn-sm btn-warning" style="width: 2rem;"><i class="fas fa-file-alt"></i></button>
+                            <button type="button" onclick='processGaji(${row.id_pelanggan})' class="mr-1 mt-2 btn btn-sm btn-success" style="width: 2rem;"><i class="fas fa-hand-holding-usd"></i></button>
                         `;
                     }else if (sess_data["id_jabatan"] == 5) {
                         return `
-                            <button type="button" onclick='showHistory(${row.id_user})' class="btn btn-sm btn-warning" style="width: 2rem;"><i class="fas fa-file-alt"></i></button>
+                            <button type="button" onclick='showHistory(${row.id_pelanggan})' class="btn btn-sm btn-warning" style="width: 2rem;"><i class="fas fa-file-alt"></i></button>
                         `;
                     }else{
                         return '-';
