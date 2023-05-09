@@ -176,7 +176,11 @@ function head(){
 
 	$now_src = isset($_GET["cari"])? $_GET["cari"] : '';
 	$header_type = ($px == "cari" || $px == "kategori" || $px == "merk")? 'header-on-top' : '';
-	echo '<body><div class="preloader"></div><div id="main-wrapper" style="width: 100%; position: absolute; overflow-x: hidden;">'.
+	echo '<body>
+	<div class="my-loading">	
+		<span class="spinner spinner--quarter"></span>
+	</div>
+	<div class="preloader"></div><div id="main-wrapper" style="width: 100%; position: absolute; overflow-x: hidden;">'.
 	'<div class="header header-transparent dark-text ' . $header_type . '"><div class="container"><nav id="navigation" class="navigation navigation-landscape">'.
 	'<div class="nav-header"><div class="nav-brand"><a href="'.SITEURL.'/"><img src="'.SITEURL.'/images/icons/logo.png" class="logo" alt="" /></a></div>'.
 	'<div class="mobile_nav"><ul>'.
@@ -473,6 +477,10 @@ function foot(){
 							el.css("font-size", "0.44rem");
 						}
 				});
+
+				setTimeout(() => {
+					$(".my-loading").fadeOut();
+				}, 500)
 			});
 
 			function openSearch() { 
