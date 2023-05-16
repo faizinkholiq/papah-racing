@@ -633,6 +633,7 @@ class con
 				nama,
 				merk,
 				COALESCE(barang.stok, 0) - COALESCE(history_pembelian.qty, 0) stok,
+				barang.stok real_stok,
 				CONCAT('RP', FORMAT(modal, 0, 'id_ID')) modal,
 				CONCAT('RP', FORMAT(distributor, 0, 'id_ID')) distributor,
 				CONCAT('RP', FORMAT(reseller, 0, 'id_ID')) reseller,

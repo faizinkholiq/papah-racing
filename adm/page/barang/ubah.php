@@ -5,7 +5,23 @@ if (empty($_GET['url'])) {
 $id_barang = $_GET['this'];
 $path = str_replace(['/adm/page/barang', '\adm\page\barang'],'/p/'.trim($id_barang),dirname(__FILE__));
 
-$data = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM barang WHERE id_barang='$id_barang' "));
+$data = mysqli_fetch_array(mysqli_query($con, "
+    SELECT 
+        barang.*,
+        COALESCE(barang.stok, 0) - COALESCE(history_pembelian.qty, 0) stok,
+        barang.stok real_stok
+    FROM barang 
+    LEFT JOIN (
+        SELECT
+            pembelian_det.id_barang id,
+            SUM(pembelian_det.qty) qty
+        FROM pembelian_det
+        JOIN pembelian ON pembelian.no_po = pembelian_det.no_po
+        WHERE pembelian.temp = 1
+        GROUP BY pembelian.no_po, pembelian_det.id_barang
+    ) history_pembelian ON barang.id_barang = history_pembelian.id
+    WHERE id_barang='$id_barang' 
+"));
 $selected_brg = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM foto_barang WHERE id_barang='$id_barang' "));
 $page = isset($_GET["page"])? (int)$_GET["page"] : 0 ;
 if ($_SESSION['id_jabatan'] == '1'||$_SESSION['id_jabatan'] == '2'||$_SESSION['id_jabatan'] == '3' || $_SESSION['id_jabatan'] == '5') {
@@ -54,7 +70,7 @@ $url = 'ubahbarang';
         <div class="form-group row">
             <label for="stok" class="col-sm-2 col-form-label">Stok</label>
             <div class="col-sm-10">
-                <input type="number" min="0" class="form-control" id="stok" name="stok" value="<?= $data['stok']; ?>" required>
+                <input type="number" min="0" class="form-control" id="stok" name="stok" value="<?= $data['real_stok']; ?>" required>
             </div>
         </div>
         <div class="form-group row">
