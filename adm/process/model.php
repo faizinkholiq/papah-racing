@@ -149,7 +149,7 @@ class con
 				user.kontak,
 				$badge_jabatan jabatan,
 				$badge_aktif status,
-				user.last_login,
+				CASE WHEN user.last_login = '0000-00-00 00:00:00' OR user.last_login = '' THEN NULL ElSE user.last_login END last_login,
 				$btn_aksi aksi
 			FROM user
 			LEFT JOIN jabatan ON jabatan.id_jabatan = user.id_jabatan
@@ -560,7 +560,9 @@ class con
 	{
 		$page = isset($_GET['page'])? $_GET['page'] : 0;
 
+		mysqli_query($con, "SET FOREIGN_KEY_CHECKS=0"); 
 		$query = mysqli_query($con, "DELETE FROM pelanggan WHERE id_pelanggan='$id_pelanggan' ");
+		mysqli_query($con, "SET FOREIGN_KEY_CHECKS=1"); 
 		header('location:../main?url=pelanggan&page='.$page);
 	}
 
@@ -2467,7 +2469,7 @@ class con
 			LEFT JOIN penjualan_det ON penjualan_det.no_faktur = penjualan.no_faktur
 			LEFT JOIN barang ON barang.id_barang = penjualan_det.id_barang
 			LEFT JOIN pelanggan ON pelanggan.id_pelanggan = penjualan.id_pelanggan
-			WHERE penjualan.id_user = $user
+			WHERE penjualan.id_pelanggan = $user
 				AND penjualan.persetujuan = 'Approved'
 				AND YEAR(penjualan.tanggal) = YEAR(NOW())
 				AND MONTH(penjualan.tanggal) = MONTH(NOW())
@@ -2492,7 +2494,7 @@ class con
 			LEFT JOIN penjualan_det ON penjualan_det.no_faktur = penjualan.no_faktur
 			LEFT JOIN barang ON barang.id_barang = penjualan_det.id_barang
 			LEFT JOIN pelanggan ON pelanggan.id_pelanggan = penjualan.id_pelanggan
-			WHERE penjualan.id_user = $user
+			WHERE penjualan.id_pelanggan = $user
 				AND penjualan.persetujuan = 'Approved'
 				AND YEAR(penjualan.tanggal) = YEAR(NOW())
 				AND MONTH(penjualan.tanggal) = MONTH(NOW())
