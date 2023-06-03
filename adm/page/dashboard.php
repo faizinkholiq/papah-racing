@@ -50,7 +50,7 @@ if ($_SESSION['id_jabatan'] == '8'||$_SESSION['id_jabatan'] == '7'||$_SESSION['i
 	$query = mysqli_query($con, "SELECT * FROM barang ORDER BY created DESC");
 
     if($_SESSION['id_jabatan'] == '7'){
-        $banners = mysqli_query($con, "SELECT * FROM banner WHERE type = 'Distributor' ORDER BY order_no ASC LIMIT 5");
+        $banners = mysqli_query($con, "SELECT * FROM banner WHERE type = 'Distributor' ORDER BY order_no ASC");
         echo '
         <div class="row mb-2">
             <div class="col-lg-12">

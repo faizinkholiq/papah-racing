@@ -24,7 +24,7 @@ if (substr($kontak,0,2)=='08'){
 $order = 'https://wa.me/'.$phone.'?text=';
 
 // Banners
-$banners = mysqli_query($con, "SELECT * FROM banner WHERE type = 'Website' ORDER BY order_no ASC LIMIT 5");
+$banners = mysqli_query($con, "SELECT * FROM banner WHERE type = 'Website' ORDER BY order_no ASC");
 // Merk
 $merks = mysqli_query($con, "SELECT name merk FROM merk ORDER BY name ASC");
 

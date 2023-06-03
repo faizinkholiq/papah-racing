@@ -6,7 +6,7 @@
 </div>
 <div class="wrapper">
     <div class="card bg-light mb-3">
-        <div class="card-header font-weight-bolder">5 Teratas akan ditampilkan di home page</div><br>
+        <div class="card-header font-weight-bolder">Upload image yang akan ditampilkan di banner</div><br>
         <div class="card-body" style="text-align: center">
             <div class="container">
                 <div class="dropzone dz-clickable" id="myDrop">
