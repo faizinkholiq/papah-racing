@@ -23,7 +23,7 @@ $data_pelanggan = [];
                 <div class="row">
                     <div class="col-9 col-lg-11">
                         <div class="form-group row">
-                            <input type="text" class="form-control ml-2" id="barcode" name="barcode" autocomplete="off" placeholder="Scan Barcode" required readonly>                    
+                            <input type="text" class="form-control ml-2" id="barcode" name="barcode" autocomplete="off" placeholder="Scan Barcode" required readonly onclick="openModalBarang()">                    
                         </div>
                     </div>
                     <div class="col-3 col-lg-1">
@@ -74,7 +74,7 @@ $data_pelanggan = [];
     </div>
     <div class="col-md-4">
         <div class="wrapper">
-            <form action="process/action?url=tambahpenjualan" method="post">
+            <form id="formPenjualan" action="process/action?url=tambahpenjualan" method="post">
                 <div class="form-group row">
                     <label for="tanggal" class="col-sm-3 col-form-label">Tanggal</label>
                     <div class="col-sm-9">
@@ -108,8 +108,15 @@ $data_pelanggan = [];
                             <div class="input-group-prepend">
                                 <div class="input-group-text">Rp.</div>
                             </div>
-                            <?php $total_transaksi = mysqli_fetch_assoc(mysqli_query($con, "SELECT sum(total_harga) AS total FROM penjualan_temp WHERE id_user='" . $_SESSION['id_user'] . "'"))["total"]; ?>
-                            <input type="text" class="form-control uang" id="total_transaksi" name="total_transaksi" value="<?= $total_transaksi ?>" readonly>
+                            <?php $total_transaksi = mysqli_fetch_assoc(mysqli_query($con, "
+                                SELECT 
+                                    SUM(penjualan_temp.harga * penjualan_temp.qty) seller, 
+                                    SUM(barang.distributor * penjualan_temp.qty) distributor 
+                                FROM penjualan_temp 
+                                JOIN barang ON barang.id_barang = penjualan_temp.id_barang
+                                WHERE id_user='" . $_SESSION['id_user'] . "'")); ?>
+                            <input type="text" class="form-control uang" id="total_transaksi" name="total_transaksi" value="<?= $total_transaksi['seller'] ?>">
+                            <input type="hidden" class="form-control uang" id="total_transaksi_distributor" name="total_transaksi_distributor" value="<?= $total_transaksi['distributor'] ?>">
                         </div>
                     </div>
                 </div>
@@ -288,5 +295,27 @@ $data_pelanggan = [];
             $('#id_pelanggan').val(id_pelanggan)
             $('#id_pelanggan').selectpicker('refresh')
         }, 0);
+
+         	
+
+        $("#formPenjualan").on( "submit", function(e) {            
+            let total_transaksi = $('#total_transaksi').val();
+            let total_transaksi_distributor = $('#total_transaksi_distributor').val();
+            if (total_transaksi <= total_transaksi_distributor){
+                return true
+            }else{
+                alert('Total transaksi tidak boleh melebihi total nilai distributor')
+                return false
+            }
+        });
     });
+
+    function openModalBarang() {
+        let pelanggan = $('#id_pelanggan').val();
+        if (pelanggan != null) {
+            $('#barang').modal('show');
+        }else{
+            alert("Mohon pilih pelanggan terlebih dahulu");
+        }
+    }
 </script>

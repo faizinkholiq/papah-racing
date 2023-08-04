@@ -2358,7 +2358,9 @@ class con
                 	AND MONTH(penjualan.tanggal) = MONTH(NOW())
                 GROUP BY penjualan.id_pelanggan
             ) penjualan ON penjualan.id_pelanggan = pelanggan.id_pelanggan
-            WHERE pelanggan.type = 'admin' $whereFilter
+            WHERE pelanggan.id_pelanggan!='1' 
+				AND pelanggan.id_pelanggan!='2' 
+				AND pelanggan.type = 'admin' $whereFilter
 			GROUP BY pelanggan.id_pelanggan
 			ORDER BY $orderBy
 			LIMIT $limit OFFSET $offset
