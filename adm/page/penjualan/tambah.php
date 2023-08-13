@@ -27,7 +27,7 @@ $data_pelanggan = [];
                         </div>
                     </div>
                     <div class="col-3 col-lg-1">
-                        <a href="#" class="btn btn-primary <?= !isset($_GET['type'])? 'disabled' : '' ?>" data-target="#barang" data-toggle="modal"><i class='fas fa-search'></i></a>
+                        <button type="button" class="btn btn-primary <?= !isset($_GET['type'])? 'disabled' : '' ?>" onclick="openModalBarang()"><i class='fas fa-search'></i></button>
                     </div>
                 </div>
                 <div class="form-row text-center">
@@ -301,10 +301,10 @@ $data_pelanggan = [];
         $("#formPenjualan").on( "submit", function(e) {            
             let total_transaksi = $('#total_transaksi').val();
             let total_transaksi_distributor = $('#total_transaksi_distributor').val();
-            if (total_transaksi <= total_transaksi_distributor){
+            if (total_transaksi >= total_transaksi_distributor){
                 return true
             }else{
-                alert('Total transaksi tidak boleh melebihi total nilai distributor')
+                alert('Total transaksi tidak boleh kurang dari total harga distributor')
                 return false
             }
         });
