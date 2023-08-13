@@ -299,8 +299,9 @@ $data_pelanggan = [];
          	
 
         $("#formPenjualan").on( "submit", function(e) {            
-            let total_transaksi = $('#total_transaksi').val();
-            let total_transaksi_distributor = $('#total_transaksi_distributor').val();
+            let total_transaksi = parseFloat($('#total_transaksi').val().replace(/\./g, ''));
+            let total_transaksi_distributor = parseFloat($('#total_transaksi_distributor').val().replace(/\./g, ''));
+
             if (total_transaksi >= total_transaksi_distributor){
                 return true
             }else{
