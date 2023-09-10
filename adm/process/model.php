@@ -2332,14 +2332,22 @@ class con
 				COALESCE(gaji.pokok, 0) pokok,
 				COALESCE(gaji.kehadiran, 0) kehadiran,
 				COALESCE(gaji.prestasi, 0) prestasi,
-				COALESCE((penjualan.total_het * 2) / 100, 0) bonus,
+				CASE 
+					WHEN penjualan.total_het > 100000000 THEN COALESCE((penjualan.total_het * 10) / 100, 0)
+					WHEN penjualan.total_het > 50000000 THEN COALESCE((penjualan.total_het * 5) / 100, 0)
+					ELSE COALESCE((penjualan.total_het * 2) / 100, 0)
+				END bonus,
 				COALESCE(gaji.indisipliner, 0) indisipliner,
 				COALESCE(gaji.jabatan, 0) tunjangan_jabatan,
 				COALESCE(
 					COALESCE(gaji.pokok, 0) + 
 					COALESCE(gaji.kehadiran, 0) +
 					COALESCE(gaji.prestasi, 0) +
-					COALESCE((penjualan.total_het * 2) / 100, 0) -
+					(CASE 
+						WHEN penjualan.total_het > 100000000 THEN COALESCE((penjualan.total_het * 10) / 100, 0)
+						WHEN penjualan.total_het > 50000000 THEN COALESCE((penjualan.total_het * 5) / 100, 0)
+						ELSE COALESCE((penjualan.total_het * 2) / 100, 0)
+					END) -
 					COALESCE(gaji.indisipliner, 0) +
 					COALESCE(gaji.jabatan, 0)
 				, 0) total
