@@ -1,3 +1,7 @@
+<?php 
+$month = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+$year = date("Y");
+?>
 <div class="row">
     <div class="col-8">
         <h3 class="font-weight-bolder"><i class='fas fa-money-check-alt'></i> Data Gaji</h3>
@@ -5,6 +9,26 @@
     <div class="col-4"><a href="index.php" class="btn btn-danger float-right"><i class='fas fa-times-circle mr-2'></i>Back</a></div>
 </div>
 <div class="wrapper">
+    <div class="row">
+        <div class="col-lg-2">
+            <div class="form-group">
+                <select onchange="doFilter()" class="form-control" id="monthSelect" name="month">
+                    <?php foreach ($month as $key => $value): ?>
+                    <option <?= (($key + 1) == date('m'))? 'selected' : '' ?> value="<?= ($key + 1) ?>"><?= $value ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <div class="form-group">
+                <select onchange="doFilter()" class="form-control" id="yearSelect" name="year">
+                    <?php for($i=$year-5; $i <= $year ; $i++): ?>
+                    <option <?= ( $i == date('Y'))? 'selected' : '' ?> value="<?= $i ?>"><?= $i ?></option>
+                    <?php endfor; ?>
+                </select>
+            </div>
+        </div>
+    </div><hr/>
     <div class="table-responsive mt-3">
         <table id="gajiTable" class="table table-striped table-bordered" style="width:100%">
             <thead>
@@ -67,11 +91,20 @@
         }).format(number);
     }
 
+    let dt_params = {
+        month: $('#monthSelect').val(),
+        year: $('#yearSelect').val(),
+    }
+
     let dt = $('#gajiTable').DataTable({
         dom: "ZBflrtip",
         ajax: {
             url: 'process/action?url=getgaji',
-            type: "POST"
+            type: "POST",
+            data: {
+                month: () => dt_params.month,
+                year: () => dt_params.year
+            },
         },
         processing: true,
         serverSide: true,
@@ -81,43 +114,43 @@
             { 
                 data: "pokok",
                 render: function (data, type, row) {
-                    return rupiah(data)
+                    return (row.process == 0)? rupiah(data) : 0
                 }
             },
             { 
                 data: "kehadiran",
                 render: function (data, type, row) {
-                    return rupiah(data)
+                    return (row.process == 0)? rupiah(data) : 0
                 }
             },
             { 
                 data: "prestasi",
                 render: function (data, type, row) {
-                    return rupiah(data)
+                    return (row.process == 0)? rupiah(data) : 0
                 } 
             },
             { 
                 data: "bonus",
                 render: function (data, type, row) {
-                    return rupiah(data)
+                    return (row.process == 0)? rupiah(data) : 0
                 } 
             },
             { 
                 data: "indisipliner", 
                 render: function (data, type, row) {
-                    return (data != 0)? '-' + rupiah(data) : rupiah(data);
+                    return (row.process == 0)? (data != 0)? '-' + rupiah(data) : rupiah(data) : 0;
                 }
             },
             { 
                 data: "tunjangan_jabatan",
                 render: function (data, type, row) {
-                    return rupiah(data)
+                    return (row.process == 0)? rupiah(data) : 0
                 } 
             },
             { 
                 data: "total",
                 render: function (data, type, row) {
-                    return rupiah(data)
+                    return (row.process == 0)? rupiah(data) : 0
                 }
             },
             { 
@@ -125,11 +158,18 @@
                 orderable: false,
                 render: function (data, type, row) {
                     if (sess_data["id_jabatan"] == 1 || sess_data["id_jabatan"] == 2) {
-                        return `
-                            <button type="button" onclick='doEdit(${row.id_pelanggan})' class="mr-1 mt-2 btn btn-sm btn-primary" style="width: 2rem;"><i class="fas fa-edit"></i></button>
-                            <button type="button" onclick='showHistory(${row.id_pelanggan})' class="mr-1 mt-2 btn btn-sm btn-warning" style="width: 2rem;"><i class="fas fa-file-alt"></i></button>
-                            <button type="button" onclick='processGaji(${row.id_pelanggan})' class="mr-1 mt-2 btn btn-sm btn-success" style="width: 2rem;"><i class="fas fa-hand-holding-usd"></i></button>
-                        `;
+                        if(row.process == 1) {
+                            return `
+                                <button type="button" onclick='doEdit(${row.id_pelanggan})' class="mr-1 mt-2 btn btn-sm btn-primary" style="width: 2rem;"><i class="fas fa-edit"></i></button>
+                                <button type="button" onclick='showHistory(${row.id_pelanggan})' class="mr-1 mt-2 btn btn-sm btn-warning" style="width: 2rem;"><i class="fas fa-file-alt"></i></button>
+                            `;
+                        } else {
+                            return `
+                                <button type="button" onclick='doEdit(${row.id_pelanggan})' class="mr-1 mt-2 btn btn-sm btn-primary" style="width: 2rem;"><i class="fas fa-edit"></i></button>
+                                <button type="button" onclick='showHistory(${row.id_pelanggan})' class="mr-1 mt-2 btn btn-sm btn-warning" style="width: 2rem;"><i class="fas fa-file-alt"></i></button>
+                                <button type="button" onclick='processGaji(${row.id_pelanggan})' class="mr-1 mt-2 btn btn-sm btn-success" style="width: 2rem;"><i class="fas fa-hand-holding-usd"></i></button>
+                            `;
+                        }
                     }else if (sess_data["id_jabatan"] == 5) {
                         return `
                             <button type="button" onclick='showHistory(${row.id_pelanggan})' class="btn btn-sm btn-warning" style="width: 2rem;"><i class="fas fa-file-alt"></i></button>
@@ -185,14 +225,14 @@
         let ask = window.confirm("Anda yakin ingin memproses data ini?");
         if (ask) {
             const info = dt.page.info();
-            const url = "process/action?url=processgaji&this="+id+"&page="+info.page
+            const url = "process/action?url=processgaji&this="+id+"&page="+info.page+"&month="+dt_params.month+"&year="+dt_params.year
             window.open(url, "_self")
         }
     }
 
     function doEdit(id) {
         const info = dt.page.info();
-        const url = "main?url=ubah-gaji&this="+id+"&page="+info.page
+        const url = "main?url=ubah-gaji&this="+id+"&page="+info.page+"&month="+dt_params.month+"&year="+dt_params.year
         window.open(url, "_self")
     }
 
@@ -206,7 +246,9 @@
                 url: 'process/action?url=gethistorypenjualan',
                 type: "POST",
                 data: {
-                    id_user: id
+                    id_user: id,
+                    month: dt_params.month,
+                    year: dt_params.year
                 }
             },
             processing: true,
@@ -226,6 +268,20 @@
             ],
             ordering: false
         });
+    }
+
+    function resetFilter() {
+        $('#monthSelect').val("");
+        $('#yearSelect').val("");
+        dt_params.month = "";
+        dt_params.year = "";
+        dt.ajax.reload();
+    }
+
+    function doFilter() {
+        dt_params.month = $('#monthSelect').val();
+        dt_params.year = $('#yearSelect').val();
+        dt.ajax.reload();
     }
 
 </script>

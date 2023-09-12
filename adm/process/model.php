@@ -2279,6 +2279,8 @@ class con
 	function getgaji($con)
 	{	
 		$search = $_POST["search"];
+		$month = $_POST["month"];
+		$year = $_POST["year"];
 		
 		$q_src = "";
 		if(!empty($search["value"])){
@@ -2350,9 +2352,10 @@ class con
 					END) -
 					COALESCE(gaji.indisipliner, 0) +
 					COALESCE(gaji.jabatan, 0)
-				, 0) total
+				, 0) total,
+				gaji.process
 			FROM pelanggan
-			LEFT JOIN gaji ON gaji.id_user = pelanggan.id_pelanggan
+			LEFT JOIN gaji ON gaji.id_user = pelanggan.id_pelanggan AND gaji.month = $month AND gaji.year = $year
 			LEFT JOIN (
             	SELECT
                 	penjualan.id_pelanggan,
@@ -2362,8 +2365,8 @@ class con
                 LEFT JOIN penjualan_det ON penjualan_det.no_faktur = penjualan.no_faktur
             	LEFT JOIN barang ON barang.id_barang = penjualan_det.id_barang
 				WHERE penjualan.persetujuan = 'Approved'
-					AND YEAR(penjualan.tanggal) = YEAR(NOW())
-                	AND MONTH(penjualan.tanggal) = MONTH(NOW())
+					AND YEAR(penjualan.tanggal) = $year
+                	AND MONTH(penjualan.tanggal) = $month
                 GROUP BY penjualan.id_pelanggan
             ) penjualan ON penjualan.id_pelanggan = pelanggan.id_pelanggan
             WHERE pelanggan.id_pelanggan!='1' 
@@ -2407,16 +2410,16 @@ class con
 		echo json_encode($data);
 	}
 
-	function ubahgaji($con, $id_user, $pokok, $kehadiran, $prestasi, $bonus, $indisipliner, $tunjangan_jabatan)
+	function ubahgaji($con, $id_user, $pokok, $kehadiran, $prestasi, $bonus, $indisipliner, $tunjangan_jabatan, $month, $year)
 	{
 		$page = isset($_GET['page'])? $_GET['page'] : 0;
-		
-		$detail = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM gaji WHERE id_user='$id_user' "));
 
+		$detail = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM gaji WHERE id_user='$id_user' AND month=$month AND year=$year"));
+		
 		if($detail) {
-			mysqli_query($con, "UPDATE gaji SET pokok='$pokok', kehadiran='$kehadiran', prestasi='$prestasi', bonus='$bonus', indisipliner='$indisipliner', jabatan='$tunjangan_jabatan' WHERE id_user='$id_user' ");
+			mysqli_query($con, "UPDATE gaji SET pokok='$pokok', kehadiran='$kehadiran', prestasi='$prestasi', bonus='$bonus', indisipliner='$indisipliner', jabatan='$tunjangan_jabatan', month=$month, year=$year WHERE id_user='$id_user' ");
 		}else{
-			mysqli_query($con, "INSERT INTO gaji SET id_user='$id_user', pokok='$pokok', kehadiran='$kehadiran', prestasi='$prestasi', bonus='$bonus', indisipliner='$indisipliner', jabatan='$tunjangan_jabatan'");
+			mysqli_query($con, "INSERT INTO gaji SET id_user='$id_user', pokok='$pokok', kehadiran='$kehadiran', prestasi='$prestasi', bonus='$bonus', indisipliner='$indisipliner', jabatan='$tunjangan_jabatan', month=$month, year=$year");
 		}
 		
 		header('location:../main?url=gaji&page='.$page);
@@ -2426,7 +2429,9 @@ class con
 	{	
 		$user = $_POST["id_user"];
 		$search = $_POST["search"];
-		
+		$month = $_POST["month"];
+		$year = $_POST["year"];
+
 		$q_src = "";
 		if(!empty($search["value"])){
 			$col = ["penjualan.no_faktur", "barang.barcode", "barang.nama", "barang.het", "pelanggan.nama", "DATE_FORMAT(penjualan.tanggal, '%e %M %Y, %H:%i')"];
@@ -2481,8 +2486,8 @@ class con
 			LEFT JOIN pelanggan ON pelanggan.id_pelanggan = penjualan.id_pelanggan
 			WHERE penjualan.id_pelanggan = $user
 				AND penjualan.persetujuan = 'Approved'
-				AND YEAR(penjualan.tanggal) = YEAR(NOW())
-				AND MONTH(penjualan.tanggal) = MONTH(NOW())
+				AND YEAR(penjualan.tanggal) = $year
+				AND MONTH(penjualan.tanggal) = $month
             	$whereFilter
 			GROUP BY penjualan.no_faktur, penjualan_det.id_barang
 			ORDER BY penjualan.tanggal DESC, penjualan_det.id_barang ASC
@@ -2506,8 +2511,8 @@ class con
 			LEFT JOIN pelanggan ON pelanggan.id_pelanggan = penjualan.id_pelanggan
 			WHERE penjualan.id_pelanggan = $user
 				AND penjualan.persetujuan = 'Approved'
-				AND YEAR(penjualan.tanggal) = YEAR(NOW())
-				AND MONTH(penjualan.tanggal) = MONTH(NOW())
+				AND YEAR(penjualan.tanggal) = $year
+				AND MONTH(penjualan.tanggal) = $month
             	$whereFilter
 			GROUP BY penjualan.no_faktur, penjualan_det.id_barang");
 		$data["recordsTotal"] = mysqli_num_rows($result_all);
@@ -2519,13 +2524,15 @@ class con
 	function processgaji($con, $id_user)
 	{
 		$page = isset($_GET['page'])? $_GET['page'] : 0;
+		$month = $_GET['month'];
+		$year = $_GET['year'];
 		
-		$detail = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM gaji WHERE id_user='$id_user' "));
+		$detail = mysqli_fetch_array(mysqli_query($con, "SELECT * FROM gaji WHERE id_user='$id_user' AND month=$month AND year=$year "));
 
 		if($detail) {
-			mysqli_query($con, "UPDATE gaji SET pokok='0', kehadiran='0', prestasi='0', bonus='0', indisipliner='0', jabatan='0' WHERE id_user='$id_user' ");
+			mysqli_query($con, "UPDATE gaji SET process=TRUE WHERE id_user='$id_user' AND month=$month AND year=$year");
 		}else{
-			mysqli_query($con, "INSERT INTO gaji SET id_user='$id_user', pokok='0', kehadiran='0', prestasi='0', bonus='0', indisipliner='0', jabatan='0'");
+			mysqli_query($con, "INSERT INTO gaji SET id_user='$id_user', process=TRUE, month=$month, year=$year");
 		}
 		
 		header('location:../main?url=gaji&page='.$page);

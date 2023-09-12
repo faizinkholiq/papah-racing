@@ -261,7 +261,7 @@ if (empty($_GET['url'])) {
 	} else if ($to == 'getgaji') {
 		$nc->getgaji($con);
 	} else if ($to == 'ubahgaji') {
-		$nc->ubahgaji($con, $_POST['id_user'], $_POST['pokok'], $_POST['kehadiran'], $_POST['prestasi'], $_POST['bonus'], $_POST['indisipliner'], $_POST['tunjangan_jabatan']);
+		$nc->ubahgaji($con, $_POST['id_user'], $_POST['pokok'], $_POST['kehadiran'], $_POST['prestasi'], $_POST['bonus'], $_POST['indisipliner'], $_POST['tunjangan_jabatan'], $_POST['month'], $_POST['year']);
 	} else if ($to == 'processgaji') {
 		$id = $_GET['this'];
 		$nc->processgaji($con, $id);
